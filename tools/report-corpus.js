@@ -256,7 +256,7 @@ const ROLE_WORDS = [
   '骇客', '主持人', '播报员', '军官', '军需官', '戍卫长', '百夫长', '将军', '队长',
   '官员', '议员', '元老', '学者', '术士', '法师', '炼金术士', '圣女', '司铎', '大司铎',
   '国王', '王后', '臣民', '贵族', '元老院议员', '母亲', '父亲', '女儿', '儿子', '店主',
-  '之民', '亡魂', '眷属', '余烬', '之子', '海妖', '奇兽', '异兽',
+  '之民', '亡魂', '眷属', '余烬', '之子', '海妖', '奇兽', '异兽', '残忆',
 ];
 
 /** 已知的非翁法罗斯可玩角色（在 3.x 主线中客串），config 未收录 */
@@ -270,21 +270,21 @@ function buildSuggester(cfg, normalizer) {
   const canonical = cfg.canonical || {};
   const bodyChars = /[\u3400-\u4dbf\u4e00-\u9fff·•]/;
 
-  /** 名称 -> canonical（用于"字符串包含已知角色名"；忽略单字名，避免「星」误配「应星」这类误判） */
+  /** 名称 -> { canonical, src }（用于"字符串包含已知角色名"；忽略单字名，避免「星」误配「应星」这类误判） */
   const nameIndex = new Map();
-  const addName = (name, canonicalName) => {
+  const addName = (name, canonicalName, src) => {
     if (!name || name.length < 2 || !bodyChars.test(name)) return;
-    if (!nameIndex.has(name)) nameIndex.set(name, canonicalName);
+    if (!nameIndex.has(name)) nameIndex.set(name, { canonical: canonicalName, src });
   };
   for (const [name, entry] of Object.entries(canonical)) {
-    addName(name, name);
-    for (const a of entry.speaker_aliases || []) addName(a, name);
-    for (const f of entry.forms || []) addName(f, name);
-    for (const t of entry.titles || []) addName(t, name);
-    for (const a of entry.aliases || []) addName(a, name);
+    addName(name, name, 'canonical 名');
+    for (const a of entry.speaker_aliases || []) addName(a, name, 'speaker_aliases');
+    for (const f of entry.forms || []) addName(f, name, 'forms');
+    for (const t of entry.titles || []) addName(t, name, 'titles');
+    for (const a of entry.aliases || []) addName(a, name, 'aliases');
     // true_name 可能是 "海列屈拉 Helektra" 这类混排
     if (entry.true_name) {
-      for (const m of String(entry.true_name).match(/[\u4e00-\u9fff·•]{2,}/g) || []) addName(m, name);
+      for (const m of String(entry.true_name).match(/[\u4e00-\u9fff·•]{2,}/g) || []) addName(m, name, 'true_name');
     }
   }
   // 泰坦名单独处理：泰坦是"说话实体"本身，不能直接归一成对应黄金裔，只做提示
@@ -293,7 +293,12 @@ function buildSuggester(cfg, normalizer) {
   const namesByLen = [...nameIndex.keys()].sort((a, b) => b.length - a.length);
 
   const matchNameIn = (s) => {
-    for (const n of namesByLen) if (s.includes(n)) return { name: n, canonical: nameIndex.get(n) };
+    for (const n of namesByLen) {
+      if (s.includes(n)) {
+        const info = nameIndex.get(n);
+        return { name: n, canonical: info.canonical, src: info.src };
+      }
+    }
     return null;
   };
 
@@ -377,7 +382,7 @@ function buildSuggester(cfg, normalizer) {
     if (m) {
       return {
         bucket: '疑似' + m.canonical,
-        reason: '包含已知角色名「' + m.name + '」（形态/复合/称号标签，待确认）',
+        reason: `包含已知角色名「${m.name}」（config.${m.src}），为形态/复合/称号标签，待确认`,
         canonical: m.canonical,
       };
     }
@@ -1108,7 +1113,7 @@ function buildQaReport(ctx) {
   push('# 语料质量检查报告（qa-checks）', '');
   push(`> 生成脚本：\`tools/report-corpus.js\`；主语料 \`data/corpus/amphoreus.jsonl\`（SHA-256 \`${corpusHash.slice(0, 16)}…\`）。  `);
   push(`> 本报告只读语料，未修改 \`data/corpus/\`、\`data/config/\`、\`data/raw/\` 下任何文件。`, '');
-  push('结论速览：**顺序与结构干净（id/order/idx 全连续、版本严格单调、无重复行、无空文本）**，'
+  push('结论速览：**顺序与结构干净（id/order/idx 全连续、版本严格单调、无空文本、无抓取重复行）**，'
     + `但存在 4 类需要在分析前处理的数据问题——① ${num(records.filter((r) => r.step_title === '剧情内容').length)} 条记录的 \`step_title\` 回退为章节名；`
     + `② ${num(purity.templateStats.unionRecords)} 条台词残留模板括号（其中 ${num(purity.templateStats.openRecords)} 条在 \`{{\` 处被截断、${num(purity.templateStats.lostBody.length)} 条 option 正文全丢）；`
     + `③ ${num(purity.narrEmbedded.length)} 条 narration 文本内嵌「说话人：」前缀（实际是对白）；`
@@ -1187,7 +1192,7 @@ function buildQaReport(ctx) {
       [
         ['空文本记录', emptyText === 0 ? '✅ 0 条' : `❌ ${emptyText} 条`, '无 null / 空串 / 纯空白'],
         ['含换行符或制表符的 text', records.filter((r) => /[\r\n\t]/.test(r.text)).length + ' 条', '标题/段落换行已在抽取时压平'],
-        ['重复行（task+kind+speaker+text 完全一致）', `${num(duplicates.dupGroups.length)} 组，冗余 ${num(duplicates.redundant)} 条（${pct(duplicates.redundant, total)}）`, '多为分支选项的重复呈现，见 2.3'],
+        ['重复行（task+kind+speaker+text 完全一致）', `${num(duplicates.dupGroups.length)} 组，冗余 ${num(duplicates.redundant)} 条（${pct(duplicates.redundant, total)}）`, '同一句在分支/重复对话中多次出现，非抓取重复，见 2.3'],
         ['相邻重复（同一行连续出现）', num(duplicates.adjacent) + ' 处', ''],
         ['仅 id/idx 不同的重复记录（除 `id`/`idx` 外全字段一致）', duplicates.fullDup === 0 ? '✅ 0 组' : `${num(duplicates.fullDup)} 组`, '即同一句出现在同一任务同一小节多次（分支/重复台词），不是抓取重复行'],
         ['`amphoreus.lines.txt` 行数一致', order.linesTxt.countMatches ? `✅ ${num(order.linesTxt.count)} 行 = 记录数` : `❌ ${num(order.linesTxt.count)} 行`, ''],
@@ -1351,14 +1356,17 @@ function buildQaReport(ctx) {
       mdTable(
         ['口径', '命中', '占比'],
         [
-          ['严格命中（去空白后与渲染行相同或包含）', `${num(rendered.full.strict)} / ${num(rendered.full.total)}`, pct(rendered.full.strict, rendered.full.total)],
-          ['含宽松命中（忽略标点）', `${num(rendered.full.loose)} / ${num(rendered.full.total)}`, pct(rendered.full.loose, rendered.full.total)],
-          ['非折叠记录严格命中', `${num(rendered.full.strict - rendered.full.hitExtra)} / ${num(rendered.full.total - rendered.full.extra)}`, pct(rendered.full.strict - rendered.full.hitExtra, rendered.full.total - rendered.full.extra)],
-          ['折叠（extra=true）记录严格命中', `${num(rendered.full.hitExtra)} / ${num(rendered.full.extra)}`, pct(rendered.full.hitExtra, rendered.full.extra)],
+          ['精确整行命中（去空白后与某渲染行相同）', `${num(rendered.full.exact)} / ${num(rendered.full.total)}`, pct(rendered.full.exact, rendered.full.total)],
+          ['包含匹配命中（本句是渲染行/正文片段）', `${num(rendered.full.strict)} / ${num(rendered.full.total)}`, pct(rendered.full.strict, rendered.full.total)],
+          ['含宽松命中（额外忽略标点）', `${num(rendered.full.loose)} / ${num(rendered.full.total)}`, pct(rendered.full.loose, rendered.full.total)],
+          ['非折叠记录·包含匹配命中', `${num(rendered.full.strict - rendered.full.hitExtra)} / ${num(rendered.full.total - rendered.full.extra)}`, pct(rendered.full.strict - rendered.full.hitExtra, rendered.full.total - rendered.full.extra)],
+          ['折叠（extra=true）记录·包含匹配命中', `${num(rendered.full.hitExtra)} / ${num(rendered.full.extra)}`, pct(rendered.full.hitExtra, rendered.full.extra)],
         ]
       ),
       ''
     );
+    push('> 口径提示：**精确整行**要求语料 `text` 与页面上某一行完全一致（语料按气泡/句切分，页面上常常是「说话人：整句」，所以只能命中一部分）；'
+      + '**包含匹配**只要求这句文本作为片段出现在渲染正文中（下限口径，短句如「……」可能在其他上下文里也被匹配到）。两者分别看，不要混用。', '');
     push('### 4.2 随机 20 条明细（种子 ' + SAMPLE_SEED + '）', '');
     push(
       mdTable(
@@ -1370,17 +1378,18 @@ function buildQaReport(ctx) {
           x.record.extra ? 'true' : 'false',
           x.record.speaker || '（空）',
           trunc(x.record.text, 28),
-          x.strict ? '✅ 严格' : x.looseHit ? '🟡 宽松' : '❌ 未命中',
+          x.exactLine ? '✅ 精确行' : x.strict ? '✅ 包含' : x.looseHit ? '🟡 宽松' : '❌ 未命中',
           x.note,
         ])
       ),
       ''
     );
+    const sExact = rendered.sample.filter((x) => x.exactLine).length;
     const sStrict = rendered.sample.filter((x) => x.strict).length;
     const sLoose = rendered.sample.filter((x) => x.strict || x.looseHit).length;
     const sExtra = rendered.sample.filter((x) => x.record.extra).length;
     push(
-      `**抽样命中率：严格 ${sStrict}/20（${pct(sStrict, 20)}），含宽松 ${sLoose}/20（${pct(sLoose, 20)}）；样本中折叠记录 ${sExtra} 条。**`,
+      `**抽样命中率：精确整行 ${sExact}/20（${pct(sExact, 20)}），包含匹配 ${sStrict}/20（${pct(sStrict, 20)}），含宽松 ${sLoose}/20（${pct(sLoose, 20)}）；样本中折叠记录 ${sExtra} 条。**`,
       ''
     );
     push(
@@ -1434,7 +1443,7 @@ function buildQaReport(ctx) {
         ['`他/她` 153 处', `${num(heTa)} 处（${num(heTaRec)} 条记录）`, '❌ 不一致，README 数字偏大'],
         ['`*强调*` 残留 282 处', `${num(starPairs)} 对（${num(starRec)} 条记录）`, '❌ 不一致，README 数字偏小'],
         ['505 个 speaker', `${num(ctx.normStats.totalSpeakers)} 个（非空 speaker 取值）`, '✅ 一致'],
-        ['渲染抽检 41 条命中 28 条', `本次全页：严格 ${num(rendered.full.strict)}/${num(rendered.full.total)}；随机 20 条：严格 ${num(rendered.sample.filter((x) => x.strict).length)}/20`, '⚠️ 抽样不可比；且「未命中全在折叠块内」的结论不成立'],
+        ['渲染抽检 41 条命中 28 条', `本次全页：精确整行 ${num(rendered.full.exact)}/${num(rendered.full.total)}、包含匹配 ${num(rendered.full.strict)}/${num(rendered.full.total)}；随机 20 条：包含匹配 ${num(rendered.sample.filter((x) => x.strict).length)}/20`, '⚠️ 抽样不可比；且「未命中全在折叠块内」的结论不成立'],
       ]
     ),
     ''
