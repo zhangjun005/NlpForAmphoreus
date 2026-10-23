@@ -1,4 +1,4 @@
-﻿# data/ 数据目录说明
+# data/ 数据目录说明
 
 本目录存放「崩坏：星穹铁道 · 翁法罗斯」主线剧情的 NLP 语料及其抓取/解析中间产物。
 所有数据来自 BWiki（`wiki.biligame.com/sr`）的**公开 MediaWiki 页面**，用 Python/Node 脚本
@@ -261,7 +261,7 @@ v1 阶段的元数据中间产物，字段未清洗（含 `undefined`、未剥�
 | 文本纯度 | `{{`/`}}`/`他/她`/星号/HTML 残留 **全部为 0**；空 text_clean 0 |
 | 长度 | P50 18 / P90 43 / P99 69 / max 352 |
 
-新增字段：`canonical_speaker`、`form`、`text_clean`、`view`、`is_duplicate`、`dedup_group`、`channel`（短信）、`origin`/`v1_id`（溯源）。
+新增字段：`canonical_speaker`、`form`、`text_clean`、`view`、`is_duplicate`、`dedup_group`、`channel`（短信）、`origin`/`v1_id`（溯源）、**`repeat_kind`/`repeat_scope`/`repeat_count`（重复台词的叙事功能分类：motif/catchphrase/structure/translation/ritual/pause/branch/loop_interaction，见 `docs/method/04-重复台词判定案例集.md`）**。
 
 ### v3.1 解析补全（`corpus/amphoreus.v31.jsonl`）
 
