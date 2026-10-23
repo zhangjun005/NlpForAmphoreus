@@ -153,9 +153,85 @@ if (cfg.canonical['来古士']) {
   add('H', '古怪的弈者 → 来古士 + form（medium）');
 }
 
+// ---------- 第二轮：外部对 v3 的复核修订（优先级穿透 Bug + 账面同步） ----------
+const extraMd = [];
+const add2 = (id, msg) => { add(id, msg); extraMd.push(`| ${id} | 二次复核 | ${msg} |`); };
+
+// I. 萨姆 优先级穿透：删掉 canonical.萨姆 的 speaker_aliases，避免与 literal_map 抢
+if (cfg.canonical['流萤']) {
+  cfg.canonical['流萤'].forms = [...new Set([...(cfg.canonical['流萤'].forms || []), '萨姆'])];
+  cfg.form_map['萨姆'] = '流萤';
+  add2('I', '流萤.forms 补「萨姆」；form_map["萨姆"]="流萤"');
+}
+if (cfg.canonical['萨姆']) {
+  delete cfg.canonical['萨姆'].speaker_aliases;
+  cfg.canonical['萨姆'].notes = 'canonical 归入流萤 + form=萨姆（8 条）；此处仅保留条目便于查询，不参与 alias 竞争。';
+  add2('I', 'canonical.萨姆 删除 speaker_aliases（修复「萨姆」与 literal_map 的优先级穿透）');
+}
+if (cfg.canonical['来古士']) {
+  cfg.canonical['来古士'].forms = [...new Set([...(cfg.canonical['来古士'].forms || []), '古怪的弈者'])];
+  add2('I', '来古士.forms 补「古怪的弈者」');
+}
+
+// J. 3 条 medium-high 一并升级
+for (const k of ['「君王」', '「长夜」', '金丝若虫', '深海的女王']) {
+  const it = cfg.speaker_literal_map[k];
+  if (it && it.confidence !== 'confirmed' && it.confidence !== 'high') {
+    it.confidence = 'confirmed';
+    if (!(it.review_note || '').includes('外部复核')) it.review_note = (it.review_note || '') + '〔二次复核：结论成立〕';
+    add2('J', `literal「${k}」confidence → confirmed`);
+  }
+}
+
+// K. 账面同步
+function walkFind(node, key, out = []) {
+  if (!node || typeof node !== 'object') return out;
+  if (Array.isArray(node)) { for (const v of node) walkFind(v, key, out); return out; }
+  for (const [k, v] of Object.entries(node)) {
+    if (k === key) out.push({ holder: node, key: k, value: v });
+    else walkFind(v, key, out);
+  }
+  return out;
+}
+const gnpAliases = (cfg.canonical['generic_npc'] && cfg.canonical['generic_npc'].speaker_aliases) || [];
+if (cfg.npc_registry && cfg.npc_registry.buckets && cfg.npc_registry.buckets.generic_npc) {
+  cfg.npc_registry.buckets.generic_npc.label_count = gnpAliases.length;
+  add2('K', `npc_registry.buckets.generic_npc.label_count → ${gnpAliases.length}`);
+}
+for (const hit of walkFind(cfg, 'reclassified_from_pending')) {
+  if (typeof hit.value === 'number' && hit.value === 47) {
+    hit.holder[hit.key] = 48;
+    add2('K', 'source_report_bucket.reclassified_from_pending 47 → 48');
+  }
+}
+// coverage_projection：v1 语料口径（23,090 非空 speaker）；final 语料口径另记
+cfg.meta.coverage_projection = cfg.meta.coverage_projection || {};
+cfg.meta.coverage_projection.v3_projected = {
+  basis: 'v1 语料口径（24,206 条；非空 speaker 23,090）',
+  report_engine: { hit: 22949, hit_rate: '99.39%', unmatched_records: 0, unmatched_speakers: 0, non_speaker_label_records: 141 },
+  pipeline_engine: { hit: 22949, hit_rate: '99.39%', unmatched_records: 0, non_speaker_label_records: 141 },
+  remaining_unmatched: [],
+  effective_speaker_coverage: '100.00% (22,949 / 22,949)',
+  final_corpus_note: 'v3.1/final 语料（26,332 条；非空 speaker 24,041）实测归一 23,460 = 97.58%，差额为 v3.1 新增的未登记路人/系统标签',
+};
+add2('K', 'meta.coverage_projection.v3_projected 更新为 0 未命中（v1 口径 100%）');
+// known_conflicts 里的萨姆描述
+cfg.known_conflicts = (cfg.known_conflicts || []).map((c) => {
+  if (typeof c.case === 'string' && c.case.includes('萨姆')) {
+    return { ...c, rule: '已合并：canonical=流萤 + form=萨姆（v3）；canonical.萨姆 仅作查询索引，不参与 alias 竞争' };
+  }
+  return c;
+});
+add2('K', 'known_conflicts 中萨姆条目改写为「已合并」');
+cfg.pending_manual_review = (cfg.pending_manual_review || []).map((s) =>
+  typeof s === 'string' && /闭嘴|先祖之灵|古怪的弈者|萨姆/.test(s) ? s.replace(/^【[^】]*】/, '【v3 已解决】') : s
+);
+add2('K', 'pending_manual_review 中已解决项前缀改为【v3 已解决】');
+
 // ---------- meta ----------
 cfg.meta = cfg.meta || {};
-cfg.meta.version = 'v3';
+cfg.meta.version = 3;
+
 cfg.meta.updated = new Date().toISOString().slice(0, 10);
 cfg.meta.review = '外部复核（Gemini）勘误后版本；变更见 docs/speaker-alias-errata.md';
 cfg.meta.errata_applied = log.map((x) => `${x.kind}: ${x.msg}`);
@@ -191,6 +267,17 @@ md.push('## 未采纳/待确认');
 md.push('');
 md.push('- 外部建议中「开拓者•欢愉（雷主）」的移除仅作用于 `form_titles_by_path`，`canonical.开拓者` 其余字段不动。');
 md.push('- 若后续重新纳入 4.x 内容，需恢复「欢愉」分支。');
+md.push('## 第二次复核（Gemini 对 v3 的复核）');
+md.push('');
+md.push('| # | 类别 | 改动 |');
+md.push('|---|---|---|');
+for (const line of extraMd) md.push(line);
+md.push('');
+md.push('- **I 优先级穿透 Bug**：`canonical.萨姆.speaker_aliases` 会把 `萨姆` 注册给 `canonical=萨姆`，导致走「剥引号重试」的变体（如 `「萨姆」`）归到萨姆而非流萤。已删除该 alias，改为 `form_map["萨姆"]="流萤"` + `流萤.forms=["萨姆"]`，`canonical.萨姆` 仅保留为查询索引（对齐「长夜月」的标准写法）。');
+md.push('- **J**：`「君王」`/`「长夜」`/`金丝若虫`/`深海的女王` 四条仍为 `medium-high`，一并升级为 `confirmed`。');
+md.push('- **K 账面同步**：`meta.version` 改回整型 `3`（v2 为数字，避免 `config.meta.version >= 2` 类比较出错）；`coverage_projection` 更新为 0 未命中；`generic_npc.label_count` 与 `reclassified_from_pending` 同步；`known_conflicts`/`pending_manual_review` 文案更新。');
+md.push('- 注：`coverage_projection` 的 100% 是 **v1 语料口径**（23,090 非空 speaker）；v3.1/final 语料因新增记录里有未登记路人，实测 97.58%，两者口径已在该字段内分别标注。');
+md.push('');
 fs.writeFileSync(OUT_DOC, md.join('\n'), 'utf8');
 
 console.log(`已写出 ${OUT}`);

@@ -32,6 +32,17 @@
 | H | 未归一处置 | non_speaker_labels 增加「闭嘴」（切分错位标签） |
 | H | 未归一处置 | generic_npc.speaker_aliases 增加 先祖之灵（群体亡魂） |
 | H | 未归一处置 | 古怪的弈者 → 来古士 + form（medium） |
+| I |  | 流萤.forms 补「萨姆」；form_map["萨姆"]="流萤" |
+| I |  | canonical.萨姆 删除 speaker_aliases（修复「萨姆」与 literal_map 的优先级穿透） |
+| I |  | 来古士.forms 补「古怪的弈者」 |
+| J |  | literal「「君王」」confidence → confirmed |
+| J |  | literal「「长夜」」confidence → confirmed |
+| J |  | literal「金丝若虫」confidence → confirmed |
+| K |  | npc_registry.buckets.generic_npc.label_count → 248 |
+| K |  | source_report_bucket.reclassified_from_pending 47 → 48 |
+| K |  | meta.coverage_projection.v3_projected 更新为 0 未命中（v1 口径 100%） |
+| K |  | known_conflicts 中萨姆条目改写为「已合并」 |
+| K |  | pending_manual_review 中已解决项前缀改为【v3 已解决】 |
 
 ## 说明
 
@@ -48,3 +59,23 @@
 
 - 外部建议中「开拓者•欢愉（雷主）」的移除仅作用于 `form_titles_by_path`，`canonical.开拓者` 其余字段不动。
 - 若后续重新纳入 4.x 内容，需恢复「欢愉」分支。
+## 第二次复核（Gemini 对 v3 的复核）
+
+| # | 类别 | 改动 |
+|---|---|---|
+| I | 二次复核 | 流萤.forms 补「萨姆」；form_map["萨姆"]="流萤" |
+| I | 二次复核 | canonical.萨姆 删除 speaker_aliases（修复「萨姆」与 literal_map 的优先级穿透） |
+| I | 二次复核 | 来古士.forms 补「古怪的弈者」 |
+| J | 二次复核 | literal「「君王」」confidence → confirmed |
+| J | 二次复核 | literal「「长夜」」confidence → confirmed |
+| J | 二次复核 | literal「金丝若虫」confidence → confirmed |
+| K | 二次复核 | npc_registry.buckets.generic_npc.label_count → 248 |
+| K | 二次复核 | source_report_bucket.reclassified_from_pending 47 → 48 |
+| K | 二次复核 | meta.coverage_projection.v3_projected 更新为 0 未命中（v1 口径 100%） |
+| K | 二次复核 | known_conflicts 中萨姆条目改写为「已合并」 |
+| K | 二次复核 | pending_manual_review 中已解决项前缀改为【v3 已解决】 |
+
+- **I 优先级穿透 Bug**：`canonical.萨姆.speaker_aliases` 会把 `萨姆` 注册给 `canonical=萨姆`，导致走「剥引号重试」的变体（如 `「萨姆」`）归到萨姆而非流萤。已删除该 alias，改为 `form_map["萨姆"]="流萤"` + `流萤.forms=["萨姆"]`，`canonical.萨姆` 仅保留为查询索引（对齐「长夜月」的标准写法）。
+- **J**：`「君王」`/`「长夜」`/`金丝若虫`/`深海的女王` 四条仍为 `medium-high`，一并升级为 `confirmed`。
+- **K 账面同步**：`meta.version` 改回整型 `3`（v2 为数字，避免 `config.meta.version >= 2` 类比较出错）；`coverage_projection` 更新为 0 未命中；`generic_npc.label_count` 与 `reclassified_from_pending` 同步；`known_conflicts`/`pending_manual_review` 文案更新。
+- 注：`coverage_projection` 的 100% 是 **v1 语料口径**（23,090 非空 speaker）；v3.1/final 语料因新增记录里有未登记路人，实测 97.58%，两者口径已在该字段内分别标注。

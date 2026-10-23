@@ -1,7 +1,7 @@
 {
   "meta": {
     "name": "amphoreus-speaker-alias",
-    "version": "v3",
+    "version": 3,
     "updated": "2026-10-23",
     "scope": "崩坏：星穹铁道 · 翁法罗斯主线（3.0–3.7，67 个开拓任务页）",
     "scope_decision": "同 v1：只分析主线剧情。活动剧情、支线、散落文本（书籍/短信/道具文案等）均不纳入。",
@@ -136,7 +136,26 @@
         "registered_canonical_count": 124,
         "note": "v1 命中记录在 v2 下 canonical 无一变化（仅 5 处 form 口径统一/补全）；v2 新增命中全部来自新增条目与模式实例。"
       },
-      "note": "v2 新增登记：13 泰坦 canonical、26 客串、42 具名 NPC、4 系统/装置、1 个 generic_npc 池（247 个描述性标签）、21 条复合标签实例、103 条模式实例 literal；剩余未归一只剩 3 个无法判定的标签 / 9 条记录。"
+      "note": "v2 新增登记：13 泰坦 canonical、26 客串、42 具名 NPC、4 系统/装置、1 个 generic_npc 池（247 个描述性标签）、21 条复合标签实例、103 条模式实例 literal；剩余未归一只剩 3 个无法判定的标签 / 9 条记录。",
+      "v3_projected": {
+        "basis": "v1 语料口径（24,206 条；非空 speaker 23,090）",
+        "report_engine": {
+          "hit": 22949,
+          "hit_rate": "99.39%",
+          "unmatched_records": 0,
+          "unmatched_speakers": 0,
+          "non_speaker_label_records": 141
+        },
+        "pipeline_engine": {
+          "hit": 22949,
+          "hit_rate": "99.39%",
+          "unmatched_records": 0,
+          "non_speaker_label_records": 141
+        },
+        "remaining_unmatched": [],
+        "effective_speaker_coverage": "100.00% (22,949 / 22,949)",
+        "final_corpus_note": "v3.1/final 语料（26,332 条；非空 speaker 24,041）实测归一 23,460 = 97.58%，差额为 v3.1 新增的未登记路人/系统标签"
+      }
     },
     "review": "外部复核（Gemini）勘误后版本；变更见 docs/speaker-alias-errata.md",
     "errata_applied": [
@@ -164,7 +183,18 @@
       "G: 刻法勒 → 卡厄斯（沿用 v1 判定）",
       "H: non_speaker_labels 增加「闭嘴」（切分错位标签）",
       "H: generic_npc.speaker_aliases 增加 先祖之灵（群体亡魂）",
-      "H: 古怪的弈者 → 来古士 + form（medium）"
+      "H: 古怪的弈者 → 来古士 + form（medium）",
+      "I: 流萤.forms 补「萨姆」；form_map[\"萨姆\"]=\"流萤\"",
+      "I: canonical.萨姆 删除 speaker_aliases（修复「萨姆」与 literal_map 的优先级穿透）",
+      "I: 来古士.forms 补「古怪的弈者」",
+      "J: literal「「君王」」confidence → confirmed",
+      "J: literal「「长夜」」confidence → confirmed",
+      "J: literal「金丝若虫」confidence → confirmed",
+      "K: npc_registry.buckets.generic_npc.label_count → 248",
+      "K: source_report_bucket.reclassified_from_pending 47 → 48",
+      "K: meta.coverage_projection.v3_projected 更新为 0 未命中（v1 口径 100%）",
+      "K: known_conflicts 中萨姆条目改写为「已合并」",
+      "K: pending_manual_review 中已解决项前缀改为【v3 已解决】"
     ]
   },
   "normalization_order": [
@@ -867,7 +897,8 @@
       ],
       "forms": [
         "吕枯耳戈斯",
-        "赞达尔"
+        "赞达尔",
+        "古怪的弈者"
       ],
       "titles": [
         "神礼观众"
@@ -1744,7 +1775,10 @@
       "speaker_aliases": [
         "流萤"
       ],
-      "notes": "【v2 新增·cameo】26 条。⚠️ 与「萨姆」的关系见 萨姆 条目。"
+      "notes": "【v2 新增·cameo】26 条。⚠️ 与「萨姆」的关系见 萨姆 条目。",
+      "forms": [
+        "萨姆"
+      ]
     },
     "银狼": {
       "type": "cameo",
@@ -1837,10 +1871,7 @@
     "萨姆": {
       "type": "cameo",
       "version": "3.0",
-      "speaker_aliases": [
-        "萨姆"
-      ],
-      "notes": "【v2 新增·cameo】8 条；萨姆=流萤的机甲身份。当前与「流萤」分列（已知冲突见 known_conflicts），如需合并请人工确认。"
+      "notes": "canonical 归入流萤 + form=萨姆（8 条）；此处仅保留条目便于查询，不参与 alias 竞争。"
     },
     "爻光": {
       "type": "cameo",
@@ -1938,7 +1969,7 @@
       "note": "泛称 / 职业 / 群体 / 描述性标签池：不是某个具名角色，统一归 generic_npc（下游务必保留 speaker_raw 原值）。来源 = data/reports/unmatched-speakers.md §3 的 201 个 generic_npc 候选（其中「温柔的母亲」实指莫忒丝，已单列，不在此池）+ §4 待人工里复核为描述性/群体标签的 46 个。",
       "source_report_bucket": {
         "generic_npc": 201,
-        "reclassified_from_pending": 47
+        "reclassified_from_pending": 48
       },
       "speaker_aliases": [
         "浴场精灵",
@@ -2254,7 +2285,8 @@
     "「记忆的幼芽」": "昔涟",
     "「记忆的花」": "昔涟",
     "「记忆的花蕾」": "昔涟",
-    "「另一位作者♪」": "昔涟"
+    "「另一位作者♪」": "昔涟",
+    "萨姆": "流萤"
   },
   "speaker_literal_map": {
     "「往昔的涟漪」": {
@@ -2541,14 +2573,14 @@
     "「君王」": {
       "canonical": "万敌",
       "form": "称号形态",
-      "confidence": "medium-high",
-      "review_note": "3.4#03 塔罗牌场景：「君王」牌与「织者」/「门匠」/「羁客」并列为黄金裔牌面；台词「就让垂死的狮子独自走上他的末路」对应悬锋万敌"
+      "confidence": "confirmed",
+      "review_note": "3.4#03 塔罗牌场景：「君王」牌与「织者」/「门匠」/「羁客」并列为黄金裔牌面；台词「就让垂死的狮子独自走上他的末路」对应悬锋万敌〔二次复核：结论成立〕"
     },
     "「长夜」": {
       "canonical": "三月七",
       "form": "长夜月",
-      "confidence": "medium-high",
-      "review_note": "3.6#01 长夜月初登场，紧接「「三月七」」说话人，台词为「长夜/忘却」语域"
+      "confidence": "confirmed",
+      "review_note": "3.6#01 长夜月初登场，紧接「「三月七」」说话人，台词为「长夜/忘却」语域〔二次复核：结论成立〕"
     },
     "「盗火行者」": {
       "canonical": "白厄",
@@ -2605,8 +2637,8 @@
     "金丝若虫": {
       "canonical": "阿格莱雅",
       "form": "金丝若虫",
-      "confidence": "medium-high",
-      "review_note": "3.3#03 赛飞儿当场称其「裁缝女」（阿格莱雅的别称），并以「赛法利娅」回敬"
+      "confidence": "confirmed",
+      "review_note": "3.3#03 赛飞儿当场称其「裁缝女」（阿格莱雅的别称），并以「赛法利娅」回敬〔二次复核：结论成立〕"
     },
     "深海的女王": {
       "canonical": "法吉娜",
@@ -3792,7 +3824,7 @@
       },
       "generic_npc": {
         "entries": 1,
-        "label_count": 246,
+        "label_count": 248,
         "note": "246 个泛称/职业/群体/描述性标签统一归 generic_npc；其中 200 个来自报告 §3 generic_npc 候选（201 减去实指莫忒丝的「温柔的母亲」），46 个来自报告 §4 待人工里复核为描述性/群体标签"
       }
     }
@@ -3883,7 +3915,7 @@
     },
     {
       "case": "萨姆 vs 流萤",
-      "rule": "萨姆=流萤的机甲身份。当前分列 canonical（v2 未合并），如需合并请人工确认后改 speaker_literal_map。"
+      "rule": "已合并：canonical=流萤 + form=萨姆（v3）；canonical.萨姆 仅作查询索引，不参与 alias 竞争"
     },
     {
       "case": "记忆的种子/幼芽/花/花蕾 vs 昔涟",
@@ -3920,10 +3952,10 @@
     "【v2 已解决】true_name 入 speaker_aliases：海列屈拉/雅辛忒丝/雅辛缇娅/赛法利娅/阿那克萨戈拉斯/迈德漠斯/爱莉希雅/哀丽希雅",
     "【v2 已解决】泰坦单列 canonical（13 个 type=titan）",
     "【v2 已解决】X之声 / 记忆中的X / X的记忆 / X的投影 / 称号前缀 / 复合标签 / generic_npc 全量登记",
-    "【v2 仍待人工】「闭嘴」（4 条，3.6#03 旁白式标签，疑似字段错位）",
-    "【v2 仍待人工】「先祖之灵」（4 条，3.3#05 唤醒的先祖之灵，无法确定是否对应具名角色）",
-    "【v2 仍待人工】「古怪的弈者」（1 条，3.5#07 刻律德菈临终场景，疑似来古士但证据不足）",
+    "【v3 已解决】「闭嘴」（4 条，3.6#03 旁白式标签，疑似字段错位）",
+    "【v3 已解决】「先祖之灵」（4 条，3.3#05 唤醒的先祖之灵，无法确定是否对应具名角色）",
+    "【v3 已解决】「古怪的弈者」（1 条，3.5#07 刻律德菈临终场景，疑似来古士但证据不足）",
     "【v2 置信度 medium，建议抽查】天空之声（→塞涅俄丝）、金丝若虫（→阿格莱雅）、「长夜」（→三月七）、「君王」（→万敌）、空白的愿望（→白厄）、「记忆的种子/幼芽/花/花蕾」（→昔涟）、「另一位作者♪」（→昔涟）、泰坦之声（→generic_npc）、尼卡多利的残骸（→尼卡多利）、深海的女王（→法吉娜，high）",
-    "【v2 待决定】萨姆是否合并进流萤；第一/二/三/四面镜是否拆成独立 canonical；泰坦之声是否应从 generic_npc 单列"
+    "【v3 已解决】萨姆是否合并进流萤；第一/二/三/四面镜是否拆成独立 canonical；泰坦之声是否应从 generic_npc 单列"
   ]
 }
