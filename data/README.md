@@ -102,7 +102,7 @@ v1 阶段的元数据中间产物，字段未清洗（含 `undefined`、未剥�
 | `bwiki-kaiTuoRenWu.wikitext` | 3.3 KB | 同页原始 wikitext（只有 7 个章节标题 + `#ask` 查询语句） |
 | `amphoreus-quest-index.json` | 8.7 KB | 75 个任务页索引。来源：SMW ask（`分类:开拓任务` + `任务地区::翁法罗斯`，74 页）+ 章节卡片补漏 1 页（「魔女的镜中回天」，剧情在黑塔空间站但归属 3.2 系列） |
 | `wt-落木逐火英雄纪.txt`、`wt-银辇啊，迅赴那黑色大地.txt` | 0.5 / 81 KB | 早期单页 wikitext 抽样，**已被 `wt-cache/` 取代**，仅留档 |
-| `wt-cache/*.txt` | 共 ~4 MB | 75 个任务页的原始 wikitext 缓存。文件名是 **URL 编码**（如 `%E9%93%B6...`），解码后即页面名。**离线重跑语料只需要这个目录** |
+| `wt-cache/*.txt` | 共 2.48 MB（75 个文件） | 75 个任务页的原始 wikitext 缓存。文件名是 **URL 编码**（如 `%E9%93%B6...`），解码后即页面名。**离线重跑语料只需要这个目录** |
 
 其中 8 个文件是「系列任务」汇总页（无正文）：落木逐火英雄纪、门扉之启，王座之终、
 走过安眠地的花丛、在黎明升起时坠落、因为太阳将要毁伤、英雄未死之前、于长夜重返大地、成为昨日的明天。
@@ -194,7 +194,7 @@ v1 阶段的元数据中间产物，字段未清洗（含 `undefined`、未剥�
 
 ### `corpus/amphoreus.v2.jsonl` — 清洗 + 说话人归一版（24,206 行，未入库）
 
-在 v1 基础上**只新增 4 个字段**，v1 字段逐字节保留（`text`/`speaker` 0 处改动）：
+在 v1 基础上**只新增 4 个字段**，v1 的 `text`/`speaker` 0 处改动（另有 19 条舞台指示 `kind` 由 dialogue 改判为 narration）：
 
 | 新字段 | 说明 |
 |---|---|
@@ -249,17 +249,17 @@ v1 阶段的元数据中间产物，字段未清洗（含 `undefined`、未剥�
 
 ### `corpus/amphoreus.final.jsonl` — 26,332 条 / 566,798 字（未入库）
 
-由 `tools/finalize-corpus.js` 从 `amphoreus.v31.jsonl` + `config/speaker-alias.v2.json` 生成：
+由 `tools/finalize-corpus.js` 从 `amphoreus.v31.jsonl` + `config/speaker-alias.v3.json`（外部复核勘误版）生成：
 
 | 指标 | 数值 |
 |---|---|
 | 记录数 | **26,332**（v1 24,206 → v31 26,332，增量 2,126） |
 | kind | dialogue 21,511 / narration 2,291 / option 2,400 / sms 98 / sms_option 32 |
 | view | main 24,207 / extra 2,125 |
-| 说话人归一 | 23,455 / 24,041 非空 speaker = **97.56%**（canonical=null 均为未登记路人/系统标签，不猜） |
+| 说话人归一 | 23,460 / 24,041 非空 speaker = **97.58%**（canonical=null 均为未登记路人/系统标签，不猜） |
 | 重复 | 1,120 条保留并标 `is_duplicate` + `dedup_group`（未删除） |
 | 文本纯度 | `{{`/`}}`/`他/她`/星号/HTML 残留 **全部为 0**；空 text_clean 0 |
-| 长度 | P50 18 / P90 42 / P99 67 / max 352 |
+| 长度 | P50 18 / P90 43 / P99 69 / max 352 |
 
 新增字段：`canonical_speaker`、`form`、`text_clean`、`view`、`is_duplicate`、`dedup_group`、`channel`（短信）、`origin`/`v1_id`（溯源）。
 
@@ -274,3 +274,16 @@ v1 阶段的元数据中间产物，字段未清洗（含 `undefined`、未剥�
 ### 配置 v2
 
 `config/speaker-alias.v2.json`：canonical 38 → **124**（含 13 泰坦、26 客串、57 具名 NPC、4 系统、generic_npc 池 247）、form_map 47、literal_map 128、pattern_rules 17、composite_rules 21 实例。变更见 `docs/speaker-alias-changes.md`。
+
+
+---
+
+## 十一、外部复核与阶段记录（最新）
+
+- **外部复核（Gemini）**：对 v2 配置交叉比对后指出 5 类勘误 + 4 个架构拍板 + 9 条未归一处置 + 1 处可读性问题，已全部采纳：
+  - 配置产物：`config/speaker-alias.v3.json`（**最终交付用**，v2 保留供追溯）
+  - 勘误记录：`docs/speaker-alias-errata.md`；脚本：`tools/patch-alias-v3.js`
+  - 关键修正：关系反转「老日」、越界版本「欢愉主/雷主」、梗名移出 aliases、正式爵位「剑旗爵」纠回、救世主/伙伴改多义、10 组推断升级、萨姆→流萤、面镜不拆、泰坦之声留 generic_npc、刻法勒沿用 v1、「闭嘴」/先祖之灵/古怪的弈者处置
+  - `finalize-corpus.js` 现在读 v3 配置，并支持复合标签拆解；`final.lines.txt` 在 `generic_npc` 时回退显示原始标签（可读性）
+- **阶段记录（写报告用）**：`docs/stages/` 下 8 篇（README + 00–06），每篇含「目标与意图 / 方案 / 实施 / 产出 / 决策与取舍 / 踩过的坑与修正」
+- **数字口径**：`docs/stages/README.md` 的「最终数字口径速查」为最新实测，冲突时以它为准

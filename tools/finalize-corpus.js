@@ -187,7 +187,7 @@ const v1 = 24206, v2 = 24206;
 const md = [];
 md.push('# 最终交付语料（amphoreus.final.jsonl）');
 md.push('');
-md.push(`> 由 \`tools/finalize-corpus.js\` 生成；输入 = \`amphoreus.v31.jsonl\`(${v31}) + \`speaker-alias.v2.json\``);
+md.push(`> 由 \`tools/finalize-corpus.js\` 生成；输入 = \`amphoreus.v31.jsonl\`(${v31}) + \`speaker-alias.v3.json\`（外部复核勘误版）`);
 md.push('');
 md.push('## 规模');
 md.push('');
