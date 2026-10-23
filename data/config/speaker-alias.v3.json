@@ -1,0 +1,3929 @@
+{
+  "meta": {
+    "name": "amphoreus-speaker-alias",
+    "version": "v3",
+    "updated": "2026-10-23",
+    "scope": "崩坏：星穹铁道 · 翁法罗斯主线（3.0–3.7，67 个开拓任务页）",
+    "scope_decision": "同 v1：只分析主线剧情。活动剧情、支线、散落文本（书籍/短信/道具文案等）均不纳入。",
+    "sources": [
+      "BWiki 角色页 `昵称/外号` 字段（31 页，见 data/raw/nicknames.txt）",
+      "BWiki `模板:开拓者外号`",
+      "BWiki 设定页 `翁法罗斯`（十二黄金裔 / 其他黄金裔 / 前世黄金裔 / 来古士 / 迷迷）",
+      "BWiki SMW 查询（称号/全名/外文名）",
+      "百度百科《黄金裔》《翁法罗斯》《昔涟》《帕姆》",
+      "萌娘百科《昔涟》《刻律德菈》《那刻夏》《来古士》",
+      "语料自身 data/corpus/amphoreus.lines.txt",
+      "data/reports/unmatched-speakers.md（434 个未归一 speaker 全量清单，v2 主要依据）",
+      "data/corpus/amphoreus.jsonl 未归一 speaker 上下文抽查（3.4#03 塔罗线、3.6#01 长夜线、3.7#03/#04/#07 记忆线、3.3#08 天空线、3.5#05 海洋线）"
+    ],
+    "usage": "本文件仅用于说话人归一与称呼扫描；不修改语料。归一优先级见 normalization_order。v2 只新增条目/字段，v1 已有字段语义保持不变（可直接被现有 tools/normalize-corpus.js 消费）。",
+    "compat": {
+      "consumed_by_current_pipeline": [
+        "canonical（含 speaker_aliases / forms / titles）",
+        "speaker_literal_map",
+        "form_map",
+        "title_prefix_patterns",
+        "non_speaker_labels",
+        "meme_terms"
+      ],
+      "additions_only": "v2 对比 v1 只在上述 6 个字段里新增条目/追加键值；另新增 true_name_map / pattern_rules / composite_rules / npc_registry 与 meta 下的 form_enum / baseline_v1 / coverage_projection，均为新增字段，旧工具忽略即可。",
+      "new_fields": [
+        "true_name_map",
+        "pattern_rules",
+        "composite_rules",
+        "npc_registry"
+      ],
+      "generalization": "pattern_rules / composite_rules 是通用正则规则（供下一版管线实现「模式归一」）。为了让现有工具直接受益，v2 已把语料中观测到的全部模式实例逐条写进 speaker_literal_map（带 form）/ form_map / speaker_aliases，所以即使下游不实现 pattern_rules，归一结果也不受影响。",
+      "not_changed": "v1 文件中已有条目的 canonical/form 取值与 known_conflicts 结论全部保留（除本文件 notes 里注明的扩充）。v1 文件本身未被修改。"
+    },
+    "baseline_v1": {
+      "config": "data/config/speaker-alias.json（v1，未改动）",
+      "corpus": "data/corpus/amphoreus.jsonl（24,206 条；空 speaker 即旁白 1,116 条）",
+      "non_empty_speaker_records": 23090,
+      "distinct_speaker_values": 505,
+      "hit_records": 19058,
+      "hit_rate": "82.54%",
+      "unmatched_speakers": 434,
+      "unmatched_records": 4043,
+      "note": "口径 = tools/report-corpus.js 的严格规则 1–5。现管线 tools/normalize-corpus.js 另有「canonical 键兜底 + 候选写法重试」，其未命中为 4,032 条（其中 4 个非说话人标签 91 条、真正未识别 3,941 条）。v2 的预计增量两种口径都列在 coverage_projection 里。"
+    },
+    "form_enum": {
+      "note": "form 统一取值口径。有专名的形态（长夜月 / 赛白厄 / 迷迷 / 永夜之帷 / 金丝若虫 / 深海的女王…）保留原名；只有通用模式与结构性形态才使用下列枚举值。canonical + form 恒满足「canonical=角色本体，form=该标签相对本体的形态」。",
+      "generic_values": [
+        "之声",
+        "声音",
+        "记忆形态",
+        "投影",
+        "幻影",
+        "残忆",
+        "回响",
+        "残骸",
+        "分身名",
+        "称号形态",
+        "复合",
+        "幼年形态",
+        "形态名",
+        "幻象"
+      ],
+      "definitions": {
+        "之声": "X之声 / X的声音 / 泰坦之声 —— 本体不变，只是发声形态（来古士之声）",
+        "声音": "未具名群体的声音标签（少女的声音 / 潮汐的声音），canonical 记 generic_npc",
+        "记忆形态": "记忆中的X / X的记忆 / 「记忆的…」—— 记忆或回溯场景里的 X",
+        "投影": "X的投影（黑塔的投影）",
+        "幻影": "X的幻影 / X的幻象（墨涅塔的幻影）",
+        "残忆": "X的残忆（基础为泛称时 canonical=generic_npc）",
+        "回响": "X的回响（基础为泛称时 canonical=generic_npc）",
+        "残骸": "X的残骸（尼卡多利的残骸）",
+        "分身名": "缇+单字等分身命名（缇安 / 缇宁）",
+        "称号形态": "先王X / 元老X / 「X爵」Y / 「学士」/「织者」/「君王」 等以称号或牌面出现的形态",
+        "复合": "A&B 多说话人复合标签；A，B 且 A 为群体/集合称号（凯撒的军团和人民）",
+        "幼年形态": "年幼的X / 幼年X",
+        "形态名": "有专名的形态/拟态（盗火行者 / 长夜月 / 赛白厄 / 空白的愿望）",
+        "幻象": "括号包裹的幻象写法（「三月七」）"
+      }
+    },
+    "coverage_projection": {
+      "status": "数字为 v2 写入后对 23,090 条非空 speaker 记录的重算结果（口径见 docs/speaker-alias-changes.md §5）",
+      "baseline": {
+        "report_engine": {
+          "hit": 18956,
+          "hit_rate": "82.10%",
+          "unmatched_records": 4043,
+          "unmatched_speakers": 434,
+          "non_speaker_label_records": 91
+        },
+        "pipeline_engine": {
+          "hit": 19058,
+          "hit_rate": "82.54%",
+          "unmatched_records": 4032,
+          "unmatched_unresolved_records": 3941,
+          "non_speaker_label_records": 91
+        }
+      },
+      "v2_projected": {
+        "report_engine": {
+          "hit": 22944,
+          "hit_rate": "99.37%",
+          "unmatched_records": 9,
+          "unmatched_speakers": 3,
+          "non_speaker_label_records": 137
+        },
+        "pipeline_engine": {
+          "hit": 22944,
+          "hit_rate": "99.37%",
+          "unmatched_records": 9,
+          "unmatched_unresolved_records": 9,
+          "non_speaker_label_records": 137
+        },
+        "remaining_unmatched": [
+          {
+            "speaker": "先祖之灵",
+            "records": 4,
+            "version": "3.3"
+          },
+          {
+            "speaker": "「闭嘴」",
+            "records": 4,
+            "version": "3.6"
+          },
+          {
+            "speaker": "古怪的弈者",
+            "records": 1,
+            "version": "3.5"
+          }
+        ],
+        "hit_canonical_count": 113,
+        "registered_canonical_count": 124,
+        "note": "v1 命中记录在 v2 下 canonical 无一变化（仅 5 处 form 口径统一/补全）；v2 新增命中全部来自新增条目与模式实例。"
+      },
+      "note": "v2 新增登记：13 泰坦 canonical、26 客串、42 具名 NPC、4 系统/装置、1 个 generic_npc 池（247 个描述性标签）、21 条复合标签实例、103 条模式实例 literal；剩余未归一只剩 3 个无法判定的标签 / 9 条记录。"
+    },
+    "review": "外部复核（Gemini）勘误后版本；变更见 docs/speaker-alias-errata.md",
+    "errata_applied": [
+      "A: 开拓者.called_by[\"星期日\"] 移除「老日」",
+      "A: 星期日.called_by[\"开拓者\"] 新增「老日」（开拓者叫星期日）",
+      "A: address_scan_index[\"老日\"] 指向改为 [\"星期日\"]",
+      "B: 开拓者.form_titles_by_path 移除「欢愉」（4.2 版本，超出 3.0–3.7 范围）",
+      "C: 风堇.aliases 移除梗名「粉色芭芭拉」→ meme_terms",
+      "C: 丹恒.aliases 移除梗名「盾丹」→ meme_terms",
+      "C: 丹恒.aliases 移除梗名「炖蛋」→ meme_terms",
+      "C: 三月七.aliases 移除梗名「冷面小粉龙」→ meme_terms",
+      "C: 三月七.aliases 移除梗名「纠缠之缘」→ meme_terms",
+      "C: 姬子.aliases 移除梗名「狗粮大队长」→ meme_terms",
+      "C: 姬子.aliases 移除梗名「养母」→ meme_terms",
+      "D: meme_terms 移除「剑旗爵」（海瑟音正式爵位，非梗名）",
+      "E: address_scan_index[\"救世主\"] 改为多义 [\"白厄\",\"开拓者\"]",
+      "E: address_scan_index[\"伙伴\"] 改为多义 [\"开拓者\",\"白厄\",\"昔涟\"]",
+      "E: address_scan_index[\"心中的英雄\"] 改为多义 [\"白厄\",\"开拓者\"]",
+      "F: medium 推断升级为 confirmed：9 条 literal 映射",
+      "G: 萨姆 → 流萤 + form=萨姆（合并）",
+      "G: 第一面镜 → 面镜 + form（保持合并）",
+      "G: 第二面镜 → 面镜 + form（保持合并）",
+      "G: 第三面镜 → 面镜 + form（保持合并）",
+      "G: 第四面镜 → 面镜 + form（保持合并）",
+      "G: 刻法勒 → 卡厄斯（沿用 v1 判定）",
+      "H: non_speaker_labels 增加「闭嘴」（切分错位标签）",
+      "H: generic_npc.speaker_aliases 增加 先祖之灵（群体亡魂）",
+      "H: 古怪的弈者 → 来古士 + form（medium）"
+    ]
+  },
+  "normalization_order": [
+    "1. speaker 精确命中 speaker_literal_map → 直接取 canonical + form",
+    "2. speaker 精确命中 canonical.speaker_aliases → 归一（form 仅当命中串本身是已登记形态时为非空）",
+    "3. 按 title_prefix_patterns 剥离前缀（v2 追加 ^先王 / ^元老；原有「X爵」/「」/『』规则不变）后重试 1-2",
+    "4. 剥离成对「」『』、去尾部括号注音后重试 1-2",
+    "5. speaker 精确命中 form_map → canonical + form",
+    "6. 【v2 新增】按 pattern_rules 通用模式归一（X之声 / 记忆中的X / X的记忆 / X的投影 / X的幻影 / X的残忆 / X的回响 / X的残骸 / 年幼的X / 先王X / 元老X / 「X爵」Y / 「称号」 / 尾部标点）：捕获被包裹的主体调用 1-5 得到 canonical，form 按规则写入",
+    "7. 【v2 新增】按 composite_rules 处理复合标签：A&B（多说话人）→ canonical 取首个可解析成分 + form=原始标签；A，B（称号/容器前缀）→ canonical=B + form=A",
+    "8. canonical 键兜底（与现管线一致：form_map 之后；长夜月 等查询条目仍先命中 form_map）",
+    "9. 仍未命中 → canonical=null，保留 speaker 原文，进 pending_manual_review（v2 起只剩个位数记录）"
+  ],
+  "non_speaker_labels": [
+    "【旁白】",
+    "旁白",
+    "？？？",
+    "遥远的男声",
+    "留言石板",
+    "神性的回响",
+    "系统",
+    "未知",
+    "记录",
+    "█████",
+    "怪物的嘶吼",
+    "金血忆灵",
+    "故事",
+    "前台的电话",
+    "？天啊，太可惜了。",
+    "「闭嘴」"
+  ],
+  "title_prefix_patterns": [
+    "^「[^」]{1,6}爵」",
+    "^「[^」]{1,8}」",
+    "^『[^』]{1,8}』",
+    "^先王",
+    "^元老"
+  ],
+  "canonical": {
+    "开拓者": {
+      "type": "protagonist",
+      "version": "3.0–3.7",
+      "speaker_aliases": [
+        "开拓者",
+        "星",
+        "穹",
+        "Trailblazer"
+      ],
+      "titles": [
+        "无名客",
+        "天外的旅者",
+        "天外的救世主",
+        "创世的著者",
+        "负世的刻法勒",
+        "阿基维利"
+      ],
+      "self_terms": [
+        "银河球棒侠"
+      ],
+      "common_terms": [
+        "主角",
+        "小浣熊"
+      ],
+      "form_titles_by_path": {
+        "毁灭": [
+          "物主"
+        ],
+        "存护": [
+          "火主"
+        ],
+        "同谐": [
+          "虚数主",
+          "同谐主"
+        ],
+        "记忆": [
+          "冰主",
+          "记忆主"
+        ]
+      },
+      "called_by": {
+        "白厄": [
+          "伙伴",
+          "搭档",
+          "心中的英雄",
+          "开拓者"
+        ],
+        "昔涟": [
+          "伙伴",
+          "开拓者",
+          "天外的朋友"
+        ],
+        "万敌": [
+          "救世主",
+          "开拓者",
+          "异乡人",
+          "贵客"
+        ],
+        "刻律德菈": [
+          "救世主",
+          "天外的贵客",
+          "主爵"
+        ],
+        "那刻夏": [
+          "救世主"
+        ],
+        "遐蝶": [
+          "开拓者阁下",
+          "开拓者"
+        ],
+        "阿格莱雅": [
+          "开拓者",
+          "异乡人",
+          "天外的贵宾",
+          "天外的援军"
+        ],
+        "缇宝": [
+          "天外的救世主",
+          "小灰"
+        ],
+        "缇宁": [
+          "天外的旅者",
+          "小灰"
+        ],
+        "缇安": [
+          "小小灰"
+        ],
+        "风堇": [
+          "灰宝"
+        ],
+        "赛飞儿": [
+          "灰子"
+        ],
+        "海瑟音": [
+          "小灰鱼",
+          "灰色的小鱼苗"
+        ],
+        "荒笛": [
+          "天外的「开拓」",
+          "天外来客"
+        ],
+        "来古士": [
+          "天外的救世主"
+        ],
+        "黑塔": [
+          "小家伙"
+        ],
+        "黑天鹅": [
+          "小瞌睡虫"
+        ],
+        "花火": [
+          "小灰毛"
+        ]
+      },
+      "notes": "真实身份为开拓星神阿基维利（3.7#05 博识尊直呼）；银河球棒侠是自称，不是别人给的外号。"
+    },
+    "三月七": {
+      "type": "playable",
+      "version": "3.0–3.7",
+      "speaker_aliases": [
+        "三月七",
+        "三月七•存护",
+        "三月七•巡猎"
+      ],
+      "forms": [
+        "长夜月",
+        "空无的精魄"
+      ],
+      "titles": [
+        "隐秘的陌客",
+        "隐匿「岁月」火种的黄金裔",
+        "无漏净子"
+      ],
+      "aliases": [
+        "小三月",
+        "阿七",
+        "粉霞天女",
+        "赵相机",
+        "三月兔",
+        "琉璃•忍者"
+      ],
+      "called_by": {
+        "姬子": [
+          "小三月"
+        ],
+        "丹恒": [
+          "三月"
+        ],
+        "缇宝": [
+          "三月"
+        ]
+      },
+      "notes": "3.6 形态「长夜月」在 BWiki 有独立角色页（英文 Evernight，称号 隐秘的陌客）。v2：语料里的「长夜」（18 条，3.6#01）与「永夜之帷，三月七」（8 条，3.7）均归本角色。"
+    },
+    "丹恒": {
+      "type": "playable",
+      "version": "3.0–3.7",
+      "speaker_aliases": [
+        "丹恒",
+        "丹恒•饮月",
+        "丹恒•腾荒"
+      ],
+      "forms": [
+        "丹枫",
+        "饮月",
+        "腾荒"
+      ],
+      "titles": [
+        "逃离过去的陌客",
+        "隔世龙尊",
+        "腾飞的荒龙",
+        "捍卫「大地」火种的黄金裔"
+      ],
+      "aliases": [
+        "冷面小青龙",
+        "冷面大青龙",
+        "闷葫芦",
+        "丹宝",
+        "青色的龙鱼",
+        "金色的龙鱼",
+        "飞龙忍者•AOI•丹恒阁下",
+        "汪汪丹",
+        "枪破层云"
+      ],
+      "called_by": {
+        "风堇": [
+          "丹宝"
+        ],
+        "海瑟音": [
+          "青色的龙鱼",
+          "金色的龙鱼"
+        ],
+        "素裳": [
+          "闷葫芦"
+        ],
+        "荒笛": [
+          "龙裔"
+        ],
+        "三月七": [
+          "丹恒"
+        ]
+      },
+      "notes": "「丹枫」是前世、3.6 记忆中作为独立说话人出现；3.6 继承「大地」权能成为丹恒•腾荒。"
+    },
+    "阿格莱雅": {
+      "type": "golden_heir",
+      "version": "3.0–3.3",
+      "true_name": "Aglaea",
+      "titan": "「黄金之茧」墨涅塔",
+      "speaker_aliases": [
+        "阿格莱雅"
+      ],
+      "forms": [
+        "金丝若虫"
+      ],
+      "titles": [
+        "黄金的织者"
+      ],
+      "aliases": [
+        "金织",
+        "阿雅",
+        "阿宝",
+        "金织爵",
+        "燕麦粥",
+        "金鳟",
+        "裁缝女",
+        "阿格莱雅妈妈",
+        "KaLos618",
+        "织者"
+      ],
+      "called_by": {
+        "缇宝": [
+          "阿雅"
+        ],
+        "赛飞儿": [
+          "阿雅",
+          "阿格莱雅妈妈",
+          "裁缝女"
+        ],
+        "白厄": [
+          "织者"
+        ],
+        "海瑟音": [
+          "金鳟"
+        ]
+      },
+      "notes": "奥赫玛执政官 / 改衣师；缇宝称其为「吾师」时是另一层关系。v2 新增：3.4#03 塔罗「织者」牌说话人（「织者」5 条）归本位；3.3#03「金丝若虫」27 条经上下文判定为阿格莱雅（赛飞儿当场称其「裁缝女」），form=金丝若虫，置信度 medium-high，建议抽查。"
+    },
+    "缇宝": {
+      "type": "golden_heir",
+      "version": "3.0–3.3",
+      "true_name": "缇里西庇俄丝 Tribios",
+      "titan": "「万径之门」雅努斯",
+      "speaker_aliases": [
+        "缇宝",
+        "缇安",
+        "缇宁"
+      ],
+      "forms": [
+        "缇安",
+        "缇宁",
+        "门匠",
+        "缇里西庇俄丝"
+      ],
+      "titles": [
+        "命运的三子",
+        "门径的圣子"
+      ],
+      "aliases": [
+        "吾师",
+        "质子",
+        "命运爵",
+        "苹果糖",
+        "HapLotes405",
+        "千面童姥"
+      ],
+      "called_by": {
+        "阿格莱雅": [
+          "吾师"
+        ],
+        "白厄": [
+          "缇宝老师"
+        ],
+        "阿格莱雅/赛飞儿": [
+          "缇宝"
+        ]
+      },
+      "notes": "分身命名规则：缇+单字（缇安、缇宁、缇…），BWiki 上缇安/缇宁重定向到缇宝。名字含义「拥有三重生命之人」，母亲 莫忒丝。自称用「*我们*」指代分身群体。v2：「万径之门，缇安 / 万径之门，缇宁」按 称号前缀+分身名 归一（form 保留分身名）。"
+    },
+    "万敌": {
+      "type": "golden_heir",
+      "version": "3.0–3.1",
+      "true_name": "迈德漠斯 Mydeimos",
+      "titan": "「天谴之矛」尼卡多利",
+      "speaker_aliases": [
+        "万敌",
+        "迈德漠斯"
+      ],
+      "forms": [
+        "天谴之矛"
+      ],
+      "titles": [
+        "亡国的王储",
+        "纷争的冠军"
+      ],
+      "aliases": [
+        "天谴之矛",
+        "蜜果羹",
+        "蜜果羹超好吃！",
+        "PoleMos600",
+        "背芒灵官",
+        "背芒金刚"
+      ],
+      "called_by": {
+        "缇宝": [
+          "小敌"
+        ],
+        "白厄": [
+          "万敌"
+        ]
+      },
+      "notes": "悬锋城王储；对主角的称呼以「救世主」为主。v2：3.4#03 塔罗「君王」牌说话人（「君王」9 条，台词「就让垂死的狮子独自走上他的末路」）判定为万敌的牌面形象，form=称号形态（置信度 medium-high）。"
+    },
+    "遐蝶": {
+      "type": "golden_heir",
+      "version": "3.0–3.3",
+      "true_name": "Castorice",
+      "titan": "「灰黯之手」塞纳托斯",
+      "speaker_aliases": [
+        "遐蝶"
+      ],
+      "titles": [
+        "死荫的侍女",
+        "来生的侍女"
+      ],
+      "aliases": [
+        "阿蝶",
+        "蝶宝",
+        "蜗居公主",
+        "EpieiKeia216",
+        "蝶糕糕",
+        "渡冥仙子"
+      ],
+      "called_by": {
+        "缇宝": [
+          "阿蝶"
+        ]
+      },
+      "notes": "哀地里亚督战圣女 / 奥赫玛入殓师；对主角用敬称「开拓者阁下」。"
+    },
+    "那刻夏": {
+      "type": "golden_heir",
+      "version": "3.1–3.2",
+      "true_name": "阿那克萨戈拉斯 Anaxagoras",
+      "titan": "「裂分之枝」瑟希斯",
+      "speaker_aliases": [
+        "那刻夏",
+        "阿那克萨戈拉斯"
+      ],
+      "titles": [
+        "殁世的学士",
+        "理性的学士"
+      ],
+      "aliases": [
+        "穿着华服的大地兽",
+        "渎神的学者",
+        "那刻夏老师",
+        "SkeMma720",
+        "努努斯",
+        "树庭居士",
+        "学士"
+      ],
+      "notes": "本人抗拒「那刻夏」这个称呼（语音：我名为阿那克萨戈拉斯…第一，别叫我那刻夏）；对他人一律用「X阁下」。v2：3.4#03 说话人「「学士」」（5 条）归本位，form=称号形态。"
+    },
+    "风堇": {
+      "type": "golden_heir",
+      "version": "3.1, 3.3",
+      "true_name": "雅辛忒丝 Hyacinthia",
+      "titan": "「晨昏之眼」艾格勒",
+      "speaker_aliases": [
+        "风堇",
+        "雅辛忒丝",
+        "雅辛缇娅"
+      ],
+      "titles": [
+        "摇光的医师",
+        "天空的医师"
+      ],
+      "aliases": [
+        "风宝",
+        "车厘比斯",
+        "EleOs252",
+        "摇光爵"
+      ],
+      "called_by": {
+        "缇宝": [
+          "小风堇"
+        ],
+        "刻律德菈": [
+          "摇光爵"
+        ]
+      },
+      "notes": "昏光庭院天空后裔；叫主角「灰宝」、叫丹恒「丹宝」。v2：语料真名写法「雅辛忒丝」(9)、「雅辛缇娅」(37) 均进 speaker_aliases。"
+    },
+    "赛飞儿": {
+      "type": "golden_heir",
+      "version": "3.2–3.3",
+      "true_name": "赛法利娅 Cifera",
+      "titan": "「翻飞之币」扎格列斯",
+      "speaker_aliases": [
+        "赛飞儿",
+        "赛法利娅"
+      ],
+      "forms": [
+        "羁客",
+        "赛白厄"
+      ],
+      "titles": [
+        "捷足的羁客",
+        "诡计的羁客"
+      ],
+      "aliases": [
+        "猫耳小贼",
+        "猫咪怪盗",
+        "猫女",
+        "OreXis945",
+        "猫咪神偷",
+        "捷足爵",
+        "小猫鱼"
+      ],
+      "called_by": {
+        "海瑟音": [
+          "小猫鱼"
+        ],
+        "阿格莱雅": [
+          "赛飞儿"
+        ]
+      },
+      "notes": "语料中另有「赛白厄」= 冒充白厄时的复合标签，归一时 canonical=赛飞儿 + form=赛白厄。v2：真名「赛法利娅」进 speaker_aliases。"
+    },
+    "海瑟音": {
+      "type": "golden_heir",
+      "version": "3.5",
+      "true_name": "海列屈拉 Helektra",
+      "titan": "「满溢之杯」法吉娜",
+      "speaker_aliases": [
+        "海瑟音",
+        "海列屈拉"
+      ],
+      "titles": [
+        "奏浪的剑骑",
+        "海洋的剑骑"
+      ],
+      "aliases": [
+        "剑旗爵",
+        "第五大天王",
+        "ApoRia432"
+      ],
+      "notes": "圣城骑士统领；叫主角「小灰鱼」、叫丹恒「青色的龙鱼」。v2：真名「海列屈拉」(58) 进 speaker_aliases。"
+    },
+    "刻律德菈": {
+      "type": "golden_heir",
+      "version": "3.5",
+      "true_name": "Cerydra",
+      "titan": "「公正之秤」塔兰顿",
+      "speaker_aliases": [
+        "刻律德菈"
+      ],
+      "titles": [
+        "执棋的君主",
+        "律法的君主",
+        "凯撒"
+      ],
+      "aliases": [
+        "燃冕者",
+        "独裁官",
+        "女皇",
+        "总帅",
+        "小皇冠",
+        "HubRis504"
+      ],
+      "called_by": {
+        "大黑塔": [
+          "小皇冠"
+        ],
+        "昔涟": [
+          "小凯撒"
+        ]
+      },
+      "notes": "头衔集合来自本人语音原话；她叫昔涟「小跟班」。v2：3.5 说话人「凯撒的军团和人民」（1 条）作为集合呼声归本位，form=复合。"
+    },
+    "白厄": {
+      "type": "golden_heir",
+      "version": "3.0–3.7",
+      "true_name": "卡厄斯兰那 Khaslana / Phainon",
+      "titan": "「全世之座」刻法勒",
+      "speaker_aliases": [
+        "白厄",
+        "卡厄斯兰那",
+        "心中的英雄"
+      ],
+      "forms": [
+        "卡厄斯兰那",
+        "盗火行者",
+        "心中的英雄",
+        "毁灭的容器",
+        "空白的愿望",
+        "年幼的白厄",
+        "幼年白厄"
+      ],
+      "titles": [
+        "无名的英雄",
+        "负火的囚徒"
+      ],
+      "aliases": [
+        "救世主",
+        "小白",
+        "Neikos496",
+        "烈阳哥",
+        "比格椰",
+        "比格燚",
+        "比格夜",
+        "负阳逐火白厄真君"
+      ],
+      "called_by": {
+        "缇宝": [
+          "小白"
+        ],
+        "阿格莱雅": [
+          "白厄"
+        ]
+      },
+      "notes": "设定页原文「白厄（Phainon、卡厄斯兰那）」，同一人。「盗火行者」也是他。注意与前世黄金裔「卡厄斯」不是同一角色。v2 新增：「年幼的白厄」/「幼年白厄」→ 幼年形态；「毁灭的容器，卡厄斯兰那」→ form=毁灭的容器；3.7#04「空白的愿望」（41 条，「空白的造像」=白厄）→ form=空白的愿望（置信度 medium）。"
+    },
+    "昔涟": {
+      "type": "golden_heir",
+      "version": "3.4–3.7",
+      "true_name": "Cyrene（全名推测：爱莉/哀丽希雅）",
+      "titan": "「永夜之帷」欧洛尼斯 → 「翁法罗斯之心」德谬歌",
+      "speaker_aliases": [
+        "昔涟",
+        "迷迷",
+        "德谬歌",
+        "往昔的涟漪",
+        "PhiLia093",
+        "爱莉希雅",
+        "哀丽希雅"
+      ],
+      "forms": [
+        "迷迷",
+        "德谬歌",
+        "往昔的涟漪",
+        "PhiLia093",
+        "记忆的种子",
+        "记忆的幼芽",
+        "记忆的花",
+        "记忆的花蕾",
+        "另一位作者"
+      ],
+      "titles": [
+        "往昔的涟漪",
+        "无瑕的真我"
+      ],
+      "aliases": [
+        "粉色的小海兔",
+        "德喵",
+        "桃子",
+        "昔米露",
+        "芙蕾桃"
+      ],
+      "called_by": {
+        "海瑟音": [
+          "粉色的小海兔"
+        ],
+        "赛飞儿": [
+          "德喵"
+        ],
+        "刻律德菈": [
+          "小跟班"
+        ],
+        "白厄": [
+          "伙伴"
+        ]
+      },
+      "development_line": [
+        "德谬歌(种子)",
+        "「记忆的种子」",
+        "「记忆的幼芽」",
+        "迷迷",
+        "「记忆的花/花蕾」",
+        "昔涟",
+        "往昔的涟漪",
+        "无瑕的真我"
+      ],
+      "notes": "设定页原文：迷迷「在逐火之旅中逐渐完善其语言能力，最终变为昔涟的形象」。建议 canonical=昔涟 + form + 可选 stage（按剧情顺序）。v2 新增 3.7#03 记忆三阶段「「记忆的种子」/「记忆的幼芽」/「记忆的花」」+「「记忆的花蕾」」（共 160 条，form=记忆形态 + stage）与「「另一位作者♪」」（20 条，3.7#07 三月七明说「以昔涟小姐的口吻来写」，form=另一位作者），置信度 medium，建议抽查。"
+    },
+    "荒笛": {
+      "type": "golden_heir",
+      "version": "3.6",
+      "true_name": "Terravox",
+      "titan": "「磐岩之脊」吉奥里亚",
+      "speaker_aliases": [
+        "荒笛"
+      ],
+      "titles": [
+        "掣地的伏龙"
+      ],
+      "aliases": [
+        "SkoPeo365"
+      ],
+      "notes": "BWiki 无角色页（非卡池）；3.6 把「大地」权能交予丹恒。命运预言：「汝将自掘坟墓，焚毁于叛逆的熔炉」。"
+    },
+    "黑塔": {
+      "type": "playable",
+      "version": "1.0–3.7",
+      "speaker_aliases": [
+        "黑塔",
+        "大黑塔",
+        "黑塔人偶"
+      ],
+      "forms": [
+        "大黑塔",
+        "黑塔人偶"
+      ],
+      "titles": [
+        "「天才俱乐部」#83"
+      ],
+      "aliases": [
+        "黑塔女士",
+        "转圈圈",
+        "独一黑塔",
+        "黑塔sp",
+        "大贝塔"
+      ],
+      "notes": "黑塔人偶亦为黑塔本人操控，全部合并；大黑塔为 3.0 实装形态。3.7 昔涟抉择时在场，属重要角色。v2：「黑塔的投影」(16) 归本位，form=投影。"
+    },
+    "螺丝咕姆": {
+      "type": "playable",
+      "version": "3.4–3.5",
+      "speaker_aliases": [
+        "螺丝咕姆"
+      ],
+      "titles": [
+        "「天才俱乐部」#76"
+      ],
+      "called_by": {
+        "黑塔": [
+          "智械哥"
+        ]
+      },
+      "notes": "3.4 起与列车通信；3.5 与黑塔共同覆写再创世逻辑。v2：「螺丝咕姆的投影」(10) 归本位，form=投影。"
+    },
+    "来古士": {
+      "type": "npc",
+      "version": "3.2–3.5",
+      "speaker_aliases": [
+        "来古士",
+        "吕枯耳戈斯",
+        "赞达尔",
+        "赞达尔•壹•桑原"
+      ],
+      "forms": [
+        "吕枯耳戈斯",
+        "赞达尔"
+      ],
+      "titles": [
+        "神礼观众"
+      ],
+      "notes": "全名「吕枯耳戈斯」；实为承载天才俱乐部#1 赞达尔•壹•桑原 遗志的九具躯体之一，实验「翁法罗斯」的管理员、第一推动者。3.5 揭穿 — 保留 form 记录称呼变化。v2：「来古士之声」(136) form=之声；「记忆中的来古士」(7) form=记忆形态。"
+    },
+    "黑天鹅": {
+      "type": "playable",
+      "version": "3.0, 3.6",
+      "speaker_aliases": [
+        "黑天鹅"
+      ],
+      "aliases": [
+        "神秘出手女"
+      ],
+      "notes": "流光忆庭「忆者」；戏份少。"
+    },
+    "姬子": {
+      "type": "playable",
+      "version": "3.0, 3.7",
+      "true_name": "无量塔姬子",
+      "speaker_aliases": [
+        "姬子"
+      ],
+      "titles": [
+        "群星的探险家"
+      ],
+      "aliases": [
+        "姬子阿姐",
+        "姬奇猫",
+        "银河旅人",
+        "姬子老师"
+      ],
+      "notes": "星穹列车领航员。"
+    },
+    "瓦尔特": {
+      "type": "playable",
+      "version": "3.0",
+      "true_name": "瓦尔特•杨 / 约阿希姆•诺基安维塔宁",
+      "speaker_aliases": [
+        "瓦尔特"
+      ],
+      "aliases": [
+        "杨叔",
+        "老杨",
+        "杨卧起坐",
+        "人生几何"
+      ],
+      "notes": "星穹列车。"
+    },
+    "星期日": {
+      "type": "playable",
+      "version": "3.0, 3.6",
+      "speaker_aliases": [
+        "星期日"
+      ],
+      "aliases": [
+        "鸡翅膀男孩",
+        "翅膀头",
+        "带光环的",
+        "老日",
+        "周天鸽",
+        "天环少爷"
+      ],
+      "notes": "3.0 上车；3.6 帮助主角逃脱忆潮。",
+      "called_by": {
+        "开拓者": [
+          "老日"
+        ]
+      }
+    },
+    "帕姆": {
+      "type": "npc",
+      "version": "3.0, 3.7",
+      "speaker_aliases": [
+        "帕姆",
+        "列车长"
+      ],
+      "aliases": [
+        "帕姆先生",
+        "帕姆列车长",
+        "至尊列车长",
+        "Pom-Pom",
+        "合金机铠•帕姆王"
+      ],
+      "notes": "BWiki 无角色图鉴页，称呼来自百度百科；3.7 激励主角。"
+    },
+    "长夜月": {
+      "type": "playable",
+      "version": "3.5–3.6",
+      "titles": [
+        "隐秘的陌客"
+      ],
+      "aliases": [
+        "Evernight"
+      ],
+      "notes": "canonical 归入三月七 + form=长夜月；此处保留条目便于查询（form_map 优先于 canonical 键，长夜月 仍归三月七）。"
+    },
+    "卡厄斯": {
+      "type": "npc",
+      "version": "背景设定",
+      "speaker_aliases": [
+        "卡厄斯",
+        "刻法勒"
+      ],
+      "notes": "前世黄金裔（上一代半神），补齐刻法勒神职。⚠️ 与「卡厄斯兰那」（白厄）不是同一角色，勿合并。⚠️ 与 v2 新增的泰坦 canonical「刻法勒」同名：v1 起「刻法勒」作为 speaker 归 卡厄斯（先到先得的别名索引），泰坦条目只作查询/称号索引。"
+    },
+    "格奈乌斯": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "格奈乌斯"
+      ],
+      "notes": "前世黄金裔（纷争/尼卡多利）；3.0 悬锋祭典斗士。"
+    },
+    "卡吕普索": {
+      "type": "npc",
+      "version": "3.1–3.2",
+      "speaker_aliases": [
+        "卡吕普索"
+      ],
+      "notes": "前世黄金裔（理性/瑟希斯）。"
+    },
+    "玻吕茜亚": {
+      "type": "npc",
+      "version": "3.2",
+      "speaker_aliases": [
+        "玻吕茜亚",
+        "玻吕刻斯"
+      ],
+      "notes": "前世黄金裔（死亡/塞纳托斯）；「死龙」玻吕刻斯与之相关。"
+    },
+    "塞涅卡": {
+      "type": "npc",
+      "version": "3.5",
+      "speaker_aliases": [
+        "塞涅卡",
+        "「冬霖爵」塞涅卡"
+      ],
+      "titles": [
+        "冬霖爵"
+      ],
+      "notes": "逐火军将领，擅长驱使风暴；语料说话人写作「冬霖爵」塞涅卡，需剥前缀。"
+    },
+    "塞涅俄丝": {
+      "type": "npc",
+      "version": "3.3",
+      "speaker_aliases": [
+        "塞涅俄丝",
+        "索拉比斯",
+        "露奈比斯"
+      ],
+      "forms": [
+        "索拉比斯",
+        "露奈比斯"
+      ],
+      "titles": [
+        "阳雷骑士"
+      ],
+      "aliases": [
+        "索拉比斯",
+        "露奈比斯"
+      ],
+      "notes": "第一次逐火之旅开创者；「烈阳之翼」索拉比斯、「星月之翎」露奈比斯。v2：v1 只把索拉比斯/露奈比斯写进 aliases（不参与归一），现补进 speaker_aliases，两条各 73 条；3.3#08「天空之声」（9 条）经上下文（露奈比斯同场称「你认为呢…塞涅俄丝」，风堇回「塞涅俄丝大人？」）判定为塞涅俄丝，form=之声，置信度 medium。"
+    },
+    "维吉妮娅": {
+      "type": "npc",
+      "version": "3.5",
+      "speaker_aliases": [
+        "维吉妮娅",
+        "「吟风爵」维吉妮娅"
+      ],
+      "titles": [
+        "吟风爵"
+      ],
+      "notes": "逐火军史官，来自悬锋城。"
+    },
+    "拉比努斯": {
+      "type": "npc",
+      "version": "3.5–3.6",
+      "speaker_aliases": [
+        "拉比努斯",
+        "「断锋爵」拉比努斯"
+      ],
+      "titles": [
+        "断锋爵"
+      ],
+      "notes": "逐火军将领，擅长剑术。语料说话人为「断锋爵」拉比努斯（54 条），v1 只登记 titles 未进 speaker_aliases，v2 补齐。"
+    },
+    "阿波罗尼": {
+      "type": "npc",
+      "version": "3.5–3.6",
+      "speaker_aliases": [
+        "阿波罗尼",
+        "「曳石爵」阿波罗尼"
+      ],
+      "titles": [
+        "曳石爵"
+      ],
+      "notes": "逐火军参谋，树庭五贤人之一。语料说话人为「曳石爵」阿波罗尼（33 条），v2 补齐 speaker_aliases。"
+    },
+    "卢基塔克": {
+      "type": "npc",
+      "speaker_aliases": [
+        "卢基塔克"
+      ],
+      "titles": [
+        "钢甲爵"
+      ],
+      "notes": "逐火军第三军团长（语料未作为 speaker 出现，登记用于称呼扫描）。"
+    },
+    "欧利庞": {
+      "type": "npc",
+      "speaker_aliases": [
+        "欧利庞"
+      ],
+      "titles": [
+        "先王",
+        "悬锋王"
+      ],
+      "notes": "悬锋王，万敌之父。语料说话人写作「先王欧利庞」（24 条），v2 补 speaker_aliases + 剥前缀。"
+    },
+    "歌耳戈": {
+      "type": "npc",
+      "speaker_aliases": [
+        "歌耳戈"
+      ],
+      "titles": [
+        "悬锋王后"
+      ],
+      "notes": "悬锋王后，万敌之母。"
+    },
+    "莫忒丝": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "莫忒丝",
+        "温柔的母亲"
+      ],
+      "titles": [
+        "雅努萨波利斯圣女"
+      ],
+      "notes": "缇里西庇俄丝（缇宝）之母，雅努萨波利斯圣女。v2 把泛称标签「温柔的母亲」（78 条，3.1，台词直呼「缇里西庇俄丝，我的好女孩」）登记进 speaker_aliases，不再并入 generic_npc（依据见 data/reports/unmatched-speakers.md §3 脚注）。"
+    },
+    "铁墓": {
+      "type": "antagonist",
+      "version": "3.4–3.7",
+      "speaker_aliases": [
+        "铁墓"
+      ],
+      "aliases": [
+        "毁灭的巨匠",
+        "无首的巨匠",
+        "反诺斯",
+        "灵知的葬仪",
+        "原初罪"
+      ],
+      "notes": "绝灭大君。⚠️ 与白厄剧情关联但不合并。"
+    },
+    "尼卡多利": {
+      "type": "titan",
+      "titan_title": "「天谴之矛」",
+      "heir": "万敌",
+      "version": "3.0–3.1",
+      "speaker_aliases": [
+        "尼卡多利"
+      ],
+      "titles": [
+        "「天谴之矛」",
+        "纷争之泰坦"
+      ],
+      "notes": "【v2 新增·titan】纷争之泰坦。泰坦作说话人时 canonical=泰坦本体，不并入其黄金裔（heir=万敌）。v2：尼卡多利的残骸(3) → form=残骸。"
+    },
+    "塞纳托斯": {
+      "type": "titan",
+      "titan_title": "「灰黯之手」",
+      "heir": "遐蝶",
+      "version": "3.2",
+      "speaker_aliases": [
+        "塞纳托斯"
+      ],
+      "titles": [
+        "「灰黯之手」",
+        "死亡之泰坦"
+      ],
+      "notes": "【v2 新增·titan】死亡之泰坦（语料 53 条，自称「还是叫我死亡之泰坦吧」）。不并入遐蝶。"
+    },
+    "墨涅塔": {
+      "type": "titan",
+      "titan_title": "「黄金之茧」",
+      "heir": "阿格莱雅",
+      "version": "3.0–3.3",
+      "speaker_aliases": [
+        "墨涅塔"
+      ],
+      "titles": [
+        "「黄金之茧」",
+        "浪漫之泰坦"
+      ],
+      "notes": "【v2 新增·titan】浪漫之泰坦。补齐 v1 遗留问题：v1 speaker_literal_map 已把「墨涅塔的幻影」归到 canonical=墨涅塔，但 canonical 无墨涅塔条目，v2 补登记（form=幻影）。"
+    },
+    "瑟希斯": {
+      "type": "titan",
+      "titan_title": "「裂分之枝」",
+      "heir": "那刻夏",
+      "version": "3.1–3.4",
+      "speaker_aliases": [
+        "瑟希斯"
+      ],
+      "titles": [
+        "「裂分之枝」",
+        "理性之泰坦"
+      ],
+      "notes": "【v2 新增·titan】理性之泰坦，语料说话人出现 157 条（未归一清单第 1 位）。泰坦≠黄金裔，单列不并入那刻夏。"
+    },
+    "扎格列斯": {
+      "type": "titan",
+      "titan_title": "「翻飞之币」",
+      "heir": "赛飞儿",
+      "version": "3.2–3.3",
+      "speaker_aliases": [
+        "扎格列斯"
+      ],
+      "titles": [
+        "「翻飞之币」",
+        "诡计之泰坦"
+      ],
+      "notes": "【v2 新增·titan】诡计之泰坦（语料未作为 speaker，登记用于称呼扫描）。"
+    },
+    "雅努斯": {
+      "type": "titan",
+      "titan_title": "「万径之门」",
+      "heir": "缇宝",
+      "version": "3.1",
+      "speaker_aliases": [
+        "雅努斯"
+      ],
+      "titles": [
+        "「万径之门」",
+        "门径之泰坦"
+      ],
+      "notes": "【v2 新增·titan】门径之泰坦，语料说话人 11 条（3.1#09 濒死场景）。不并入缇宝。"
+    },
+    "欧洛尼斯": {
+      "type": "titan",
+      "titan_title": "「永夜之帷」",
+      "heir": "昔涟",
+      "version": "3.0–3.7",
+      "speaker_aliases": [
+        "欧洛尼斯"
+      ],
+      "titles": [
+        "「永夜之帷」",
+        "岁月之泰坦"
+      ],
+      "notes": "【v2 新增·titan】岁月之泰坦，语料说话人 60 条。v2：欧洛尼斯之声(8) → form=之声。⚠️ 与三月七的 3.7 标签「永夜之帷，三月七」不冲突：该标签的说话人是三月七。"
+    },
+    "刻法勒": {
+      "type": "titan",
+      "titan_title": "「全世之座」",
+      "heir": "白厄/开拓者",
+      "version": "背景设定",
+      "speaker_aliases": [
+        "刻法勒"
+      ],
+      "titles": [
+        "「全世之座」",
+        "负世之泰坦"
+      ],
+      "notes": "【v2 新增·titan】负世之泰坦。⚠️ 别名索引先到先得：v1 的 卡厄斯.speaker_aliases 已含「刻法勒」，故「刻法勒」作为 speaker 仍归 卡厄斯（前世负世黄金裔）；本条仅作泰坦称号/查询索引。"
+    },
+    "艾格勒": {
+      "type": "titan",
+      "titan_title": "「晨昏之眼」",
+      "heir": "风堇",
+      "version": "3.1, 3.3",
+      "speaker_aliases": [
+        "艾格勒"
+      ],
+      "titles": [
+        "「晨昏之眼」",
+        "天空之泰坦"
+      ],
+      "notes": "【v2 新增·titan】天空之泰坦。"
+    },
+    "吉奥里亚": {
+      "type": "titan",
+      "titan_title": "「磐岩之脊」",
+      "heir": "荒笛/丹恒",
+      "version": "3.6",
+      "speaker_aliases": [
+        "吉奥里亚"
+      ],
+      "titles": [
+        "「磐岩之脊」",
+        "大地之泰坦"
+      ],
+      "notes": "【v2 新增·titan】大地之泰坦。"
+    },
+    "法吉娜": {
+      "type": "titan",
+      "titan_title": "「满溢之杯」",
+      "heir": "海瑟音",
+      "version": "3.5",
+      "speaker_aliases": [
+        "法吉娜"
+      ],
+      "titles": [
+        "「满溢之杯」",
+        "海洋之泰坦"
+      ],
+      "notes": "【v2 新增·titan】海洋之泰坦。v2：3.5#05「深海的女王」（5 条）经上下文判定为法吉娜（海列屈拉称「我的母亲，…海洋之泰坦，高贵的女王」，且「酒杯满溢」对应「满溢之杯」），form=深海的女王，置信度 high。"
+    },
+    "塔兰顿": {
+      "type": "titan",
+      "titan_title": "「公正之秤」",
+      "heir": "刻律德菈",
+      "version": "3.5",
+      "speaker_aliases": [
+        "塔兰顿"
+      ],
+      "titles": [
+        "「公正之秤」",
+        "律法之泰坦"
+      ],
+      "notes": "【v2 新增·titan】律法之泰坦。"
+    },
+    "德谬歌": {
+      "type": "titan",
+      "titan_title": "「翁法罗斯之心」",
+      "heir": "昔涟",
+      "version": "3.4–3.7",
+      "speaker_aliases": [
+        "德谬歌"
+      ],
+      "titles": [
+        "「翁法罗斯之心」"
+      ],
+      "notes": "【v2 新增·titan】第 13 泰坦「翁法罗斯之心」。⚠️ 与 v1 一致：「德谬歌」作为 speaker 仍归 昔涟（form_map 先于 canonical 键；昔涟.speaker_aliases 也先登记），本条仅作泰坦索引。"
+    },
+    "巴特鲁斯": {
+      "type": "npc",
+      "version": "3.0–3.4, 3.6",
+      "speaker_aliases": [
+        "巴特鲁斯",
+        "「贼灵」巴特鲁斯"
+      ],
+      "titles": [
+        "贼灵"
+      ],
+      "notes": "【v2 新增·npc】「贼灵」巴特鲁斯（128 条）+ 巴特鲁斯（10 条）= 138 条，是 v1 未归一清单中最大的具名 NPC。"
+    },
+    "克拉特鲁斯": {
+      "type": "npc",
+      "version": "3.1–3.3",
+      "speaker_aliases": [
+        "克拉特鲁斯",
+        "克拉特鲁斯与他的副手"
+      ],
+      "notes": "【v2 新增·npc】悬锋城老一辈人物（116 条；另有复合标签「克拉特鲁斯与他的副手」1 条）。"
+    },
+    "凯妮斯": {
+      "type": "npc",
+      "version": "3.0–3.3",
+      "speaker_aliases": [
+        "凯妮斯",
+        "元老凯妮斯",
+        "「凯妮斯」"
+      ],
+      "titles": [
+        "元老"
+      ],
+      "notes": "【v2 新增·npc】奥赫玛元老院元老（106 + 15 + 2 = 123 条）；「元老凯妮斯」按称号前缀剥。"
+    },
+    "哈托努斯": {
+      "type": "npc",
+      "version": "3.0–3.3",
+      "speaker_aliases": [
+        "哈托努斯"
+      ],
+      "notes": "【v2 新增·npc】78 条。"
+    },
+    "达米亚诺斯": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "达米亚诺斯"
+      ],
+      "notes": "【v2 新增·npc】47 条。"
+    },
+    "阿蒙内特": {
+      "type": "npc",
+      "version": "3.2",
+      "speaker_aliases": [
+        "阿蒙内特",
+        "「阿蒙内特」",
+        "「长老」阿蒙内特"
+      ],
+      "titles": [
+        "长老"
+      ],
+      "notes": "【v2 新增·npc】45 + 18 + 12 = 75 条；「「长老」阿蒙内特」按称号前缀剥。"
+    },
+    "恩贝多克利斯": {
+      "type": "npc",
+      "version": "3.2",
+      "speaker_aliases": [
+        "恩贝多克利斯"
+      ],
+      "notes": "【v2 新增·npc】30 条；树庭学者，与那刻夏有师生/学派关系。"
+    },
+    "诺杜斯": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "诺杜斯"
+      ],
+      "notes": "【v2 新增·npc】14 条；奥赫玛失信徒群体的组织者之一。"
+    },
+    "特克菈": {
+      "type": "npc",
+      "version": "3.3",
+      "speaker_aliases": [
+        "特克菈",
+        "特克菈将军"
+      ],
+      "titles": [
+        "将军"
+      ],
+      "notes": "【v2 新增·npc】15 条；3.3 天空线族长/将军。"
+    },
+    "克莱门汀": {
+      "type": "npc",
+      "version": "3.1–3.3",
+      "speaker_aliases": [
+        "克莱门汀"
+      ],
+      "notes": "【v2 新增·npc】12 条；昏光庭院医师。"
+    },
+    "利波": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "利波",
+        "吟游诗人利波"
+      ],
+      "titles": [
+        "吟游诗人"
+      ],
+      "notes": "【v2 新增·npc】11 条。"
+    },
+    "吉奥刻勒斯": {
+      "type": "npc",
+      "version": "3.6",
+      "speaker_aliases": [
+        "吉奥刻勒斯",
+        "「开山者」吉奥刻勒斯"
+      ],
+      "titles": [
+        "开山者"
+      ],
+      "notes": "【v2 新增·npc】10 + 10 = 20 条；3.6 山之民/大地兽访问学者。"
+    },
+    "克里斯普斯": {
+      "type": "npc",
+      "version": "3.3",
+      "speaker_aliases": [
+        "克里斯普斯"
+      ],
+      "notes": "【v2 新增·npc】10 条。"
+    },
+    "尼莫西妮": {
+      "type": "npc",
+      "version": "3.3–3.4",
+      "speaker_aliases": [
+        "尼莫西妮",
+        "卫士尼莫西妮"
+      ],
+      "notes": "【v2 新增·npc】10 条；白厄的卫士。"
+    },
+    "泽弗": {
+      "type": "npc",
+      "version": "3.3–3.6",
+      "speaker_aliases": [
+        "泽弗",
+        "卫士泽弗",
+        "卫士泽佛"
+      ],
+      "notes": "【v2 新增·npc】10 + 2 = 12 条；卫士。"
+    },
+    "帕狄卡斯": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "帕狄卡斯"
+      ],
+      "notes": "【v2 新增·npc】9 条。"
+    },
+    "皮西厄斯": {
+      "type": "npc",
+      "version": "3.4",
+      "speaker_aliases": [
+        "皮西厄斯"
+      ],
+      "notes": "【v2 新增·npc】9 条。"
+    },
+    "德米特里": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "德米特里"
+      ],
+      "notes": "【v2 新增·npc】8 条。"
+    },
+    "提图斯": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "提图斯"
+      ],
+      "notes": "【v2 新增·npc】8 条。"
+    },
+    "安德里斯库斯": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "安德里斯库斯"
+      ],
+      "notes": "【v2 新增·npc】6 条。"
+    },
+    "马耳叙阿斯": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "马耳叙阿斯"
+      ],
+      "notes": "【v2 新增·npc】6 条。"
+    },
+    "赫菲斯辛": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "赫菲斯辛"
+      ],
+      "notes": "【v2 新增·npc】6 条。"
+    },
+    "维尔图斯": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "维尔图斯"
+      ],
+      "notes": "【v2 新增·npc】6 条。"
+    },
+    "莉维娅": {
+      "type": "npc",
+      "version": "3.4",
+      "speaker_aliases": [
+        "莉维娅"
+      ],
+      "notes": "【v2 新增·npc】4 条。"
+    },
+    "披索": {
+      "type": "npc",
+      "version": "3.4",
+      "speaker_aliases": [
+        "披索"
+      ],
+      "notes": "【v2 新增·npc】3 条。"
+    },
+    "希瑞雅": {
+      "type": "npc",
+      "version": "3.7",
+      "speaker_aliases": [
+        "希瑞雅"
+      ],
+      "notes": "【v2 新增·npc】4 条。"
+    },
+    "达格拉": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "达格拉"
+      ],
+      "notes": "【v2 新增·npc】3 条。"
+    },
+    "尼刻": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "尼刻",
+        "零食商人尼刻"
+      ],
+      "notes": "【v2 新增·npc】3 条。"
+    },
+    "达罗": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "达罗",
+        "浴场侍者达罗"
+      ],
+      "notes": "【v2 新增·npc】3 条。"
+    },
+    "莱昂": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "莱昂"
+      ],
+      "notes": "【v2 新增·npc】2 条。"
+    },
+    "托勒密": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "托勒密"
+      ],
+      "notes": "【v2 新增·npc】2 条。"
+    },
+    "朴塞塔": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "朴塞塔"
+      ],
+      "notes": "【v2 新增·npc】2 条。"
+    },
+    "老费贝尔": {
+      "type": "npc",
+      "version": "3.1",
+      "speaker_aliases": [
+        "老费贝尔"
+      ],
+      "notes": "【v2 新增·npc】7 条。"
+    },
+    "多哆啦迷": {
+      "type": "npc",
+      "version": "3.4",
+      "speaker_aliases": [
+        "多哆啦迷"
+      ],
+      "notes": "【v2 新增·npc】24 条；3.4 迷路迷境村长（奇美拉）。"
+    },
+    "徕啦迷": {
+      "type": "npc",
+      "version": "3.4",
+      "speaker_aliases": [
+        "徕啦迷"
+      ],
+      "notes": "【v2 新增·npc】10 条；迷路迷境奇美拉。"
+    },
+    "小伊卡": {
+      "type": "npc",
+      "version": "3.3–3.7",
+      "speaker_aliases": [
+        "小伊卡"
+      ],
+      "notes": "【v2 新增·npc】27 条；风堇的奇美拉伙伴。"
+    },
+    "黄金蝶": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "黄金蝶"
+      ],
+      "notes": "【v2 新增·npc】3 条；3.0#02 会说话的蝶形若虫（未与具名角色合并）。"
+    },
+    "亡语蝶": {
+      "type": "npc",
+      "version": "3.2",
+      "speaker_aliases": [
+        "亡语蝶"
+      ],
+      "notes": "【v2 新增·npc】1 条；3.2#07 冥界蝶。"
+    },
+    "真言狮口": {
+      "type": "npc",
+      "version": "3.0–3.5",
+      "speaker_aliases": [
+        "真言狮口"
+      ],
+      "notes": "【v2 新增·npc】21 条；奥赫玛会说话的石狮。"
+    },
+    "黄金狮首": {
+      "type": "npc",
+      "version": "3.0",
+      "speaker_aliases": [
+        "黄金狮首"
+      ],
+      "notes": "【v2 新增·npc】17 条；悬锋城首屈一指的参谋（已失语的金狮首级）。"
+    },
+    "面镜": {
+      "type": "npc",
+      "version": "3.0–3.7",
+      "speaker_aliases": [
+        "面镜",
+        "第一面镜",
+        "第二面镜",
+        "第三面镜",
+        "第四面镜"
+      ],
+      "forms": [
+        "第一面镜",
+        "第二面镜",
+        "第三面镜",
+        "第四面镜"
+      ],
+      "notes": "【v2 新增·npc】黑塔狭间里的四面镜（第一/二/三/四面镜，71+6+5+6 = 88 条）。四具构装体各有独立人格，但同源同族，canonical=面镜 + form=第N面镜（保留每面镜的计数）；若需完全单列可再拆。"
+    },
+    "斯缇科西亚女王": {
+      "type": "npc",
+      "version": "3.2",
+      "speaker_aliases": [
+        "斯缇科西亚女王",
+        "「斯缇科西亚女王」"
+      ],
+      "notes": "【v2 新增·npc】7 条；3.2#07 冥界城邦斯缇科西亚的女王。"
+    },
+    "权杖δ-me13": {
+      "type": "system",
+      "version": "3.6",
+      "speaker_aliases": [
+        "权杖δ-me13",
+        "δ-me13"
+      ],
+      "notes": "【v2 新增·system】69 + 2 = 71 条；3.6 翁法罗斯权杖 AI/终端。"
+    },
+    "命途之声": {
+      "type": "system",
+      "version": "3.0",
+      "speaker_aliases": [
+        "命途之声",
+        "命途之声•一",
+        "命途之声•二"
+      ],
+      "notes": "【v2 新增·system】4 + 7 + 8 = 19 条；3.0#09 黑塔在狭间捕捉到的天外命途之声（二进制运算，疑似博识尊/机器头），非翁法罗斯角色。"
+    },
+    "古怪的显示器": {
+      "type": "system",
+      "version": "3.5",
+      "speaker_aliases": [
+        "古怪的显示器"
+      ],
+      "notes": "【v2 新增·system】9 条；3.5 翁法罗斯外围监测装置界面（「异常量：开拓者」）。"
+    },
+    "识刻锚": {
+      "type": "system",
+      "version": "3.5",
+      "speaker_aliases": [
+        "识刻锚"
+      ],
+      "notes": "【v2 新增·system】4 条；3.5 时间锚装置（乱码输出）。"
+    },
+    "卡芙卡": {
+      "type": "cameo",
+      "version": "3.0–3.7",
+      "speaker_aliases": [
+        "卡芙卡"
+      ],
+      "notes": "【v2 新增·cameo】79 条，非翁法罗斯可玩角色的客串，单列 canonical。"
+    },
+    "景元": {
+      "type": "cameo",
+      "version": "3.6–3.7",
+      "speaker_aliases": [
+        "景元"
+      ],
+      "notes": "【v2 新增·cameo】28 条，仙舟罗浮将军客串。"
+    },
+    "流萤": {
+      "type": "cameo",
+      "version": "3.0–3.2",
+      "speaker_aliases": [
+        "流萤"
+      ],
+      "notes": "【v2 新增·cameo】26 条。⚠️ 与「萨姆」的关系见 萨姆 条目。"
+    },
+    "银狼": {
+      "type": "cameo",
+      "version": "3.0–3.6",
+      "speaker_aliases": [
+        "银狼"
+      ],
+      "notes": "【v2 新增·cameo】17 条。"
+    },
+    "砂金": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "砂金"
+      ],
+      "notes": "【v2 新增·cameo】15 条。"
+    },
+    "波提欧": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "波提欧"
+      ],
+      "notes": "【v2 新增·cameo】14 条。"
+    },
+    "翡翠": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "翡翠"
+      ],
+      "notes": "【v2 新增·cameo】13 条。"
+    },
+    "符玄": {
+      "type": "cameo",
+      "version": "3.4, 3.7",
+      "speaker_aliases": [
+        "符玄"
+      ],
+      "notes": "【v2 新增·cameo】13 + 5（「符玄」带引号写法）= 18 条。"
+    },
+    "刃": {
+      "type": "cameo",
+      "version": "3.0",
+      "speaker_aliases": [
+        "刃"
+      ],
+      "notes": "【v2 新增·cameo】14 条。"
+    },
+    "飞霄": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "飞霄"
+      ],
+      "notes": "【v2 新增·cameo】12 条。"
+    },
+    "布洛妮娅": {
+      "type": "cameo",
+      "version": "3.5–3.7",
+      "speaker_aliases": [
+        "布洛妮娅"
+      ],
+      "notes": "【v2 新增·cameo】11 条。"
+    },
+    "应星": {
+      "type": "cameo",
+      "version": "3.6",
+      "speaker_aliases": [
+        "应星"
+      ],
+      "notes": "【v2 新增·cameo】10 条。"
+    },
+    "花火": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "花火"
+      ],
+      "notes": "【v2 新增·cameo】9 条（v1 开拓者.called_by 已引用花火，但未建 canonical，v2 补）。"
+    },
+    "镜流": {
+      "type": "cameo",
+      "version": "3.6",
+      "speaker_aliases": [
+        "镜流"
+      ],
+      "notes": "【v2 新增·cameo】9 条。"
+    },
+    "萨姆": {
+      "type": "cameo",
+      "version": "3.0",
+      "speaker_aliases": [
+        "萨姆"
+      ],
+      "notes": "【v2 新增·cameo】8 条；萨姆=流萤的机甲身份。当前与「流萤」分列（已知冲突见 known_conflicts），如需合并请人工确认。"
+    },
+    "爻光": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "爻光"
+      ],
+      "notes": "【v2 新增·cameo】8 条。"
+    },
+    "知更鸟": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "知更鸟"
+      ],
+      "notes": "【v2 新增·cameo】5 条。"
+    },
+    "希露瓦": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "希露瓦"
+      ],
+      "notes": "【v2 新增·cameo】4 条。"
+    },
+    "希儿": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "希儿"
+      ],
+      "notes": "【v2 新增·cameo】2 条。"
+    },
+    "阮•梅": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "阮•梅"
+      ],
+      "notes": "【v2 新增·cameo】3 条。"
+    },
+    "托帕": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "托帕"
+      ],
+      "notes": "【v2 新增·cameo】3 条。"
+    },
+    "原始博士": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "原始博士"
+      ],
+      "notes": "【v2 新增·cameo】4 条；天才俱乐部#64。"
+    },
+    "乱破": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "乱破"
+      ],
+      "notes": "【v2 新增·cameo】1 条。"
+    },
+    "寂静领主": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "寂静领主",
+        "「寂静领主」"
+      ],
+      "notes": "【v2 新增·cameo】7 条；天才俱乐部#4。"
+    },
+    "信使": {
+      "type": "cameo",
+      "version": "3.4",
+      "speaker_aliases": [
+        "信使",
+        "「信使」"
+      ],
+      "notes": "【v2 新增·cameo】7 条；3.4#02 仙舟罗浮信使（提到「太卜大人」=符玄），非翁法罗斯角色。"
+    },
+    "阿茶": {
+      "type": "cameo",
+      "version": "3.7",
+      "speaker_aliases": [
+        "阿茶"
+      ],
+      "notes": "【v2 新增·cameo】5 条；3.7 台词提及「天才俱乐部#23…波尔卡」，按客串天才登记。"
+    },
+    "generic_npc": {
+      "type": "generic_npc",
+      "version": "3.0–3.7",
+      "note": "泛称 / 职业 / 群体 / 描述性标签池：不是某个具名角色，统一归 generic_npc（下游务必保留 speaker_raw 原值）。来源 = data/reports/unmatched-speakers.md §3 的 201 个 generic_npc 候选（其中「温柔的母亲」实指莫忒丝，已单列，不在此池）+ §4 待人工里复核为描述性/群体标签的 46 个。",
+      "source_report_bucket": {
+        "generic_npc": 201,
+        "reclassified_from_pending": 47
+      },
+      "speaker_aliases": [
+        "浴场精灵",
+        "少女的声音",
+        "悬锋报名官",
+        "老去的女孩",
+        "百夫长",
+        "大地兽",
+        "高傲的国王",
+        "管理宝库的官员",
+        "垂死的大司铎",
+        "往世的雨之民",
+        "白发青年",
+        "公民",
+        "炼金术士",
+        "沉默的斗士",
+        "沉默的女孩",
+        "疯狂的奥赫玛士兵",
+        "商人",
+        "往世的晖之民",
+        "奥赫玛民众",
+        "宫廷学者",
+        "狠毒的新信徒",
+        "集市商人",
+        "严厉的圣城守卫",
+        "愤怒的祭司",
+        "伶俐的海妖",
+        "美丽的海妖",
+        "巧舌的公民",
+        "善良的守卫",
+        "「粉色」的声音",
+        "年迈的祭司",
+        "吟游诗人",
+        "众人",
+        "冲动的守卫",
+        "慈祥的妇人",
+        "雕琢区监工",
+        "盯梢的士兵",
+        "拉冬代表",
+        "受困扰的居民",
+        "死囚",
+        "悲愤的新信徒",
+        "慌张的士兵",
+        "金发男子",
+        "困惑的公民",
+        "理智的公民",
+        "圣城守卫",
+        "畏惧的圣城守卫",
+        "「侍女」",
+        "不知名的死囚",
+        "村民",
+        "雕琢区力士",
+        "倨傲的公民",
+        "恐慌的公民",
+        "狼狈的旧信徒",
+        "浪漫的公民",
+        "冷静的公民",
+        "男孩",
+        "尼卡多利的士兵",
+        "女孩",
+        "审慎的卫士",
+        "铁匠",
+        "无助的旧信徒",
+        "潇洒的公民",
+        "衣匠",
+        "议论纷纷的公民",
+        "「医师」",
+        "哀地里亚的亡魂",
+        "奥赫玛斥候",
+        "村子里的女孩",
+        "愤怒的欧洛尼斯信徒",
+        "黄金裔们",
+        "绝望的旧信徒",
+        "理智的塔兰顿信徒",
+        "命运的祭司",
+        "受袭的市民",
+        "斯缇科西亚的亡魂",
+        "坦然的旧信徒",
+        "卫兵",
+        "无名的天空之子",
+        "闲散的公民",
+        "严苛的雨之民",
+        "众圣城守卫",
+        "「海妖」",
+        "暴躁的武士",
+        "悲号的晖之民",
+        "辩论的学者们",
+        "沉着的空间站科员",
+        "村子里的男孩",
+        "雕琢区学者",
+        "愤慨的晖之民",
+        "疯癫的学者",
+        "固执的市民",
+        "乖戾的祭司",
+        "红发女孩",
+        "饥渴的奇兽",
+        "机敏的逐火士兵",
+        "祭司的残忆",
+        "鉴宝的老人",
+        "绝望的晖之民",
+        "夸张的公民",
+        "浪漫的诗人",
+        "老者",
+        "冷静的空间站科员",
+        "某位元老院议员",
+        "母亲的残忆",
+        "年轻男子",
+        "年幼的男孩",
+        "年幼的女孩",
+        "虔诚的市民",
+        "怯懦的雨之民",
+        "亲切的臣民",
+        "热情的臣民",
+        "热心的公民",
+        "如痴如醉的战士",
+        "山之民的残忆",
+        "戍卫长",
+        "探险家的残忆",
+        "温厚的学者",
+        "悬锋城的孩子们",
+        "悬锋士兵",
+        "严厉的议员",
+        "揶揄的学者",
+        "异邦的战俘",
+        "勇敢的战士",
+        "镇定的公民",
+        "正直的公民",
+        "忠诚的卫士",
+        "白发男子",
+        "被腐蚀的海妖",
+        "被污染的眷属",
+        "不安的公民",
+        "不会游泳的逐火士兵",
+        "不明就里的逐火士兵",
+        "不治的牧人",
+        "潮汐的声音",
+        "担忧的公民",
+        "飞行员的残忆",
+        "感恩的公民",
+        "鼓舞的公民们",
+        "孩童",
+        "骇客的残忆",
+        "好事的议员",
+        "和蔼的议员",
+        "慌张的难民",
+        "慌张的奇美拉",
+        "伙伴们",
+        "激昂的吟游诗人",
+        "激动的公民",
+        "激愤的公民",
+        "记忆中的女孩",
+        "记忆中的泰坦眷属",
+        "坚定的议员",
+        "坚毅的圣城卫士",
+        "焦虑的公民",
+        "矫健的逐火士兵",
+        "谨慎的议员",
+        "惊慌的市民",
+        "惊惶的公民",
+        "绝望的雨之民",
+        "绝望的战士",
+        "可疑的守卫",
+        "恐慌的祭司",
+        "恐惧的公民",
+        "老人",
+        "理智的祭司",
+        "猎户",
+        "迷惑的祭司",
+        "男孩的残忆",
+        "恼火的公民",
+        "年长的议员",
+        "女孩的残忆",
+        "女声",
+        "虔诚的臣民",
+        "虔诚的学者",
+        "虔诚的议员",
+        "身材瘦小的老人",
+        "圣城卫士",
+        "泰坦眷属",
+        "亡魂的声音",
+        "喜悦的臣民",
+        "喜悦的元老",
+        "闲逛的议员",
+        "消极的公民",
+        "兴奋的臣民",
+        "悬锋孩童",
+        "医疗兵的残忆",
+        "英气的军需官",
+        "犹疑的公民",
+        "游侠的残忆",
+        "元老院议员们",
+        "远处传来的女声",
+        "振奋的公民",
+        "振奋的元老",
+        "镇静的难民",
+        "正义的公民",
+        "职员的残忆",
+        "指挥官的残忆",
+        "智械的残忆",
+        "稚嫩的女声",
+        "忠诚的圣城卫士",
+        "尊贵的女声",
+        "武器商人",
+        "传令士兵",
+        "无名黄金裔",
+        "表情温柔的女人",
+        "艺术商",
+        "公民大会公民",
+        "徘徊的游人",
+        "天外探险家",
+        "天谴先锋",
+        "年轻的书吏",
+        "裁判官",
+        "粗鲁的拉冬人",
+        "救城的将领",
+        "窃忆者",
+        "冷静的窃忆者",
+        "愤慨的悬锋族人",
+        "悬锋族长",
+        "忆者的化身",
+        "埃普斯代表",
+        "帕福斯代表",
+        "圣城戍卫",
+        "力竭的悬锋人",
+        "小女孩",
+        "学徒",
+        "晕眩的浴场客人",
+        "男播报员",
+        "女播报员",
+        "小男孩",
+        "犹豫的窃忆者",
+        "好奇的女眷",
+        "奥赫玛人",
+        "濒死的奥赫玛人",
+        "担忧的悬锋族人",
+        "抵抗的人群",
+        "渴血的奥赫玛人",
+        "狂热的悬锋人",
+        "另一位元老院议员",
+        "只愿做人台",
+        "扎格列斯送我钱",
+        "法吉娜还在喝",
+        "第十三泰坦",
+        "「清洗者」队长",
+        "「窃忆者」",
+        "死者的呼唤",
+        "濒死的泰坦",
+        "回忆之声",
+        "恐惧的窃忆者",
+        "先祖之灵"
+      ],
+      "notes": "本池只表示「说话人不是具名角色」，不代表同一人。下游若做角色级统计，应把 generic_npc 视为非角色类别并保留 speaker_raw。"
+    }
+  },
+  "true_name_map": {
+    "海列屈拉": "海瑟音",
+    "雅辛忒丝": "风堇",
+    "雅辛缇娅": "风堇",
+    "赛法利娅": "赛飞儿",
+    "阿那克萨戈拉斯": "那刻夏",
+    "迈德漠斯": "万敌",
+    "缇里西庇俄丝": "缇宝",
+    "索拉比斯": "塞涅俄丝",
+    "露奈比斯": "塞涅俄丝",
+    "爱莉希雅": "昔涟",
+    "哀丽希雅": "昔涟",
+    "卡厄斯兰那": "白厄"
+  },
+  "form_map": {
+    "迷迷": "昔涟",
+    "德谬歌": "昔涟",
+    "往昔的涟漪": "昔涟",
+    "「往昔的涟漪」": "昔涟",
+    "PhiLia093": "昔涟",
+    "缇安": "缇宝",
+    "缇宁": "缇宝",
+    "门匠": "缇宝",
+    "「门匠」": "缇宝",
+    "缇里西庇俄丝": "缇宝",
+    "丹枫": "丹恒",
+    "「丹枫」": "丹恒",
+    "丹恒•饮月": "丹恒",
+    "丹恒•腾荒": "丹恒",
+    "长夜月": "三月七",
+    "「长夜月」": "三月七",
+    "空无的精魄": "三月七",
+    "心中的英雄": "白厄",
+    "卡厄斯兰那": "白厄",
+    "盗火行者": "白厄",
+    "羁客": "赛飞儿",
+    "「羁客」": "赛飞儿",
+    "赛白厄": "赛飞儿",
+    "「赛白厄」": "赛飞儿",
+    "吕枯耳戈斯": "来古士",
+    "赞达尔": "来古士",
+    "「赞达尔」": "来古士",
+    "赞达尔•壹•桑原": "来古士",
+    "大黑塔": "黑塔",
+    "黑塔人偶": "黑塔",
+    "「海瑟音」": "海瑟音",
+    "「三月七」": "三月七",
+    "学士": "那刻夏",
+    "织者": "阿格莱雅",
+    "君王": "万敌",
+    "长夜": "三月七",
+    "索拉比斯": "塞涅俄丝",
+    "露奈比斯": "塞涅俄丝",
+    "年幼的白厄": "白厄",
+    "幼年白厄": "白厄",
+    "空白的愿望": "白厄",
+    "金丝若虫": "阿格莱雅",
+    "「记忆的种子」": "昔涟",
+    "「记忆的幼芽」": "昔涟",
+    "「记忆的花」": "昔涟",
+    "「记忆的花蕾」": "昔涟",
+    "「另一位作者♪」": "昔涟"
+  },
+  "speaker_literal_map": {
+    "「往昔的涟漪」": {
+      "canonical": "昔涟",
+      "form": "往昔的涟漪"
+    },
+    "往昔的涟漪": {
+      "canonical": "昔涟",
+      "form": "往昔的涟漪"
+    },
+    "德谬歌": {
+      "canonical": "昔涟",
+      "form": "德谬歌"
+    },
+    "迷迷": {
+      "canonical": "昔涟",
+      "form": "迷迷"
+    },
+    "缇安": {
+      "canonical": "缇宝",
+      "form": "缇安"
+    },
+    "缇宁": {
+      "canonical": "缇宝",
+      "form": "缇宁"
+    },
+    "「门匠」": {
+      "canonical": "缇宝",
+      "form": "门匠"
+    },
+    "「丹枫」": {
+      "canonical": "丹恒",
+      "form": "丹枫"
+    },
+    "「长夜月」": {
+      "canonical": "三月七",
+      "form": "长夜月"
+    },
+    "「三月七」": {
+      "canonical": "三月七",
+      "form": "幻象"
+    },
+    "心中的英雄": {
+      "canonical": "白厄",
+      "form": "心中的英雄"
+    },
+    "卡厄斯兰那": {
+      "canonical": "白厄",
+      "form": "卡厄斯兰那"
+    },
+    "「赛白厄」": {
+      "canonical": "赛飞儿",
+      "form": "赛白厄"
+    },
+    "「羁客」": {
+      "canonical": "赛飞儿",
+      "form": "羁客"
+    },
+    "「冬霖爵」塞涅卡": {
+      "canonical": "塞涅卡",
+      "form": "冬霖爵"
+    },
+    "「吟风爵」维吉妮娅": {
+      "canonical": "维吉妮娅",
+      "form": "吟风爵"
+    },
+    "「赞达尔」": {
+      "canonical": "来古士",
+      "form": "赞达尔"
+    },
+    "大黑塔": {
+      "canonical": "黑塔",
+      "form": "大黑塔"
+    },
+    "黑塔人偶": {
+      "canonical": "黑塔",
+      "form": "黑塔人偶"
+    },
+    "「海瑟音」": {
+      "canonical": "海瑟音",
+      "form": "记忆形态"
+    },
+    "「死龙」玻吕刻斯": {
+      "canonical": "玻吕茜亚",
+      "form": "死龙"
+    },
+    "墨涅塔的幻影": {
+      "canonical": "墨涅塔",
+      "form": "幻影"
+    },
+    "来古士的记忆": {
+      "canonical": "来古士",
+      "form": "记忆形态"
+    },
+    "记忆中的那刻夏": {
+      "canonical": "那刻夏",
+      "form": "记忆形态"
+    },
+    "记忆中的风堇": {
+      "canonical": "风堇",
+      "form": "记忆形态"
+    },
+    "索拉比斯": {
+      "canonical": "塞涅俄丝",
+      "form": "索拉比斯"
+    },
+    "露奈比斯": {
+      "canonical": "塞涅俄丝",
+      "form": "露奈比斯"
+    },
+    "来古士之声": {
+      "canonical": "来古士",
+      "form": "之声"
+    },
+    "塞涅俄丝之声": {
+      "canonical": "塞涅俄丝",
+      "form": "之声"
+    },
+    "欧洛尼斯之声": {
+      "canonical": "欧洛尼斯",
+      "form": "之声"
+    },
+    "天空之声": {
+      "canonical": "塞涅俄丝",
+      "form": "之声",
+      "confidence": "confirmed",
+      "review_note": "3.3#08 上下文：露奈比斯同场问「你认为呢…塞涅俄丝？」，随后「天空之声」开口，风堇回「塞涅俄丝大人？」〔外部复核：结论成立〕"
+    },
+    "泰坦之声": {
+      "canonical": "generic_npc",
+      "form": "之声",
+      "review_note": "未指明具体泰坦的低语（3.0–3.4，35 条）〔外部复核：结论成立〕",
+      "confidence": "confirmed"
+    },
+    "祭典之声": {
+      "canonical": "generic_npc",
+      "form": "之声",
+      "review_note": "3.0#08 祭典仪式的群体唱和"
+    },
+    "少女的声音": {
+      "canonical": "generic_npc",
+      "form": "声音"
+    },
+    "「粉色」的声音": {
+      "canonical": "generic_npc",
+      "form": "声音"
+    },
+    "潮汐的声音": {
+      "canonical": "generic_npc",
+      "form": "声音"
+    },
+    "亡魂的声音": {
+      "canonical": "generic_npc",
+      "form": "声音"
+    },
+    "海瑟音的记忆": {
+      "canonical": "海瑟音",
+      "form": "记忆形态"
+    },
+    "记忆中的赛飞儿": {
+      "canonical": "赛飞儿",
+      "form": "记忆形态"
+    },
+    "记忆中的缇宝": {
+      "canonical": "缇宝",
+      "form": "记忆形态"
+    },
+    "记忆中的缇安": {
+      "canonical": "缇宝",
+      "form": "记忆形态"
+    },
+    "记忆中的缇宁": {
+      "canonical": "缇宝",
+      "form": "记忆形态"
+    },
+    "记忆中的阿格莱雅": {
+      "canonical": "阿格莱雅",
+      "form": "记忆形态"
+    },
+    "记忆中的万敌": {
+      "canonical": "万敌",
+      "form": "记忆形态"
+    },
+    "记忆中的昔涟": {
+      "canonical": "昔涟",
+      "form": "记忆形态"
+    },
+    "记忆中的来古士": {
+      "canonical": "来古士",
+      "form": "记忆形态"
+    },
+    "记忆中的露奈比斯": {
+      "canonical": "塞涅俄丝",
+      "form": "记忆形态"
+    },
+    "记忆中的索拉比斯": {
+      "canonical": "塞涅俄丝",
+      "form": "记忆形态"
+    },
+    "记忆中的丹恒": {
+      "canonical": "丹恒",
+      "form": "记忆形态"
+    },
+    "记忆中的三月七": {
+      "canonical": "三月七",
+      "form": "记忆形态"
+    },
+    "记忆中的遐蝶": {
+      "canonical": "遐蝶",
+      "form": "记忆形态"
+    },
+    "记忆中的幼年白厄": {
+      "canonical": "白厄",
+      "form": "记忆形态"
+    },
+    "记忆中的白厄": {
+      "canonical": "白厄",
+      "form": "记忆形态"
+    },
+    "记忆中的黑天鹅": {
+      "canonical": "黑天鹅",
+      "form": "记忆形态"
+    },
+    "记忆中的开拓者": {
+      "canonical": "开拓者",
+      "form": "记忆形态"
+    },
+    "记忆中的姬子": {
+      "canonical": "姬子",
+      "form": "记忆形态"
+    },
+    "记忆中的女孩": {
+      "canonical": "generic_npc",
+      "form": "记忆形态"
+    },
+    "记忆中的泰坦眷属": {
+      "canonical": "generic_npc",
+      "form": "记忆形态"
+    },
+    "黑塔的投影": {
+      "canonical": "黑塔",
+      "form": "投影"
+    },
+    "螺丝咕姆的投影": {
+      "canonical": "螺丝咕姆",
+      "form": "投影"
+    },
+    "先王欧利庞": {
+      "canonical": "欧利庞",
+      "form": "称号形态"
+    },
+    "元老凯妮斯": {
+      "canonical": "凯妮斯",
+      "form": "称号形态"
+    },
+    "「断锋爵」拉比努斯": {
+      "canonical": "拉比努斯",
+      "form": "称号形态"
+    },
+    "「曳石爵」阿波罗尼": {
+      "canonical": "阿波罗尼",
+      "form": "称号形态"
+    },
+    "「贼灵」巴特鲁斯": {
+      "canonical": "巴特鲁斯",
+      "form": "称号形态"
+    },
+    "「长老」阿蒙内特": {
+      "canonical": "阿蒙内特",
+      "form": "称号形态"
+    },
+    "「开山者」吉奥刻勒斯": {
+      "canonical": "吉奥刻勒斯",
+      "form": "称号形态"
+    },
+    "「学士」": {
+      "canonical": "那刻夏",
+      "form": "称号形态"
+    },
+    "「织者」": {
+      "canonical": "阿格莱雅",
+      "form": "称号形态"
+    },
+    "「君王」": {
+      "canonical": "万敌",
+      "form": "称号形态",
+      "confidence": "medium-high",
+      "review_note": "3.4#03 塔罗牌场景：「君王」牌与「织者」/「门匠」/「羁客」并列为黄金裔牌面；台词「就让垂死的狮子独自走上他的末路」对应悬锋万敌"
+    },
+    "「长夜」": {
+      "canonical": "三月七",
+      "form": "长夜月",
+      "confidence": "medium-high",
+      "review_note": "3.6#01 长夜月初登场，紧接「「三月七」」说话人，台词为「长夜/忘却」语域"
+    },
+    "「盗火行者」": {
+      "canonical": "白厄",
+      "form": "盗火行者"
+    },
+    "年幼的白厄": {
+      "canonical": "白厄",
+      "form": "幼年形态"
+    },
+    "幼年白厄": {
+      "canonical": "白厄",
+      "form": "幼年形态"
+    },
+    "「记忆的种子」": {
+      "canonical": "昔涟",
+      "form": "记忆形态",
+      "stage": "德谬歌(种子)",
+      "confidence": "confirmed",
+      "review_note": "3.7#03 记忆成长四阶段之一，与「「记忆的幼芽」/「记忆的花」」同场景〔外部复核：结论成立〕"
+    },
+    "「记忆的幼芽」": {
+      "canonical": "昔涟",
+      "form": "记忆形态",
+      "stage": "德谬歌(幼芽)",
+      "confidence": "confirmed",
+      "review_note": "〔外部复核：结论成立〕"
+    },
+    "「记忆的花」": {
+      "canonical": "昔涟",
+      "form": "记忆形态",
+      "stage": "迷迷(成长期)",
+      "confidence": "confirmed",
+      "review_note": "〔外部复核：结论成立〕"
+    },
+    "「记忆的花蕾」": {
+      "canonical": "昔涟",
+      "form": "记忆形态",
+      "stage": "花蕾",
+      "confidence": "confirmed",
+      "review_note": "3.7#05 台词「是我呀，开拓者。是人家变化太大，你认不出来了？」为昔涟/迷迷自称〔外部复核：结论成立〕"
+    },
+    "「另一位作者♪」": {
+      "canonical": "昔涟",
+      "form": "另一位作者",
+      "confidence": "confirmed",
+      "review_note": "3.7#07 三月七说「以昔涟小姐的口吻来写」，随后该标签以 ♪ 语体叙述〔外部复核：结论成立〕"
+    },
+    "空白的愿望": {
+      "canonical": "白厄",
+      "form": "空白的愿望",
+      "confidence": "confirmed",
+      "review_note": "3.7#04 紧接那刻夏「那『空白的造像』…终于自由了」，台词「我的愿望…就是实现大家的愿望」与幼年白厄一致〔外部复核：结论成立〕"
+    },
+    "金丝若虫": {
+      "canonical": "阿格莱雅",
+      "form": "金丝若虫",
+      "confidence": "medium-high",
+      "review_note": "3.3#03 赛飞儿当场称其「裁缝女」（阿格莱雅的别称），并以「赛法利娅」回敬"
+    },
+    "深海的女王": {
+      "canonical": "法吉娜",
+      "form": "深海的女王",
+      "confidence": "high",
+      "review_note": "3.5#05 海列屈拉称「我的母亲，…海洋之泰坦，高贵的女王」；台词「再深邃的酒杯也终会满溢」对应「满溢之杯」"
+    },
+    "尼卡多利的残骸": {
+      "canonical": "尼卡多利",
+      "form": "残骸",
+      "confidence": "confirmed",
+      "review_note": "〔外部复核：结论成立〕"
+    },
+    "丹恒？": {
+      "canonical": "丹恒",
+      "form": null
+    },
+    "三月七！": {
+      "canonical": "三月七",
+      "form": null
+    },
+    "三月七…": {
+      "canonical": "三月七",
+      "form": null
+    },
+    "赛飞儿？": {
+      "canonical": "赛飞儿",
+      "form": null
+    },
+    "毁灭的容器，卡厄斯兰那": {
+      "canonical": "白厄",
+      "form": "毁灭的容器"
+    },
+    "永夜之帷，三月七": {
+      "canonical": "三月七",
+      "form": "永夜之帷"
+    },
+    "天谴之矛，迈德漠斯": {
+      "canonical": "万敌",
+      "form": "天谴之矛"
+    },
+    "黄金之茧，阿格莱雅": {
+      "canonical": "阿格莱雅",
+      "form": "黄金之茧"
+    },
+    "万径之门，缇安": {
+      "canonical": "缇宝",
+      "form": "缇安",
+      "review_note": "称号前缀「万径之门」剥离后本体为分身缇安，form 保留分身名"
+    },
+    "万径之门，缇宁": {
+      "canonical": "缇宝",
+      "form": "缇宁",
+      "review_note": "称号前缀「万径之门」剥离后本体为分身缇宁，form 保留分身名"
+    },
+    "凯撒的军团和人民": {
+      "canonical": "刻律德菈",
+      "form": "复合",
+      "review_note": "3.5 集合呼声（「我们——即是浪潮！」），主体为凯撒/刻律德菈"
+    },
+    "开拓者&昔涟": {
+      "canonical": "开拓者",
+      "form": "开拓者&昔涟",
+      "composite_parts": [
+        "开拓者",
+        "昔涟"
+      ]
+    },
+    "风堇&缇宁": {
+      "canonical": "风堇",
+      "form": "风堇&缇宁",
+      "composite_parts": [
+        "风堇",
+        "缇宝"
+      ]
+    },
+    "缇宁&白厄": {
+      "canonical": "缇宝",
+      "form": "缇宁&白厄",
+      "composite_parts": [
+        "缇宝",
+        "白厄"
+      ]
+    },
+    "缇宁&开拓者&迷迷": {
+      "canonical": "缇宝",
+      "form": "缇宁&开拓者&迷迷",
+      "composite_parts": [
+        "缇宝",
+        "开拓者",
+        "昔涟"
+      ]
+    },
+    "白厄&盗火行者": {
+      "canonical": "白厄",
+      "form": "白厄&盗火行者",
+      "composite_parts": [
+        "白厄",
+        "白厄"
+      ]
+    },
+    "开拓者&丹恒": {
+      "canonical": "开拓者",
+      "form": "开拓者&丹恒",
+      "composite_parts": [
+        "开拓者",
+        "丹恒"
+      ]
+    },
+    "阿格莱雅&白厄": {
+      "canonical": "阿格莱雅",
+      "form": "阿格莱雅&白厄",
+      "composite_parts": [
+        "阿格莱雅",
+        "白厄"
+      ]
+    },
+    "那刻夏&白厄": {
+      "canonical": "那刻夏",
+      "form": "那刻夏&白厄",
+      "composite_parts": [
+        "那刻夏",
+        "白厄"
+      ]
+    },
+    "那刻夏&瑟希斯": {
+      "canonical": "那刻夏",
+      "form": "那刻夏&瑟希斯",
+      "composite_parts": [
+        "那刻夏",
+        "瑟希斯"
+      ]
+    },
+    "白厄&幼年白厄": {
+      "canonical": "白厄",
+      "form": "白厄&幼年白厄",
+      "composite_parts": [
+        "白厄",
+        "白厄"
+      ]
+    },
+    "白厄&缇宁": {
+      "canonical": "白厄",
+      "form": "白厄&缇宁",
+      "composite_parts": [
+        "白厄",
+        "缇宝"
+      ]
+    },
+    "风堇&丹恒": {
+      "canonical": "风堇",
+      "form": "风堇&丹恒",
+      "composite_parts": [
+        "风堇",
+        "丹恒"
+      ]
+    },
+    "「侍女」&「医师」": {
+      "canonical": "generic_npc",
+      "form": "「侍女」&「医师」",
+      "composite_parts": [
+        "generic_npc",
+        "generic_npc"
+      ]
+    },
+    "克拉特鲁斯与他的副手": {
+      "canonical": "克拉特鲁斯",
+      "form": "克拉特鲁斯与他的副手",
+      "composite_parts": [
+        "克拉特鲁斯",
+        "generic_npc"
+      ]
+    },
+    "祭司的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "母亲的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "山之民的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "探险家的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "男孩的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "女孩的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "飞行员的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "骇客的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "医疗兵的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "游侠的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "指挥官的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "智械的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "职员的残忆": {
+      "canonical": "generic_npc",
+      "form": "残忆"
+    },
+    "士兵的回响": {
+      "canonical": "generic_npc",
+      "form": "回响"
+    },
+    "英雄的回响": {
+      "canonical": "generic_npc",
+      "form": "回响"
+    },
+    "贵族的回响": {
+      "canonical": "generic_npc",
+      "form": "回响"
+    },
+    "工匠的回响": {
+      "canonical": "generic_npc",
+      "form": "回响"
+    },
+    "祭司的回响": {
+      "canonical": "generic_npc",
+      "form": "回响"
+    },
+    "谋臣的回响": {
+      "canonical": "generic_npc",
+      "form": "回响"
+    },
+    "救世的回响": {
+      "canonical": "generic_npc",
+      "form": "回响"
+    },
+    "萨姆": {
+      "canonical": "流萤",
+      "form": "萨姆",
+      "confidence": "confirmed",
+      "review_note": "萨姆为流萤的装甲形态，同一实体"
+    },
+    "第一面镜": {
+      "canonical": "面镜",
+      "form": "第一面镜",
+      "confidence": "confirmed",
+      "review_note": "狭间镜子构装体，按 form 区分，不拆 canonical"
+    },
+    "第二面镜": {
+      "canonical": "面镜",
+      "form": "第二面镜",
+      "confidence": "confirmed",
+      "review_note": "狭间镜子构装体，按 form 区分，不拆 canonical"
+    },
+    "第三面镜": {
+      "canonical": "面镜",
+      "form": "第三面镜",
+      "confidence": "confirmed",
+      "review_note": "狭间镜子构装体，按 form 区分，不拆 canonical"
+    },
+    "第四面镜": {
+      "canonical": "面镜",
+      "form": "第四面镜",
+      "confidence": "confirmed",
+      "review_note": "狭间镜子构装体，按 form 区分，不拆 canonical"
+    },
+    "刻法勒": {
+      "canonical": "卡厄斯",
+      "form": "刻法勒",
+      "confidence": "medium",
+      "review_note": "现世刻法勒长眠，speaker 均为前代/记忆；沿用 v1 判定"
+    },
+    "古怪的弈者": {
+      "canonical": "来古士",
+      "form": "古怪的弈者",
+      "confidence": "medium",
+      "review_note": "3.5#07 刻律德菈临终对弈，幕后为来古士（吕枯耳戈斯）"
+    }
+  },
+  "pattern_rules": {
+    "schema_version": 1,
+    "note": "通用「模式归一」规则（供下一版归一管线实现）。现有 tools/normalize-corpus.js 不读本字段；v2 已把所有观测到的实例逐条写进 speaker_literal_map（带 form），因此现管线的命中结果与实现本规则一致。",
+    "application": {
+      "stage": "core-6",
+      "order": "在第 1–5 步（literal / speaker_aliases / 剥前缀 / 去引号 / form_map）全部未命中后按 priority 升序逐条尝试；命中即停。title_prefix_* 与 title_peerage 三条与 core-3（title_prefix_patterns）语义等价，可提前到第 3 步。",
+      "base_lookup": "捕获串（capture 指定的分组）按 core 1–5 与 canonical 键兜底解析；解析不出时，若捕获串是 generic_npc.speaker_aliases 成员则 canonical=generic_npc，否则本条规则不命中（回退 core-8/9）。",
+      "form_policy": "命中后 form 取规则声明的值；若捕获串本身在 forms / form_map / literal 里已有形态登记，优先用该形态名（见 万径之门，缇安 的花名条目）。"
+    },
+    "rules": [
+      {
+        "id": "voice_of",
+        "priority": 60,
+        "pattern": "^(.+?)之声$",
+        "capture": 1,
+        "form": "之声",
+        "guards": [
+          "捕获串必须能解析为角色或 generic_npc"
+        ],
+        "examples": [
+          "来古士之声→来古士",
+          "塞涅俄丝之声→塞涅俄丝",
+          "欧洛尼斯之声→欧洛尼斯",
+          "泰坦之声→generic_npc",
+          "祭典之声→generic_npc"
+        ],
+        "records": 205,
+        "records_total": 213,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）",
+        "note": "天空之声(9) 由 literal 归 塞涅俄丝；命途之声(4)/回忆之声(4) 由别名归 命途之声/generic_npc，均不依赖本规则。"
+      },
+      {
+        "id": "voice_inset",
+        "priority": 61,
+        "pattern": "^(.+?)的声音$",
+        "capture": 1,
+        "form": "声音",
+        "guards": [
+          "捕获串必须能解析为 generic_npc（「少女」「粉色」「潮汐」「亡魂」均为描述性前缀）"
+        ],
+        "examples": [
+          "少女的声音→generic_npc",
+          "「粉色」的声音→generic_npc",
+          "潮汐的声音→generic_npc",
+          "亡魂的声音→generic_npc"
+        ],
+        "records": 37,
+        "records_total": 37,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "memory_inside",
+        "priority": 62,
+        "pattern": "^记忆中的(.+)$",
+        "capture": 1,
+        "form": "记忆形态",
+        "guards": [
+          "捕获串必须能解析；记忆中的幼年白厄 先于 young_form 命中"
+        ],
+        "examples": [
+          "记忆中的赛飞儿",
+          "记忆中的缇宝",
+          "记忆中的缇安→缇宝",
+          "记忆中的女孩→generic_npc"
+        ],
+        "records": 136,
+        "records_total": 168,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "memory_owned",
+        "priority": 63,
+        "pattern": "^(.+?)的记忆$",
+        "capture": 1,
+        "form": "记忆形态",
+        "examples": [
+          "海瑟音的记忆→海瑟音",
+          "来古士的记忆→来古士"
+        ],
+        "records": 23,
+        "records_total": 37,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "projection",
+        "priority": 64,
+        "pattern": "^(.+?)的投影$",
+        "capture": 1,
+        "form": "投影",
+        "examples": [
+          "黑塔的投影",
+          "螺丝咕姆的投影"
+        ],
+        "records": 26,
+        "records_total": 26,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "phantom",
+        "priority": 65,
+        "pattern": "^(.+?)的幻影$",
+        "capture": 1,
+        "form": "幻影",
+        "examples": [
+          "墨涅塔的幻影"
+        ],
+        "records": 0,
+        "records_total": 4,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "relic",
+        "priority": 66,
+        "pattern": "^(.+?)的残忆$",
+        "capture": 1,
+        "form": "残忆",
+        "guards": [
+          "基础多为泛称（母亲/祭司/士兵…）→ generic_npc"
+        ],
+        "examples": [
+          "祭司的残忆→generic_npc",
+          "飞行员的残忆→generic_npc"
+        ],
+        "records": 17,
+        "records_total": 17,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "echo",
+        "priority": 67,
+        "pattern": "^(.+?)的回响$",
+        "capture": 1,
+        "form": "回响",
+        "guards": [
+          "基础多为泛称（士兵/英雄/贵族…）→ generic_npc"
+        ],
+        "examples": [
+          "士兵的回响→generic_npc",
+          "救世的回响→generic_npc"
+        ],
+        "records": 20,
+        "records_total": 55,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "remnant",
+        "priority": 68,
+        "pattern": "^(.+?)的残骸$",
+        "capture": 1,
+        "form": "残骸",
+        "examples": [
+          "尼卡多利的残骸→尼卡多利"
+        ],
+        "records": 3,
+        "records_total": 3,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "young_form",
+        "priority": 69,
+        "pattern": "^(?:年幼的|幼年)(.+)$",
+        "capture": 1,
+        "form": "幼年形态",
+        "examples": [
+          "年幼的白厄",
+          "幼年白厄"
+        ],
+        "records": 13,
+        "records_total": 17,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）",
+        "note": "年幼的女孩(2)/年幼的男孩(2) 命中 generic_npc 别名池，不依赖本规则。"
+      },
+      {
+        "id": "title_prefix_xianwang",
+        "priority": 30,
+        "pattern": "^先王(.+)$",
+        "capture": 1,
+        "form": "称号形态",
+        "examples": [
+          "先王欧利庞→欧利庞"
+        ],
+        "records": 24,
+        "records_total": 24,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "title_prefix_yuanlao",
+        "priority": 31,
+        "pattern": "^元老(.+)$",
+        "capture": 1,
+        "form": "称号形态",
+        "guards": [
+          "不能把「元老院议员…」误剥：剥后必须能解析"
+        ],
+        "examples": [
+          "元老凯妮斯→凯妮斯"
+        ],
+        "records": 15,
+        "records_total": 16,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "title_peerage",
+        "priority": 32,
+        "pattern": "^「([^」]{1,6}爵)」(.+)$",
+        "capture": 2,
+        "form": "称号形态",
+        "examples": [
+          "「断锋爵」拉比努斯",
+          "「曳石爵」阿波罗尼",
+          "「冬霖爵」塞涅卡",
+          "「吟风爵」维吉妮娅"
+        ],
+        "records": 87,
+        "records_total": 168,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "title_bracket_short",
+        "priority": 33,
+        "pattern": "^「(.{1,6})」$",
+        "capture": 1,
+        "form": "称号形态",
+        "guards": [
+          "仅当捕获串本身不是 canonical 名时才标记 form=称号形态（「符玄」这类只是引号包裹，按 core-4 归一并保留 form=null）"
+        ],
+        "examples": [
+          "「学士」→那刻夏",
+          "「织者」→阿格莱雅",
+          "「君王」→万敌",
+          "「长夜」→三月七（form=长夜月）"
+        ],
+        "records": 36,
+        "records_total": 1032,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）",
+        "note": "仅 36 条需要本规则（「学士」/「织者」/「君王」/「长夜」）；其余 996 条由 core-4「去成对引号」+别名/literal 处理。"
+      },
+      {
+        "id": "composite_multi",
+        "priority": 80,
+        "pattern": "^(.+?)[&＆](.+)$",
+        "capture": 1,
+        "form": "复合（form 写原始标签，如 开拓者&昔涟）",
+        "composite": true,
+        "guards": [
+          "多说话人：canonical 取第一个可解析成分；composite_parts 记录全部成分 canonical；下游建议拆成多值 speaker 并保留 speaker_raw"
+        ],
+        "examples": [
+          "开拓者&昔涟",
+          "缇宁&白厄→缇宝",
+          "风堇&丹恒"
+        ],
+        "records": 25,
+        "records_total": 25,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）",
+        "note": "& 复合共 25 条；另有「克拉特鲁斯与他的副手」1 条同类（无 & 分隔符），合计 composite 多说话人 26 条。"
+      },
+      {
+        "id": "composite_descriptor",
+        "priority": 81,
+        "pattern": "^(.+?)[，,](.+)$",
+        "capture": 2,
+        "form": "捕获串2 的 form（当前均为称号/容器前缀 → form=前缀原文，如 永夜之帷 / 毁灭的容器 / 天谴之矛 / 黄金之茧）",
+        "composite": true,
+        "guards": [
+          "仅当第 2 段能解析为角色；第 1 段（称号/容器/前缀）写入 form"
+        ],
+        "examples": [
+          "永夜之帷，三月七→三月七",
+          "毁灭的容器，卡厄斯兰那→白厄",
+          "天谴之矛，迈德漠斯→万敌",
+          "黄金之茧，阿格莱雅→阿格莱雅",
+          "万径之门，缇安→缇宝（form=缇安）"
+        ],
+        "records": 19,
+        "records_total": 21,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      },
+      {
+        "id": "strip_tail_punct",
+        "priority": 90,
+        "pattern": "^(.+?)[！!？?…。，、～~]+$",
+        "capture": 1,
+        "form": null,
+        "examples": [
+          "三月七！",
+          "三月七…",
+          "丹恒？",
+          "赛飞儿？"
+        ],
+        "records": 15,
+        "records_total": 24,
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+      }
+    ],
+    "generic_base_terms": {
+      "note": "这些基础词本身不是角色；当模式规则的捕获串不命中任何 canonical 且属于本表时，canonical=generic_npc。用于让 X之声/X的残忆/X的回响/X的声音 这类泛称模式可通用实现。",
+      "terms": [
+        "泰坦",
+        "祭典",
+        "少女",
+        "粉色",
+        "潮汐",
+        "亡魂",
+        "救世",
+        "士兵",
+        "英雄",
+        "贵族",
+        "工匠",
+        "祭司",
+        "谋臣",
+        "母亲",
+        "山之民",
+        "探险家",
+        "男孩",
+        "女孩",
+        "飞行员",
+        "骇客",
+        "医疗兵",
+        "游侠",
+        "指挥官",
+        "智械",
+        "职员",
+        "回忆"
+      ]
+    }
+  },
+  "composite_rules": {
+    "schema_version": 1,
+    "note": "复合说话人标签的处理口径。v2 已把全部观测实例写进 speaker_literal_map（form 记原始标签/前缀），现管线可直接消费；本字段供下游做通用拆分。",
+    "separators": {
+      "multi_speaker": [
+        "&",
+        "＆"
+      ],
+      "descriptor": [
+        "，",
+        ","
+      ],
+      "with_attendant": [
+        "与他的副手"
+      ]
+    },
+    "policy": {
+      "multi_speaker": {
+        "canonical": "取第一个可解析成分的 canonical",
+        "form": "原始复合标签（如 开拓者&昔涟）",
+        "extra": "composite_kind=multi_speaker；composite_parts=各成分 canonical 数组；下游建议同时拆成多值 speaker（speaker_parts）并保留 speaker_raw",
+        "records": 26,
+        "speakers": 14
+      },
+      "descriptor": {
+        "canonical": "取第 2 段（本体）的 canonical",
+        "form": "第 1 段（称号/容器/前缀）原文，如 永夜之帷 / 毁灭的容器 / 天谴之矛 / 黄金之茧",
+        "extra": "composite_kind=title_descriptor；若第 1 段是泰坦称号而第 2 段是分身（万径之门，缇安），form 记分身名",
+        "records": 19,
+        "speakers": 6
+      }
+    },
+    "observed": [
+      {
+        "label": "开拓者&昔涟",
+        "count": 6,
+        "version": "3.7",
+        "kind": "multi_speaker",
+        "canonical": "开拓者",
+        "form": "开拓者&昔涟",
+        "composite_parts": [
+          "开拓者",
+          "昔涟"
+        ]
+      },
+      {
+        "label": "风堇&缇宁",
+        "count": 3,
+        "version": "3.3",
+        "kind": "multi_speaker",
+        "canonical": "风堇",
+        "form": "风堇&缇宁",
+        "composite_parts": [
+          "风堇",
+          "缇宝"
+        ]
+      },
+      {
+        "label": "缇宁&白厄",
+        "count": 3,
+        "version": "3.0",
+        "kind": "multi_speaker",
+        "canonical": "缇宝",
+        "form": "缇宁&白厄",
+        "composite_parts": [
+          "缇宝",
+          "白厄"
+        ]
+      },
+      {
+        "label": "缇宁&开拓者&迷迷",
+        "count": 3,
+        "version": "3.2",
+        "kind": "multi_speaker",
+        "canonical": "缇宝",
+        "form": "缇宁&开拓者&迷迷",
+        "composite_parts": [
+          "缇宝",
+          "开拓者",
+          "昔涟"
+        ]
+      },
+      {
+        "label": "白厄&盗火行者",
+        "count": 2,
+        "version": "3.4",
+        "kind": "multi_speaker",
+        "canonical": "白厄",
+        "form": "白厄&盗火行者",
+        "composite_parts": [
+          "白厄",
+          "白厄"
+        ]
+      },
+      {
+        "label": "开拓者&丹恒",
+        "count": 1,
+        "version": "3.0",
+        "kind": "multi_speaker",
+        "canonical": "开拓者",
+        "form": "开拓者&丹恒",
+        "composite_parts": [
+          "开拓者",
+          "丹恒"
+        ]
+      },
+      {
+        "label": "阿格莱雅&白厄",
+        "count": 1,
+        "version": "3.3",
+        "kind": "multi_speaker",
+        "canonical": "阿格莱雅",
+        "form": "阿格莱雅&白厄",
+        "composite_parts": [
+          "阿格莱雅",
+          "白厄"
+        ]
+      },
+      {
+        "label": "那刻夏&白厄",
+        "count": 1,
+        "version": "3.4",
+        "kind": "multi_speaker",
+        "canonical": "那刻夏",
+        "form": "那刻夏&白厄",
+        "composite_parts": [
+          "那刻夏",
+          "白厄"
+        ]
+      },
+      {
+        "label": "那刻夏&瑟希斯",
+        "count": 1,
+        "version": "3.2",
+        "kind": "multi_speaker",
+        "canonical": "那刻夏",
+        "form": "那刻夏&瑟希斯",
+        "composite_parts": [
+          "那刻夏",
+          "瑟希斯"
+        ]
+      },
+      {
+        "label": "白厄&幼年白厄",
+        "count": 1,
+        "version": "3.4",
+        "kind": "multi_speaker",
+        "canonical": "白厄",
+        "form": "白厄&幼年白厄",
+        "composite_parts": [
+          "白厄",
+          "白厄"
+        ]
+      },
+      {
+        "label": "白厄&缇宁",
+        "count": 1,
+        "version": "3.0",
+        "kind": "multi_speaker",
+        "canonical": "白厄",
+        "form": "白厄&缇宁",
+        "composite_parts": [
+          "白厄",
+          "缇宝"
+        ]
+      },
+      {
+        "label": "风堇&丹恒",
+        "count": 1,
+        "version": "3.2",
+        "kind": "multi_speaker",
+        "canonical": "风堇",
+        "form": "风堇&丹恒",
+        "composite_parts": [
+          "风堇",
+          "丹恒"
+        ]
+      },
+      {
+        "label": "「侍女」&「医师」",
+        "count": 1,
+        "version": "3.4",
+        "kind": "multi_speaker",
+        "canonical": "generic_npc",
+        "form": "「侍女」&「医师」",
+        "composite_parts": [
+          "generic_npc",
+          "generic_npc"
+        ]
+      },
+      {
+        "label": "克拉特鲁斯与他的副手",
+        "count": 1,
+        "version": "3.3",
+        "kind": "multi_speaker",
+        "canonical": "克拉特鲁斯",
+        "form": "克拉特鲁斯与他的副手",
+        "composite_parts": [
+          "克拉特鲁斯",
+          "generic_npc"
+        ]
+      },
+      {
+        "label": "永夜之帷，三月七",
+        "count": 8,
+        "version": "3.7",
+        "kind": "title_descriptor",
+        "canonical": "三月七",
+        "form": "永夜之帷"
+      },
+      {
+        "label": "毁灭的容器，卡厄斯兰那",
+        "count": 6,
+        "version": "3.7",
+        "kind": "title_descriptor",
+        "canonical": "白厄",
+        "form": "毁灭的容器"
+      },
+      {
+        "label": "天谴之矛，迈德漠斯",
+        "count": 2,
+        "version": "3.7",
+        "kind": "title_descriptor",
+        "canonical": "万敌",
+        "form": "天谴之矛"
+      },
+      {
+        "label": "黄金之茧，阿格莱雅",
+        "count": 1,
+        "version": "3.7",
+        "kind": "title_descriptor",
+        "canonical": "阿格莱雅",
+        "form": "黄金之茧"
+      },
+      {
+        "label": "万径之门，缇安",
+        "count": 1,
+        "version": "3.7",
+        "kind": "title_descriptor",
+        "canonical": "缇宝",
+        "form": "缇安"
+      },
+      {
+        "label": "万径之门，缇宁",
+        "count": 1,
+        "version": "3.7",
+        "kind": "title_descriptor",
+        "canonical": "缇宝",
+        "form": "缇宁"
+      },
+      {
+        "label": "凯撒的军团和人民",
+        "count": 1,
+        "version": "3.5",
+        "kind": "collective",
+        "canonical": "刻律德菈",
+        "form": "复合"
+      }
+    ]
+  },
+  "address_scan_index": {
+    "伙伴": [
+      "开拓者",
+      "白厄",
+      "昔涟"
+    ],
+    "搭档": [
+      "开拓者"
+    ],
+    "心中的英雄": [
+      "白厄",
+      "开拓者"
+    ],
+    "救世主": [
+      "白厄",
+      "开拓者"
+    ],
+    "开拓者阁下": [
+      "开拓者"
+    ],
+    "异乡人": [
+      "开拓者"
+    ],
+    "天外的救世主": [
+      "开拓者"
+    ],
+    "天外的旅者": [
+      "开拓者"
+    ],
+    "天外的贵客": [
+      "开拓者"
+    ],
+    "主爵": [
+      "开拓者"
+    ],
+    "小灰": [
+      "开拓者"
+    ],
+    "小小灰": [
+      "开拓者"
+    ],
+    "灰宝": [
+      "开拓者"
+    ],
+    "灰子": [
+      "开拓者"
+    ],
+    "小灰鱼": [
+      "开拓者"
+    ],
+    "小家伙": [
+      "开拓者"
+    ],
+    "小瞌睡虫": [
+      "开拓者"
+    ],
+    "老日": [
+      "星期日"
+    ],
+    "小白": [
+      "白厄"
+    ],
+    "小敌": [
+      "万敌"
+    ],
+    "阿雅": [
+      "阿格莱雅"
+    ],
+    "阿宝": [
+      "阿格莱雅"
+    ],
+    "阿蝶": [
+      "遐蝶"
+    ],
+    "吾师": [
+      "缇宝"
+    ],
+    "小风堇": [
+      "风堇"
+    ],
+    "小猫鱼": [
+      "赛飞儿"
+    ],
+    "金鳟": [
+      "阿格莱雅"
+    ],
+    "摇光爵": [
+      "风堇"
+    ],
+    "金织爵": [
+      "阿格莱雅"
+    ],
+    "命运爵": [
+      "缇宝"
+    ],
+    "捷足爵": [
+      "赛飞儿"
+    ],
+    "剑旗爵": [
+      "海瑟音"
+    ],
+    "小皇冠": [
+      "刻律德菈"
+    ],
+    "小凯撒": [
+      "刻律德菈"
+    ],
+    "小跟班": [
+      "昔涟"
+    ],
+    "丹宝": [
+      "丹恒"
+    ],
+    "青色的龙鱼": [
+      "丹恒"
+    ],
+    "金色的龙鱼": [
+      "丹恒"
+    ],
+    "龙裔": [
+      "丹恒"
+    ],
+    "智械哥": [
+      "螺丝咕姆"
+    ],
+    "姬子阿姐": [
+      "姬子"
+    ],
+    "闷葫芦": [
+      "丹恒"
+    ],
+    "裁缝女": [
+      "阿格莱雅"
+    ],
+    "织者": [
+      "阿格莱雅"
+    ]
+  },
+  "titan_canonical": {
+    "尼卡多利": {
+      "title": "「天谴之矛」",
+      "heir": "万敌",
+      "canonical": "尼卡多利",
+      "speaks_in_corpus": true,
+      "speaker_records": 3
+    },
+    "塞纳托斯": {
+      "title": "「灰黯之手」",
+      "heir": "遐蝶",
+      "canonical": "塞纳托斯",
+      "speaks_in_corpus": true,
+      "speaker_records": 53
+    },
+    "墨涅塔": {
+      "title": "「黄金之茧」",
+      "heir": "阿格莱雅",
+      "canonical": "墨涅塔",
+      "speaks_in_corpus": true,
+      "speaker_records": 4,
+      "note": "4 条均为「墨涅塔的幻影」标签（v1 literal 已命中），v2 补 canonical 条目"
+    },
+    "瑟希斯": {
+      "title": "「裂分之枝」",
+      "heir": "那刻夏",
+      "canonical": "瑟希斯",
+      "speaks_in_corpus": true,
+      "speaker_records": 157
+    },
+    "扎格列斯": {
+      "title": "「翻飞之币」",
+      "heir": "赛飞儿",
+      "canonical": "扎格列斯",
+      "speaks_in_corpus": false,
+      "speaker_records": 0
+    },
+    "雅努斯": {
+      "title": "「万径之门」",
+      "heir": "缇宝",
+      "canonical": "雅努斯",
+      "speaks_in_corpus": true,
+      "speaker_records": 11
+    },
+    "欧洛尼斯": {
+      "title": "「永夜之帷」",
+      "heir": "昔涟",
+      "canonical": "欧洛尼斯",
+      "speaks_in_corpus": true,
+      "speaker_records": 68
+    },
+    "刻法勒": {
+      "title": "「全世之座」",
+      "heir": "白厄/开拓者",
+      "canonical": "刻法勒",
+      "speaks_in_corpus": false,
+      "speaker_records": 0,
+      "note": "「刻法勒」作为 speaker 归 卡厄斯（v1 别名索引先到先得）"
+    },
+    "艾格勒": {
+      "title": "「晨昏之眼」",
+      "heir": "风堇",
+      "canonical": "艾格勒",
+      "speaks_in_corpus": false,
+      "speaker_records": 0
+    },
+    "吉奥里亚": {
+      "title": "「磐岩之脊」",
+      "heir": "荒笛/丹恒",
+      "canonical": "吉奥里亚",
+      "speaks_in_corpus": false,
+      "speaker_records": 0
+    },
+    "法吉娜": {
+      "title": "「满溢之杯」",
+      "heir": "海瑟音",
+      "canonical": "法吉娜",
+      "speaks_in_corpus": true,
+      "speaker_records": 5,
+      "note": "以「深海的女王」标签出现"
+    },
+    "塔兰顿": {
+      "title": "「公正之秤」",
+      "heir": "刻律德菈",
+      "canonical": "塔兰顿",
+      "speaks_in_corpus": false,
+      "speaker_records": 0
+    },
+    "德谬歌": {
+      "title": "「翁法罗斯之心」",
+      "heir": "昔涟",
+      "canonical": "德谬歌",
+      "speaks_in_corpus": false,
+      "speaker_records": 0,
+      "note": "「德谬歌」作为 speaker 归 昔涟（form_map 先于 canonical 键）"
+    }
+  },
+  "npc_registry": {
+    "note": "v2 新增的说话实体登记总览（按 type 分组）。逐条 record 数见 docs/speaker-alias-changes.md。",
+    "source": "data/reports/unmatched-speakers.md（434 个未归一 speaker）+ 语料上下文抽查",
+    "buckets": {
+      "titan": {
+        "entries": 13,
+        "added_in_v2": 13,
+        "speaking_in_corpus": [
+          "瑟希斯",
+          "欧洛尼斯",
+          "塞纳托斯",
+          "雅努斯",
+          "尼卡多利",
+          "墨涅塔",
+          "法吉娜"
+        ],
+        "note": "泰坦单列 canonical（type=titan），不与对应黄金裔合并"
+      },
+      "named_npc": {
+        "entries": 42,
+        "added_in_v2": 42,
+        "note": "翁法罗斯具名 NPC/构装体/奇美拉，各自单列，不做跨实体合并"
+      },
+      "system": {
+        "entries": 4,
+        "added_in_v2": 4,
+        "names": [
+          "权杖δ-me13",
+          "命途之声",
+          "古怪的显示器",
+          "识刻锚"
+        ]
+      },
+      "cameo": {
+        "entries": 26,
+        "added_in_v2": 26,
+        "names": [
+          "卡芙卡",
+          "景元",
+          "流萤",
+          "银狼",
+          "砂金",
+          "波提欧",
+          "翡翠",
+          "符玄",
+          "刃",
+          "飞霄",
+          "布洛妮娅",
+          "应星",
+          "花火",
+          "镜流",
+          "萨姆",
+          "爻光",
+          "知更鸟",
+          "希露瓦",
+          "希儿",
+          "阮•梅",
+          "托帕",
+          "原始博士",
+          "乱破",
+          "寂静领主",
+          "信使",
+          "阿茶"
+        ]
+      },
+      "generic_npc": {
+        "entries": 1,
+        "label_count": 246,
+        "note": "246 个泛称/职业/群体/描述性标签统一归 generic_npc；其中 200 个来自报告 §3 generic_npc 候选（201 减去实指莫忒丝的「温柔的母亲」），46 个来自报告 §4 待人工里复核为描述性/群体标签"
+      }
+    }
+  },
+  "meme_terms": {
+    "type": "meme",
+    "note": "奇美拉形象名 / 网名 / 仙舟评书别名，属周边梗，不参与说话人归一；台词扫描时默认忽略。",
+    "terms": [
+      "蜜果羹",
+      "蜜果羹超好吃！",
+      "背芒灵官",
+      "背芒金刚",
+      "燕麦粥",
+      "金鳟",
+      "阿格莱雅妈妈",
+      "蝶糕糕",
+      "渡冥仙子",
+      "你蝶",
+      "龙希儿",
+      "量子大蝴蝶",
+      "长衫召紫龙",
+      "努努斯",
+      "树庭居士",
+      "下课呐",
+      "猫咪神偷",
+      "小猫鱼",
+      "苹果糖",
+      "千面童姥",
+      "车厘比斯",
+      "高松灯",
+      "第五大天王",
+      "比格椰",
+      "比格燚",
+      "比格夜",
+      "负阳逐火白厄真君",
+      "昔米露",
+      "芙蕾桃",
+      "德喵",
+      "转圈圈",
+      "大贝塔",
+      "神秘出手女",
+      "狗粮大队长",
+      "养母",
+      "杨卧起坐",
+      "人生几何",
+      "周天子",
+      "知更鸟•亲哥",
+      "合金机铠•帕姆王",
+      "粉色芭芭拉",
+      "盾丹",
+      "炖蛋",
+      "冷面小粉龙",
+      "纠缠之缘"
+    ]
+  },
+  "known_conflicts": [
+    {
+      "case": "卡厄斯 vs 卡厄斯兰那",
+      "rule": "不合并。卡厄斯=前世负世黄金裔（刻法勒）；卡厄斯兰那=白厄。"
+    },
+    {
+      "case": "铁墓 vs 白厄",
+      "rule": "不合并。剧情关联，但为不同实体。"
+    },
+    {
+      "case": "长夜月 vs 三月七",
+      "rule": "同一人不同形态：canonical=三月七 + form=长夜月。v2：「长夜」（3.6#01）同样归三月七 + form=长夜月。"
+    },
+    {
+      "case": "缇安/缇宁 vs 缇宝",
+      "rule": "同一人（缇里西庇俄丝）的分身：canonical=缇宝 + form=分身名。"
+    },
+    {
+      "case": "迷迷 vs 昔涟",
+      "rule": "同一存在的不同阶段：canonical=昔涟 + form + 可选 stage。"
+    },
+    {
+      "case": "黑塔人偶/大黑塔 vs 黑塔",
+      "rule": "同一人：canonical=黑塔 + form。"
+    },
+    {
+      "case": "泰坦 vs 黄金裔",
+      "rule": "v2 决策：泰坦作说话人时单列 canonical（type=titan），不并入其黄金裔。例外：德谬歌→昔涟、刻法勒→卡厄斯（v1 既有别名/form_map 优先，先到先得，见两条目 notes）。"
+    },
+    {
+      "case": "面镜（第一/二/三/四面镜）",
+      "rule": "同源同族的四具镜构装体，canonical=面镜 + form=第N面镜；若需完全单列可再拆。"
+    },
+    {
+      "case": "萨姆 vs 流萤",
+      "rule": "萨姆=流萤的机甲身份。当前分列 canonical（v2 未合并），如需合并请人工确认后改 speaker_literal_map。"
+    },
+    {
+      "case": "记忆的种子/幼芽/花/花蕾 vs 昔涟",
+      "rule": "按官方演化线（德谬歌(种子)→迷迷→昔涟）与 3.7#03/#05 上下文，归 昔涟 + form=记忆形态 + stage；置信度 medium，建议抽查。"
+    },
+    {
+      "case": "空白的愿望 vs 白厄",
+      "rule": "3.7#04「空白的造像」=白厄，归 白厄 + form=空白的愿望；置信度 medium。"
+    },
+    {
+      "case": "金丝若虫 vs 阿格莱雅",
+      "rule": "3.3#03 赛飞儿称其「裁缝女」，归 阿格莱雅 + form=金丝若虫；置信度 medium-high。"
+    },
+    {
+      "case": "「君王」 vs 万敌",
+      "rule": "3.4#03 塔罗牌「君王」牌面说话人，归 万敌 + form=称号形态；置信度 medium-high。"
+    },
+    {
+      "case": "天空之声 vs 塞涅俄丝",
+      "rule": "3.3#08 上下文归 塞涅俄丝 + form=之声；置信度 medium。"
+    },
+    {
+      "case": "温柔的母亲 vs 莫忒丝",
+      "rule": "3.1 台词直呼「缇里西庇俄丝，我的好女孩」，实指缇宝之母莫忒丝，不并入 generic_npc。"
+    },
+    {
+      "case": "generic_npc 池",
+      "rule": "描述性/职业/群体标签统一 canonical=generic_npc，不代表同一个人；下游必须保留 speaker_raw。"
+    }
+  ],
+  "pending_manual_review": [
+    "（v1 遗留）他/她们俩（3.6#07「长夜月」台词）指代对象待确认",
+    "（v1 遗留）奇美拉/梗名是否纳入 form（当前默认 type=meme、排除）",
+    "【v2 已解决】true_name 入 speaker_aliases：海列屈拉/雅辛忒丝/雅辛缇娅/赛法利娅/阿那克萨戈拉斯/迈德漠斯/爱莉希雅/哀丽希雅",
+    "【v2 已解决】泰坦单列 canonical（13 个 type=titan）",
+    "【v2 已解决】X之声 / 记忆中的X / X的记忆 / X的投影 / 称号前缀 / 复合标签 / generic_npc 全量登记",
+    "【v2 仍待人工】「闭嘴」（4 条，3.6#03 旁白式标签，疑似字段错位）",
+    "【v2 仍待人工】「先祖之灵」（4 条，3.3#05 唤醒的先祖之灵，无法确定是否对应具名角色）",
+    "【v2 仍待人工】「古怪的弈者」（1 条，3.5#07 刻律德菈临终场景，疑似来古士但证据不足）",
+    "【v2 置信度 medium，建议抽查】天空之声（→塞涅俄丝）、金丝若虫（→阿格莱雅）、「长夜」（→三月七）、「君王」（→万敌）、空白的愿望（→白厄）、「记忆的种子/幼芽/花/花蕾」（→昔涟）、「另一位作者♪」（→昔涟）、泰坦之声（→generic_npc）、尼卡多利的残骸（→尼卡多利）、深海的女王（→法吉娜，high）",
+    "【v2 待决定】萨姆是否合并进流萤；第一/二/三/四面镜是否拆成独立 canonical；泰坦之声是否应从 generic_npc 单列"
+  ]
+}

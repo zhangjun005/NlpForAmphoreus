@@ -11,7 +11,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const IN_CORPUS = path.join(ROOT, 'data/corpus/amphoreus.v31.jsonl');
-const IN_ALIAS = path.join(ROOT, 'data/config/speaker-alias.v2.json');
+const IN_ALIAS = path.join(ROOT, 'data/config/speaker-alias.v3.json');
 const OUT_CORPUS = path.join(ROOT, 'data/corpus/amphoreus.final.jsonl');
 const OUT_LINES = path.join(ROOT, 'data/corpus/amphoreus.final.lines.txt');
 const OUT_DELIVERY = path.join(ROOT, 'data/reports/final-delivery.md');
@@ -81,6 +81,23 @@ function normalize(speakerRaw) {
     if (!r) continue;
     return { canonical: r, form: rule.form || null, hit: 'pattern:' + rule.id };
   }
+  // 7) 复合标签：称号，本体 / A&B
+  for (const sep of ['，', ',']) {
+    if (!s.includes(sep)) continue;
+    const parts = s.split(sep).map((x) => x.trim()).filter(Boolean);
+    if (parts.length === 2) {
+      const body = resolveAlias(parts[1]);
+      if (body) return { canonical: body, form: parts[0], hit: 'composite_descriptor' };
+    }
+  }
+  for (const sep of ['&', '＆']) {
+    if (!s.includes(sep)) continue;
+    const parts = s.split(sep).map((x) => x.trim()).filter(Boolean);
+    for (const p of parts) {
+      const r = resolveAlias(p);
+      if (r) return { canonical: r, form: s, hit: 'composite_multi' };
+    }
+  }
   return { canonical: null, form: null, hit: 'miss' };
 }
 
@@ -129,7 +146,15 @@ for (const r of recs) {
 
 fs.writeFileSync(OUT_CORPUS, out.map((r) => JSON.stringify(r)).join('\n'), 'utf8');
 const lines = out.map((r) => {
-  const who = r.canonical_speaker ? (r.form ? `${r.canonical_speaker}(${r.form})` : r.canonical_speaker) : (r.speaker || '【旁白】');
+  // generic_npc 时不输出冷冰冰的 "generic_npc"，而是回退到原始标签（可读性）
+  let who;
+  if (r.canonical_speaker && r.canonical_speaker !== 'generic_npc') {
+    who = r.form ? `${r.canonical_speaker}(${r.form})` : r.canonical_speaker;
+  } else if (r.speaker) {
+    who = r.speaker;
+  } else {
+    who = '【旁白】';
+  }
   return `[${r.version}#${r.series_no}] ${r.task} | ${r.step_title} | ${who}: ${r.text_clean}`;
 });
 fs.writeFileSync(OUT_LINES, lines.join('\n'), 'utf8');
