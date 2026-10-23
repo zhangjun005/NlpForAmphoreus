@@ -1,0 +1,16 @@
+# ⚠️ 语料与原始抓取物不入库
+# 原因：BWiki 内容按 CC BY-NC-SA 4.0 提供，游戏文本著作权属米哈游。
+# 本仓库是公开仓库（GitHub origin），因此只提交代码、配置与文档；
+# 语料可通过 tools/ 下的脚本从 BWiki 重新生成（见 data/README.md）。
+data/corpus/
+data/raw/
+data/shots/
+
+# 临时文件
+.tmp/
+*.log
+
+# 系统文件
+Thumbs.db
+.DS_Store
+desktop.ini
