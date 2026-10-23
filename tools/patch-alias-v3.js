@@ -228,6 +228,18 @@ cfg.pending_manual_review = (cfg.pending_manual_review || []).map((s) =>
 );
 add2('K', 'pending_manual_review 中已解决项前缀改为【v3 已解决】');
 
+// L. 清理 pattern_rules 中把「说明文字」误写进 form 的规则（下游会把说明当 form 值）
+if (cfg.pattern_rules && Array.isArray(cfg.pattern_rules.rules)) {
+  for (const rule of cfg.pattern_rules.rules) {
+    if (typeof rule.form === 'string' && (rule.form.length > 14 || /（|→|如 /.test(rule.form))) {
+      rule.form_bak = rule.form;
+      rule.form = null;
+      rule.form_note = '原 form 字段写成了说明文字，已置空；复合/称号前缀的 form 由 literal_map 或下游复合规则给出';
+      add2('L', `pattern_rules.${rule.id} 的 form 说明文字已清理（置 null）`);
+    }
+  }
+}
+
 // ---------- meta ----------
 cfg.meta = cfg.meta || {};
 cfg.meta.version = 3;

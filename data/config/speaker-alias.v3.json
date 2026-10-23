@@ -194,7 +194,9 @@
       "K: source_report_bucket.reclassified_from_pending 47 → 48",
       "K: meta.coverage_projection.v3_projected 更新为 0 未命中（v1 口径 100%）",
       "K: known_conflicts 中萨姆条目改写为「已合并」",
-      "K: pending_manual_review 中已解决项前缀改为【v3 已解决】"
+      "K: pending_manual_review 中已解决项前缀改为【v3 已解决】",
+      "L: pattern_rules.composite_multi 的 form 说明文字已清理（置 null）",
+      "L: pattern_rules.composite_descriptor 的 form 说明文字已清理（置 null）"
     ]
   },
   "normalization_order": [
@@ -3177,7 +3179,7 @@
         "priority": 80,
         "pattern": "^(.+?)[&＆](.+)$",
         "capture": 1,
-        "form": "复合（form 写原始标签，如 开拓者&昔涟）",
+        "form": null,
         "composite": true,
         "guards": [
           "多说话人：canonical 取第一个可解析成分；composite_parts 记录全部成分 canonical；下游建议拆成多值 speaker 并保留 speaker_raw"
@@ -3190,14 +3192,16 @@
         "records": 25,
         "records_total": 25,
         "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）",
-        "note": "& 复合共 25 条；另有「克拉特鲁斯与他的副手」1 条同类（无 & 分隔符），合计 composite 多说话人 26 条。"
+        "note": "& 复合共 25 条；另有「克拉特鲁斯与他的副手」1 条同类（无 & 分隔符），合计 composite 多说话人 26 条。",
+        "form_bak": "复合（form 写原始标签，如 开拓者&昔涟）",
+        "form_note": "原 form 字段写成了说明文字，已置空；复合/称号前缀的 form 由 literal_map 或下游复合规则给出"
       },
       {
         "id": "composite_descriptor",
         "priority": 81,
         "pattern": "^(.+?)[，,](.+)$",
         "capture": 2,
-        "form": "捕获串2 的 form（当前均为称号/容器前缀 → form=前缀原文，如 永夜之帷 / 毁灭的容器 / 天谴之矛 / 黄金之茧）",
+        "form": null,
         "composite": true,
         "guards": [
           "仅当第 2 段能解析为角色；第 1 段（称号/容器/前缀）写入 form"
@@ -3211,7 +3215,9 @@
         ],
         "records": 19,
         "records_total": 21,
-        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）"
+        "records_field_note": "records = v2 相对 v1 的新增可归一记录数；records_total = 语料中匹配该模式的全部记录数（含 v1 已命中/非说话人的部分）",
+        "form_bak": "捕获串2 的 form（当前均为称号/容器前缀 → form=前缀原文，如 永夜之帷 / 毁灭的容器 / 天谴之矛 / 黄金之茧）",
+        "form_note": "原 form 字段写成了说明文字，已置空；复合/称号前缀的 form 由 literal_map 或下游复合规则给出"
       },
       {
         "id": "strip_tail_punct",

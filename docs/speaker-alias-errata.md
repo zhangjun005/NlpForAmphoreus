@@ -43,6 +43,8 @@
 | K |  | meta.coverage_projection.v3_projected 更新为 0 未命中（v1 口径 100%） |
 | K |  | known_conflicts 中萨姆条目改写为「已合并」 |
 | K |  | pending_manual_review 中已解决项前缀改为【v3 已解决】 |
+| L |  | pattern_rules.composite_multi 的 form 说明文字已清理（置 null） |
+| L |  | pattern_rules.composite_descriptor 的 form 说明文字已清理（置 null） |
 
 ## 说明
 
@@ -74,6 +76,8 @@
 | K | 二次复核 | meta.coverage_projection.v3_projected 更新为 0 未命中（v1 口径 100%） |
 | K | 二次复核 | known_conflicts 中萨姆条目改写为「已合并」 |
 | K | 二次复核 | pending_manual_review 中已解决项前缀改为【v3 已解决】 |
+| L | 二次复核 | pattern_rules.composite_multi 的 form 说明文字已清理（置 null） |
+| L | 二次复核 | pattern_rules.composite_descriptor 的 form 说明文字已清理（置 null） |
 
 - **I 优先级穿透 Bug**：`canonical.萨姆.speaker_aliases` 会把 `萨姆` 注册给 `canonical=萨姆`，导致走「剥引号重试」的变体（如 `「萨姆」`）归到萨姆而非流萤。已删除该 alias，改为 `form_map["萨姆"]="流萤"` + `流萤.forms=["萨姆"]`，`canonical.萨姆` 仅保留为查询索引（对齐「长夜月」的标准写法）。
 - **J**：`「君王」`/`「长夜」`/`金丝若虫`/`深海的女王` 四条仍为 `medium-high`，一并升级为 `confirmed`。
