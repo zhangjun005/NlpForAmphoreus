@@ -5,6 +5,7 @@
 data/corpus/
 data/raw/
 data/shots/
+data/reports/
 
 # 临时文件
 .tmp/
