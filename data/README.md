@@ -1,10 +1,10 @@
-# data/ 数据目录说明
+﻿# data/ 数据目录说明
 
 本目录存放「崩坏：星穹铁道 · 翁法罗斯」主线剧情的 NLP 语料及其抓取/解析中间产物。
 所有数据来自 BWiki（`wiki.biligame.com/sr`）的**公开 MediaWiki 页面**，用 Python/Node 脚本
 通过 MediaWiki API 抓取，未经人工改写。
 
-一句话现状：**已完成 3.0–3.7 全 8 个版本、67 个任务页的剧情语料抽取，共 24,206 条记录 / 528,626 字**。
+一句话现状：**已完成 3.0–3.7 全 8 个版本、67 个任务页的剧情语料抽取与三轮迭代；最终交付版 `corpus/amphoreus.final.jsonl`：26,332 条记录 / 566,798 字 / 归一命中 97.56%**。
 
 ---
 
@@ -242,3 +242,35 @@ v1 阶段的元数据中间产物，字段未清洗（含 `undefined`、未剥�
 - `docs/speaker-aliases.md` — 角色称呼集合 v4（主角/三月七/丹恒/12 黄金裔/X爵体系/其他/无角色页者），
   含渠道调研结论、语料实证、归一规则、清洗待办。
 - `docs/chatWithGemini.md` — 项目方向讨论的原始记录。
+
+---
+
+## 十、最终交付语料（final）
+
+### `corpus/amphoreus.final.jsonl` — 26,332 条 / 566,798 字（未入库）
+
+由 `tools/finalize-corpus.js` 从 `amphoreus.v31.jsonl` + `config/speaker-alias.v2.json` 生成：
+
+| 指标 | 数值 |
+|---|---|
+| 记录数 | **26,332**（v1 24,206 → v31 26,332，增量 2,126） |
+| kind | dialogue 21,511 / narration 2,291 / option 2,400 / sms 98 / sms_option 32 |
+| view | main 24,207 / extra 2,125 |
+| 说话人归一 | 23,455 / 24,041 非空 speaker = **97.56%**（canonical=null 均为未登记路人/系统标签，不猜） |
+| 重复 | 1,120 条保留并标 `is_duplicate` + `dedup_group`（未删除） |
+| 文本纯度 | `{{`/`}}`/`他/她`/星号/HTML 残留 **全部为 0**；空 text_clean 0 |
+| 长度 | P50 18 / P90 42 / P99 67 / max 352 |
+
+新增字段：`canonical_speaker`、`form`、`text_clean`、`view`、`is_duplicate`、`dedup_group`、`channel`（短信）、`origin`/`v1_id`（溯源）。
+
+### v3.1 解析补全（`corpus/amphoreus.v31.jsonl`）
+
+修复 v3 的 7 类缺陷，增量构成：
+- 行首 `:` 场景旁白 **1,817 + 209 选项**（v3 整行丢弃）
+- 短信对白/选项 **98 + 32**（`{{短信选项}}` 14 块）
+- 其他修复：模板截断（10 条恢复）、`}}` 尾残（196→0）、narration 内嵌说话人 894 条拆分、伪说话人 21 处
+- `step_title`：0 条回退为「剧情内容」；1,706 条为 `step_title_inferred=true`（推断，精细时序分析时注意）
+
+### 配置 v2
+
+`config/speaker-alias.v2.json`：canonical 38 → **124**（含 13 泰坦、26 客串、57 具名 NPC、4 系统、generic_npc 池 247）、form_map 47、literal_map 128、pattern_rules 17、composite_rules 21 实例。变更见 `docs/speaker-alias-changes.md`。
