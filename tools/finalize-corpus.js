@@ -144,6 +144,65 @@ for (const r of recs) {
   });
 }
 
+// ================= repeat_kind 分类（重复台词的叙事功能） =================
+// 规则见 docs/method/04-重复台词判定案例集.md；目标是区分「有信息的重复」与「转录噪声」
+const REPEAT_RULES = {
+  structure: /时间开始流动|永劫回归|^>>>|错误进程|权限不足|信号中断|正在连接/,
+  translation: /^（[^（）]{0,16}(低语|呢喃|嘶鸣|轰鸣|低吼|嘶哑|无法辨识|不可名状)[^（）]{0,10}）$/,
+  pause: /^[…\.。！？、，；：·\s]+$/,
+  interjection: /^(嗯|啊|唔|呃|诶|欸|咦|哦|噢|哈|呵|嘻|嘿|喂|唉|哎|呀|嘶|吼|哇|呜|哼|咳|呼)[…。！？\.～~]*$/,
+  motif: /逐火是不断失却的旅途|不要回头|命定的终点|银辇|岁月之风吹起/,
+  ritual: /死刑|处决|烧死|叛徒|滚出去|亵渎|亵神/,
+  ritualSpeaker: /群众|公民|观众|族人|士兵|所有人|黄金裔们|人群|集会|窃忆者|亡魂/,
+  loop: /你见过达米亚诺斯吗|播下因果的涟漪|你再想想|需要我再说明|确认无误|击杀守卫/,
+};
+const GENERIC_PHRASES = new Set(['什么意思？', '这是……', '…………', '……', '真的吗？', '怎么回事？', '什么？', '为什么？', '嗯。', '好。']);
+
+const crossKey = (r) => [r.speaker, (r.text || '').trim()].join('\u0001');
+const crossCount = new Map(), crossTasks = new Map();
+for (const r of out) {
+  const k = crossKey(r);
+  crossCount.set(k, (crossCount.get(k) || 0) + 1);
+  if (!crossTasks.has(k)) crossTasks.set(k, new Set());
+  crossTasks.get(k).add(r.task);
+}
+const taskGroup = new Map(); // task|speaker|text -> records
+for (const r of out) {
+  const k = [r.task, r.speaker, (r.text || '').trim()].join('\u0001');
+  if (!taskGroup.has(k)) taskGroup.set(k, []);
+  taskGroup.get(k).push(r);
+}
+const optionIds = new Set(out.filter((r) => r.kind === 'option' || r.kind === 'sms_option').map((r) => r.id));
+
+function classifyRepeat(r) {
+  const t = (r.text || '').trim();
+  const spk = r.speaker || '';
+  const k = crossKey(r);
+  const nTasks = (crossTasks.get(k) || new Set()).size;
+  const nCount = crossCount.get(k) || 1;
+  const grp = taskGroup.get([r.task, r.speaker, t].join('\u0001')) || [r];
+
+  if (REPEAT_RULES.structure.test(t)) return 'structure';
+  if (REPEAT_RULES.translation.test(t)) return 'translation';
+  if (REPEAT_RULES.pause.test(t) || REPEAT_RULES.interjection.test(t) || t === '（保持沉默）' || t === '（……）') return 'pause';
+  if (REPEAT_RULES.motif.test(t)) return 'motif';
+  if (REPEAT_RULES.ritual.test(t) && (nCount >= 2 || REPEAT_RULES.ritualSpeaker.test(spk))) return 'ritual';
+  if (/明天见|嘟…嘟嘟|嗅…嗅嗅/.test(t) && nTasks >= 2) return 'catchphrase';
+  if (nTasks >= 3 && t.length >= 5 && !GENERIC_PHRASES.has(t) && spk && spk !== 'generic_npc' && !REPEAT_RULES.ritualSpeaker.test(spk)) return 'catchphrase';
+  // 分支转录：同任务内重复，且每条出现处附近（±2）都有选项记录
+  if (grp.length >= 2 && grp.every((x) => [...optionIds].some((oid) => Math.abs(oid - x.id) <= 2))) return 'branch';
+  if (REPEAT_RULES.loop.test(t)) return 'loop_interaction';
+  if (grp.length >= 3 && new Set(grp.map((x) => x.step_title)).size === 1) return 'loop_interaction';
+  return 'none';
+}
+
+for (const r of out) {
+  const k = crossKey(r);
+  r.repeat_kind = classifyRepeat(r);
+  r.repeat_scope = (crossTasks.get(k) || new Set()).size >= 2 ? 'cross_task' : (taskGroup.get([r.task, r.speaker, (r.text || '').trim()].join('\u0001')) || []).length >= 2 ? 'within_task' : 'single';
+  r.repeat_count = crossCount.get(k) || 1;
+}
+
 fs.writeFileSync(OUT_CORPUS, out.map((r) => JSON.stringify(r)).join('\n'), 'utf8');
 const lines = out.map((r) => {
   // generic_npc 时不输出冷冰冰的 "generic_npc"，而是回退到原始标签（可读性）
@@ -221,6 +280,16 @@ md.push('');
 md.push('| 方式 | 记录 |');
 md.push('|---|---|');
 for (const [k, v] of Object.entries(hitStat).sort((a, b) => b[1] - a[1])) md.push(`| ${k} | ${v} |`);
+md.push('');
+md.push('## 重复台词的功能分布（repeat_kind）');
+md.push('');
+md.push('| repeat_kind | 记录 | 含义 |');
+md.push('|---|---|---|');
+const repCnt = cnt((r) => r.repeat_kind);
+const repDesc = { motif: '母题/题眼', catchphrase: '角色口头禅', structure: '结构标记（轮回/系统）', translation: '翻译节点（泰坦低语→通译）', ritual: '仪式/群体口号', pause: '沉默/停顿/语气词', branch: '分支转录（真冗余）', loop_interaction: '可重复交互（真冗余）', none: '非重复' };
+for (const [k, v] of Object.entries(repCnt).sort((a, b) => b[1] - a[1])) md.push(`| ${k} | ${v} | ${repDesc[k] || ''} |`);
+md.push('');
+md.push('> 分类依据与案例见 `docs/method/04-重复台词判定案例集.md`；`branch`/`loop_interaction` 属应去重的转录冗余，其余类别携带叙事信息。');
 md.push('');
 md.push('## canonical Top 20');
 md.push('');
