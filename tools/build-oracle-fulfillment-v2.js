@@ -17,6 +17,10 @@ const filledById = Object.fromEntries((FILLED.oracles || []).map((o) => [o.oracl
 
 // ===== 人工修正（2026-10-24，依据用户裁定）=====
 // event_segments 支持多段：{segment_id, role: '兑现'|'意义转折', note}
+const TYPE_NOTES = {
+  O12: 'v2 记「字面」；丹恒 L3 认为原句在承接后被改写为「以身为舟／荒龙腾飞」（#21679–#21700），按「词语保留、价值反转」口径也可读作「反转」。报告保留「字面」统计，另注明反转读法。',
+};
+
 const SEQUENCE_NOTES = {
   O06: '追认型：v2 把 3.2|争辩|2（segment_index 269）标为兑现，但神谕原句出现在 3.2|学者|4（segment_index 315）——兑现事件在文本顺序上早于神谕被说出；「至纯粹」在瑟希斯说出原句前已出现两次（丹恒概括、那刻夏自述），O06 是被追认的神谕，不是被预告的神谕（那刻夏 L3 发现）。',
 };
@@ -87,6 +91,7 @@ for (const o of ORACLES) {
     proposed_event_segment: proposed || '',
     event_segments: eventSegments,
     sequence_note: SEQUENCE_NOTES[o.oracle_id] || '',
+    type_note: TYPE_NOTES[o.oracle_id] || '',
     manual_event_candidate_segments: extraCandidates,
     proposed_event_scene: candidates.length ? candidates[0].scene_id : '',
     confirm_event_segment: '',   // 人工确认后填写
