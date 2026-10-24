@@ -1,0 +1,528 @@
+{
+ "meta": {
+  "script": "tools/retrieval_v2.py",
+  "run_command": "conda run -n nlpLesson python tools/retrieval_v2.py",
+  "q3_source": "data/config/annotation-labels.json（74 条，types 多选）+ baseline-a/b-scores.json",
+  "q4_source": "13 个神谕兑现段（oracle-fulfillment.filled.json）vs 其余 673 步；分数来自 baseline-a/b-scores.json",
+  "q3_metric_note": "排名来自 A/B 全排序（686 步，1=最高）；组内 Spearman = 该类型样本的分数与人工等级的 Spearman（n 小，仅方向性）",
+  "q4_metric_note": "Mann–Whitney U（gold vs 非 gold）+ Cliff's delta（正=gold 分数更高）；长度分层用对白句数分箱",
+  "n_samples_annotated": 74,
+  "o10_ranks_v1": {
+   "keyword": 135,
+   "tfidf_char": 7,
+   "tfidf_word": 45,
+   "bm25": 51,
+   "lsa": 103
+  }
+ },
+ "q3_types": {
+  "identity": {
+   "n": 24,
+   "a_median_rank": 246.5,
+   "b_median_rank": 246.0,
+   "median_lift_A_minus_B": 0.5,
+   "a_top100": 6,
+   "b_top100": 10,
+   "a_top20": 1,
+   "b_top20": 1,
+   "spearman_within_type_A": 0.3459,
+   "p_A": 0.09776435469964498,
+   "spearman_within_type_B": 0.5079,
+   "p_B": 0.011280399072471914,
+   "best_lift_example": {
+    "segment_id": "3.7|魔女的孤诣课题|21",
+    "a_rank": 273,
+    "b_rank": 26,
+    "lift": 247
+   },
+   "worst_lift_example": {
+    "segment_id": "3.4|母亲啊，暌离于冬去春来|2",
+    "a_rank": 294,
+    "b_rank": 480,
+    "lift": -186
+   },
+   "note_sample_significance": [
+    1,
+    1,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    2,
+    3,
+    3,
+    3,
+    1,
+    3,
+    3,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    1,
+    1,
+    2
+   ]
+  },
+  "memory": {
+   "n": 23,
+   "a_median_rank": 294.0,
+   "b_median_rank": 273.0,
+   "median_lift_A_minus_B": 21.0,
+   "a_top100": 5,
+   "b_top100": 6,
+   "a_top20": 1,
+   "b_top20": 0,
+   "spearman_within_type_A": 0.0855,
+   "p_A": 0.6979982809926403,
+   "spearman_within_type_B": 0.1887,
+   "p_B": 0.3885272117716452,
+   "best_lift_example": {
+    "segment_id": "3.7|魔女的孤诣课题|21",
+    "a_rank": 273,
+    "b_rank": 26,
+    "lift": 247
+   },
+   "worst_lift_example": {
+    "segment_id": "3.4|母亲啊，暌离于冬去春来|2",
+    "a_rank": 294,
+    "b_rank": 480,
+    "lift": -186
+   },
+   "note_sample_significance": [
+    1,
+    1,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    2,
+    1,
+    2,
+    2,
+    2,
+    2,
+    3,
+    1,
+    1,
+    1,
+    1,
+    2,
+    1,
+    1,
+    1
+   ]
+  },
+  "prophecy": {
+   "n": 7,
+   "a_median_rank": 241.0,
+   "b_median_rank": 73.0,
+   "median_lift_A_minus_B": 168.0,
+   "a_top100": 1,
+   "b_top100": 4,
+   "a_top20": 1,
+   "b_top20": 1,
+   "spearman_within_type_A": -0.1793,
+   "p_A": 0.7005053982407634,
+   "spearman_within_type_B": 0.0598,
+   "p_B": 0.898726915678682,
+   "best_lift_example": {
+    "segment_id": "3.7|魔女的孤诣课题|21",
+    "a_rank": 273,
+    "b_rank": 26,
+    "lift": 247
+   },
+   "worst_lift_example": {
+    "segment_id": "3.7|星路长驰，穹宇远征|7",
+    "a_rank": 241,
+    "b_rank": 296,
+    "lift": -55
+   },
+   "note_sample_significance": [
+    3,
+    2,
+    2,
+    2,
+    2,
+    3,
+    1
+   ]
+  },
+  "relationship": {
+   "n": 13,
+   "a_median_rank": 145.0,
+   "b_median_rank": 125.0,
+   "median_lift_A_minus_B": 20.0,
+   "a_top100": 5,
+   "b_top100": 6,
+   "a_top20": 1,
+   "b_top20": 1,
+   "spearman_within_type_A": 0.3285,
+   "p_A": 0.2731059653652193,
+   "spearman_within_type_B": 0.7198,
+   "p_B": 0.005537547094280272,
+   "best_lift_example": {
+    "segment_id": "3.3|书卷啊，可曾令锋刃回眸|1",
+    "a_rank": 362,
+    "b_rank": 227,
+    "lift": 135
+   },
+   "worst_lift_example": {
+    "segment_id": "3.3|石板啊，为何罔闻那灯影|8",
+    "a_rank": 88,
+    "b_rank": 242,
+    "lift": -154
+   },
+   "note_sample_significance": [
+    1,
+    2,
+    2,
+    1,
+    3,
+    2,
+    3,
+    2,
+    1,
+    1,
+    1,
+    1,
+    2
+   ]
+  },
+  "world": {
+   "n": 27,
+   "a_median_rank": 243.0,
+   "b_median_rank": 260.0,
+   "median_lift_A_minus_B": -17.0,
+   "a_top100": 7,
+   "b_top100": 9,
+   "a_top20": 0,
+   "b_top20": 2,
+   "spearman_within_type_A": 0.2413,
+   "p_A": 0.22524995723992067,
+   "spearman_within_type_B": 0.3845,
+   "p_B": 0.047687907111089424,
+   "best_lift_example": {
+    "segment_id": "3.3|诗者啊，从我处诉说天空•上|5",
+    "a_rank": 533,
+    "b_rank": 338,
+    "lift": 195
+   },
+   "worst_lift_example": {
+    "segment_id": "3.7|魔女的孤诣课题|19",
+    "a_rank": 114,
+    "b_rank": 260,
+    "lift": -146
+   },
+   "note_sample_significance": [
+    1,
+    3,
+    2,
+    1,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    1,
+    1,
+    1,
+    3,
+    1,
+    1,
+    2,
+    2,
+    1,
+    1,
+    3,
+    2,
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  "sacrifice": {
+   "n": 8,
+   "a_median_rank": 130.0,
+   "b_median_rank": 86.0,
+   "median_lift_A_minus_B": 44.0,
+   "a_top100": 2,
+   "b_top100": 4,
+   "a_top20": 0,
+   "b_top20": 1,
+   "spearman_within_type_A": 0.5086,
+   "p_A": 0.19804649288401585,
+   "spearman_within_type_B": 0.8248,
+   "p_B": 0.011742395623903931,
+   "best_lift_example": {
+    "segment_id": "3.5|归风啊，席卷旧尘登云天|9",
+    "a_rank": 287,
+    "b_rank": 131,
+    "lift": 156
+   },
+   "worst_lift_example": {
+    "segment_id": "3.5|归风啊，席卷旧尘登云天|11",
+    "a_rank": 109,
+    "b_rank": 198,
+    "lift": -89
+   },
+   "note_sample_significance": [
+    3,
+    3,
+    3,
+    3,
+    2,
+    2,
+    3,
+    1
+   ]
+  },
+  "motif": {
+   "n": 9,
+   "a_median_rank": 273.0,
+   "b_median_rank": 232.0,
+   "median_lift_A_minus_B": 41.0,
+   "a_top100": 2,
+   "b_top100": 2,
+   "a_top20": 1,
+   "b_top20": 1,
+   "spearman_within_type_A": -0.0275,
+   "p_A": 0.943963762562759,
+   "spearman_within_type_B": 0.4679,
+   "p_B": 0.20401863043400212,
+   "best_lift_example": {
+    "segment_id": "3.7|魔女的孤诣课题|21",
+    "a_rank": 273,
+    "b_rank": 26,
+    "lift": 247
+   },
+   "worst_lift_example": {
+    "segment_id": "3.3|石板啊，为何罔闻那灯影|8",
+    "a_rank": 88,
+    "b_rank": 242,
+    "lift": -154
+   },
+   "note_sample_significance": [
+    1,
+    1,
+    3,
+    2,
+    3,
+    1,
+    1,
+    1,
+    0
+   ]
+  }
+ },
+ "q3_summary": {
+  "best_type_by_median_lift": "prophecy",
+  "worst_type_by_median_lift": "world",
+  "best_type_by_within_spearman": "sacrifice",
+  "worst_type_by_within_spearman": "prophecy"
+ },
+ "q4_overall": {
+  "A": {
+   "n_x": 13,
+   "n_y": 673,
+   "U": 7152.0,
+   "p": 8.715159267470125e-05,
+   "cliff_delta": 0.6349,
+   "mean_x": 0.4179,
+   "mean_y": -0.0081,
+   "median_x": 0.3725,
+   "median_y": -0.0736,
+   "gold_median_pct_rank": 0.1545,
+   "gold_median_rank": 106.0,
+   "gold_in_top100": 5
+  },
+  "B1": {
+   "n_x": 13,
+   "n_y": 673,
+   "U": 8068.0,
+   "p": 1.8076837926233668e-07,
+   "cliff_delta": 0.8443,
+   "mean_x": 1.0135,
+   "mean_y": -0.0196,
+   "median_x": 0.9518,
+   "median_y": -0.0737,
+   "gold_median_pct_rank": 0.0773,
+   "gold_median_rank": 53.0,
+   "gold_in_top100": 11
+  }
+ },
+ "q4_by_length": {
+  "1–3 句": {
+   "n_gold": 0,
+   "n_rest": 65,
+   "note": "该层 gold 样本 <2，无法做 U 检验"
+  },
+  "4–10 句": {
+   "n_gold": 0,
+   "n_rest": 148,
+   "note": "该层 gold 样本 <2，无法做 U 检验"
+  },
+  "11–30 句": {
+   "n_gold": 0,
+   "n_rest": 236,
+   "note": "该层 gold 样本 <2，无法做 U 检验"
+  },
+  ">30 句": {
+   "n_gold": 13,
+   "n_rest": 224,
+   "A": {
+    "n_x": 13,
+    "n_y": 224,
+    "U": 2196.0,
+    "p": 0.0020901012459136567,
+    "cliff_delta": 0.5082,
+    "mean_x": 0.4179,
+    "mean_y": 0.149,
+    "median_x": 0.3725,
+    "median_y": 0.1108
+   },
+   "B1": {
+    "n_x": 13,
+    "n_y": 224,
+    "U": 2462.0,
+    "p": 2.8646226831214625e-05,
+    "cliff_delta": 0.6909,
+    "mean_x": 1.0135,
+    "mean_y": 0.4931,
+    "median_x": 0.9518,
+    "median_y": 0.4726
+   }
+  }
+ },
+ "gold_ids": [
+  "3.4|英雄啊，回返那安宁的家乡|21",
+  "3.1|来路啊，请再度显映往履|21",
+  "3.4|英雄啊，点燃那最初的骄阳|11",
+  "3.2|学者啊，于真理门前再会|2",
+  "3.2|摇船啊，请载我横渡冥流|19",
+  "3.2|学者啊，于真理门前再会|4",
+  "3.3|黎明啊，执耀于全世之终|1",
+  "3.3|石板啊，为何罔闻那灯影|10",
+  "3.4|英雄啊，粉碎那悲哀的造像|6",
+  "3.5|大海啊，埋葬暗酒色的梦|14",
+  "3.5|囚人啊，踏过日影见沧溟|15",
+  "3.6|大地啊，承载万物的苦难|10",
+  "3.7|魔女的孤诣课题|21"
+ ],
+ "rest_n": 673,
+ "evidence_table": [
+  {
+   "id": "A1",
+   "conclusion": "v1 检索主要测「引用句匹配」：关键词基线最优（因 12/13 gold 是吟诵步、10/13 含神谕原文）",
+   "metric": "v1 最佳方法 / MRR",
+   "value": "关键词基线 / 0.731",
+   "effect": "方法间 Kendall 序被 gold 构造污染",
+   "source": "oracle-retrieval-results.json（v1）"
+  },
+  {
+   "id": "A2",
+   "conclusion": "query 掩蔽（去掉神谕原句，只留 keywords/gloss/弱提示）后五法重评",
+   "metric": "最佳方法 / MRR / R@10",
+   "value": "关键词基线 / 0.660 / 0.85",
+   "effect": "分母 13 条 query",
+   "source": "retrieval-v2-results.json: summary.v2_mask"
+  },
+  {
+   "id": "A3",
+   "conclusion": "候选池剔除吟诵步后，12/13 条 gold 被一并剔除（gold 本身多为吟诵步）→ 无法做五法对比",
+   "metric": "剔除步数 / 剩余池 / N/A gold / 可评 query",
+   "value": "25 / 661 / 12 / 1",
+   "effect": "N/A：O01、O02、O03、O04、O05、O06、O07、O08、O09、O11、O12、O13",
+   "source": "retrieval-v2-results.json: summary.v2_norecite"
+  },
+  {
+   "id": "A4",
+   "conclusion": "掩蔽 query + 剔除吟诵步后只剩 O10 一条可评：字面检索下唯一的语义样本",
+   "metric": "可评 query / O10 最好名次（both vs v1）",
+   "value": "1 / 第 91 名（v1 第 7 名）",
+   "effect": "n=1，不能做方法比较",
+   "source": "retrieval-v2-results.json: summary.v2_both / o10_focus"
+  },
+  {
+   "id": "A5",
+   "conclusion": "v1 到 v2-mask 的指标变化（看字面优势被去掉后谁占优）",
+   "metric": "ΔMRR（mask−v1，逐方法 最大/最小）",
+   "value": "-0.058 / -0.157",
+   "effect": "全池 686，13 条 query",
+   "source": "retrieval-v2-results.json: comparison"
+  },
+  {
+   "id": "A6",
+   "conclusion": "O10（唯一不引原文的兑现）在剔除吟诵步后明显提前：v1 被 O11 的吟诵步污染",
+   "metric": "O10 最好名次（v1 / mask / noRecite / both）",
+   "value": "v1=7 / mask=122 / noRecite=3 / both=91",
+   "effect": "n=1，方向性证据",
+   "source": "retrieval-v2-results.json: o10_focus"
+  },
+  {
+   "id": "Q3-1",
+   "conclusion": "不同转折类型有不同信号：B 相对 A 的排名提升在类型间不均匀",
+   "metric": "B 提升最大/最小的类型（中位名次差 A−B）",
+   "value": "prophecy +168.0 / world -17.0",
+   "effect": "7 类型多标签，n=7–27/类型",
+   "source": "type-and-oracle-significance.json: q3_types"
+  },
+  {
+   "id": "Q3-2",
+   "conclusion": "B 的组内 Spearman（分数 vs 人工等级）在类型间差异",
+   "metric": "最高/最低类型 ρ",
+   "value": "sacrifice 0.82 / prophecy 0.06",
+   "effect": "n 小，仅方向性",
+   "source": "type-and-oracle-significance.json: q3_summary"
+  },
+  {
+   "id": "Q3-3",
+   "conclusion": "B 的 Top100 覆盖在类型间不均衡",
+   "metric": "A/B 的 Top100 覆盖总数（7 类型相加）",
+   "value": "A=28 / B=41（共 111 条标注样本）",
+   "effect": "多标签样本会重复计入",
+   "source": "type-and-oracle-significance.json: q3_types"
+  },
+  {
+   "id": "Q4-1",
+   "conclusion": "神谕兑现段是否更易成为高显著段（A 检测器）",
+   "metric": "MWU / Cliff's delta / p",
+   "value": "δ=+0.635, p=8.72e-05（gold 中位分 0.372 vs 其余 -0.074）",
+   "effect": "13 gold vs 673 其余步",
+   "source": "type-and-oracle-significance.json: q4_overall.A"
+  },
+  {
+   "id": "Q4-2",
+   "conclusion": "神谕兑现段是否更易成为高显著段（B 检测器）",
+   "metric": "MWU / Cliff's delta / p",
+   "value": "δ=+0.844, p=1.81e-07（gold 中位分 0.952 vs 其余 -0.074）",
+   "effect": "13 gold vs 673 其余步",
+   "source": "type-and-oracle-significance.json: q4_overall.B1"
+  },
+  {
+   "id": "Q4-3",
+   "conclusion": "长度分层后神谕兑现段的显著性（排除长度混淆）",
+   "metric": "各层 gold 数 / 哪些层仍显著（p<0.05）",
+   "value": "1–3 句: n_gold=0；4–10 句: n_gold=0；11–30 句: n_gold=0；>30 句: n_gold=13 A✓ B✓",
+   "effect": "每层内部比较 gold vs 同层非 gold",
+   "source": "type-and-oracle-significance.json: q4_by_length"
+  },
+  {
+   "id": "Q4-4",
+   "conclusion": "神谕兑现段在排序中的位置",
+   "metric": "gold 中位百分位 / 中位名次 / 进 Top100 数",
+   "value": "A: 0.154 / 106 / 5；B1: 0.077 / 53 / 11",
+   "effect": "百分位 0=最高分",
+   "source": "type-and-oracle-significance.json: q4_overall"
+  }
+ ]
+}
