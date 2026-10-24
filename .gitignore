@@ -16,3 +16,4 @@ Thumbs.db
 .DS_Store
 desktop.ini
 tools/__pycache__/
+data/models/
