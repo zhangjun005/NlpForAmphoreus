@@ -79,7 +79,7 @@ RUN_CMD = "conda run -n nlpLesson python tools/oracle_similarity_curves.py"
 GROUP_A = ["白厄", "万敌", "阿格莱雅", "缇宝", "遐蝶", "那刻夏", "风堇",
            "赛飞儿", "海瑟音", "刻律德菈", "昔涟"]                   # A 组：黄金裔 11 位（最终口径）
 GROUP_B = ["开拓者", "三月七", "丹恒"]                              # B 组：单列（非黄金裔）
-GROUP_NPC = ["荒笛"]                                                # NPC 类：荒笛（玻吕茜亚仅注记、不画曲线）
+GROUP_NPC = []                                                      # 不单列 NPC：荒笛/玻吕茜亚只在相关角色条目内说明
 CHARS = GROUP_A + GROUP_B + GROUP_NPC
 GROUP_LABEL = {"A": "A 组：11 黄金裔", "B": "B 组：单列（非黄金裔）"}
 # 口径（用户拍板）：A 组=12 黄金裔；B 组=开拓者/丹恒/三月七（主线塑造在篇外，单独成表、不与黄金裔比）；
@@ -271,6 +271,8 @@ def compute_curves(ids, recs_ordered, seg_by_key, oracles, X, Z, own_map, cite, 
     OT = vec.transform(oracle_texts)                 # 13 × V
     OTn = normalize(OT)
     from sentence_transformers import SentenceTransformer
+    import torch
+    torch.set_num_threads(1)   # 固定单线程，保证两次运行的神谕句向量逐位一致（--verify 要求可复现）
     model = SentenceTransformer(MODEL_NAME, device="cpu")
     OS = model.encode(oracle_texts, normalize_embeddings=True).astype(np.float32)
     OSn = normalize(OS)
@@ -536,7 +538,7 @@ def make_heatmap(steps_out, out):
                     ax.text(j, i, "%.2f" % mat[i, j], ha="center", va="center", fontsize=6.2,
                             color="white" if mat[i, j] > vmin + 0.65 * (vmax - vmin) else "black")
         ax.axhline(len(GROUP_A) - 0.5, color="black", lw=1.4, ls="--")
-        ax.axhline(len(GROUP_A) + len(GROUP_B) - 0.5, color="black", lw=1.0, ls=":")
+
         ax.set_xticks(range(len(VERSIONS)))
         ax.set_xticklabels(VERSIONS)
         ax.set_yticks(range(len(names)))
@@ -556,12 +558,9 @@ def make_heatmap(steps_out, out):
         ax.text(-0.06, (len(GROUP_A) + len(GROUP_B) / 2.0) / len(names),
                 L("B 组 3 单列", "B: 3"), transform=ax.transAxes, rotation=90,
                 va="center", ha="right", fontsize=9, color="#b9530f")
-        ax.text(-0.06, (len(GROUP_A) + len(GROUP_B) + len(GROUP_NPC) / 2.0) / len(names),
-                L("NPC 2", "NPC"), transform=ax.transAxes, rotation=90,
-                va="center", ha="right", fontsize=9, color="#7f8c8d")
         cb = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
         cb.set_label(L("与神谕文本的相似度（余弦）", "cosine"), fontsize=8)
-    fig.suptitle(L("图11  15 条曲线 × 8 版本的「与神谕文本相似度」总览（A 组 11 黄金裔 / B 组 3 单列 / NPC 荒笛；纵轴=相似度，不是含义强度）",
+    fig.suptitle(L("图11  14 条曲线 × 8 版本的「与神谕文本相似度」总览（A 组 11 黄金裔 / B 组 3 单列；荒笛/玻吕茜亚按 NPC 处理，不单列；纵轴=相似度，不是含义强度）",
                    "Fig11  Oracle similarity overview (A: 12; B: 3)"), fontsize=11)
     fig.tight_layout(rect=(0, 0, 1, 0.94))
     fig.savefig(out, dpi=200, bbox_inches="tight")
@@ -577,7 +576,7 @@ def render_report(data, mat_t, mat_s, vbound):
     chars = data["characters"]
     Lr = []
     A = Lr.append
-    A("# 15 角色 × 神谕文本相似度：全程曲线（TF-IDF + SBERT 双空间）")
+    A("# 14 角色 × 神谕文本相似度：全程曲线（TF-IDF + SBERT 双空间；荒笛/玻吕茜亚按 NPC 处理）")
     A("")
     A("> 生成脚本：`tools/oracle_similarity_curves.py` ｜ 重跑命令：`%s`" % RUN_CMD)
     A("> 明细数据：`data/config/oracle-similarity-curves.json`（含神谕向量，可逐点复算）、"
@@ -594,8 +593,9 @@ def render_report(data, mat_t, mat_s, vbound):
       "所以实际固定的黄金裔是 **11 位**；本报告一律按 11 位口径。")
     A("- **B 组 = 单列分析（非黄金裔）**：%s。它们的主线塑造在翁法罗斯之外，"
       "本报告单独成节、不与黄金裔横向比较。" % "、".join(GROUP_B))
-    A("- **NPC 类**：荒笛（70 条 / 4 步，B 组外的 NPC 小表；**大地承接：荒笛 → 丹恒**）；"
-      "玻吕茜亚（NPC，遐蝶之妹，O05「汝将凋零…」双子共有神谕 holder；不画曲线，只在遐蝶条目与 O05 注记说明）。")
+    A("- **荒笛、玻吕茜亚按 NPC 处理**：只在相关角色条目内说明，**不单列分析、不出表/图/曲线/章节**——"
+      "荒笛（70 条 / 4 步）写在丹恒条目（大地承接：荒笛 → 丹恒）；玻吕茜亚写在遐蝶条目（遐蝶之妹；"
+      "O05「汝将凋零…」双子共有神谕 holder=玻吕茜亚）。")
     A("- **三月七 ↔ 长夜月**：canonical_speaker 已统一为「三月七」，form 区分 长夜月/永夜之帷/幻象/记忆形态；"
       "单人图按 form 分层着色。")
     A("- **O13 两个事件段**：`3.4|英雄啊，点燃那最初的骄阳|7`（意义转折，菱形）与 "
@@ -663,6 +663,10 @@ def render_report(data, mat_t, mat_s, vbound):
         A("- 峰值对齐：%s。" % o["align"])
         A("- 与「最相似的其他神谕」：%s（相似度 %.3f）；own oracle 在该点的领先幅度见 JSON 的 `best_other_*`。" % (
             o["best_other"], o["best_other_sim"]))
+        if o["char"] == "丹恒":
+            A("- **相关注记**：荒笛（NPC，70 条 / 4 步，样本量小）是大地前任；**大地承接：荒笛 → 丹恒**。")
+        if o["char"] == "遐蝶":
+            A("- **相关注记**：玻吕茜亚（NPC，遐蝶之妹）与遐蝶共有 O05 神谕（「汝将凋零…」，holder=玻吕茜亚，不归遐蝶的 O04）。")
         if o["forms"]:
             A("- 形态分布（按步的主形态）：%s。" % "、".join(
                 "%s %d 步" % (k, v) for k, v in sorted(o["forms"].items(), key=lambda kv: -kv[1])))
@@ -686,15 +690,7 @@ def render_report(data, mat_t, mat_s, vbound):
     for o in obs:
         if o["group"] == "B":
             render_obs(o)
-    A("## 4. NPC 类：荒笛（+ 玻吕茜亚注记）")
-    A("")
-    for o in obs:
-        if o["group"] == "NPC":
-            render_obs(o)
-    A("> **玻吕茜亚**（NPC，遐蝶之妹）：O05「汝将凋零，令逝者自残余中发芽，一同死去的火新生。」是**双子共有神谕、holder=玻吕茜亚**，"
-      "不归遐蝶（遐蝶 own = O04）；她不在 15 条曲线中，只在遐蝶条目与 O05 注记里出现。")
-    A("")
-    A("## 5. 两个空间不一致的案例")
+    A("## 4. 两个空间不一致的案例")
     A("")
     diffs = []
     for c in CHARS:
@@ -718,20 +714,20 @@ def render_report(data, mat_t, mat_s, vbound):
       "两个空间给出的「最像哪条神谕」并不总一致。" % (
           n_argmax_diff, n_steps_total, 100.0 * n_argmax_diff / n_steps_total))
     A("")
-    A("## 6. 局限")
+    A("## 5. 局限")
     A("")
     A("1. **TF-IDF 是词面相似**：会因共享「汝将/涛声/火种」等词而高，不代表语义读懂；SBERT 是句子级语义，"
       "但仍非「含义强度」，两者都不能直接当作「角色理解了神谕」的证据。")
     A("2. **3.5 嵌套闪回**：3.5 版本内有大量回放/嵌套叙事（如 O10/O11 的镜像段），order 是全局顺序，"
       "闪回内容会与当前时间线错位；曲线在 3.5 附近的峰可能只是「在复述过去」，不是「当下剧情」的峰。")
-    A("3. **稀疏角色样本量小**：荒笛（B 组单列）只有 %d 条 / %d 步、刻律德菈 %d 步，滚动均值与峰值的稳定性有限；"
-      "荒笛需与丹恒（大地承接，B 组）合看，但两者统计不合并。" % (
-          chars["荒笛"]["n_records"], chars["荒笛"]["n_steps"], chars["刻律德菈"]["n_steps"]))
+    A("3. **稀疏角色样本量小**：刻律德菈 %d 步、海瑟音 %d 步（A 组）与三月七 %d 步（B 组），"
+      "滚动均值与峰值的稳定性有限；荒笛（NPC，70 条 / 4 步）只在丹恒条目内说明、不单列曲线。" % (
+          chars["刻律德菈"]["n_steps"], chars["海瑟音"]["n_steps"], chars["三月七"]["n_steps"]))
     A("4. **B 组 own oracle 口径不同**：开拓者/三月七没有自己的神谕，曲线取「与 13 条神谕的最高相似度」，"
       "与黄金裔的 own-oracle 曲线不可直接比大小；丹恒 own=O12 为大地承接设定。")
     A("5. 步骤均值向量丢失了步内分布；`*_own_max`（记录级最大）保留了上界信息，可对照看。")
     A("")
-    A("## 7. 复现与自校验")
+    A("## 6. 复现与自校验")
     A("")
     A("```bash")
     A(RUN_CMD)
@@ -756,7 +752,7 @@ def build():
     keys = read_json(P_KEYS)
     knife = read_json(P_KNIFE)
     vbound = version_boundaries(segs)
-    print("计算 15 角色曲线（TF-IDF + SBERT）…")
+    print("计算 14 角色曲线（TF-IDF + SBERT）…")
     steps_out, OT, OS, oids, cross = compute_curves(
         ids, recs_ordered, seg_by_key, oracles, X, Z, own_map, cite, filled_v2, keys, knife)
     meta = {
@@ -772,7 +768,8 @@ def build():
         "n_records_total": len(recs_ordered),
         "n_steps_total": sum(len(ch["steps"]) for ch in steps_out.values()),
         "own_oracle_definition": "max_over_own_oracles（遐蝶 = O04，O05 归玻吕茜亚不进主名单；开拓者/三月七无自有神谕 → 取 13 条最高；丹恒承接大地 → O12）",
-        "groups": {"A_11黄金裔": GROUP_A, "B_单列": GROUP_B, "NPC": GROUP_NPC,
+        "groups": {"A_11黄金裔": GROUP_A, "B_单列3": GROUP_B,
+                   "note": "荒笛、玻吕茜亚按 NPC 处理，只在相关角色条目内说明，不单列分析/曲线。",
                    "note": "按用户最终口径：黄金裔=11 位（岁月席位历史更替）；玻吕茜亚仅注记、不画曲线。"},
         "rolling_window": ROLL_WIN,
         "method_chain": "text_clean → vec_rec.transform（TF-IDF）/ Z_sbert_rec 行（SBERT）→ 按 (version,task,step_idx) 取均值向量 → 归一 → 与神谕向量余弦 → 居中滚动均值(5)",
@@ -786,7 +783,7 @@ def build():
     for char in CHARS:
         out = os.path.join(FIG_DIR, "%s.png" % char)
         make_character_figure(char, steps_out[char], vbound, out)
-    print("已生成 15 张单人曲线图 → %s" % os.path.relpath(FIG_DIR, ROOT))
+    print("已生成 14 张单人曲线图 → %s" % os.path.relpath(FIG_DIR, ROOT))
     mat_t, mat_s = make_heatmap(steps_out, FIG_HEAT)
     print("已生成 %s（%.1f KB）" % (os.path.relpath(FIG_HEAT, ROOT), os.path.getsize(FIG_HEAT) / 1024.0))
     md = render_report(data, mat_t, mat_s, vbound)
@@ -798,7 +795,7 @@ def build():
     if not verify(data, verbose=True):
         print("!! 校验失败", file=sys.stderr)
         sys.exit(1)
-    print("\n校验通过：15 角色曲线齐全，抽查 5 点可从 JSON + 资产复算。")
+    print("\n校验通过：14 角色曲线齐全（荒笛/玻吕茜亚按 NPC 处理），抽查 5 点可从 JSON + 资产复算。")
 
 
 def verify(data=None, verbose=False):
@@ -809,8 +806,8 @@ def verify(data=None, verbose=False):
             return False
         data = read_json(OUT_JSON)
     chars = data["characters"]
-    if len(chars) != 15:
-        problems.append("角色数 %d != 15" % len(chars))
+    if len(chars) != 14:
+        problems.append("角色数 %d != 14" % len(chars))
     ids, recs_ordered, seg_by_key, segs, oracles, vec, X, Z = load_all()
     oids = [o["oracle_id"] for o in oracles]
     idx_by_id = {rid: i for i, rid in enumerate(ids["records"])}
@@ -860,14 +857,14 @@ def verify(data=None, verbose=False):
         if c not in md:
             problems.append("报告缺少角色 %s" % c)
     for kw in ("每个点怎么来的", "与神谕文本的相似度", "3.5 嵌套闪回", "荒笛", "丹恒",
-               "玻吕茜亚", "三月七", "A 组", "B 组", "NPC"):
+               "玻吕茜亚", "三月七", "A 组", "B 组", "NPC 处理"):
         if kw not in md:
             problems.append("报告缺少章节/口径：%s" % kw)
     if verbose:
         print("\n抽查 5 点（角色, order, 版本, ΔTF-IDF, ΔSBERT）：")
         for c in checks:
             print("  %-5s order=%4d %s | Δtfidf=%.2e Δsbert=%.2e" % c)
-        print("15 角色 / %d 步；CSV 行数 %d" % (
+        print("14 角色 / %d 步；CSV 行数 %d" % (
             sum(len(chars[c]["steps"]) for c in CHARS),
             (sum(1 for _ in open(OUT_CSV, encoding="utf-8-sig")) - 1) if os.path.exists(OUT_CSV) else -1))
     if problems:
