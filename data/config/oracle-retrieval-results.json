@@ -1,0 +1,4851 @@
+{
+ "meta": {
+  "script": "tools/oracle_retrieval.py",
+  "run_command": "conda run -n nlpLesson python tools/oracle_retrieval.py",
+  "n_queries": 13,
+  "n_documents": 686,
+  "document_pool": "n_main>0 且 !low_content 且 has_dialogue（与 A/B 相同，共 686）",
+  "document_text": "segments.jsonl 的 text_all（dialogue+narration 拼接）",
+  "gold_source": "data/config/oracle-fulfillment.filled.json 的 fulfillment_segment（人工确认）",
+  "gold_all_in_pool": true,
+  "methods": [
+   "keyword",
+   "tfidf_char",
+   "tfidf_word",
+   "bm25",
+   "lsa"
+  ],
+  "method_labels": {
+   "keyword": "关键词基线",
+   "tfidf_char": "TF-IDF(char 2–3gram)",
+   "tfidf_word": "TF-IDF(jieba 词)",
+   "bm25": "BM25(k1=1.5,b=0.75)",
+   "lsa": "LSA(词TF-IDF+SVD100)"
+  },
+  "params": {
+   "tfidf_char": "analyzer=char, ngram_range=(2,3), min_df=2, sublinear_tf, L2",
+   "tfidf_word": "jieba 词级（len>=2、去停用词）, min_df=1, sublinear_tf, L2",
+   "bm25": "k1=1.5, b=0.75, idf=log(1+(N-df+0.5)/(df+0.5))",
+   "lsa": "词级 TF-IDF + TruncatedSVD(n_components=100, random_state=42), 潜在向量 L2 后余弦",
+   "keyword": "query = 神谕文本 + keywords（keywords 权重 2.0）；score=Σ w×(1+log1p(tf))",
+   "rank_tie_break": "分数降序、同分按 document 顺序（seq）升序；排名为 1-based 位置"
+  },
+  "expanded_query": "在神谕原文后追加 metaphors 的 gloss（如 灰白的黎明→开拓者）；keyword 方法与普通 query 同一套权重",
+  "note": "13 条 query 的小样本结果，只作方向性参考，不做显著性断言。",
+  "gold_composition_diagnosis": "见 gold_diagnosis：若多数 gold 本身就是吟诵该神谕的步骤，则本任务主要测「引用句匹配」而非「语义兑现检索」"
+ },
+ "queries": [
+  {
+   "oracle_id": "O01",
+   "text": "汝将最后一次沐浴，在温热耀眼的黄金中。",
+   "holder": "阿格莱雅",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": false,
+   "keywords": [
+    "沐浴",
+    "黄金"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.1|王座啊，终了那数载索寞|2",
+    "3.3|诗者啊，从我处诉说天空•下|4",
+    "3.4|英雄啊，回返那安宁的家乡|21"
+   ]
+  },
+  {
+   "oracle_id": "O02",
+   "text": "汝将碎作千片，凋零在他乡的土壤。",
+   "holder": "缇宝",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.1|来路啊，请再度显映往履|21",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "碎作千片",
+    "凋零",
+    "他乡"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.1|来路啊，请再度显映往履|21",
+    "3.4|英雄啊，点燃那最初的骄阳|6"
+   ]
+  },
+  {
+   "oracle_id": "O03",
+   "text": "终有一日，汝将背后负创而死。",
+   "holder": "万敌",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "背后负创",
+    "负创"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.1|王座啊，终了那数载索寞|2",
+    "3.4|英雄啊，点燃那最初的骄阳|11"
+   ]
+  },
+  {
+   "oracle_id": "O04",
+   "text": "花海尽头，生者的魂灵将温暖汝之指尖；相拥之后，便是永恒的离别。",
+   "holder": "遐蝶",
+   "fulfillment_type": "反转",
+   "gold_segment": "3.2|学者啊，于真理门前再会|2",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": false,
+   "keywords": [
+    "花海",
+    "指尖",
+    "永恒的离别"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.1|来路啊，请再度显映往履|21",
+    "3.2|学者啊，于真理门前再会|2",
+    "3.2|行者啊，向冥河解缆起航|11",
+    "3.6|大墓啊，深藏轮回的秘密|3"
+   ]
+  },
+  {
+   "oracle_id": "O05",
+   "text": "汝将凋零，令逝者自残余中发芽，一同死去的火新生。",
+   "holder": "遐蝶",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "凋零",
+    "发芽",
+    "火新生"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.2|摇船啊，请载我横渡冥流|19",
+    "3.2|断梦啊，从夙世捎来启迪|1",
+    "3.2|断梦啊，从夙世捎来启迪|2"
+   ]
+  },
+  {
+   "oracle_id": "O06",
+   "text": "汝将超越至纯粹之终极，回归腐败苦黑。",
+   "holder": "那刻夏",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.2|学者啊，于真理门前再会|4",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "纯粹",
+    "终极",
+    "腐败",
+    "苦黑"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.2|学者啊，于真理门前再会|4"
+   ]
+  },
+  {
+   "oracle_id": "O07",
+   "text": "在彩虹桥的尽头，天空之子将缝补晨昏。",
+   "holder": "风堇",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "彩虹桥",
+    "天空之子",
+    "缝补晨昏"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.3|识院啊，悠扬间评定今昔|5",
+    "3.3|识院啊，悠扬间评定今昔|6",
+    "3.3|黎明啊，执耀于全世之终|1"
+   ]
+  },
+  {
+   "oracle_id": "O08",
+   "text": "汝将与贪婪同行，亦将亡于分文。",
+   "holder": "赛飞儿",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "贪婪",
+    "分文"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.2|行者啊，向冥河解缆起航|14",
+    "3.3|星空啊，为纷乱千念濯洗|4",
+    "3.3|石板啊，为何罔闻那灯影|10"
+   ]
+  },
+  {
+   "oracle_id": "O09",
+   "text": "汝将肩负骄阳，直至灰白的黎明显著。",
+   "holder": "白厄",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "骄阳",
+    "灰白的黎明"
+   ],
+   "metaphors": [
+    {
+     "display": "汝",
+     "gloss": "白厄"
+    },
+    {
+     "display": "黎明",
+     "gloss": "天外的救世主"
+    },
+    {
+     "display": "灰白的黎明",
+     "gloss": "开拓者"
+    }
+   ],
+   "occurrences_in_pool": [
+    "3.4|英雄啊，回返那安宁的家乡|2",
+    "3.4|英雄啊，粉碎那悲哀的造像|6",
+    "3.7|落英啊，残芳纷飞留归躅|7"
+   ]
+  },
+  {
+   "oracle_id": "O10",
+   "text": "汝将长眠于涛声中，于天地境界之海完成征服。",
+   "holder": "海瑟音",
+   "fulfillment_type": "反转",
+   "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+   "gold_in_pool": true,
+   "gold_is_occurrence": false,
+   "gold_contains_oracle_text": false,
+   "keywords": [
+    "涛声",
+    "天地境界之海",
+    "征服"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.5|囚人啊，踏过日影见沧溟|15",
+    "3.5|囚人啊，踏过日影见沧溟|5"
+   ]
+  },
+  {
+   "oracle_id": "O11",
+   "text": "汝将于天地境界之海完成征服，长眠于涛声中。",
+   "holder": "刻律德菈",
+   "fulfillment_type": "错位",
+   "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "天地境界之海",
+    "涛声"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.5|囚人啊，踏过日影见沧溟|15"
+   ]
+  },
+  {
+   "oracle_id": "O12",
+   "text": "汝将自掘坟墓，焚毁于叛逆的熔炉。",
+   "holder": "荒笛",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "自掘坟墓",
+    "叛逆",
+    "熔炉"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.6|大地啊，承载万物的苦难|10"
+   ]
+  },
+  {
+   "oracle_id": "O13",
+   "text": "汝将收梢于花开时，一如终结诞下起始。",
+   "holder": "昔涟",
+   "fulfillment_type": "字面",
+   "gold_segment": "3.7|魔女的孤诣课题|21",
+   "gold_in_pool": true,
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "keywords": [
+    "收梢",
+    "花开",
+    "终结",
+    "起始"
+   ],
+   "metaphors": [],
+   "occurrences_in_pool": [
+    "3.7|魔女的孤诣课题|21"
+   ]
+  }
+ ],
+ "methods_base": {
+  "keyword": {
+   "metrics": {
+    "recall@1": 0.6154,
+    "recall@5": 0.9231,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.7313,
+    "median_rank": 1.0,
+    "mean_rank": 11.85
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 1,
+     "gold_score": 14.79794,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 14.79794,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 14.356108,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|2",
+       "score": 13.986165,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 1,
+     "gold_score": 8.465736,
+     "top3": [
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 8.465736,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 8.465736,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|10",
+       "score": 3.386294,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 1,
+     "gold_score": 7.178054,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 7.178054,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 6.772589,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|7",
+       "score": 4.079442,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 21.534161,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 22.450452,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 22.044987,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 21.534161,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 15.931472,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 15.931472,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 15.238325,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 15.238325,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 1,
+     "gold_score": 19.364262,
+     "top3": [
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 19.364262,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 6.772589,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|3",
+       "score": 6.772589,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 3,
+     "gold_score": 15.090709,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 15.989569,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+       "score": 15.54091,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+       "score": 15.090709,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 2,
+     "gold_score": 9.276666,
+     "top3": [
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 9.276666,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 9.276666,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|14",
+       "score": 8.465736,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 3,
+     "gold_score": 12.66296,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 12.66296,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 12.66296,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+       "score": 12.66296,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 135,
+     "gold_score": 1.693147,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 24.50191,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 19.750557,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|莎草啊，抽绎渎神者所想|7",
+       "score": 7.583519,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 1,
+     "gold_score": 20.793859,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 20.793859,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 17.364262,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|莎草啊，抽绎渎神者所想|7",
+       "score": 5.484907,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 13.64379,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 13.64379,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|远客啊，请聆听此世祈祷|7",
+       "score": 3.386294,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|悬锋啊，请涤去你的血锈•上|4",
+       "score": 3.386294,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 22.699793,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 22.699793,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|14",
+       "score": 5.890372,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|银辇啊，迅赴那黑色大地|17",
+       "score": 5.079442,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 1,
+    "O02": 1,
+    "O03": 1,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 3,
+    "O08": 2,
+    "O09": 3,
+    "O10": 135,
+    "O11": 1,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "tfidf_char": {
+   "metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.9231,
+    "recall@10": 1.0,
+    "recall@20": 1.0,
+    "mrr": 0.5495,
+    "median_rank": 2.0,
+    "mean_rank": 2.38
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 2,
+     "gold_score": 0.129718,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.191303,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 0.129718,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|22",
+       "score": 0.05824,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 2,
+     "gold_score": 0.091753,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 0.171562,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 0.091753,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 0.034944,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 0.130016,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.172539,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 0.130016,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•下|4",
+       "score": 0.048242,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 0.207129,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.36028,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|11",
+       "score": 0.227033,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 0.207129,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 0.155629,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 0.155629,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 0.131381,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 0.112389,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 2,
+     "gold_score": 0.081979,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.082553,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 0.081979,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|20",
+       "score": 0.049023,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 3,
+     "gold_score": 0.097761,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 0.266207,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+       "score": 0.126132,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+       "score": 0.097761,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 2,
+     "gold_score": 0.127278,
+     "top3": [
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 0.139425,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 0.127278,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|14",
+       "score": 0.106243,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 3,
+     "gold_score": 0.126547,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 0.271981,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 0.179804,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+       "score": 0.126547,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 7,
+     "gold_score": 0.014994,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.562723,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.150275,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.084843,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 2,
+     "gold_score": 0.154456,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.536481,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.154456,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.083369,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 0.097448,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 0.097448,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.7|魔女的孤诣课题|17",
+       "score": 0.043993,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|荣耀啊，不忍卒饮的鸩酒|2",
+       "score": 0.043243,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 0.068424,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 0.068424,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|24",
+       "score": 0.035307,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|纸页啊，镌留记忆的涟漪|12",
+       "score": 0.034644,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 2,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 3,
+    "O08": 2,
+    "O09": 3,
+    "O10": 7,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "tfidf_word": {
+   "metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.4825,
+    "median_rank": 3.0,
+    "mean_rank": 5.85
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 3,
+     "gold_score": 0.110333,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.169836,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|22",
+       "score": 0.118236,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 0.110333,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 3,
+     "gold_score": 0.080674,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 0.154784,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 0.092239,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 0.080674,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 0.109439,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.134534,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 0.109439,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|7",
+       "score": 0.067584,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 0.226929,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.414571,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|纸页啊，镌留记忆的涟漪|5",
+       "score": 0.26382,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 0.226929,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 0.136928,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 0.136928,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 0.110195,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 0.094249,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 2,
+     "gold_score": 0.137576,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.147262,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 0.137576,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|3",
+       "score": 0.087159,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 6,
+     "gold_score": 0.115614,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 0.24575,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|18",
+       "score": 0.152248,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|2",
+       "score": 0.13204,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 3,
+     "gold_score": 0.119996,
+     "top3": [
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|6",
+       "score": 0.191088,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 0.126118,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 0.119996,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 4,
+     "gold_score": 0.13235,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 0.357297,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 0.206745,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.148236,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 45,
+     "gold_score": 0.019647,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.532331,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.170227,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.141367,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 2,
+     "gold_score": 0.170227,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.532331,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.170227,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.141367,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 0.125018,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 0.125018,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|2",
+       "score": 0.085216,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|魔女的孤诣课题|17",
+       "score": 0.045497,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 0.132446,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 0.132446,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+       "score": 0.05423,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|13",
+       "score": 0.044103,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 3,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 6,
+    "O08": 3,
+    "O09": 4,
+    "O10": 45,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "bm25": {
+   "metrics": {
+    "recall@1": 0.3077,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.5528,
+    "median_rank": 2.0,
+    "mean_rank": 6.0
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 2,
+     "gold_score": 12.241485,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 17.428261,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 12.241485,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|22",
+       "score": 11.884874,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 3,
+     "gold_score": 7.356564,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 16.515579,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 10.115775,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 7.356564,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 10.598271,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 11.628789,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 10.598271,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|7",
+       "score": 6.768598,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 33.242471,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 50.64159,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|11",
+       "score": 34.064094,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 33.242471,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 18.620524,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 18.620524,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 14.282738,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 11.374526,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 1,
+     "gold_score": 16.158968,
+     "top3": [
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 16.158968,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 15.413881,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 9.535627,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 6,
+     "gold_score": 12.96925,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 25.98681,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|2",
+       "score": 16.28293,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+       "score": 15.516876,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 2,
+     "gold_score": 10.85017,
+     "top3": [
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 11.784431,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 10.85017,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|6",
+       "score": 8.472682,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 3,
+     "gold_score": 17.07315,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 35.744448,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 25.900936,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+       "score": 17.07315,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 51,
+     "gold_score": 2.69681,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 50.588177,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 23.337912,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 15.700893,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 2,
+     "gold_score": 23.337912,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 50.588177,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 23.337912,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 15.700893,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 12.835101,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 12.835101,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|2",
+       "score": 7.016856,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|魔女的孤诣课题|17",
+       "score": 5.399404,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 14.933432,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 14.933432,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+       "score": 8.979146,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|银辇啊，迅赴那黑色大地|17",
+       "score": 6.330152,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 2,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 6,
+    "O08": 2,
+    "O09": 3,
+    "O10": 51,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "lsa": {
+   "metrics": {
+    "recall@1": 0.1538,
+    "recall@5": 0.7692,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.3764,
+    "median_rank": 4.0,
+    "mean_rank": 11.38
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 6,
+     "gold_score": 0.401711,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.557481,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|诸神啊，奏响创世的凯歌|4",
+       "score": 0.497819,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|英雄啊，归以凡身向侵晨|20",
+       "score": 0.460697,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 2,
+     "gold_score": 0.568264,
+     "top3": [
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 0.690479,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 0.568264,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|1",
+       "score": 0.523874,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 0.496829,
+     "top3": [
+      {
+       "segment_id": "3.1|旧忆啊，热雾中显隐扑朔|3",
+       "score": 0.503222,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 0.496829,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.476188,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 0.643896,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.871574,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|纸页啊，镌留记忆的涟漪|5",
+       "score": 0.743154,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 0.643896,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 0.748038,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 0.748038,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 0.654823,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|18",
+       "score": 0.651885,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 5,
+     "gold_score": 0.382691,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.57106,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|3",
+       "score": 0.445563,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|10",
+       "score": 0.406252,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 5
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 10,
+     "gold_score": 0.518385,
+     "top3": [
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|2",
+       "score": 0.660469,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 0.64846,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|3",
+       "score": 0.612437,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 4,
+     "gold_score": 0.386506,
+     "top3": [
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|6",
+       "score": 0.698488,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 0.462255,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|9",
+       "score": 0.408793,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 4,
+     "gold_score": 0.406927,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 0.815241,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 0.596863,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.543475,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 103,
+     "gold_score": 0.126316,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.883782,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|花醴啊，盈满空心的树干|21",
+       "score": 0.509514,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.434703,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 3,
+     "gold_score": 0.434703,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.883782,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|花醴啊，盈满空心的树干|21",
+       "score": 0.509514,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.434703,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 3
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 4,
+     "gold_score": 0.696671,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|2",
+       "score": 0.862402,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|8",
+       "score": 0.761618,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|4",
+       "score": 0.73735,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 4
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 0.540148,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 0.540148,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+       "score": 0.534364,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|银辇啊，迅赴那黑色大地|17",
+       "score": 0.49585,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 6,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 5,
+    "O07": 10,
+    "O08": 4,
+    "O09": 4,
+    "O10": 103,
+    "O11": 3,
+    "O12": 4,
+    "O13": 1
+   }
+  }
+ },
+ "methods_expanded": {
+  "keyword": {
+   "metrics": {
+    "recall@1": 0.6923,
+    "recall@5": 0.9231,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.7826,
+    "median_rank": 1.0,
+    "mean_rank": 11.69
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 1,
+     "gold_score": 14.79794,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 14.79794,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 14.356108,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|2",
+       "score": 13.986165,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 1,
+     "gold_score": 8.465736,
+     "top3": [
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 8.465736,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 8.465736,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|10",
+       "score": 3.386294,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 1,
+     "gold_score": 7.178054,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 7.178054,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 6.772589,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|7",
+       "score": 4.079442,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 21.534161,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 22.450452,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 22.044987,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 21.534161,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 15.931472,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 15.931472,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 15.238325,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 15.238325,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 1,
+     "gold_score": 19.364262,
+     "top3": [
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 19.364262,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 6.772589,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|3",
+       "score": 6.772589,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 3,
+     "gold_score": 15.090709,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 15.989569,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+       "score": 15.54091,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+       "score": 15.090709,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 2,
+     "gold_score": 9.276666,
+     "top3": [
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 9.276666,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 9.276666,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|14",
+       "score": 8.465736,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 1,
+     "gold_score": 18.841014,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+       "score": 18.841014,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 17.742402,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 17.742402,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 135,
+     "gold_score": 1.693147,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 24.50191,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 19.750557,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|莎草啊，抽绎渎神者所想|7",
+       "score": 7.583519,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 1,
+     "gold_score": 20.793859,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 20.793859,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 17.364262,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|莎草啊，抽绎渎神者所想|7",
+       "score": 5.484907,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 13.64379,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 13.64379,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|远客啊，请聆听此世祈祷|7",
+       "score": 3.386294,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|悬锋啊，请涤去你的血锈•上|4",
+       "score": 3.386294,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 22.699793,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 22.699793,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|14",
+       "score": 5.890372,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|银辇啊，迅赴那黑色大地|17",
+       "score": 5.079442,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 1,
+    "O02": 1,
+    "O03": 1,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 3,
+    "O08": 2,
+    "O09": 1,
+    "O10": 135,
+    "O11": 1,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "tfidf_char": {
+   "metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.9231,
+    "recall@10": 1.0,
+    "recall@20": 1.0,
+    "mrr": 0.5495,
+    "median_rank": 2.0,
+    "mean_rank": 2.38
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 2,
+     "gold_score": 0.129718,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.191303,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 0.129718,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|22",
+       "score": 0.05824,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 2,
+     "gold_score": 0.091753,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 0.171562,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 0.091753,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 0.034944,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 0.130016,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.172539,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 0.130016,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•下|4",
+       "score": 0.048242,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 0.207129,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.36028,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|11",
+       "score": 0.227033,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 0.207129,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 0.155629,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 0.155629,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 0.131381,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 0.112389,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 2,
+     "gold_score": 0.081979,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.082553,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 0.081979,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|20",
+       "score": 0.049023,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 3,
+     "gold_score": 0.097761,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 0.266207,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+       "score": 0.126132,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+       "score": 0.097761,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 2,
+     "gold_score": 0.127278,
+     "top3": [
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 0.139425,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 0.127278,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|14",
+       "score": 0.106243,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 3,
+     "gold_score": 0.119621,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 0.264079,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 0.174407,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+       "score": 0.119621,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 7,
+     "gold_score": 0.014994,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.562723,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.150275,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.084843,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 2,
+     "gold_score": 0.154456,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.536481,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.154456,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.083369,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 0.097448,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 0.097448,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.7|魔女的孤诣课题|17",
+       "score": 0.043993,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|荣耀啊，不忍卒饮的鸩酒|2",
+       "score": 0.043243,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 0.068424,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 0.068424,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|24",
+       "score": 0.035307,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|纸页啊，镌留记忆的涟漪|12",
+       "score": 0.034644,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 2,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 3,
+    "O08": 2,
+    "O09": 3,
+    "O10": 7,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "tfidf_word": {
+   "metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.4889,
+    "median_rank": 3.0,
+    "mean_rank": 5.77
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 3,
+     "gold_score": 0.110333,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.169836,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|22",
+       "score": 0.118236,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 0.110333,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 3,
+     "gold_score": 0.080674,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 0.154784,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 0.092239,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 0.080674,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 0.109439,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.134534,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 0.109439,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|7",
+       "score": 0.067584,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 0.226929,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.414571,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|纸页啊，镌留记忆的涟漪|5",
+       "score": 0.26382,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 0.226929,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 0.136928,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 0.136928,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 0.110195,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 0.094249,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 2,
+     "gold_score": 0.137576,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.147262,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 0.137576,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|3",
+       "score": 0.087159,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 6,
+     "gold_score": 0.115614,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 0.24575,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|18",
+       "score": 0.152248,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|2",
+       "score": 0.13204,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 3,
+     "gold_score": 0.119996,
+     "top3": [
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|6",
+       "score": 0.191088,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 0.126118,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 0.119996,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 3,
+     "gold_score": 0.141839,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 0.362075,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 0.20951,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+       "score": 0.141839,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 45,
+     "gold_score": 0.019647,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.532331,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.170227,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.141367,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 2,
+     "gold_score": 0.170227,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.532331,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.170227,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.141367,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 0.125018,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 0.125018,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|2",
+       "score": 0.085216,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|魔女的孤诣课题|17",
+       "score": 0.045497,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 0.132446,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 0.132446,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+       "score": 0.05423,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|13",
+       "score": 0.044103,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 3,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 6,
+    "O08": 3,
+    "O09": 3,
+    "O10": 45,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "bm25": {
+   "metrics": {
+    "recall@1": 0.3077,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.5528,
+    "median_rank": 2.0,
+    "mean_rank": 6.0
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 2,
+     "gold_score": 12.241485,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 17.428261,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 12.241485,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|22",
+       "score": 11.884874,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 3,
+     "gold_score": 7.356564,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+       "score": 16.515579,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 10.115775,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 7.356564,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 10.598271,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 11.628789,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 10.598271,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.0|晚星啊，莫让我长夜独卧|7",
+       "score": 6.768598,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 33.242471,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 50.64159,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|行者啊，向冥河解缆起航|11",
+       "score": 34.064094,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 33.242471,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 18.620524,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 18.620524,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+       "score": 14.282738,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 11.374526,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 1,
+     "gold_score": 16.158968,
+     "top3": [
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|4",
+       "score": 16.158968,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 15.413881,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+       "score": 9.535627,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 6,
+     "gold_score": 12.96925,
+     "top3": [
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 25.98681,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|2",
+       "score": 16.28293,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+       "score": 15.516876,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 2,
+     "gold_score": 10.85017,
+     "top3": [
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 11.784431,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+       "score": 10.85017,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|6",
+       "score": 8.472682,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 3,
+     "gold_score": 21.428563,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 42.032225,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 30.281356,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+       "score": 21.428563,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 51,
+     "gold_score": 2.69681,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 50.588177,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 23.337912,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 15.700893,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 2,
+     "gold_score": 23.337912,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 50.588177,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 23.337912,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 15.700893,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 1,
+     "gold_score": 12.835101,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|10",
+       "score": 12.835101,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|2",
+       "score": 7.016856,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|魔女的孤诣课题|17",
+       "score": 5.399404,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 14.933432,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 14.933432,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+       "score": 8.979146,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|银辇啊，迅赴那黑色大地|17",
+       "score": 6.330152,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 2,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 6,
+    "O08": 2,
+    "O09": 3,
+    "O10": 51,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "lsa": {
+   "metrics": {
+    "recall@1": 0.1538,
+    "recall@5": 0.7692,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.3764,
+    "median_rank": 4.0,
+    "mean_rank": 11.38
+   },
+   "per_oracle": {
+    "O01": {
+     "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+     "gold_rank": 6,
+     "gold_score": 0.401711,
+     "top3": [
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.557481,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|诸神啊，奏响创世的凯歌|4",
+       "score": 0.497819,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|英雄啊，归以凡身向侵晨|20",
+       "score": 0.460697,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "gold_segment": "3.1|来路啊，请再度显映往履|21",
+     "gold_rank": 2,
+     "gold_score": 0.568264,
+     "top3": [
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|17",
+       "score": 0.690479,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|21",
+       "score": 0.568264,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|来路啊，请再度显映往履|1",
+       "score": 0.523874,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O03": {
+     "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "gold_rank": 2,
+     "gold_score": 0.496829,
+     "top3": [
+      {
+       "segment_id": "3.1|旧忆啊，热雾中显隐扑朔|3",
+       "score": 0.503222,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+       "score": 0.496829,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|王座啊，终了那数载索寞|2",
+       "score": 0.476188,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O04": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|2",
+     "gold_rank": 3,
+     "gold_score": 0.643896,
+     "top3": [
+      {
+       "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+       "score": 0.871574,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.7|纸页啊，镌留记忆的涟漪|5",
+       "score": 0.743154,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|学者啊，于真理门前再会|2",
+       "score": 0.643896,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+     "gold_rank": 1,
+     "gold_score": 0.748038,
+     "top3": [
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+       "score": 0.748038,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+       "score": 0.654823,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.2|摇船啊，请载我横渡冥流|18",
+       "score": 0.651885,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "gold_segment": "3.2|学者啊，于真理门前再会|4",
+     "gold_rank": 5,
+     "gold_score": 0.382691,
+     "top3": [
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.57106,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|3",
+       "score": 0.445563,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，点燃那最初的骄阳|10",
+       "score": 0.406252,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 5
+    },
+    "O07": {
+     "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+     "gold_rank": 10,
+     "gold_score": 0.518385,
+     "top3": [
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|2",
+       "score": 0.660469,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+       "score": 0.64846,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|诗者啊，从我处诉说天空•上|3",
+       "score": 0.612437,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O08": {
+     "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+     "gold_rank": 4,
+     "gold_score": 0.386506,
+     "top3": [
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|6",
+       "score": 0.698488,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+       "score": 0.462255,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.3|宝箱啊，兀自承装下前尘|9",
+       "score": 0.408793,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O09": {
+     "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "gold_rank": 4,
+     "gold_score": 0.423725,
+     "top3": [
+      {
+       "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+       "score": 0.815464,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+       "score": 0.662357,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|5",
+       "score": 0.429809,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "gold_rank": 103,
+     "gold_score": 0.126316,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.883782,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|花醴啊，盈满空心的树干|21",
+       "score": 0.509514,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.434703,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+     "gold_rank": 3,
+     "gold_score": 0.434703,
+     "top3": [
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+       "score": 0.883782,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|花醴啊，盈满空心的树干|21",
+       "score": 0.509514,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+       "score": 0.434703,
+       "is_gold": true
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 3
+    },
+    "O12": {
+     "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+     "gold_rank": 4,
+     "gold_score": 0.696671,
+     "top3": [
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|2",
+       "score": 0.862402,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|8",
+       "score": 0.761618,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.6|大地啊，承载万物的苦难|4",
+       "score": 0.73735,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": false,
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 4
+    },
+    "O13": {
+     "gold_segment": "3.7|魔女的孤诣课题|21",
+     "gold_rank": 1,
+     "gold_score": 0.540148,
+     "top3": [
+      {
+       "segment_id": "3.7|魔女的孤诣课题|21",
+       "score": 0.540148,
+       "is_gold": true
+      },
+      {
+       "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+       "score": 0.534364,
+       "is_gold": false
+      },
+      {
+       "segment_id": "3.0|银辇啊，迅赴那黑色大地|17",
+       "score": 0.49585,
+       "is_gold": false
+      }
+     ],
+     "gold_in_top3": true,
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   },
+   "gold_ranks": {
+    "O01": 6,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 5,
+    "O07": 10,
+    "O08": 4,
+    "O09": 4,
+    "O10": 103,
+    "O11": 3,
+    "O12": 4,
+    "O13": 1
+   }
+  }
+ },
+ "summary": [
+  {
+   "method": "keyword",
+   "label": "关键词基线",
+   "recall@1": 0.6154,
+   "recall@5": 0.9231,
+   "recall@10": 0.9231,
+   "recall@20": 0.9231,
+   "mrr": 0.7313,
+   "median_rank": 1.0,
+   "mean_rank": 11.85,
+   "top1_occurrence_rate": 1.0
+  },
+  {
+   "method": "tfidf_char",
+   "label": "TF-IDF(char 2–3gram)",
+   "recall@1": 0.2308,
+   "recall@5": 0.9231,
+   "recall@10": 1.0,
+   "recall@20": 1.0,
+   "mrr": 0.5495,
+   "median_rank": 2.0,
+   "mean_rank": 2.38,
+   "top1_occurrence_rate": 0.8462
+  },
+  {
+   "method": "tfidf_word",
+   "label": "TF-IDF(jieba 词)",
+   "recall@1": 0.2308,
+   "recall@5": 0.8462,
+   "recall@10": 0.9231,
+   "recall@20": 0.9231,
+   "mrr": 0.4825,
+   "median_rank": 3.0,
+   "mean_rank": 5.85,
+   "top1_occurrence_rate": 0.7692
+  },
+  {
+   "method": "bm25",
+   "label": "BM25(k1=1.5,b=0.75)",
+   "recall@1": 0.3077,
+   "recall@5": 0.8462,
+   "recall@10": 0.9231,
+   "recall@20": 0.9231,
+   "mrr": 0.5528,
+   "median_rank": 2.0,
+   "mean_rank": 6.0,
+   "top1_occurrence_rate": 0.9231
+  },
+  {
+   "method": "lsa",
+   "label": "LSA(词TF-IDF+SVD100)",
+   "recall@1": 0.1538,
+   "recall@5": 0.7692,
+   "recall@10": 0.9231,
+   "recall@20": 0.9231,
+   "mrr": 0.3764,
+   "median_rank": 4.0,
+   "mean_rank": 11.38,
+   "top1_occurrence_rate": 0.4615
+  }
+ ],
+ "best_method": "keyword",
+ "gold_diagnosis": {
+  "n_queries": 13,
+  "n_gold_is_occurrence": 12,
+  "n_gold_contains_oracle_text": 10,
+  "n_semantic_only": 1,
+  "semantic_only_oracles": [
+   "O10"
+  ]
+ },
+ "expansion_gain": {
+  "keyword": {
+   "base_metrics": {
+    "recall@1": 0.6154,
+    "recall@5": 0.9231,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.7313,
+    "median_rank": 1.0,
+    "mean_rank": 11.85
+   },
+   "expanded_metrics": {
+    "recall@1": 0.6923,
+    "recall@5": 0.9231,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.7826,
+    "median_rank": 1.0,
+    "mean_rank": 11.69
+   },
+   "delta_recall@1": 0.0769,
+   "delta_recall@5": 0.0,
+   "delta_recall@10": 0.0,
+   "delta_mrr": 0.0513,
+   "n_improved": 1,
+   "n_worsened": 0,
+   "improved_ids": [
+    "O09"
+   ],
+   "worsened_ids": [],
+   "per_oracle_ranks_base": {
+    "O01": 1,
+    "O02": 1,
+    "O03": 1,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 3,
+    "O08": 2,
+    "O09": 3,
+    "O10": 135,
+    "O11": 1,
+    "O12": 1,
+    "O13": 1
+   },
+   "per_oracle_ranks_expanded": {
+    "O01": 1,
+    "O02": 1,
+    "O03": 1,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 3,
+    "O08": 2,
+    "O09": 1,
+    "O10": 135,
+    "O11": 1,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "tfidf_char": {
+   "base_metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.9231,
+    "recall@10": 1.0,
+    "recall@20": 1.0,
+    "mrr": 0.5495,
+    "median_rank": 2.0,
+    "mean_rank": 2.38
+   },
+   "expanded_metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.9231,
+    "recall@10": 1.0,
+    "recall@20": 1.0,
+    "mrr": 0.5495,
+    "median_rank": 2.0,
+    "mean_rank": 2.38
+   },
+   "delta_recall@1": 0.0,
+   "delta_recall@5": 0.0,
+   "delta_recall@10": 0.0,
+   "delta_mrr": 0.0,
+   "n_improved": 0,
+   "n_worsened": 0,
+   "improved_ids": [],
+   "worsened_ids": [],
+   "per_oracle_ranks_base": {
+    "O01": 2,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 3,
+    "O08": 2,
+    "O09": 3,
+    "O10": 7,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   },
+   "per_oracle_ranks_expanded": {
+    "O01": 2,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 3,
+    "O08": 2,
+    "O09": 3,
+    "O10": 7,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "tfidf_word": {
+   "base_metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.4825,
+    "median_rank": 3.0,
+    "mean_rank": 5.85
+   },
+   "expanded_metrics": {
+    "recall@1": 0.2308,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.4889,
+    "median_rank": 3.0,
+    "mean_rank": 5.77
+   },
+   "delta_recall@1": 0.0,
+   "delta_recall@5": 0.0,
+   "delta_recall@10": 0.0,
+   "delta_mrr": 0.0064,
+   "n_improved": 1,
+   "n_worsened": 0,
+   "improved_ids": [
+    "O09"
+   ],
+   "worsened_ids": [],
+   "per_oracle_ranks_base": {
+    "O01": 3,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 6,
+    "O08": 3,
+    "O09": 4,
+    "O10": 45,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   },
+   "per_oracle_ranks_expanded": {
+    "O01": 3,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 2,
+    "O07": 6,
+    "O08": 3,
+    "O09": 3,
+    "O10": 45,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "bm25": {
+   "base_metrics": {
+    "recall@1": 0.3077,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.5528,
+    "median_rank": 2.0,
+    "mean_rank": 6.0
+   },
+   "expanded_metrics": {
+    "recall@1": 0.3077,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.5528,
+    "median_rank": 2.0,
+    "mean_rank": 6.0
+   },
+   "delta_recall@1": 0.0,
+   "delta_recall@5": 0.0,
+   "delta_recall@10": 0.0,
+   "delta_mrr": 0.0,
+   "n_improved": 0,
+   "n_worsened": 0,
+   "improved_ids": [],
+   "worsened_ids": [],
+   "per_oracle_ranks_base": {
+    "O01": 2,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 6,
+    "O08": 2,
+    "O09": 3,
+    "O10": 51,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   },
+   "per_oracle_ranks_expanded": {
+    "O01": 2,
+    "O02": 3,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 1,
+    "O07": 6,
+    "O08": 2,
+    "O09": 3,
+    "O10": 51,
+    "O11": 2,
+    "O12": 1,
+    "O13": 1
+   }
+  },
+  "lsa": {
+   "base_metrics": {
+    "recall@1": 0.1538,
+    "recall@5": 0.7692,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.3764,
+    "median_rank": 4.0,
+    "mean_rank": 11.38
+   },
+   "expanded_metrics": {
+    "recall@1": 0.1538,
+    "recall@5": 0.7692,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.3764,
+    "median_rank": 4.0,
+    "mean_rank": 11.38
+   },
+   "delta_recall@1": 0.0,
+   "delta_recall@5": 0.0,
+   "delta_recall@10": 0.0,
+   "delta_mrr": 0.0,
+   "n_improved": 0,
+   "n_worsened": 0,
+   "improved_ids": [],
+   "worsened_ids": [],
+   "per_oracle_ranks_base": {
+    "O01": 6,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 5,
+    "O07": 10,
+    "O08": 4,
+    "O09": 4,
+    "O10": 103,
+    "O11": 3,
+    "O12": 4,
+    "O13": 1
+   },
+   "per_oracle_ranks_expanded": {
+    "O01": 6,
+    "O02": 2,
+    "O03": 2,
+    "O04": 3,
+    "O05": 1,
+    "O06": 5,
+    "O07": 10,
+    "O08": 4,
+    "O09": 4,
+    "O10": 103,
+    "O11": 3,
+    "O12": 4,
+    "O13": 1
+   }
+  }
+ },
+ "failures": [
+  {
+   "oracle_id": "O10",
+   "text": "汝将长眠于涛声中，于天地境界之海完成征服。",
+   "holder": "海瑟音",
+   "fulfillment_type": "反转",
+   "gold_is_occurrence": false,
+   "gold_contains_oracle_text": false,
+   "gold_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+   "gold_evidence": "海瑟音：「让我踏入一场无休无止的幻梦吧」（随后：「海洋啊！我向你献上余生的清醒和自由——以换取与「虚无」抗争的力量」），她长眠于涛声中、以醉梦守卫封印；而所谓「天地境界之海」是刻律德菈临终托人送来的天外记忆（3.5|囚人|15：「那神谕中的",
+   "ranks": {
+    "keyword": 135,
+    "tfidf_char": 7,
+    "tfidf_word": 45,
+    "bm25": 51,
+    "lsa": 103
+   },
+   "best_method": "tfidf_char",
+   "best_rank": 7,
+   "worst_rank": 135,
+   "metaphors": [],
+   "keywords": [
+    "涛声",
+    "天地境界之海",
+    "征服"
+   ]
+  },
+  {
+   "oracle_id": "O04",
+   "text": "花海尽头，生者的魂灵将温暖汝之指尖；相拥之后，便是永恒的离别。",
+   "holder": "遐蝶",
+   "fulfillment_type": "反转",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": false,
+   "gold_segment": "3.2|学者啊，于真理门前再会|2",
+   "gold_evidence": "遐蝶：「还记得那句预言吗？『花海尽头，生者的魂灵将温暖汝之指尖。相拥之后，便是永恒的离别。』…我也终于能够以最美丽的姿态，为它写下句点。」她以半神之身洞开冥府、送开拓者重返人间，并重新诠释神谕：「我们所有人的每一次触碰，每一次拥抱，将再也不",
+   "ranks": {
+    "keyword": 3,
+    "tfidf_char": 3,
+    "tfidf_word": 3,
+    "bm25": 3,
+    "lsa": 3
+   },
+   "best_method": "keyword",
+   "best_rank": 3,
+   "worst_rank": 3,
+   "metaphors": [],
+   "keywords": [
+    "花海",
+    "指尖",
+    "永恒的离别"
+   ]
+  },
+  {
+   "oracle_id": "O07",
+   "text": "在彩虹桥的尽头，天空之子将缝补晨昏。",
+   "holder": "风堇",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.3|黎明啊，执耀于全世之终|1",
+   "gold_evidence": "丹恒：「『在彩虹桥的尽头，天空之子将缝补晨昏。』缇里西庇俄丝女士的预言…果真不会落空啊。」风堇（天空英雄塞涅俄丝的血脉、「雅辛忒丝」）决定留在天空：「归还艾格勒的火种，接过它的神权……然后，我会留在天空，为人们降下庇护。」「降下温柔的虹光，",
+   "ranks": {
+    "keyword": 3,
+    "tfidf_char": 3,
+    "tfidf_word": 6,
+    "bm25": 6,
+    "lsa": 10
+   },
+   "best_method": "keyword",
+   "best_rank": 3,
+   "worst_rank": 10,
+   "metaphors": [],
+   "keywords": [
+    "彩虹桥",
+    "天空之子",
+    "缝补晨昏"
+   ]
+  },
+  {
+   "oracle_id": "O09",
+   "text": "汝将肩负骄阳，直至灰白的黎明显著。",
+   "holder": "白厄",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+   "gold_evidence": "白厄：「诚如神谕所示：「汝将肩负骄阳，直至灰白的黎明显著」——在你亲手谱写的史诗中，愿这名号能代我同行。」他把「救世主」之名与「全世」职责交予「灰白的黎明」——开拓者，自己则燃烧为这一世的盗火行者；此神谕实由昔涟写下（3.7|落英|7：「那",
+   "ranks": {
+    "keyword": 3,
+    "tfidf_char": 3,
+    "tfidf_word": 4,
+    "bm25": 3,
+    "lsa": 4
+   },
+   "best_method": "keyword",
+   "best_rank": 3,
+   "worst_rank": 4,
+   "metaphors": [
+    {
+     "display": "汝",
+     "gloss": "白厄"
+    },
+    {
+     "display": "黎明",
+     "gloss": "天外的救世主"
+    },
+    {
+     "display": "灰白的黎明",
+     "gloss": "开拓者"
+    }
+   ],
+   "keywords": [
+    "骄阳",
+    "灰白的黎明"
+   ]
+  },
+  {
+   "oracle_id": "O08",
+   "text": "汝将与贪婪同行，亦将亡于分文。",
+   "holder": "赛飞儿",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.3|石板啊，为何罔闻那灯影|10",
+   "gold_evidence": "赛飞儿：「『汝将与贪婪同行，亦将亡于分文……』哈…那预言里的「分文」……原来就是字面意思啊……」她与盗火行者（白厄）死战后力竭，仍确认「刻法勒的火种不在这里…它现在…很安全啊」；阿格莱雅盖棺：「你出卖了世界……用它换来了凡人千年的余生。」",
+   "ranks": {
+    "keyword": 2,
+    "tfidf_char": 2,
+    "tfidf_word": 3,
+    "bm25": 2,
+    "lsa": 4
+   },
+   "best_method": "keyword",
+   "best_rank": 2,
+   "worst_rank": 4,
+   "metaphors": [],
+   "keywords": [
+    "贪婪",
+    "分文"
+   ]
+  },
+  {
+   "oracle_id": "O01",
+   "text": "汝将最后一次沐浴，在温热耀眼的黄金中。",
+   "holder": "阿格莱雅",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": false,
+   "gold_segment": "3.4|英雄啊，回返那安宁的家乡|21",
+   "gold_evidence": "永劫回归#33550334，阿格莱雅：「我将最后一次沐浴，在温热耀眼的黄金中」——现在，是时候将其兑现了。随后她「将最后的人性结成丝网，抵御洪流」「翦除一切隐患，为新世界编织最坚韧的未来」，以沐浴于金血/金光中的自我献祭完成神谕。",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 2,
+    "tfidf_word": 3,
+    "bm25": 2,
+    "lsa": 6
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 6,
+   "metaphors": [],
+   "keywords": [
+    "沐浴",
+    "黄金"
+   ]
+  },
+  {
+   "oracle_id": "O02",
+   "text": "汝将碎作千片，凋零在他乡的土壤。",
+   "holder": "缇宝",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.1|来路啊，请再度显映往履|21",
+   "gold_evidence": "缇宝：「命运的箴言如此为缇里西庇俄丝揭示——『汝将碎作千片，凋零在他乡的土壤。』」旁白随即交代兑现：「她穿越「万径之门」，分裂为千名信使，将创世的神谕传向翁法罗斯大地。」",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 2,
+    "tfidf_word": 3,
+    "bm25": 3,
+    "lsa": 2
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 3,
+   "metaphors": [],
+   "keywords": [
+    "碎作千片",
+    "凋零",
+    "他乡"
+   ]
+  },
+  {
+   "oracle_id": "O03",
+   "text": "终有一日，汝将背后负创而死。",
+   "holder": "万敌",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.4|英雄啊，点燃那最初的骄阳|11",
+   "gold_evidence": "旁白：「你已为他刻留多少伤疤，击碎多少骨节，自背后贯穿他的胸膛？」；白厄(卡厄斯兰那)：「「侵晨」会刺入你的第十节胸椎，那是唯一能杀死你的弱点。」万敌本人点明：「『终有一日，汝将背后负创而死』，这是我战胜试炼时望见的，诸神临终的谵语……」随",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 2,
+    "tfidf_word": 2,
+    "bm25": 2,
+    "lsa": 2
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 2,
+   "metaphors": [],
+   "keywords": [
+    "背后负创",
+    "负创"
+   ]
+  },
+  {
+   "oracle_id": "O05",
+   "text": "汝将凋零，令逝者自残余中发芽，一同死去的火新生。",
+   "holder": "遐蝶",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.2|摇船啊，请载我横渡冥流|19",
+   "gold_evidence": "塞纳托斯(玻吕茜亚)：「『汝将凋零，令逝者自残余中发芽，一同死去的火新生』…如神谕所示，塞纳托斯的神权注定只能由一人执掌。」她请求遐蝶：「请你完成这一世的试炼，赐我以「死亡」的拥抱，点燃「生命」的火苗。」随后遐蝶永居冥界，让冥河化作细雨将灵",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 1,
+    "tfidf_word": 1,
+    "bm25": 1,
+    "lsa": 1
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 1,
+   "metaphors": [],
+   "keywords": [
+    "凋零",
+    "发芽",
+    "火新生"
+   ]
+  },
+  {
+   "oracle_id": "O06",
+   "text": "汝将超越至纯粹之终极，回归腐败苦黑。",
+   "holder": "那刻夏",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.2|学者啊，于真理门前再会|4",
+   "gold_evidence": "瑟希斯：「于是，吾亦赐汝箴言——『汝将超越至纯粹之终极，回归腐败苦黑。』」那刻夏：「这就是所谓神谕？听起来只是把我过去、现在和未来成就的一切复述了一遍。」他此前已用心脏炼成贤者之石（「向至纯粹者转化时，必要的牺牲」）、肉身早为尸身，随后提交",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 2,
+    "tfidf_word": 2,
+    "bm25": 1,
+    "lsa": 5
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 5,
+   "metaphors": [],
+   "keywords": [
+    "纯粹",
+    "终极",
+    "腐败",
+    "苦黑"
+   ]
+  },
+  {
+   "oracle_id": "O11",
+   "text": "汝将于天地境界之海完成征服，长眠于涛声中。",
+   "holder": "刻律德菈",
+   "fulfillment_type": "错位",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.5|囚人啊，踏过日影见沧溟|15",
+   "gold_evidence": "旁白：「在这预言中的『天地境界之海』，一汪浅浅的死水里，凯撒在思考什么呢？」「她的视线投向远方，耳边的涛声盖过了人们的呐喊。」——「天地境界之海」实为一汪浅浅的死水，刻律德菈在此长眠；她临终还把真正的「天地境界之海」（天外大海）转赠海瑟音，",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 2,
+    "tfidf_word": 2,
+    "bm25": 2,
+    "lsa": 3
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 3,
+   "metaphors": [],
+   "keywords": [
+    "天地境界之海",
+    "涛声"
+   ]
+  },
+  {
+   "oracle_id": "O12",
+   "text": "汝将自掘坟墓，焚毁于叛逆的熔炉。",
+   "holder": "荒笛",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.6|大地啊，承载万物的苦难|10",
+   "gold_evidence": "荒笛：「『汝将自掘坟墓，焚毁于叛逆的熔炉』……但愿父亲那久违的胸膛，接受我的回归。」「看吧，我胸中燃烧的，这颗诞自「大地」的火种。它是生命萌芽的红土，万物的熔炉……」他主动卸下半神职责、把火种交给丹恒后随山崩/熔炉而逝。",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 1,
+    "tfidf_word": 1,
+    "bm25": 1,
+    "lsa": 4
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 4,
+   "metaphors": [],
+   "keywords": [
+    "自掘坟墓",
+    "叛逆",
+    "熔炉"
+   ]
+  },
+  {
+   "oracle_id": "O13",
+   "text": "汝将收梢于花开时，一如终结诞下起始。",
+   "holder": "昔涟",
+   "fulfillment_type": "字面",
+   "gold_is_occurrence": true,
+   "gold_contains_oracle_text": true,
+   "gold_segment": "3.7|魔女的孤诣课题|21",
+   "gold_evidence": "泰坦祝福：「汝将收梢于花开时，一如终结诞下起始。」（#23593 出生时 / #23958 赴死前复述）昔涟(往昔的涟漪)：「就像花开花落，我讲述，你聆听。我迎来自己的收梢，成为下一朵花绽放的养料。而你会启程…在最后一页种下无垠的花海。」她",
+   "ranks": {
+    "keyword": 1,
+    "tfidf_char": 1,
+    "tfidf_word": 1,
+    "bm25": 1,
+    "lsa": 1
+   },
+   "best_method": "keyword",
+   "best_rank": 1,
+   "worst_rank": 1,
+   "metaphors": [],
+   "keywords": [
+    "收梢",
+    "花开",
+    "终结",
+    "起始"
+   ]
+  }
+ ],
+ "occurrence_analysis": {
+  "keyword": {
+   "top1_is_occurrence_rate": 1.0,
+   "per_oracle": {
+    "O01": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O07": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O12": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   }
+  },
+  "tfidf_char": {
+   "top1_is_occurrence_rate": 0.8462,
+   "per_oracle": {
+    "O01": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O07": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   }
+  },
+  "tfidf_word": {
+   "top1_is_occurrence_rate": 0.7692,
+   "per_oracle": {
+    "O01": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O07": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O09": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   }
+  },
+  "bm25": {
+   "top1_is_occurrence_rate": 0.9231,
+   "per_oracle": {
+    "O01": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O03": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O04": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O07": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O08": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O09": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O12": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O13": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   }
+  },
+  "lsa": {
+   "top1_is_occurrence_rate": 0.4615,
+   "per_oracle": {
+    "O01": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O02": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O03": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O04": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O05": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O06": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 5
+    },
+    "O07": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O08": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 2
+    },
+    "O09": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O10": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    },
+    "O11": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 3
+    },
+    "O12": {
+     "top1_is_occurrence": false,
+     "occurrence_hit_rank": 4
+    },
+    "O13": {
+     "top1_is_occurrence": true,
+     "occurrence_hit_rank": 1
+    }
+   }
+  }
+ }
+}
