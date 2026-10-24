@@ -56,6 +56,22 @@ for (const s of segMap.values()) {
   const systemLike = nar.filter((r) => SYSTEM_LIKE.test((r.text_clean || '').trim())).length;
   const lowContent = textDialogue.length < 20 && dia.length <= 1;
 
+  // 步骤内 main 记录，按剧情顺序（id 升序），供滑窗/说话人/视角计算使用
+  const mainRecords = main
+    .slice()
+    .sort((a, b) => a.id - b.id)
+    .map((r) => ({
+      id: r.id,
+      kind: r.kind,
+      speaker: (r.canonical_speaker && r.canonical_speaker !== 'generic_npc') ? (r.form ? `${r.canonical_speaker}(${r.form})` : r.canonical_speaker) : (r.speaker || '旁白'),
+      text: r.text_clean || r.text || '',
+    }));
+
+  // 滑窗口径：20 条记录、步长 10；记录数 < 20 时整步一个窗口并标记
+  const nRecWindow = mainRecords.length;
+  const shortForWindow = nRecWindow < 20;
+  const nWindows = shortForWindow ? 1 : Math.floor((nRecWindow - 20) / 10) + 1;
+
   segs.push({
     segment_id: s.segment_id,
     version: s.version,
@@ -88,6 +104,17 @@ for (const s of segMap.values()) {
     ritual_count: cntKind('ritual'),
     structure_count: cntKind('structure'),
     translation_count: cntKind('translation'),
+    // 重复功能分两层：surface_repetition 已有；semantic_recall 待实现（词表匹配）
+    surface_repetition_count: main.filter((r) => ['motif', 'catchphrase', 'structure', 'ritual', 'translation'].includes(r.repeat_kind)).length,
+    semantic_recall_count: 0, // TODO: 神谕/歌谣/称呼/母题词表匹配
+    // 滑窗结构（语义突变特征待实现，这里先给出窗口信息）
+    main_records: mainRecords,
+    n_records_window: nRecWindow,
+    short_for_window: shortForWindow,
+    n_windows: nWindows,
+    semantic_shift_top20_mean: null,
+    semantic_shift_p90: null,
+    semantic_shift_max: null,
     option_texts: opt.map((r) => r.text_clean || r.text),
   });
 }
