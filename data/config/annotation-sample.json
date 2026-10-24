@@ -1,0 +1,1894 @@
+{
+  "note": "叙事显著性标注样本（分层抽样，确定性等距选取）；labels 留空待人工填写",
+  "protocol": "docs/实验口径与评测方案.md §6 与 §11.5",
+  "labels_schema": {
+    "significance": "0 普通推进 / 1 局部信息或关系变化 / 2 叙事状态明显变化 / 3 重大转折或前文意义被重新解释",
+    "types": [
+      "identity",
+      "memory",
+      "prophecy",
+      "relationship",
+      "world",
+      "sacrifice",
+      "motif"
+    ]
+  },
+  "total": 74,
+  "layers": [
+    {
+      "name": "L5 神谕相关",
+      "desc": "命中神谕词表（兑现/引用候选）",
+      "pool_size": 293,
+      "sampled": 12
+    },
+    {
+      "name": "L6 母题/记忆回收",
+      "desc": "母题词表命中≥3 或已知身份揭示段（含昔涟诞生）",
+      "pool_size": 17,
+      "sampled": 10
+    },
+    {
+      "name": "L4 长步骤(>30句)",
+      "desc": "检查基线是否偏爱长步骤",
+      "pool_size": 223,
+      "sampled": 8
+    },
+    {
+      "name": "L3 中长(11–30句)",
+      "desc": "主体之一",
+      "pool_size": 231,
+      "sampled": 12
+    },
+    {
+      "name": "L2 中等(4–10句)",
+      "desc": "主体之二",
+      "pool_size": 145,
+      "sampled": 12
+    },
+    {
+      "name": "L1 短步骤(1–3句)",
+      "desc": "检查基线是否偏爱短句",
+      "pool_size": 65,
+      "sampled": 10
+    },
+    {
+      "name": "L7 普通推进(负样本)",
+      "desc": "无神谕/母题命中且停顿比例低",
+      "pool_size": 147,
+      "sampled": 10
+    }
+  ],
+  "samples": [
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|12",
+      "layer": "L5 神谕相关",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 12,
+      "step_title": "继续前进，深入悬锋城",
+      "n_dialogue": 33,
+      "n_narration": 2,
+      "char_len": 690,
+      "speakers": [
+        "白厄",
+        "万敌",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|22",
+      "layer": "L5 神谕相关",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 22,
+      "step_title": "回私人浴宫好好休息",
+      "n_dialogue": 70,
+      "n_narration": 7,
+      "char_len": 2143,
+      "speakers": [
+        "昔涟",
+        "开拓者",
+        "遐蝶",
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.031
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|远客啊，请聆听此世祈祷|15",
+      "layer": "L5 神谕相关",
+      "version": "3.0",
+      "task": "远客啊，请聆听此世祈祷",
+      "step_idx": 15,
+      "step_title": "投喂大地兽",
+      "n_dialogue": 53,
+      "n_narration": 19,
+      "char_len": 1492,
+      "speakers": [
+        "开拓者",
+        "丹恒",
+        "遐蝶",
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.033
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|谧林啊，寤思者缘何失语|2",
+      "layer": "L5 神谕相关",
+      "version": "3.1",
+      "task": "谧林啊，寤思者缘何失语",
+      "step_idx": 2,
+      "step_title": "跟随遐蝶，面见阿格莱雅",
+      "n_dialogue": 14,
+      "n_narration": 2,
+      "char_len": 443,
+      "speakers": [
+        "遐蝶",
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|1",
+      "layer": "L5 神谕相关",
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "step_idx": 1,
+      "step_title": "前往私人浴宫，与迷迷交谈",
+      "n_dialogue": 31,
+      "n_narration": 2,
+      "char_len": 824,
+      "speakers": [
+        "白厄",
+        "阿格莱雅",
+        "遐蝶",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.139
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+      "layer": "L5 神谕相关",
+      "version": "3.3",
+      "task": "黎明啊，执耀于全世之终",
+      "step_idx": 1,
+      "step_title": "用欧洛尼斯祷言移开碎石",
+      "n_dialogue": 155,
+      "n_narration": 4,
+      "char_len": 3301,
+      "speakers": [
+        "风堇",
+        "丹恒",
+        "白厄",
+        "开拓者",
+        "昔涟",
+        "克莱门汀"
+      ],
+      "signals": {
+        "oracle": 4,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.071
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|书卷啊，可曾令锋刃回眸|1",
+      "layer": "L5 神谕相关",
+      "version": "3.3",
+      "task": "书卷啊，可曾令锋刃回眸",
+      "step_idx": 1,
+      "step_title": "前往友爱之馆",
+      "n_dialogue": 85,
+      "n_narration": 4,
+      "char_len": 2484,
+      "speakers": [
+        "来古士",
+        "丹恒",
+        "白厄",
+        "昔涟",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.041
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+      "layer": "L5 神谕相关",
+      "version": "3.4",
+      "task": "英雄啊，回返那安宁的家乡",
+      "step_idx": 2,
+      "step_title": "前往第一幕：「启程」",
+      "n_dialogue": 24,
+      "n_narration": 2,
+      "char_len": 795,
+      "speakers": [
+        "白厄",
+        "开拓者",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 2,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.028
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|4",
+      "layer": "L5 神谕相关",
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "step_idx": 4,
+      "step_title": "调查灵水盆中的异象",
+      "n_dialogue": 7,
+      "n_narration": 4,
+      "char_len": 217,
+      "speakers": [
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.6|大地啊，承载万物的苦难|11",
+      "layer": "L5 神谕相关",
+      "version": "3.6",
+      "task": "大地啊，承载万物的苦难",
+      "step_idx": 11,
+      "step_title": "与「海瑟音」对话",
+      "n_dialogue": 17,
+      "n_narration": 1,
+      "char_len": 448,
+      "speakers": [
+        "海瑟音",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.6|旅者啊，徘徊中忘却失真|7",
+      "layer": "L5 神谕相关",
+      "version": "3.6",
+      "task": "旅者啊，徘徊中忘却失真",
+      "step_idx": 7,
+      "step_title": "调查留声机留言",
+      "n_dialogue": 7,
+      "n_narration": 2,
+      "char_len": 163,
+      "speakers": [],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.7|星路长驰，穹宇远征|7",
+      "layer": "L5 神谕相关",
+      "version": "3.7",
+      "task": "星路长驰，穹宇远征",
+      "step_idx": 7,
+      "step_title": "跟随神谕的号召，前往黎明云崖",
+      "n_dialogue": 14,
+      "n_narration": 1,
+      "char_len": 429,
+      "speakers": [
+        "瓦尔特",
+        "星期日",
+        "黑天鹅",
+        "姬子",
+        "三月七"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|21",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 21,
+      "step_title": "迈向决战，打败尼卡多利！",
+      "n_dialogue": 130,
+      "n_narration": 12,
+      "char_len": 3276,
+      "speakers": [
+        "遐蝶",
+        "格奈乌斯",
+        "开拓者",
+        "白厄",
+        "万敌",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.036
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|争辩啊，代长矛分庭抗礼|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.2",
+      "task": "争辩啊，代长矛分庭抗礼",
+      "step_idx": 2,
+      "step_title": "返回半神议会，告知阿格莱雅",
+      "n_dialogue": 55,
+      "n_narration": 7,
+      "char_len": 1757,
+      "speakers": [
+        "来古士",
+        "白厄",
+        "阿格莱雅",
+        "凯妮斯",
+        "开拓者",
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.015
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|黎明啊，执耀于全世之终|11",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.3",
+      "task": "黎明啊，执耀于全世之终",
+      "step_idx": 11,
+      "step_title": "前往创世涡心，完成「再创世」",
+      "n_dialogue": 186,
+      "n_narration": 8,
+      "char_len": 4762,
+      "speakers": [
+        "丹恒",
+        "昔涟",
+        "白厄",
+        "开拓者",
+        "泽弗",
+        "尼莫西妮"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.077
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.4|英雄啊，点燃那最初的骄阳|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.4",
+      "task": "英雄啊，点燃那最初的骄阳",
+      "step_idx": 2,
+      "step_title": "见证翁法罗斯的真相",
+      "n_dialogue": 111,
+      "n_narration": 5,
+      "char_len": 2997,
+      "speakers": [
+        "来古士",
+        "昔涟",
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 3,
+        "structure": 1,
+        "pause_ratio": 0.121
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.4",
+      "task": "英雄啊，粉碎那悲哀的造像",
+      "step_idx": 2,
+      "step_title": "击败盗火行者",
+      "n_dialogue": 8,
+      "n_narration": 5,
+      "char_len": 209,
+      "speakers": [
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.4|英雄啊，回返那安宁的家乡|17",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.4",
+      "task": "英雄啊，回返那安宁的家乡",
+      "step_idx": 17,
+      "step_title": "接受塔兰顿的称量",
+      "n_dialogue": 127,
+      "n_narration": 2,
+      "char_len": 2805,
+      "speakers": [
+        "白厄",
+        "开拓者",
+        "缇宝",
+        "昔涟",
+        "万敌",
+        "阿格莱雅"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.079
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|9",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "step_idx": 9,
+      "step_title": "前进，重拾未竟的先业",
+      "n_dialogue": 32,
+      "n_narration": 3,
+      "char_len": 906,
+      "speakers": [
+        "万敌",
+        "缇宝",
+        "赛飞儿",
+        "那刻夏"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.057
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.6|重逢啊，笑泪相拥的约定|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.6",
+      "task": "重逢啊，笑泪相拥的约定",
+      "step_idx": 2,
+      "step_title": "与长夜月交谈",
+      "n_dialogue": 180,
+      "n_narration": 4,
+      "char_len": 4295,
+      "speakers": [
+        "三月七",
+        "昔涟",
+        "丹恒",
+        "开拓者",
+        "刻律德菈"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 1,
+        "pause_ratio": 0.07
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.7|晨曦啊，再抚映遥远地平|4",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.7",
+      "task": "晨曦啊，再抚映遥远地平",
+      "step_idx": 4,
+      "step_title": "聆听昔涟讲述真相，完成「记忆」的拼图",
+      "n_dialogue": 24,
+      "n_narration": 0,
+      "char_len": 472,
+      "speakers": [
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.033
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|21",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 21,
+      "step_title": "揭露隐秘的记忆，了解德谬歌的过往",
+      "n_dialogue": 422,
+      "n_narration": 23,
+      "char_len": 9152,
+      "speakers": [
+        "开拓者",
+        "昔涟",
+        "权杖δ-me13",
+        "白厄",
+        "阿格莱雅",
+        "黑塔"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 4,
+        "structure": 98,
+        "pause_ratio": 0.027
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|14",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 14,
+      "step_title": "继续前进，深入悬锋城",
+      "n_dialogue": 64,
+      "n_narration": 1,
+      "char_len": 1232,
+      "speakers": [
+        "白厄",
+        "万敌",
+        "黄金狮首",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.056
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|18",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.0",
+      "task": "银辇啊，迅赴那黑色大地",
+      "step_idx": 18,
+      "step_title": "骑上大地兽，前往圣城",
+      "n_dialogue": 40,
+      "n_narration": 5,
+      "char_len": 1106,
+      "speakers": [
+        "丹恒",
+        "白厄",
+        "开拓者",
+        "诺杜斯",
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "step_idx": 4,
+      "step_title": "启动八音盒，听妈妈讲故事",
+      "n_dialogue": 33,
+      "n_narration": 1,
+      "char_len": 772,
+      "speakers": [
+        "莫忒丝",
+        "缇宝",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|橄榄啊，请掷向议厅之主|4",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.2",
+      "task": "橄榄啊，请掷向议厅之主",
+      "step_idx": 4,
+      "step_title": "传令兵到达前，在附近逛逛",
+      "n_dialogue": 31,
+      "n_narration": 1,
+      "char_len": 961,
+      "speakers": [
+        "那刻夏",
+        "瑟希斯"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|宝箱啊，兀自承装下前尘|9",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.3",
+      "task": "宝箱啊，兀自承装下前尘",
+      "step_idx": 9,
+      "step_title": "揍趴挡路的怪物",
+      "n_dialogue": 35,
+      "n_narration": 2,
+      "char_len": 925,
+      "speakers": [
+        "赛飞儿",
+        "巴特鲁斯"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.054
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.4|英雄啊，点燃那最初的骄阳|15",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.4",
+      "task": "英雄啊，点燃那最初的骄阳",
+      "step_idx": 15,
+      "step_title": "见证卡厄斯兰那的结局",
+      "n_dialogue": 60,
+      "n_narration": 2,
+      "char_len": 1788,
+      "speakers": [
+        "白厄",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 1,
+        "pause_ratio": 0.043
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|流年啊，渡我漂游千百载|3",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.5",
+      "task": "流年啊，渡我漂游千百载",
+      "step_idx": 3,
+      "step_title": "找个与天才联络的好地方",
+      "n_dialogue": 60,
+      "n_narration": 2,
+      "char_len": 2198,
+      "speakers": [
+        "昔涟",
+        "开拓者",
+        "螺丝咕姆",
+        "黑塔"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.026
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.6|重逢啊，笑泪相拥的约定|3",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.6",
+      "task": "重逢啊，笑泪相拥的约定",
+      "step_idx": 3,
+      "step_title": "前往水边，寻找三月七",
+      "n_dialogue": 39,
+      "n_narration": 1,
+      "char_len": 696,
+      "speakers": [
+        "丹恒",
+        "开拓者",
+        "三月七"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.044
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|13",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 13,
+      "step_title": "与万敌会合",
+      "n_dialogue": 25,
+      "n_narration": 2,
+      "char_len": 484,
+      "speakers": [
+        "白厄",
+        "万敌",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.033
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|夜帷啊，轻遮那静默过往|10",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.0",
+      "task": "夜帷啊，轻遮那静默过往",
+      "step_idx": 10,
+      "step_title": "开启万径之门",
+      "n_dialogue": 14,
+      "n_narration": 2,
+      "char_len": 278,
+      "speakers": [
+        "遐蝶",
+        "白厄",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|9",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.0",
+      "task": "银辇啊，迅赴那黑色大地",
+      "step_idx": 9,
+      "step_title": "唤醒昏迷的丹恒",
+      "n_dialogue": 16,
+      "n_narration": 9,
+      "char_len": 515,
+      "speakers": [
+        "开拓者",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.022
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|来路啊，请再度显映往履|2",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "step_idx": 2,
+      "step_title": "向祭坛左侧「预言书库」前进",
+      "n_dialogue": 14,
+      "n_narration": 1,
+      "char_len": 322,
+      "speakers": [
+        "白厄",
+        "缇宝",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|纺锤啊，难纴岁月的经纬|9",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.2",
+      "task": "纺锤啊，难纴岁月的经纬",
+      "step_idx": 9,
+      "step_title": "与阿格莱雅等人商议后续安排",
+      "n_dialogue": 21,
+      "n_narration": 1,
+      "char_len": 722,
+      "speakers": [
+        "阿格莱雅",
+        "白厄",
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|摇船啊，请载我横渡冥流|11",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.2",
+      "task": "摇船啊，请载我横渡冥流",
+      "step_idx": 11,
+      "step_title": "查看灵魂的残留",
+      "n_dialogue": 23,
+      "n_narration": 3,
+      "char_len": 738,
+      "speakers": [
+        "遐蝶",
+        "阿蒙内特",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|16",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 16,
+      "step_title": "见证塞涅俄丝的真相",
+      "n_dialogue": 23,
+      "n_narration": 2,
+      "char_len": 794,
+      "speakers": [
+        "开拓者",
+        "塞涅俄丝",
+        "风堇"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.4|母亲啊，暌离于冬去春来|2",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.4",
+      "task": "母亲啊，暌离于冬去春来",
+      "step_idx": 2,
+      "step_title": "抵达命途狭间",
+      "n_dialogue": 17,
+      "n_narration": 1,
+      "char_len": 440,
+      "speakers": [
+        "三月七",
+        "命途之声"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|初日啊，逐退群星与残月|10",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.5",
+      "task": "初日啊，逐退群星与残月",
+      "step_idx": 10,
+      "step_title": "跟云石天宫的昔涟聊聊",
+      "n_dialogue": 15,
+      "n_narration": 1,
+      "char_len": 444,
+      "speakers": [
+        "昔涟",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.136
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|花醴啊，盈满空心的树干|21",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.5",
+      "task": "花醴啊，盈满空心的树干",
+      "step_idx": 21,
+      "step_title": "「请毋宁钟情于盛大的凯旋式。」",
+      "n_dialogue": 12,
+      "n_narration": 10,
+      "char_len": 344,
+      "speakers": [
+        "海瑟音",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.6|烈阳啊，为迷途照明前路|1",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.6",
+      "task": "烈阳啊，为迷途照明前路",
+      "step_idx": 1,
+      "step_title": "前往黎明云崖",
+      "n_dialogue": 24,
+      "n_narration": 1,
+      "char_len": 489,
+      "speakers": [
+        "丹恒",
+        "螺丝咕姆",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.04
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|19",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 19,
+      "step_title": "与来古士对峙，诘问关于德谬歌的真相",
+      "n_dialogue": 18,
+      "n_narration": 0,
+      "char_len": 391,
+      "speakers": [
+        "来古士",
+        "黑塔",
+        "螺丝咕姆"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.111
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|10",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 10,
+      "step_title": "继续前进，深入悬锋城",
+      "n_dialogue": 5,
+      "n_narration": 0,
+      "char_len": 104,
+      "speakers": [
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|8",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 8,
+      "step_title": "进入悬锋城",
+      "n_dialogue": 10,
+      "n_narration": 0,
+      "char_len": 175,
+      "speakers": [
+        "遐蝶",
+        "格奈乌斯",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|英雄啊，且握住那枚火种|1",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.0",
+      "task": "英雄啊，且握住那枚火种",
+      "step_idx": 1,
+      "step_title": "前往创世涡心",
+      "n_dialogue": 9,
+      "n_narration": 1,
+      "char_len": 240,
+      "speakers": [
+        "昔涟",
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|纷争啊，伐清湮途的悼惧|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.1",
+      "task": "纷争啊，伐清湮途的悼惧",
+      "step_idx": 4,
+      "step_title": "寻找白厄和丹恒",
+      "n_dialogue": 4,
+      "n_narration": 1,
+      "char_len": 115,
+      "speakers": [
+        "万敌"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.2
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|9",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "step_idx": 9,
+      "step_title": "继续跟随缇安，寻找「番红蕊」",
+      "n_dialogue": 4,
+      "n_narration": 0,
+      "char_len": 56,
+      "speakers": [
+        "缇宝",
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|莎草啊，抽绎渎神者所想|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.2",
+      "task": "莎草啊，抽绎渎神者所想",
+      "step_idx": 4,
+      "step_title": "前往友爱之馆",
+      "n_dialogue": 10,
+      "n_narration": 1,
+      "char_len": 362,
+      "speakers": [
+        "风堇",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|1",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 1,
+      "step_title": "前往「穹顶关塞」晨昏之眼，继续冒险",
+      "n_dialogue": 4,
+      "n_narration": 1,
+      "char_len": 73,
+      "speakers": [
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|石板啊，为何罔闻那灯影|8",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.3",
+      "task": "石板啊，为何罔闻那灯影",
+      "step_idx": 8,
+      "step_title": "借用追忆符文",
+      "n_dialogue": 10,
+      "n_narration": 0,
+      "char_len": 154,
+      "speakers": [
+        "阿格莱雅",
+        "赛飞儿"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.2
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|初日啊，逐退群星与残月|2",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.5",
+      "task": "初日啊，逐退群星与残月",
+      "step_idx": 2,
+      "step_title": "探秘第一次逐火之旅的时代",
+      "n_dialogue": 7,
+      "n_narration": 16,
+      "char_len": 802,
+      "speakers": [
+        "刻律德菈"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 1,
+        "pause_ratio": 0.087
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|囚人啊，踏过日影见沧溟|12",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.5",
+      "task": "囚人啊，踏过日影见沧溟",
+      "step_idx": 12,
+      "step_title": "驾临书中的梦土",
+      "n_dialogue": 4,
+      "n_narration": 0,
+      "char_len": 98,
+      "speakers": [
+        "刻律德菈",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.6|归途啊，近在咫尺难抵达|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.6",
+      "task": "归途啊，近在咫尺难抵达",
+      "step_idx": 4,
+      "step_title": "前往客房车厢",
+      "n_dialogue": 9,
+      "n_narration": 1,
+      "char_len": 337,
+      "speakers": [
+        "姬子",
+        "黑天鹅",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 4,
+      "step_title": "使用冲拳，击碎平台上的障碍块",
+      "n_dialogue": 5,
+      "n_narration": 0,
+      "char_len": 84,
+      "speakers": [
+        "黑塔",
+        "螺丝咕姆"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|11",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 11,
+      "step_title": "破解房间内机关，继续前进",
+      "n_dialogue": 3,
+      "n_narration": 0,
+      "char_len": 59,
+      "speakers": [
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|13",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 13,
+      "step_title": "继续深入悬锋城，寻找尼卡多利的线索",
+      "n_dialogue": 2,
+      "n_narration": 0,
+      "char_len": 39,
+      "speakers": [
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|远客啊，请聆听此世祈祷|9",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.0",
+      "task": "远客啊，请聆听此世祈祷",
+      "step_idx": 9,
+      "step_title": "前往云石市集",
+      "n_dialogue": 2,
+      "n_narration": 1,
+      "char_len": 82,
+      "speakers": [
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|谧林啊，寤思者缘何失语|27",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.1",
+      "task": "谧林啊，寤思者缘何失语",
+      "step_idx": 27,
+      "step_title": "用「金枝誓言」采撷余火",
+      "n_dialogue": 1,
+      "n_narration": 3,
+      "char_len": 97,
+      "speakers": [
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|8",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "step_idx": 8,
+      "step_title": "处刑不治的牧人",
+      "n_dialogue": 2,
+      "n_narration": 1,
+      "char_len": 21,
+      "speakers": [
+        "阿蒙内特"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|14",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 14,
+      "step_title": "尝试维修另一侧的「电路」",
+      "n_dialogue": 2,
+      "n_narration": 1,
+      "char_len": 31,
+      "speakers": [
+        "丹恒",
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.4|母亲啊，暌离于冬去春来|7",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.4",
+      "task": "母亲啊，暌离于冬去春来",
+      "step_idx": 7,
+      "step_title": "跟随伙伴，穿越记忆之门",
+      "n_dialogue": 2,
+      "n_narration": 0,
+      "char_len": 17,
+      "speakers": [
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|11",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "step_idx": 11,
+      "step_title": "接过承载岁月的仪式剑",
+      "n_dialogue": 3,
+      "n_narration": 1,
+      "char_len": 94,
+      "speakers": [
+        "风堇",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.5",
+      "task": "囚人啊，踏过日影见沧溟",
+      "step_idx": 5,
+      "step_title": "以凯撒之名，批阅记忆的谏书",
+      "n_dialogue": 2,
+      "n_narration": 2,
+      "char_len": 232,
+      "speakers": [
+        "刻律德菈"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.7|落英啊，残芳纷飞留归躅|9",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.7",
+      "task": "落英啊，残芳纷飞留归躅",
+      "step_idx": 9,
+      "step_title": "回到少女的故乡",
+      "n_dialogue": 3,
+      "n_narration": 1,
+      "char_len": 118,
+      "speakers": [
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|5",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 5,
+      "step_title": "利用「预言算碑」关闭落雷",
+      "n_dialogue": 3,
+      "n_narration": 0,
+      "char_len": 52,
+      "speakers": [
+        "白厄",
+        "万敌"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|晚星啊，莫让我长夜独卧|6",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.0",
+      "task": "晚星啊，莫让我长夜独卧",
+      "step_idx": 6,
+      "step_title": "离开创世涡心，返回私人浴宫",
+      "n_dialogue": 1,
+      "n_narration": 0,
+      "char_len": 22,
+      "speakers": [
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|10",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.0",
+      "task": "银辇啊，迅赴那黑色大地",
+      "step_idx": 10,
+      "step_title": "探查异响的来源",
+      "n_dialogue": 13,
+      "n_narration": 4,
+      "char_len": 323,
+      "speakers": [
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|纷争啊，伐清湮途的悼惧|6",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.1",
+      "task": "纷争啊，伐清湮途的悼惧",
+      "step_idx": 6,
+      "step_title": "查看哈托努斯的状况",
+      "n_dialogue": 36,
+      "n_narration": 1,
+      "char_len": 579,
+      "speakers": [
+        "哈托努斯",
+        "万敌",
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.071
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|8",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "step_idx": 8,
+      "step_title": "阅读缇安找到的信件",
+      "n_dialogue": 10,
+      "n_narration": 0,
+      "char_len": 203,
+      "speakers": [
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|9",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "step_idx": 9,
+      "step_title": "与「长老」阿蒙内特交谈，了解行刑人的使命",
+      "n_dialogue": 28,
+      "n_narration": 1,
+      "char_len": 726,
+      "speakers": [
+        "遐蝶",
+        "阿蒙内特"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|5",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 5,
+      "step_title": "阅览前人的记忆，寻找线索",
+      "n_dialogue": 47,
+      "n_narration": 2,
+      "char_len": 1165,
+      "speakers": [
+        "白厄",
+        "风堇",
+        "昔涟",
+        "开拓者",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.5|花醴啊，盈满空心的树干|16",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.5",
+      "task": "花醴啊，盈满空心的树干",
+      "step_idx": 16,
+      "step_title": "「欧呵，饶恕我吧！酒神，饶恕我！」",
+      "n_dialogue": 13,
+      "n_narration": 11,
+      "char_len": 401,
+      "speakers": [
+        "海瑟音",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.042
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.6|大墓啊，深藏轮回的秘密|13",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.6",
+      "task": "大墓啊，深藏轮回的秘密",
+      "step_idx": 13,
+      "step_title": "继续前进，深入大墓",
+      "n_dialogue": 31,
+      "n_narration": 0,
+      "char_len": 624,
+      "speakers": [
+        "昔涟",
+        "权杖δ-me13",
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 7,
+        "pause_ratio": 0.057
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|15",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 15,
+      "step_title": "触摸识刻锚，进入「神话之外」",
+      "n_dialogue": 6,
+      "n_narration": 0,
+      "char_len": 81,
+      "speakers": [
+        "黑塔",
+        "螺丝咕姆"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.167
+      },
+      "significance": null,
+      "types": [],
+      "note": ""
+    }
+  ]
+}
