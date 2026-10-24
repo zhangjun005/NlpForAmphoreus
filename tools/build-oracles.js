@@ -100,6 +100,8 @@ for (const o of ORACLES) {
     occurrences: occ,
     first_appearance: occ.length ? { version: occ[0].version, task: occ[0].task, id: occ[0].id } : null,
     fulfillment_candidates: scored,
+    ...(o.source_lines ? { source_lines: o.source_lines } : {}),
+    ...(o.source_note ? { source_note: o.source_note } : {}),
     fulfillment: '',        // 人工填写：task / step_idx / segment_id
     fulfillment_type: '',   // 人工填写：字面 / 反转 / 错位
     note: '',
