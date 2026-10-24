@@ -22,6 +22,9 @@ const SEQUENCE_NOTES = {
 };
 
 const EVENT_SEGMENTS_EXTRA = {
+  O06: [
+    { segment_id: '3.2|争辩啊，代长矛分庭抗礼|2', role: '兑现', note: '自我处刑/交出理性火种；文本顺序早于神谕原句出现（见 sequence_note）' },
+  ],
   O05: [
     { segment_id: '3.2|断梦啊，从夙世捎来启迪|1', role: '意义转折', note: '双子抉择：我和姐姐必须有一人牺牲' },
     { segment_id: '3.2|摇船啊，请载我横渡冥流|19', role: '兑现', note: '塞纳托斯形态宣言：命中注定的时刻再次到来' },
