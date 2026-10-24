@@ -79,7 +79,52 @@
       "K33",
       "K36"
     ],
-    "n_knife_scenes_referenced": 29
+    "n_knife_scenes_referenced": 29,
+    "role_group_counts": {
+      "非黄金裔": 1,
+      "黄金裔": 22,
+      "世界（多方）": 1,
+      "单列": 3,
+      "NPC": 1,
+      "黄金裔群像": 2
+    },
+    "roster_policy_ref": "roster_policy",
+    "single_roles_events": [
+      "E18",
+      "E23",
+      "E26"
+    ],
+    "ghost_events": [
+      "E02",
+      "E03",
+      "E04",
+      "E05",
+      "E06",
+      "E07",
+      "E08",
+      "E09",
+      "E10",
+      "E11",
+      "E12",
+      "E14",
+      "E15",
+      "E16",
+      "E17",
+      "E19",
+      "E20",
+      "E21",
+      "E24",
+      "E25",
+      "E30",
+      "E29"
+    ],
+    "npc_events": [
+      "E22"
+    ],
+    "group_scenes": [
+      "E27",
+      "E28"
+    ]
   },
   "events": [
     {
@@ -106,7 +151,11 @@
       "segment_step_title": "迈向决战，打败尼卡多利！",
       "evidence_verified": true,
       "evidence_record_id": 4109,
-      "evidence_speaker": "格奈乌斯"
+      "evidence_speaker": "格奈乌斯",
+      "related_roles": [
+        "格奈乌斯"
+      ],
+      "role_group": "非黄金裔"
     },
     {
       "id": "E02",
@@ -133,7 +182,11 @@
       "segment_step_title": "快逃！快逃！快逃！快逃！快逃！",
       "evidence_verified": true,
       "evidence_record_id": 6876,
-      "evidence_speaker": "莫忒丝"
+      "evidence_speaker": "莫忒丝",
+      "related_roles": [
+        "缇宝"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E03",
@@ -158,7 +211,11 @@
       "segment_step_title": "告别阿格莱雅",
       "evidence_verified": true,
       "evidence_record_id": 7408,
-      "evidence_speaker": "万敌"
+      "evidence_speaker": "万敌",
+      "related_roles": [
+        "万敌"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E04",
@@ -184,7 +241,11 @@
       "segment_step_title": "与白厄同行最后一段路",
       "evidence_verified": true,
       "evidence_record_id": 7639,
-      "evidence_speaker": "万敌"
+      "evidence_speaker": "万敌",
+      "related_roles": [
+        "万敌"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E05",
@@ -211,7 +272,11 @@
       "segment_step_title": "与缇里西庇俄丝一起击退追兵",
       "evidence_verified": true,
       "evidence_record_id": 8066,
-      "evidence_speaker": "旁白"
+      "evidence_speaker": "旁白",
+      "related_roles": [
+        "缇宝"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E06",
@@ -237,7 +302,11 @@
       "segment_step_title": "返回半神议会，告知阿格莱雅",
       "evidence_verified": true,
       "evidence_record_id": 9451,
-      "evidence_speaker": "阿格莱雅"
+      "evidence_speaker": "阿格莱雅",
+      "related_roles": [
+        "那刻夏"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E07",
@@ -265,7 +334,12 @@
       "segment_step_title": "查看那刻夏展示的「记忆」",
       "evidence_verified": true,
       "evidence_record_id": 9706,
-      "evidence_speaker": "那刻夏"
+      "evidence_speaker": "那刻夏",
+      "related_roles": [
+        "阿格莱雅",
+        "那刻夏"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E08",
@@ -294,7 +368,11 @@
       "segment_step_title": "与塞纳托斯一同前进",
       "evidence_verified": true,
       "evidence_record_id": 11096,
-      "evidence_speaker": "塞纳托斯"
+      "evidence_speaker": "塞纳托斯",
+      "related_roles": [
+        "遐蝶"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E09",
@@ -321,7 +399,11 @@
       "segment_step_title": "抵抗死国的诱惑，离开冥界",
       "evidence_verified": true,
       "evidence_record_id": 11469,
-      "evidence_speaker": "遐蝶"
+      "evidence_speaker": "遐蝶",
+      "related_roles": [
+        "遐蝶"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E10",
@@ -349,7 +431,11 @@
       "segment_step_title": "提交火种",
       "evidence_verified": true,
       "evidence_record_id": 11588,
-      "evidence_speaker": "那刻夏"
+      "evidence_speaker": "那刻夏",
+      "related_roles": [
+        "那刻夏"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E11",
@@ -377,7 +463,11 @@
       "segment_step_title": "阅读阿格莱雅的留言",
       "evidence_verified": true,
       "evidence_record_id": 12753,
-      "evidence_speaker": "白厄"
+      "evidence_speaker": "白厄",
+      "related_roles": [
+        "阿格莱雅"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E12",
@@ -405,7 +495,11 @@
       "segment_step_title": "用欧洛尼斯祷言移开碎石",
       "evidence_verified": true,
       "evidence_record_id": 14656,
-      "evidence_speaker": "丹恒"
+      "evidence_speaker": "丹恒",
+      "related_roles": [
+        "风堇"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E13",
@@ -431,7 +525,13 @@
       "segment_step_title": "前往创世涡心，完成「再创世」",
       "evidence_verified": true,
       "evidence_record_id": 15205,
-      "evidence_speaker": "黑塔(投影)"
+      "evidence_speaker": "黑塔(投影)",
+      "related_roles": [
+        "昔涟",
+        "黑塔",
+        "来古士"
+      ],
+      "role_group": "世界（多方）"
     },
     {
       "id": "E14",
@@ -459,7 +559,11 @@
       "segment_step_title": "接受塔兰顿的称量",
       "evidence_verified": true,
       "evidence_record_id": 16436,
-      "evidence_speaker": "昔涟"
+      "evidence_speaker": "昔涟",
+      "related_roles": [
+        "白厄"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E15",
@@ -488,7 +592,12 @@
       "segment_step_title": "见证翁法罗斯的真相",
       "evidence_verified": true,
       "evidence_record_id": 16948,
-      "evidence_speaker": "白厄"
+      "evidence_speaker": "白厄",
+      "related_roles": [
+        "昔涟",
+        "白厄"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E16",
@@ -516,7 +625,11 @@
       "segment_step_title": "「汝将肩负骄阳，直至灰白的黎明显著。」",
       "evidence_verified": true,
       "evidence_record_id": 17283,
-      "evidence_speaker": "白厄(卡厄斯兰那)"
+      "evidence_speaker": "白厄(卡厄斯兰那)",
+      "related_roles": [
+        "万敌"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E17",
@@ -545,7 +658,11 @@
       "segment_step_title": "见证卡厄斯兰那的结局",
       "evidence_verified": true,
       "evidence_record_id": 17546,
-      "evidence_speaker": "白厄"
+      "evidence_speaker": "白厄",
+      "related_roles": [
+        "白厄"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E18",
@@ -569,7 +686,13 @@
       "segment_step_title": "调查灵水盆中的异象",
       "evidence_verified": true,
       "evidence_record_id": 19135,
-      "evidence_speaker": "？？？"
+      "evidence_speaker": "？？？",
+      "related_roles": [
+        "开拓者",
+        "昔涟"
+      ],
+      "role_group": "单列",
+      "roster_note": "开拓者为单列分析角色（玩家角色；「岁月」→「负世」），不纳入黄金裔比较"
     },
     {
       "id": "E19",
@@ -598,7 +721,12 @@
       "segment_step_title": "前进，重拾未竟的先业",
       "evidence_verified": true,
       "evidence_record_id": 19274,
-      "evidence_speaker": "旁白"
+      "evidence_speaker": "旁白",
+      "related_roles": [
+        "那刻夏",
+        "赛飞儿"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E20",
@@ -626,7 +754,11 @@
       "segment_step_title": "前进，向沉默的坟茔",
       "evidence_verified": true,
       "evidence_record_id": 19814,
-      "evidence_speaker": "海瑟音(记忆形态)"
+      "evidence_speaker": "海瑟音(记忆形态)",
+      "related_roles": [
+        "海瑟音"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E21",
@@ -654,7 +786,11 @@
       "segment_step_title": "展望书中的繁星",
       "evidence_verified": true,
       "evidence_record_id": 20339,
-      "evidence_speaker": "旁白"
+      "evidence_speaker": "旁白",
+      "related_roles": [
+        "刻律德菈"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E22",
@@ -682,7 +818,13 @@
       "segment_step_title": "深入错乱的记忆，寻找荒笛",
       "evidence_verified": true,
       "evidence_record_id": 21687,
-      "evidence_speaker": "荒笛"
+      "evidence_speaker": "荒笛",
+      "related_roles": [
+        "荒笛",
+        "丹恒"
+      ],
+      "role_group": "NPC",
+      "roster_note": "荒笛为 NPC 类（70 条/4 步，不进黄金裔名单）；丹恒为单列分析；大地承接：荒笛 → 丹恒"
     },
     {
       "id": "E23",
@@ -708,7 +850,13 @@
       "segment_step_title": "与长夜月交谈",
       "evidence_verified": true,
       "evidence_record_id": 22679,
-      "evidence_speaker": "三月七(幻象)"
+      "evidence_speaker": "三月七(幻象)",
+      "related_roles": [
+        "三月七",
+        "长夜月"
+      ],
+      "role_group": "单列",
+      "roster_note": "三月七为单列分析角色（664 条/53 步；形态：长夜月/永夜之帷/幻象/记忆形态）"
     },
     {
       "id": "E24",
@@ -736,7 +884,11 @@
       "segment_step_title": "聆听昔涟讲述真相，完成「记忆」的拼图",
       "evidence_verified": true,
       "evidence_record_id": 23119,
-      "evidence_speaker": "昔涟"
+      "evidence_speaker": "昔涟",
+      "related_roles": [
+        "昔涟"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E25",
@@ -764,7 +916,11 @@
       "segment_step_title": "揭露隐秘的记忆，了解德谬歌的过往",
       "evidence_verified": true,
       "evidence_record_id": 23982,
-      "evidence_speaker": "昔涟(往昔的涟漪)"
+      "evidence_speaker": "昔涟(往昔的涟漪)",
+      "related_roles": [
+        "昔涟"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E30",
@@ -798,7 +954,11 @@
       "evidence_verified": true,
       "evidence_record_id": 23913,
       "evidence_speaker": "昔涟",
-      "speaker_note": "原文说话人标注「记忆的花」，语料归一为 昔涟(form=记忆形态)；按设定即昔涟本人。"
+      "speaker_note": "原文说话人标注「记忆的花」，语料归一为 昔涟(form=记忆形态)；按设定即昔涟本人。",
+      "related_roles": [
+        "昔涟"
+      ],
+      "role_group": "黄金裔"
     },
     {
       "id": "E26",
@@ -826,14 +986,20 @@
       "segment_step_title": "铁墓已然降临。击败它，熄灭「毁灭」的劫火",
       "evidence_verified": true,
       "evidence_record_id": 24832,
-      "evidence_speaker": "开拓者"
+      "evidence_speaker": "开拓者",
+      "related_roles": [
+        "开拓者",
+        "白厄"
+      ],
+      "role_group": "单列",
+      "roster_note": "开拓者为单列分析角色（「负世」）"
     },
     {
       "id": "E27",
       "phase": "终段",
       "version": "3.7",
       "segment_id": "3.7|纸页啊，镌留记忆的涟漪|11",
-      "event_name": "十二黄金裔的创世之诗与「黄金裔们：明天见」",
+      "event_name": "黄金裔群像的创世之诗与「黄金裔们：明天见」",
       "meaning_before": "黄金裔是被神谕与命运支配的逐火者，是各自死去的英雄。",
       "meaning_after": "他们作为「新世界的信使」共同写下创世之诗、集体说出「明天见」——从被命运写的人变成为世界写第一笔的人。",
       "related_oracles": [],
@@ -853,7 +1019,11 @@
       "segment_step_title": "完成「再创世」，为故事写下不同的结局",
       "evidence_verified": true,
       "evidence_record_id": 25205,
-      "evidence_speaker": "缇宝"
+      "evidence_speaker": "缇宝",
+      "related_roles": [
+        "众黄金裔（群像）"
+      ],
+      "role_group": "黄金裔群像"
     },
     {
       "id": "E28",
@@ -862,7 +1032,7 @@
       "segment_id": "3.7|银辇啊，挽别那人间史诗|12",
       "event_name": "最后黄金裔们的告别：「明天见，乘以一千」",
       "meaning_before": "「明天见」是母亲与缇宝留下的安慰，或如遐蝶所说「只是一个善意的谎言」。",
-      "meaning_after": "十二裔在故事尽头各留一句告别词；缇宝说「明天见」、白厄说「明天见，乘以一千」——「明天见」成为他们共同写下的、跨越三千万世的预言。",
+      "meaning_after": "黄金裔们（11 位口径下的群像）在故事尽头各留一句告别词；缇宝说「明天见」、白厄说「明天见，乘以一千」——「明天见」成为他们共同写下的、跨越三千万世的预言。",
       "related_oracles": [
         "O09",
         "O13"
@@ -882,7 +1052,11 @@
       "segment_step_title": "告别翁法罗斯这趟史诗的旅途",
       "evidence_verified": true,
       "evidence_record_id": 25779,
-      "evidence_speaker": "白厄(卡厄斯兰那)"
+      "evidence_speaker": "白厄(卡厄斯兰那)",
+      "related_roles": [
+        "众黄金裔（群像）"
+      ],
+      "role_group": "黄金裔群像"
     },
     {
       "id": "E29",
@@ -910,7 +1084,46 @@
       "segment_step_title": "铁墓陨落后，昔涟的选择",
       "evidence_verified": true,
       "evidence_record_id": 25916,
-      "evidence_speaker": "昔涟"
+      "evidence_speaker": "昔涟",
+      "related_roles": [
+        "昔涟"
+      ],
+      "role_group": "黄金裔"
     }
-  ]
+  ],
+  "roster_policy": {
+    "ghost_roster_11": [
+      "白厄",
+      "万敌",
+      "阿格莱雅",
+      "缇宝",
+      "遐蝶",
+      "那刻夏",
+      "风堇",
+      "赛飞儿",
+      "海瑟音",
+      "刻律德菈",
+      "昔涟"
+    ],
+    "single_analysis_3": [
+      "开拓者",
+      "丹恒",
+      "三月七"
+    ],
+    "npc_class_2": [
+      "荒笛",
+      "玻吕茜亚"
+    ],
+    "game_vs_report": "游戏称「十二黄金裔」，但「岁月」席位历史上多次更换（欧洛尼斯一线／德谬歌与昔涟的演化），实际固定为 11 位；本报告按 11 位黄金裔统计。引用原文与既有场景标题时保留游戏内「十二」称法（如 K23/K24 标题），统计与覆盖表按 11 位口径。",
+    "single_note": "开拓者、三月七、丹恒为单列分析（3 人），不纳入黄金裔比较。",
+    "npc_note": "荒笛、玻吕茜亚为 NPC 类，不进黄金裔名单（荒笛 70 条/4 步，大地承接：荒笛 → 丹恒；玻吕茜亚 72 条/5 步，O05 为双子共有神谕 holder=玻吕茜亚，只在遐蝶条目与 O05 注记中说明）。",
+    "role_group_counts": {
+      "非黄金裔": 1,
+      "黄金裔": 22,
+      "世界（多方）": 1,
+      "单列": 3,
+      "NPC": 1,
+      "黄金裔群像": 2
+    }
+  }
 }
