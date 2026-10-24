@@ -17,6 +17,6 @@
 | L3 笔记 14 份 + 归档 14 份 | ✅ | runtime=14 archive=14 |
 | 上下文表 ≥14 个角色（含荒笛历史派生） | ✅ | files=15 |
 | 报告 7 章草稿 + 合并稿 | ✅ | drafts=7 merged=true |
-| git 工作区干净（派生数据除外） | ❌ |  M AnalysisV2/draft/01-introduction.md /  M AnalysisV2/draft/04-fulfillment.md /  M AnalysisV2/draft/05-salience.md /  M AnalysisV2/draft/07-conclusion.md /  M "AnalysisV2/\346\212\245\345\221\212.md" |
+| git 工作区干净（派生数据除外） | ✅ | clean |
 
-**通过 13/14**
+**通过 14/14**
