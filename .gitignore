@@ -15,3 +15,4 @@ data/reports/
 Thumbs.db
 .DS_Store
 desktop.ini
+tools/__pycache__/
