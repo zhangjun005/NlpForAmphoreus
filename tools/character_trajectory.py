@@ -124,7 +124,12 @@ def load_all():
     events = read_json(P_EVENTS)
     annot = read_json(P_ANNOT)["samples"]
     cite = read_json(P_CITE)["occurrences"]
-    return recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite
+    recs_by_step = {}
+    for r in recs:
+        recs_by_step.setdefault((r["version"], r["task"], r["step_idx"]), []).append(r)
+    for k in recs_by_step:
+        recs_by_step[k].sort(key=lambda r: r["id"])
+    return recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite, recs_by_step
 
 
 def set_of_segments(items, key_name):
@@ -168,7 +173,7 @@ def count_terms(text, terms):
 
 
 def character_stats(name, recs, seg_by_key, pool, A, B, knife, events, annot, cite,
-                    listen):
+                    listen, recs_by_step=None):
     rows = [r for r in recs if r.get("canonical_speaker") == name]
     if not rows:
         raise SystemExit("角色 %s 没有任何台词记录（canonical_speaker 未匹配）" % name)
@@ -202,10 +207,16 @@ def character_stats(name, recs, seg_by_key, pool, A, B, knife, events, annot, ci
             own_motif.update(count_terms(r.get("text") or "", MOTIF_TERMS))
         # 同步骤他人台词（他称代理）：只统计同步骤内、非本角色说话者的台词
         same_step_other = []
-        for r in recs:
-            if r["version"] == v and (r["version"], r["task"], r["step_idx"]) in step_keys and \
-                    r.get("canonical_speaker") != name and r.get("kind") == "dialogue":
-                same_step_other.append(r)
+        if recs_by_step is not None:
+            for k in vsteps:
+                for r in recs_by_step.get(k, []):
+                    if r.get("canonical_speaker") != name and r.get("kind") == "dialogue":
+                        same_step_other.append(r)
+        else:
+            for r in recs:
+                if r["version"] == v and (r["version"], r["task"], r["step_idx"]) in step_keys and \
+                        r.get("canonical_speaker") != name and r.get("kind") == "dialogue":
+                    same_step_other.append(r)
         if same_step_other:
             for r in same_step_other:
                 other_addr.update(count_terms(r.get("text") or "", ADDRESS_TERMS))
@@ -624,13 +635,14 @@ def render_report(data):
 # 构建 / 校验
 # ---------------------------------------------------------------------------
 def build(characters):
-    recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite = load_all()
+    recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite, recs_by_step = load_all()
     out_chars = OrderedDict()
     fig_info = {}
     os.makedirs(FIG_DIR, exist_ok=True)
     for name in characters:
         print("统计 %s …" % name)
-        ch = character_stats(name, recs, seg_by_key, pool, A, B, knife, events, annot, cite, listen=True)
+        ch = character_stats(name, recs, seg_by_key, pool, A, B, knife, events, annot, cite,
+                             listen=True, recs_by_step=recs_by_step)
         out_chars[name] = ch
         path = os.path.join(FIG_DIR, figure_name(name))
         make_figure(ch, path)
@@ -682,7 +694,7 @@ def build(characters):
 
 def verify(data=None, verbose=False):
     problems = []
-    recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite = load_all()
+    recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite, recs_by_step = load_all()
     if data is None:
         if not os.path.exists(P_JSON):
             print("缺少 %s" % P_JSON, file=sys.stderr)
@@ -742,16 +754,599 @@ def verify(data=None, verbose=False):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="角色全程轨迹分析")
+    ap = argparse.ArgumentParser(description="角色全程轨迹分析（可复用；--all 跑 13 角色 + 上下文表）")
     ap.add_argument("--characters", default="白厄,昔涟", help="逗号分隔的角色 canonical 名（默认 白厄,昔涟）")
-    ap.add_argument("--verify", action="store_true", help="只校验已有产物")
+    ap.add_argument("--all", action="store_true", help="跑 13 位黄金裔（白厄…昔涟），并导出 L2 上下文表 + f9/f10")
+    ap.add_argument("--no-context", action="store_true", help="与 --all 连用：跳过 data/context 导出")
+    ap.add_argument("--verify", action="store_true", help="只校验已有产物（单角色产物与 13 角色产物都会校验）")
     args = ap.parse_args()
     if args.verify:
-        ok = verify(verbose=True)
+        ok = True
+        if os.path.exists(P_JSON):
+            print("== 校验单角色产物 ==")
+            ok = verify(verbose=True) and ok
+        if os.path.exists(P_ALL_JSON):
+            print("\n== 校验 13 角色产物 ==")
+            ok = verify_all(verbose=True) and ok
+        if not (os.path.exists(P_JSON) or os.path.exists(P_ALL_JSON)):
+            print("没有可校验的产物", file=sys.stderr)
+            ok = False
         print("\n校验%s" % ("通过" if ok else "失败"))
         sys.exit(0 if ok else 1)
-    chars = [c.strip() for c in args.characters.split(",") if c.strip()]
-    build(chars)
+    if args.all:
+        build_all(ALL_CHARS, export_ctx=not args.no_context)
+    else:
+        chars = [c.strip() for c in args.characters.split(",") if c.strip()]
+        build(chars)
+
+
+
+
+
+# ===========================================================================
+# task-22：13 角色 L1 全量轨迹 + L2 逐条上下文表
+# ===========================================================================
+ALL_CHARS = ["白厄", "万敌", "阿格莱雅", "缇宝", "遐蝶", "那刻夏", "风堇",
+             "赛飞儿", "海瑟音", "刻律德菈", "荒笛", "开拓者", "昔涟"]
+P_ALL_JSON = os.path.join(ROOT, "data", "config", "character-trajectory-all.json")
+P_ALL_MD = os.path.join(ROOT, "data", "reports", "character-trajectory-all.md")
+CTX_DIR = os.path.join(ROOT, "data", "context")
+P_CTX_MANIFEST = os.path.join(CTX_DIR, "_manifest.json")
+F9 = os.path.join(FIG_DIR, "f9_all_trajectories.png")
+F10 = os.path.join(FIG_DIR, "f10_coverage.png")
+WINDOW = 3            # 前 3 + 本条 + 后 3
+SPARSE_STEP_RECORDS = 6   # 整步总记录 <6 → 稀疏
+SPARSE_CHAR_RECORDS = 3   # 该步该角色记录 <3 → 稀疏
+
+
+def coverage_detail(ch, kseg, eseg):
+    """按版本/任务拆精读覆盖，找「没读到的版本/任务」"""
+    steps = ch["all_steps"]
+    covered = set(steps) & (kseg | eseg)
+    per_version = {}
+    step_ver = {x: x.split("|")[0] for x in steps}
+    for v in VERSIONS:
+        vs = [x for x in steps if step_ver[x] == v]
+        if not vs:
+            continue
+        per_version[v] = {"steps": len(vs), "covered": len(set(vs) & covered)}
+    # 任务：step_id 的 task 是第 2 段
+    per_task = {}
+    for x in steps:
+        parts = x.split("|")
+        task = parts[1] if len(parts) > 1 else x
+        per_task.setdefault(task, {"steps": 0, "covered": 0})
+        per_task[task]["steps"] += 1
+        if x in covered:
+            per_task[task]["covered"] += 1
+    unread_versions = [v for v, d in per_version.items() if d["covered"] == 0]
+    unread_tasks = [{"task": t, "steps": d["steps"], "covered": d["covered"]}
+                    for t, d in per_task.items() if d["covered"] == 0]
+    unread_tasks.sort(key=lambda x: -x["steps"])
+    return {"steps": len(steps), "covered": len(covered),
+            "per_version": per_version, "per_task": dict(
+                sorted(per_task.items(), key=lambda kv: -kv[1]["steps"])),
+            "unread_versions": unread_versions,
+            "unread_tasks": unread_tasks[:8],
+            "unread_task_count": len(unread_tasks)}
+
+
+# ---------------------------------------------------------------------------
+# L2：逐条上下文表
+# ---------------------------------------------------------------------------
+def build_block(char, step, slice_recs, trigger_ids, sparse, seg_by_key):
+    slice_recs = sorted(slice_recs, key=lambda r: r["id"])
+    trig = [r["id"] for r in slice_recs if r["id"] in trigger_ids]
+    seg = seg_by_key.get(step) or {}
+    return {
+        "char": char,
+        "version": step[0],
+        "task": step[1],
+        "step_idx": step[2],
+        "step_title": seg.get("step_title"),
+        "order": int(min(r["order"] for r in slice_recs)),
+        "record_id": int(trig[0]) if trig else int(slice_recs[0]["id"]),
+        "record_span": [int(slice_recs[0]["id"]), int(slice_recs[-1]["id"])],
+        "n_records": len(slice_recs),
+        "n_char_records": len(trig),
+        "sparse_step": bool(sparse),
+        "trigger_record_ids": [int(x) for x in trig],
+        "context": [{"id": int(r["id"]), "kind": r.get("kind"),
+                     "speaker": r.get("speaker"),
+                     "text": r.get("text") or ""} for r in slice_recs],
+    }
+
+
+def export_context(chars_stats, recs, seg_by_key, recs_by_step, out_dir=CTX_DIR):
+    os.makedirs(out_dir, exist_ok=True)
+    # .gitignore：派生数据不入库
+    with open(os.path.join(out_dir, ".gitignore"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("# task-22 L2 派生数据（逐条上下文表），不入库\n*\n!.gitignore\n")
+    manifest = {
+        "generated_by": "tools/character_trajectory.py --all",
+        "note": "每行 = 一个上下文块；同一步内相邻记录的窗口会合并，块内记录不重复；"
+                "稀疏步骤（该步总记录<%d 或该角色记录<%d）整步放入。" % (
+                    SPARSE_STEP_RECORDS, SPARSE_CHAR_RECORDS),
+        "window": "前 %d + 本条 + 后 %d（同一步内按 id 升序）" % (WINDOW, WINDOW),
+        "characters": {},
+        "totals": {},
+    }
+    total_blocks = total_recs = total_chars = 0
+    for ch in chars_stats:
+        name = ch["name"]
+        rows = [r for r in recs if r.get("canonical_speaker") == name]
+        char_ids = {r["id"] for r in rows}
+        # 步骤顺序（按该角色首次出现 order）
+        step_first = {}
+        for r in rows:
+            k = (r["version"], r["task"], r["step_idx"])
+            if k not in step_first or r["order"] < step_first[k]:
+                step_first[k] = r["order"]
+        steps = sorted(step_first, key=lambda k: (step_first[k], k[2]))
+        blocks = []
+        for step in steps:
+            allrecs = recs_by_step.get(step, [])
+            char_step = [r for r in allrecs if r["id"] in char_ids]
+            if not char_step or not allrecs:
+                continue
+            sparse = len(allrecs) < SPARSE_STEP_RECORDS or len(char_step) < SPARSE_CHAR_RECORDS
+            if sparse:
+                blocks.append(build_block(name, step, allrecs, {r["id"] for r in char_step},
+                                          True, seg_by_key))
+                continue
+            idx = {r["id"]: i for i, r in enumerate(allrecs)}
+            ranges = []
+            for r in char_step:
+                i = idx[r["id"]]
+                ranges.append([max(0, i - WINDOW), min(len(allrecs) - 1, i + WINDOW)])
+            ranges.sort()
+            merged = []
+            for a, b in ranges:
+                if merged and a <= merged[-1][1] + 1:
+                    merged[-1][1] = max(merged[-1][1], b)
+                else:
+                    merged.append([a, b])
+            for a, b in merged:
+                sl = allrecs[a:b + 1]
+                trig = {r["id"] for r in sl if r["id"] in char_ids}
+                blocks.append(build_block(name, step, sl, trig, False, seg_by_key))
+        path = os.path.join(out_dir, "%s.jsonl" % name)
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            for b in blocks:
+                f.write(json.dumps(b, ensure_ascii=False) + "\n")
+        n_rec = sum(b["n_records"] for b in blocks)
+        n_char = sum(len(x["text"]) for b in blocks for x in b["context"])
+        appear_rec = len(rows)
+        manifest["characters"][name] = {
+            "file": "data/context/%s.jsonl" % name,
+            "n_blocks": len(blocks),
+            "n_records_in_context": n_rec,
+            "n_context_chars": n_char,
+            "n_appearance_records": appear_rec,
+            "n_appearance_steps": len(steps),
+            "n_blocks_sparse": sum(1 for b in blocks if b["sparse_step"]),
+            "context_record_ratio": round(n_rec / appear_rec, 2) if appear_rec else None,
+            "char_ratio": round(n_char / max(1, sum(len(r.get("text") or "") for r in rows)), 2),
+        }
+        total_blocks += len(blocks)
+        total_recs += n_rec
+        total_chars += n_char
+    manifest["totals"] = {"n_characters": len(manifest["characters"]),
+                          "n_blocks": total_blocks,
+                          "n_records_in_context": total_recs,
+                          "n_context_chars": total_chars}
+    with open(P_CTX_MANIFEST, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=1)
+        f.write("\n")
+    print("已导出 data/context/：%d 角色 / %d 块 / %d 条上下文记录 / %d 字" % (
+        len(manifest["characters"]), total_blocks, total_recs, total_chars))
+    return manifest
+
+
+# ---------------------------------------------------------------------------
+# 图 f9 / f10
+# ---------------------------------------------------------------------------
+def make_f9(chars_stats, out):
+    names = [c["name"] for c in chars_stats]
+    mat = np.array([[c["per_version"][v]["n_records"] for v in VERSIONS] for c in chars_stats],
+                   dtype=float)
+    fig, ax = plt.subplots(figsize=(9.6, 7.2))
+    disp = np.log1p(mat)
+    im = ax.imshow(disp, aspect="auto", cmap="YlOrRd")
+    for i in range(len(names)):
+        for j in range(len(VERSIONS)):
+            val = int(mat[i, j])
+            ax.text(j, i, str(val), ha="center", va="center", fontsize=7,
+                    color="white" if disp[i, j] > 0.6 * disp.max() else "black")
+    ax.set_xticks(range(len(VERSIONS)))
+    ax.set_xticklabels(VERSIONS)
+    ax.set_yticks(range(len(names)))
+    ax.set_yticklabels(names)
+    ax.set_xlabel(L("版本", "version"))
+    ax.set_title(L("图9  13 位角色分版本台词量（热力图；格内为台词条数，颜色=log 值）",
+                   "Fig9  Records per character per version"), fontsize=11)
+    cb = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
+    cb.set_label(L("log(1+台词条数)", "log(1+records)"), fontsize=8)
+    fig.tight_layout()
+    fig.savefig(out, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+
+
+def make_f10(chars_stats, out):
+    rows = sorted(chars_stats, key=lambda c: -c["summary"]["n_steps"])
+    names = [c["name"] for c in rows]
+    steps = [c["summary"]["n_steps"] for c in rows]
+    covered = [c["coverage"]["union_knife_key_events"]["n"] for c in rows]
+    with_ann = [c["coverage"]["union_all_close_reads"]["n"] for c in rows]
+    y = np.arange(len(names))
+    fig, ax = plt.subplots(figsize=(10.4, 6.8))
+    ax.barh(y - 0.24, steps, 0.24, color="#9fb3c8", label=L("出场步骤", "appearance steps"))
+    ax.barh(y, covered, 0.24, color="#2e5c8a", label=L("深读覆盖（K36∪关键事件）", "deep-read covered"))
+    ax.barh(y + 0.24, with_ann, 0.24, color="#d98c3f", label=L("+74 标注", "+ annotation"))
+    for i, (s, c) in enumerate(zip(steps, covered)):
+        ax.text(s + 3, i - 0.24, "%d" % s, va="center", fontsize=7, color="0.3")
+        ax.text(c + 3, i, "%d (%.1f%%)" % (c, 100 * c / s), va="center", fontsize=7, color="#2e5c8a")
+    ax.set_yticks(y)
+    ax.set_yticklabels(names)
+    ax.invert_yaxis()
+    ax.set_xlabel(L("步骤数", "steps"))
+    ax.set_title(L("图10  13 位角色：出场步骤 vs 精读覆盖", "Fig10  Steps vs close-read coverage"),
+                 fontsize=11)
+    ax.legend(frameon=False, fontsize=8, loc="lower right")
+    ax.grid(axis="x", alpha=0.25)
+    fig.tight_layout()
+    fig.savefig(out, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+
+
+
+# ---------------------------------------------------------------------------
+# L1 汇总 + 报告（13 角色）
+# ---------------------------------------------------------------------------
+def build_summary_table(stats):
+    rows = []
+    for ch in stats:
+        s = ch["summary"]
+        cov = ch["coverage"]
+        det = ch["coverage_detail"]
+        forms = ch["forms_overall"]
+        top_form = next(("%s（%d）" % (k or "无形态", n) for k, n in forms.items()), "—")
+        addr = sorted(ch["per_version"].items(), key=lambda kv: -sum(kv[1]["address_own"].values()))
+        addr_terms = Counter()
+        for v in VERSIONS:
+            addr_terms.update(ch["per_version"][v]["address_own"])
+        motif_terms = Counter()
+        for v in VERSIONS:
+            motif_terms.update(ch["per_version"][v]["motif_own"])
+        top_addr = "、".join("%s%d" % (k, n) for k, n in addr_terms.most_common(3)) or "—"
+        top_motif = "、".join("%s%d" % (k, n) for k, n in motif_terms.most_common(3)) or "—"
+        rows.append({
+            "name": ch["name"], "n_records": s["n_records"], "n_steps": s["n_steps"],
+            "n_tasks": s["n_tasks"], "n_versions_present": s["n_versions_present"],
+            "versions_present": s["versions_present"], "versions_absent": s["versions_absent"],
+            "top_form": top_form, "top_address": top_addr, "top_motif": top_motif,
+            "mean_score_a": s["mean_score_a"], "mean_score_b1": s["mean_score_b1"],
+            "top100_b1": s["top100_b1"],
+            "knife_n": cov["knife"]["n"], "key_n": cov["key_events"]["n"],
+            "annotation_n": cov["annotation"]["n"],
+            "deep_n": cov["union_knife_key_events"]["n"],
+            "deep_rate": cov["union_knife_key_events"]["rate"],
+            "all_read_n": cov["union_all_close_reads"]["n"],
+            "all_read_rate": cov["union_all_close_reads"]["rate"],
+            "unread_versions": det["unread_versions"],
+            "unread_task_count": det["unread_task_count"],
+            "unread_tasks": det["unread_tasks"][:3],
+        })
+    return rows
+
+
+def render_all_report(data, manifest):
+    meta = data["meta"]
+    st = data["summary_table"]
+    chars = data["characters"]
+    Lr = []
+    A = Lr.append
+    A("# 13 位角色全量轨迹 + 逐条上下文表（L1/L2，供 L3 全量精读）")
+    A("")
+    A("> 生成脚本：`tools/character_trajectory.py --all` ｜ 重跑命令：`%s --all`" % RUN_CMD)
+    A("> 数据（只读）：`amphoreus.final.jsonl`、`segments.jsonl`、`oracle-citation-coding.json`、"
+      "`knife-scenes.json`、`key-events.json`、`annotation-labels.json`、`baseline-a/b-scores.json`")
+    A("> 产出：`data/config/character-trajectory-all.json`、`data/reports/character-trajectory-all.md`、"
+      "`data/context/<角色>.jsonl`（派生数据，已 .gitignore）、`docs/report/figures/f9_all_trajectories.png`、`f10_coverage.png`")
+    A("")
+    A("> 口径：全量出场 = `canonical_speaker` 等于该角色的全部记录（含 dialogue/sms）；"
+      "步骤 = 记录所在 (version, task, step_idx) 映射到 723 个 segment（686 池为可排序子集）；"
+      "深读覆盖 = 出场步骤中被 K36 刀子场景 ∪ 30 关键事件覆盖；加标注覆盖 = 再并上 74 条人工标注。")
+    A("")
+    total_steps = sum(x["n_steps"] for x in st)
+    total_deep = sum(x["deep_n"] for x in st)
+    total_rec = sum(x["n_records"] for x in st)
+    A("## 1. 结论（先回答核心问题）")
+    A("")
+    A("1. **全量数据 vs 精读覆盖**：13 位角色合计（各角色分别计数后相加；同一段剧情若多角色同场会重复计数）"
+      "**%d 条台词 / %d 个出场步骤**，"
+      "深读只覆盖 **%d 步 = %.1f%%**（加 74 条标注为 %d 步 = %.1f%%）。"
+      "「只分析了集中位置」在全体角色上同样成立，白厄（10.9%%）不是特例。" % (
+          total_rec, total_steps, total_deep, 100 * total_deep / total_steps,
+          sum(x["all_read_n"] for x in st), 100 * sum(x["all_read_n"] for x in st) / total_steps))
+    worst = sorted([x for x in st if x["n_steps"] >= 10], key=lambda x: x["deep_rate"])[:3]
+    A("2. **覆盖率最差的 3 个角色**：%s——这些角色的出场大多在「非刀子/非关键事件」的日常或支线步骤里，"
+      "现有精读几乎没有覆盖到。" % "；".join(
+          "%s（%d 步，深读 %d 步 = %.1f%%）" % (x["name"], x["n_steps"], x["deep_n"], 100 * x["deep_rate"])
+          for x in worst))
+    A("3. **L2 上下文表已覆盖全部出场记录**：13 个 jsonl 共 **%d 个上下文块 / %d 条上下文记录 / %d 字**；"
+      "每个角色的每一条出场台词都至少出现在一个块里（trigger），并带前后各 %d 条同步骤记录。"
+      "因此 L3 只需按块顺序读，无需回原始 corpora 检索。" % (
+          manifest["totals"]["n_blocks"], manifest["totals"]["n_records_in_context"],
+          manifest["totals"]["n_context_chars"], WINDOW))
+    A("4. **上下文表是否足够支撑全量精读**：**足够回答「角色在每一处出现时说了什么、周围发生了什么」**；"
+      "但块窗口限定在同一步骤内（不跨步拼接），步骤之间的剧情因果需要 L3 按 `order` 顺序自行串联。"
+      "对稀疏步骤（该步总记录<6 或该角色记录<3）已整步放入，不会漏上下文。")
+    A("5. **建议的 L3 用法**：每个角色读一个 jsonl（大角色如白厄/开拓者按 `order` 分 2–3 段读），"
+      "读完后对照本报告的「未读版本/任务」清单，优先补覆盖率为 0 的版本与任务。")
+    A("")
+
+    # ---------------- 汇总表 ----------------
+    A("## 2. 13 角色汇总表")
+    A("")
+    A("| 角色 | 台词 | 步骤 | 任务 | 版本 | 主要形态 | 称呼 top3 | 母题 top3 | A/B1 均分 | B1 Top100 | 深读覆盖 | 加标注 |")
+    A("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+    for x in st:
+        A("| %s | %d | %d | %d | %d | %s | %s | %s | %.3f / %.3f | %.1f%% | %d/%d = %.1f%% | %d/%d = %.1f%% |" % (
+            x["name"], x["n_records"], x["n_steps"], x["n_tasks"], x["n_versions_present"],
+            x["top_form"], x["top_address"], x["top_motif"],
+            x["mean_score_a"] or 0, x["mean_score_b1"] or 0, 100 * (x["top100_b1"] or 0),
+            x["deep_n"], x["n_steps"], 100 * x["deep_rate"],
+            x["all_read_n"], x["n_steps"], 100 * x["all_read_rate"]))
+    A("")
+    A("> 备注：表中「深读覆盖 / 加标注」的分母是该角色自己的出场步骤数（角色间会重叠）；"
+      "A/B1 均分与 Top100 只统计出场步骤中落在 686 池内的部分；"
+      "形态/称呼/母题为各版本合计（称呼/母题只统计角色自己台词里的命中）。")
+    A("")
+
+    # ---------------- 分版本矩阵 ----------------
+    A("## 3. 分版本台词量矩阵（每人分版本小表）")
+    A("")
+    A("| 角色 | " + " | ".join(VERSIONS) + " | 合计 |")
+    A("| --- | " + " | ".join("---" for _ in VERSIONS) + " | --- |")
+    for ch in chars.values():
+        pv = ch["per_version"]
+        A("| %s | %s | %d |" % (
+            ch["name"], " | ".join(str(pv[v]["n_records"]) for v in VERSIONS),
+            ch["summary"]["n_records"]))
+    A("")
+    A("分版本**出场步骤数**：")
+    A("")
+    A("| 角色 | " + " | ".join(VERSIONS) + " | 合计 |")
+    A("| --- | " + " | ".join("---" for _ in VERSIONS) + " | --- |")
+    for ch in chars.values():
+        pv = ch["per_version"]
+        A("| %s | %s | %d |" % (
+            ch["name"], " | ".join(str(pv[v]["n_steps"]) for v in VERSIONS),
+            ch["summary"]["n_steps"]))
+    A("")
+
+    # ---------------- 覆盖与未读 ----------------
+    A("## 4. 各角色覆盖与「没读到的版本/任务」")
+    A("")
+    A("| 角色 | 出场步 | 深读覆盖 | 未读版本 | 未读任务数 | 未读任务（步骤数最多的前 3） |")
+    A("| --- | --- | --- | --- | --- | --- |")
+    for x in st:
+        ch = chars[x["name"]]
+        det = ch["coverage_detail"]
+        A("| %s | %d | %d (%.1f%%) | %s | %d | %s |" % (
+            x["name"], det["steps"], det["covered"], 100 * det["covered"] / det["steps"],
+            "、".join(det["unread_versions"]) or "无",
+            det["unread_task_count"],
+            "；".join("%s（%d 步）" % (t["task"][:14], t["steps"]) for t in det["unread_tasks"][:3]) or "无"))
+    A("")
+    A("> 「未读版本」= 该版本有出场步骤、但深读覆盖为 0；「未读任务」= 该任务有出场步骤、但覆盖为 0。")
+    A("")
+
+    # ---------------- L2 上下文表 ----------------
+    A("## 5. L2 上下文表统计（`data/context/`）")
+    A("")
+    A("| 角色 | 块数 | 上下文记录 | 上下文字数 | 出场记录 | 记录覆盖比 | 稀疏整步块 | 文件 |")
+    A("| --- | --- | --- | --- | --- | --- | --- | --- |")
+    for name, m in manifest["characters"].items():
+        A("| %s | %d | %d | %d | %d | %.2f× | %d | `%s` |" % (
+            name, m["n_blocks"], m["n_records_in_context"], m["n_context_chars"],
+            m["n_appearance_records"], m["context_record_ratio"], m["n_blocks_sparse"], m["file"]))
+    A("")
+    A("| 合计 | %d | %d | %d | %d | — | %d | 13 个文件 |" % (
+        manifest["totals"]["n_blocks"], manifest["totals"]["n_records_in_context"],
+        manifest["totals"]["n_context_chars"],
+        sum(m["n_appearance_records"] for m in manifest["characters"].values()),
+        sum(m["n_blocks_sparse"] for m in manifest["characters"].values())))
+    A("")
+    A("**上下文块字段**：`char, version, task, step_idx, step_title, order, record_id, record_span, "
+      "n_records, n_char_records, sparse_step, trigger_record_ids, context[]`；"
+      "`context[]` 内每条为 `{id, kind, speaker, text}`，按 id 升序。")
+    A("")
+    A("## 6. 局限")
+    A("")
+    A("1. 上下文窗口限定在**同一 (version, task, step_idx) 步骤内**，不跨步拼接；步骤之间的因果需要 L3 按 order 串联。")
+    A("2. 称呼/母题命中是字面统计；「称呼」取角色自己台词（他称只用同步骤他人台词做代理，未展开）。")
+    A("3. 形态（form）字段有 null，null 不等于「无形态」；A/B1 均分只覆盖 686 池内的出场步骤。")
+    A("4. 深读覆盖以 K36/30/74 三个文件的实际内容为准；文件更新后重跑 `--all` 即可同步。")
+    A("5. 上下文表是**记录级**的，不含章节/场景摘要；L3 若要剧情级摘要需另外生成。")
+    A("")
+    A("## 7. 复现")
+    A("")
+    A("```bash")
+    A(RUN_CMD + " --all")
+    A("conda run -n nlpLesson python tools/character_trajectory.py --verify")
+    A("```")
+    A("")
+    A("- 无随机；全部数字/上下文由 JSONL/JSON 现场生成。")
+    A("- `--all` 会重写 `data/config/character-trajectory-all.json`、本报告、`data/context/*.jsonl`、`_manifest.json` 与两张图。")
+    A("")
+    return "\n".join(Lr)
+
+
+# ---------------------------------------------------------------------------
+# 构建 / 校验（13 角色）
+# ---------------------------------------------------------------------------
+def build_all(chars=ALL_CHARS, export_ctx=True):
+    recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite, recs_by_step = load_all()
+    kseg = knife_segments(knife)
+    eseg = key_event_segments(events)
+    stats = []
+    for name in chars:
+        print("L1 统计 %s …" % name)
+        ch = character_stats(name, recs, seg_by_key, pool, A, B, knife, events, annot, cite,
+                             listen=True, recs_by_step=recs_by_step)
+        ch["coverage_detail"] = coverage_detail(ch, kseg, eseg)
+        stats.append(ch)
+    summary_table = build_summary_table(stats)
+    data = {
+        "meta": {
+            "script": "tools/character_trajectory.py --all",
+            "run_command": RUN_CMD + " --all",
+            "characters": chars,
+            "n_records_total": len(recs), "n_segments_total": len(segs), "n_pool": len(pool),
+            "n_knife": len(knife["scenes"]), "n_events": len(events["events"]), "n_annot": len(annot),
+            "window": "前 %d + 本条 + 后 %d（同一步骤内按 id 升序）" % (WINDOW, WINDOW),
+            "sparse_rule": "该步总记录<%d 或该角色记录<%d → 整步放入" % (
+                SPARSE_STEP_RECORDS, SPARSE_CHAR_RECORDS),
+            "sources": ["amphoreus.final.jsonl", "segments.jsonl", "oracle-citation-coding.json",
+                        "knife-scenes.json", "key-events.json", "annotation-labels.json",
+                        "baseline-a-scores.json", "baseline-b-scores.json"],
+            "note": "全量出场来自 canonical_speaker；精读覆盖以 K36/30/74 文件实际内容为准。",
+        },
+        "summary_table": summary_table,
+        "characters": {ch["name"]: ch for ch in stats},
+    }
+    manifest = None
+    if export_ctx:
+        manifest = export_context(stats, recs, seg_by_key, recs_by_step)
+        data["context_manifest"] = manifest
+    os.makedirs(FIG_DIR, exist_ok=True)
+    make_f9(stats, F9)
+    make_f10(stats, F10)
+    print("已生成 %s / %s" % (os.path.relpath(F9, ROOT), os.path.relpath(F10, ROOT)))
+    with open(P_ALL_JSON, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)
+        f.write("\n")
+    print("已写 %s（%.1f KB）" % (os.path.relpath(P_ALL_JSON, ROOT), os.path.getsize(P_ALL_JSON) / 1024.0))
+    md = render_all_report(data, manifest)
+    with open(P_ALL_MD, "w", encoding="utf-8", newline="\n") as f:
+        f.write(md)
+    print("已写 %s（%.1f KB）" % (os.path.relpath(P_ALL_MD, ROOT), os.path.getsize(P_ALL_MD) / 1024.0))
+    if HAS_CJK:
+        print("中文字体：%s" % CJK_FONT)
+    if not verify_all(data, verbose=True):
+        print("!! 校验失败", file=sys.stderr)
+        sys.exit(1)
+    print("\n校验通过：13 角色、上下文表、manifest、两图均与 JSON 一致。")
+
+
+def verify_all(data=None, verbose=False):
+    problems = []
+    recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite, recs_by_step = load_all()
+    if data is None:
+        if not os.path.exists(P_ALL_JSON):
+            print("缺少 %s" % P_ALL_JSON, file=sys.stderr)
+            return False
+        data = read_json(P_ALL_JSON)
+    chars = data["characters"]
+    if len(chars) != 13:
+        problems.append("角色数 %d != 13" % len(chars))
+    kseg = knife_segments(knife)
+    eseg = key_event_segments(events)
+    aseg = annotation_segments(annot)
+    for name, ch in chars.items():
+        rows = [r for r in recs if r.get("canonical_speaker") == name]
+        if len(rows) != ch["summary"]["n_records"]:
+            problems.append("%s 记录数不一致" % name)
+        steps = {(r["version"], r["task"], r["step_idx"]) for r in rows}
+        segids = {seg_by_key[k]["segment_id"] for k in steps if k in seg_by_key}
+        if len(segids) != ch["summary"]["n_steps"]:
+            problems.append("%s 步骤数不一致" % name)
+        for key, sset in (("knife", kseg), ("key_events", eseg), ("annotation", aseg)):
+            if len(segids & sset) != ch["coverage"][key]["n"]:
+                problems.append("%s %s 覆盖不一致" % (name, key))
+        u = segids & (kseg | eseg)
+        if len(u) != ch["coverage"]["union_knife_key_events"]["n"]:
+            problems.append("%s 深读并集不一致" % name)
+    # 上下文表与 manifest
+    manifest = data.get("context_manifest") or (read_json(P_CTX_MANIFEST) if os.path.exists(P_CTX_MANIFEST) else None)
+    if not manifest:
+        problems.append("缺少上下文 manifest")
+    else:
+        if not os.path.exists(os.path.join(CTX_DIR, ".gitignore")):
+            problems.append("缺少 data/context/.gitignore")
+        for name, m in manifest["characters"].items():
+            path = os.path.join(ROOT, m["file"])
+            if not os.path.exists(path):
+                problems.append("%s 上下文文件不存在" % name)
+                continue
+            rows = [r for r in recs if r.get("canonical_speaker") == name]
+            char_ids = {r["id"] for r in rows}
+            rec_step = {(r["id"]): (r["version"], r["task"], r["step_idx"]) for r in recs}
+            blocks = []
+            with open(path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        blocks.append(json.loads(line))
+            if len(blocks) != m["n_blocks"]:
+                problems.append("%s 块数不一致（manifest %d，实际 %d）" % (name, m["n_blocks"], len(blocks)))
+            seen = set()
+            trig_union = set()
+            n_rec = 0
+            n_char = 0
+            dup = 0
+            for b in blocks:
+                ids = [x["id"] for x in b["context"]]
+                if len(ids) != len(set(ids)):
+                    dup += 1
+                if ids != sorted(ids):
+                    problems.append("%s 块内记录未按 id 升序" % name)
+                for x in b["context"]:
+                    if x["id"] in seen:
+                        problems.append("%s 块间记录重复：%d" % (name, x["id"]))
+                    seen.add(x["id"])
+                    rec_step.get(x["id"], None)
+                trig_union.update(b["trigger_record_ids"])
+                n_rec += len(ids)
+                n_char += sum(len(x["text"]) for x in b["context"])
+                # 块内记录应全在块声明的同一步骤
+                for x in b["context"]:
+                    st = rec_step.get(x["id"])
+                    if st is not None and st != (b["version"], b["task"], b["step_idx"]):
+                        problems.append("%s 块内记录跨步骤：%d" % (name, x["id"]))
+            if trig_union != char_ids:
+                problems.append("%s 出场记录未被上下文块完整覆盖（%d/%d）" % (
+                    name, len(trig_union & char_ids), len(char_ids)))
+            if n_rec != m["n_records_in_context"]:
+                problems.append("%s manifest 记录数不一致" % name)
+            if n_char != m["n_context_chars"]:
+                problems.append("%s manifest 字符数不一致" % name)
+    for path in (F9, F10):
+        if not os.path.exists(path) or os.path.getsize(path) < 5000:
+            problems.append("图不存在或过小：%s" % path)
+    md = open(P_ALL_MD, "r", encoding="utf-8").read() if os.path.exists(P_ALL_MD) else ""
+    for name in ALL_CHARS:
+        if name not in md:
+            problems.append("报告缺少角色 %s" % name)
+    if verbose:
+        print("\n13 角色 L1：")
+        for name, ch in chars.items():
+            s = ch["summary"]
+            cov = ch["coverage"]["union_knife_key_events"]
+            print("  %-5s %5d 条 / %3d 步 / %2d 任务；深读 %3d (%4.1f%%)；未读版本 %s" % (
+                name, s["n_records"], s["n_steps"], s["n_tasks"], cov["n"],
+                100 * cov["rate"], "、".join(ch["coverage_detail"]["unread_versions"]) or "无"))
+        if manifest:
+            print("上下文：%d 角色 / %d 块 / %d 条 / %d 字" % (
+                len(manifest["characters"]), manifest["totals"]["n_blocks"],
+                manifest["totals"]["n_records_in_context"], manifest["totals"]["n_context_chars"]))
+    if problems:
+        for p in problems[:25]:
+            print("  ✗ " + p, file=sys.stderr)
+        return False
+    return True
 
 
 if __name__ == "__main__":
