@@ -1,0 +1,2134 @@
+{
+  "note": "叙事显著性人工标注结果（74 样本全覆盖；significance 0–3，types 可多选，note 引用原文/事件，confidence 为标注者自评）",
+  "protocol": "docs/实验口径与评测方案.md §6 与 §11.5；第二轮隔轮自检 10 样本，结果见 data/reports/annotation-review.md",
+  "labels_schema": {
+    "significance": "0 普通推进 / 1 局部信息或关系变化 / 2 叙事状态明显变化 / 3 重大转折或前文意义被重新解释",
+    "types": [
+      "identity",
+      "memory",
+      "prophecy",
+      "relationship",
+      "world",
+      "sacrifice",
+      "motif"
+    ]
+  },
+  "total": 74,
+  "layers": [
+    {
+      "name": "L5 神谕相关",
+      "desc": "命中神谕词表（兑现/引用候选）",
+      "pool_size": 293,
+      "sampled": 12
+    },
+    {
+      "name": "L6 母题/记忆回收",
+      "desc": "母题词表命中≥3 或已知身份揭示段（含昔涟诞生）",
+      "pool_size": 17,
+      "sampled": 10
+    },
+    {
+      "name": "L4 长步骤(>30句)",
+      "desc": "检查基线是否偏爱长步骤",
+      "pool_size": 223,
+      "sampled": 8
+    },
+    {
+      "name": "L3 中长(11–30句)",
+      "desc": "主体之一",
+      "pool_size": 231,
+      "sampled": 12
+    },
+    {
+      "name": "L2 中等(4–10句)",
+      "desc": "主体之二",
+      "pool_size": 145,
+      "sampled": 12
+    },
+    {
+      "name": "L1 短步骤(1–3句)",
+      "desc": "检查基线是否偏爱短句",
+      "pool_size": 65,
+      "sampled": 10
+    },
+    {
+      "name": "L7 普通推进(负样本)",
+      "desc": "无神谕/母题命中且停顿比例低",
+      "pool_size": 147,
+      "sampled": 10
+    }
+  ],
+  "samples": [
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|12",
+      "layer": "L5 神谕相关",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 12,
+      "step_title": "继续前进，深入悬锋城",
+      "n_dialogue": 33,
+      "n_narration": 2,
+      "char_len": 690,
+      "speakers": [
+        "白厄",
+        "万敌",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "白厄讲解「扎格列斯之手」：司掌诡计的泰坦已殒落，却在各地留下可搬运/偷窃的「蛊惑之手」（'扎格列斯是司掌诡计的泰坦…那位泰坦已经殒落'），属世界规则局部补充；与万敌的徽记赌约继续推进。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|22",
+      "layer": "L5 神谕相关",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 22,
+      "step_title": "回私人浴宫好好休息",
+      "n_dialogue": 70,
+      "n_narration": 7,
+      "char_len": 2143,
+      "speakers": [
+        "昔涟",
+        "开拓者",
+        "遐蝶",
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.031
+      },
+      "significance": 1,
+      "types": [
+        "identity",
+        "memory",
+        "motif"
+      ],
+      "note": "昔涟(迷迷)忽然能说完整句子，却完全记不起自己（'有关自己的事，还是记不起来一点呢'），并预感要收集散落各处的记忆；梦境里出现「睡前故事/星星」与欧洛尼斯帷幕的母题（'梦是欧洛尼斯垂下的帷幕'）。身份与记忆线索，但无状态突变。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|远客啊，请聆听此世祈祷|15",
+      "layer": "L5 神谕相关",
+      "version": "3.0",
+      "task": "远客啊，请聆听此世祈祷",
+      "step_idx": 15,
+      "step_title": "投喂大地兽",
+      "n_dialogue": 53,
+      "n_narration": 19,
+      "char_len": 1492,
+      "speakers": [
+        "开拓者",
+        "丹恒",
+        "遐蝶",
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.033
+      },
+      "significance": 1,
+      "types": [
+        "relationship",
+        "motif"
+      ],
+      "note": "投喂大地兽、与遐蝶合影：遐蝶拒绝任何身体接触（'我只是……不怎么擅长「接触」而已'）且坚持黑白留影，既埋人物关系/身世伏笔，也复现三月七的相机与「留影」母题。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|谧林啊，寤思者缘何失语|2",
+      "layer": "L5 神谕相关",
+      "version": "3.1",
+      "task": "谧林啊，寤思者缘何失语",
+      "step_idx": 2,
+      "step_title": "跟随遐蝶，面见阿格莱雅",
+      "n_dialogue": 14,
+      "n_narration": 2,
+      "char_len": 443,
+      "speakers": [
+        "遐蝶",
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "memory",
+        "identity"
+      ],
+      "note": "缇宝与「缇安」为一枚易碎的故乡纪念品争执，缇安喊出'因为你忘了，你忘记了妈妈！'——同一身体内不同人格与记忆缺失被点出，属局部身份/记忆信息。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|1",
+      "layer": "L5 神谕相关",
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "step_idx": 1,
+      "step_title": "前往私人浴宫，与迷迷交谈",
+      "n_dialogue": 31,
+      "n_narration": 2,
+      "char_len": 824,
+      "speakers": [
+        "白厄",
+        "阿格莱雅",
+        "遐蝶",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.139
+      },
+      "significance": 2,
+      "types": [
+        "relationship"
+      ],
+      "note": "遐蝶向阿格莱雅摊牌：'如果命运注定要我与您走向对立，我会试着抗争'，坚持前往冥界取回塞纳托斯火种；阿格莱雅放行并让开拓者同行（'去吧，我不会阻止你'），人物立场与关系明显位移。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+      "layer": "L5 神谕相关",
+      "version": "3.3",
+      "task": "黎明啊，执耀于全世之终",
+      "step_idx": 1,
+      "step_title": "用欧洛尼斯祷言移开碎石",
+      "n_dialogue": 155,
+      "n_narration": 4,
+      "char_len": 3301,
+      "speakers": [
+        "风堇",
+        "丹恒",
+        "白厄",
+        "开拓者",
+        "昔涟",
+        "克莱门汀"
+      ],
+      "signals": {
+        "oracle": 4,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.071
+      },
+      "significance": 3,
+      "types": [
+        "sacrifice",
+        "prophecy",
+        "world"
+      ],
+      "note": "天空火种示警「黎明机器…熄灭了」，奥赫玛永昼终结；风堇决定归还艾格勒火种并留在天空（'我会留在天空，为人们降下庇护'）。丹恒念出神谕「在彩虹桥的尽头，天空之子将缝补晨昏」并说'缇里西庇俄丝女士的预言…果真不会落空啊'——牺牲、神谕兑现与世界规则同时改变。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|书卷啊，可曾令锋刃回眸|1",
+      "layer": "L5 神谕相关",
+      "version": "3.3",
+      "task": "书卷啊，可曾令锋刃回眸",
+      "step_idx": 1,
+      "step_title": "前往友爱之馆",
+      "n_dialogue": 85,
+      "n_narration": 4,
+      "char_len": 2484,
+      "speakers": [
+        "来古士",
+        "丹恒",
+        "白厄",
+        "昔涟",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.041
+      },
+      "significance": 2,
+      "types": [
+        "relationship",
+        "world"
+      ],
+      "note": "来古士私下向丹恒开出条件：可绕过艾格勒神罚修复列车，只要两人停止助力逐火（'你们会愿意中止对逐火之旅的助力吗？'）；丹恒拒绝并选择伙伴，随后遭元老院打手围攻。人物立场与安提基色拉人技术设定同时推进。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+      "layer": "L5 神谕相关",
+      "version": "3.4",
+      "task": "英雄啊，回返那安宁的家乡",
+      "step_idx": 2,
+      "step_title": "前往第一幕：「启程」",
+      "n_dialogue": 24,
+      "n_narration": 2,
+      "char_len": 795,
+      "speakers": [
+        "白厄",
+        "开拓者",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 2,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.028
+      },
+      "significance": 2,
+      "types": [
+        "memory",
+        "prophecy"
+      ],
+      "note": "归还最后一枚火种后未达新世界，反被来古士拉入「沉浸式戏剧」；梦境声音交代神谕「汝将肩负骄阳，直至灰白的黎明显著」，并设定开拓者扮演'贯穿白厄一生中最重要的伙伴…一位始终指引其前进、却不曾在翁法罗斯历史中留名的「无名英雄」'——整段3.4自此被重读为白厄记忆的回放。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|4",
+      "layer": "L5 神谕相关",
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "step_idx": 4,
+      "step_title": "调查灵水盆中的异象",
+      "n_dialogue": 7,
+      "n_narration": 4,
+      "char_len": 217,
+      "speakers": [
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "memory",
+        "identity"
+      ],
+      "note": "开拓者回到千年后的翁法罗斯，识刻锚被昔涟唤醒（'欢迎回来，开拓者''真是度过了好长、好长的时光呀'）；昔涟要把这一千年的故事讲给他听（'我会把这一千年的故事都讲给你听'）。时间跨度与叙述者身份明显变化。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.6|大地啊，承载万物的苦难|11",
+      "layer": "L5 神谕相关",
+      "version": "3.6",
+      "task": "大地啊，承载万物的苦难",
+      "step_idx": 11,
+      "step_title": "与「海瑟音」对话",
+      "n_dialogue": 17,
+      "n_narration": 1,
+      "char_len": 448,
+      "speakers": [
+        "海瑟音",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world",
+        "relationship"
+      ],
+      "note": "刚接过「大地」火种的丹恒请求海瑟音(记忆形态)掩护，自己以「大地」权能深入忆潮找回开拓者（'海瑟音女士，可否请你为我掩护？''层岩…已尽在我的掌心'）；海瑟音指出'那道伤痕背后，就是它口中的「至深之地」'。荒笛身后权能归属落实。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|旅者啊，徘徊中忘却失真|7",
+      "layer": "L5 神谕相关",
+      "version": "3.6",
+      "task": "旅者啊，徘徊中忘却失真",
+      "step_idx": 7,
+      "step_title": "调查留声机留言",
+      "n_dialogue": 7,
+      "n_narration": 2,
+      "char_len": 163,
+      "speakers": [],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "world",
+        "prophecy"
+      ],
+      "note": "留声机里传出星际和平播报：'「智识」实验场■■■■已从■■■■■纠缠中脱离''绝灭大君■■■■未能如■■■■■的期望诞生''最终拯救了翁法罗斯的，除了■■■十二名■■■■■，还有一名关键的■■■■'——以未来广播形式预告结局，重写读者对局势的判断。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.7|星路长驰，穹宇远征|7",
+      "layer": "L5 神谕相关",
+      "version": "3.7",
+      "task": "星路长驰，穹宇远征",
+      "step_idx": 7,
+      "step_title": "跟随神谕的号召，前往黎明云崖",
+      "n_dialogue": 14,
+      "n_narration": 1,
+      "char_len": 429,
+      "speakers": [
+        "瓦尔特",
+        "星期日",
+        "黑天鹅",
+        "姬子",
+        "三月七"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "world",
+        "prophecy",
+        "identity"
+      ],
+      "note": "外界视角：'三位无名客先行者成为新世界的泰坦'，「负世」的开拓者被全城朝圣；三月七(永夜之帷)宣布'由「岁月」守望昨天，由「大地」拱卫今天，直到「开拓」再度踏入翁法罗斯，沉睡的「救世主」便会苏醒…为世界带来「明天」的预言'——世界结构与神谕兑现方式明显变化。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|21",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 21,
+      "step_title": "迈向决战，打败尼卡多利！",
+      "n_dialogue": 130,
+      "n_narration": 12,
+      "char_len": 3276,
+      "speakers": [
+        "遐蝶",
+        "格奈乌斯",
+        "开拓者",
+        "白厄",
+        "万敌",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.036
+      },
+      "significance": 3,
+      "types": [
+        "sacrifice",
+        "world",
+        "identity"
+      ],
+      "note": "格奈乌斯揭示自己正是尼卡多利被剥离的「理智」，坦然融入腐坏神魂以终结疯狂（'我将回归本源，成为尼卡多利神性的一个片段…腐蚀大概会将我吞没'），随后泰坦殒落、白厄接过火种并决意承担神性；遐蝶追问塞纳托斯并吐露'我自出生起就被剥夺的那一半…必须从它手中拿回'。泰坦真相、白厄成神、遐蝶身世三线并进。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.2|争辩啊，代长矛分庭抗礼|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.2",
+      "task": "争辩啊，代长矛分庭抗礼",
+      "step_idx": 2,
+      "step_title": "返回半神议会，告知阿格莱雅",
+      "n_dialogue": 55,
+      "n_narration": 7,
+      "char_len": 1757,
+      "speakers": [
+        "来古士",
+        "白厄",
+        "阿格莱雅",
+        "凯妮斯",
+        "开拓者",
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.015
+      },
+      "significance": 3,
+      "types": [
+        "relationship",
+        "world",
+        "identity"
+      ],
+      "note": "阿格莱雅自认'我已成为半神太久，人性将尽'并把对抗元老院的担子交给白厄；凯妮斯抛出「黄金世」路线，那刻夏与遐蝶公开站到元老院一侧（'站在我身边的人——树庭七贤人之一，阿那克萨戈拉斯，以及哀地里亚的「死亡女神」遐蝶'），来古士宣布公民大会议题变更为「暂停逐火之旅」。逐火方与元老院公开决裂，政治格局剧变。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|黎明啊，执耀于全世之终|11",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.3",
+      "task": "黎明啊，执耀于全世之终",
+      "step_idx": 11,
+      "step_title": "前往创世涡心，完成「再创世」",
+      "n_dialogue": 186,
+      "n_narration": 8,
+      "char_len": 4762,
+      "speakers": [
+        "丹恒",
+        "昔涟",
+        "白厄",
+        "开拓者",
+        "泽弗",
+        "尼莫西妮"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.077
+      },
+      "significance": 3,
+      "types": [
+        "identity",
+        "sacrifice",
+        "world"
+      ],
+      "note": "巴特鲁斯揭穿：维系奥赫玛千年永昼的不是刻法勒神迹，而是赛飞儿用「诡计」神权编织的谎言，且赛飞儿已逝去；扎格列斯献出胃中的刻法勒火种后化作尘土消散。来古士自陈「神礼观众」，黑塔与螺丝曝光翁法罗斯是一台「帝皇权杖」、绝灭大君「铁墓」的摇篮（'翁法罗斯悲剧的源头…是一台残存至今的「帝皇权杖」'）；结尾真正的「昔涟」登场：'这一定是个不同以往的浪漫故事……'。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.4|英雄啊，点燃那最初的骄阳|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.4",
+      "task": "英雄啊，点燃那最初的骄阳",
+      "step_idx": 2,
+      "step_title": "见证翁法罗斯的真相",
+      "n_dialogue": 111,
+      "n_narration": 5,
+      "char_len": 2997,
+      "speakers": [
+        "来古士",
+        "昔涟",
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 3,
+        "structure": 1,
+        "pause_ratio": 0.121
+      },
+      "significance": 3,
+      "types": [
+        "world",
+        "identity",
+        "sacrifice"
+      ],
+      "note": "来古士揭开谜底：名为「翁法罗斯」的永恒之地是权杖漫长的演算，黄金裔是被献给黑潮的「深度学习」模型（'一代代英雄、神明、世界，都是为了被它「毁灭」而生'），终点是绝灭大君「铁墓」（NeiKos496 / PhiLia093）。昔涟随即提出反制：以自己灵魂注入仪式剑、抹除「岁月」引出星神瞥视，白厄则踏入永劫轮回、成为下一世的盗火行者。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.4",
+      "task": "英雄啊，粉碎那悲哀的造像",
+      "step_idx": 2,
+      "step_title": "击败盗火行者",
+      "n_dialogue": 8,
+      "n_narration": 5,
+      "char_len": 209,
+      "speakers": [
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "identity",
+        "sacrifice"
+      ],
+      "note": "终战里说话人被标为「白厄(盗火行者)」：'逐火…是不断失却的旅途''告诉我…你甘为烈阳…哪怕燃尽…世间万物'，白厄回应'我将用你的尸身——点燃黎明！'。盗火行者与白厄同源的冲击很强，但本步以战斗演出为主、身份未在台词里明说，故降一档。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.4|英雄啊，回返那安宁的家乡|17",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.4",
+      "task": "英雄啊，回返那安宁的家乡",
+      "step_idx": 17,
+      "step_title": "接受塔兰顿的称量",
+      "n_dialogue": 127,
+      "n_narration": 2,
+      "char_len": 2805,
+      "speakers": [
+        "白厄",
+        "开拓者",
+        "缇宝",
+        "昔涟",
+        "万敌",
+        "阿格莱雅"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.079
+      },
+      "significance": 2,
+      "types": [
+        "prophecy",
+        "relationship"
+      ],
+      "note": "塔兰顿称量：白厄押上「救世主」神谕牌，泰坦宣判'供物比世界的命运更为沉重之人，是为——哀丽秘榭的来者，无名的英雄'，昔涟点破重量来自世人对救世主的共同愿望（'压落秤盘的并非白厄的决心，而是这张神谕牌承载的，世人对「救世主」的呼唤'），万敌因此承认白厄并用「救世主」称呼他；阿格莱雅宣布'逐火的征途将于今日，迎来最后两位英雄'。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|9",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "step_idx": 9,
+      "step_title": "前进，重拾未竟的先业",
+      "n_dialogue": 32,
+      "n_narration": 3,
+      "char_len": 906,
+      "speakers": [
+        "万敌",
+        "缇宝",
+        "赛飞儿",
+        "那刻夏"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.057
+      },
+      "significance": 2,
+      "types": [
+        "sacrifice",
+        "memory"
+      ],
+      "note": "万敌/缇宝/赛飞儿/那刻夏的「记忆形态」接力呈现最后一战：那刻夏以贤者之石、赛飞儿以谎言设局（'把他变成笼中困兽''你若要伪装成「救世主」'），旁白收束：'「理性」和「诡计」兑现了承诺。他们以生命为代价，将来古士封印于创世涡心，直至今日。'",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.6|重逢啊，笑泪相拥的约定|2",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.6",
+      "task": "重逢啊，笑泪相拥的约定",
+      "step_idx": 2,
+      "step_title": "与长夜月交谈",
+      "n_dialogue": 180,
+      "n_narration": 4,
+      "char_len": 4295,
+      "speakers": [
+        "三月七",
+        "昔涟",
+        "丹恒",
+        "开拓者",
+        "刻律德菈"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 1,
+        "pause_ratio": 0.07
+      },
+      "significance": 3,
+      "types": [
+        "identity",
+        "memory",
+        "relationship"
+      ],
+      "note": "长夜月（三月七为保护自己而生的「忘却」执念）与三月七对质：三月七道出自己一直藏在相机里、以照片里的记忆拼回自我（'我醒着的时候，你一直都在沉睡…我带你重新回忆一遍'），最终长夜月交还力量并'最后一次行使「忘却」'。两个自我合一，三月七的身世与记忆主线发生重大转折。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.7|晨曦啊，再抚映遥远地平|4",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.7",
+      "task": "晨曦啊，再抚映遥远地平",
+      "step_idx": 4,
+      "step_title": "聆听昔涟讲述真相，完成「记忆」的拼图",
+      "n_dialogue": 24,
+      "n_narration": 0,
+      "char_len": 472,
+      "speakers": [
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 0,
+        "pause_ratio": 0.033
+      },
+      "significance": 3,
+      "types": [
+        "identity",
+        "memory",
+        "world"
+      ],
+      "note": "在「无名泰坦大墓——『昔涟』的诞生之地」，昔涟看见墙上'一如既往，我会把这本书念给你听……这样一来，它就不再是『昔涟』一个人的回忆'，确认自己'一直是逐火之旅的讲述者…也是最专心的「听众」'，并指出'最初的智种，德谬歌…它就在这里'。昔涟诞生与第十三位泰坦身份揭示。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|21",
+      "layer": "L6 母题/记忆回收",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 21,
+      "step_title": "揭露隐秘的记忆，了解德谬歌的过往",
+      "n_dialogue": 422,
+      "n_narration": 23,
+      "char_len": 9152,
+      "speakers": [
+        "开拓者",
+        "昔涟",
+        "权杖δ-me13",
+        "白厄",
+        "阿格莱雅",
+        "黑塔"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 4,
+        "structure": 98,
+        "pause_ratio": 0.027
+      },
+      "significance": 3,
+      "types": [
+        "identity",
+        "memory",
+        "prophecy",
+        "motif"
+      ],
+      "note": "完整揭示昔涟/PhiLia093/德谬歌的来历：她以「昔涟」为笔名（'希望文字像石子点水，自往昔投下，向未来送去涟漪'），三千万世反复讲述《如我所书》与「迷路迷境」，以「哀怜」浇灌出真正的「心」；「无瑕水晶花」童话与神谕'汝将收梢于花开时，一如终结诞下起始'在她赴死时兑现（'我迎来自己的收梢，成为下一朵花绽放的养料'）。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|14",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 14,
+      "step_title": "继续前进，深入悬锋城",
+      "n_dialogue": 64,
+      "n_narration": 1,
+      "char_len": 1232,
+      "speakers": [
+        "白厄",
+        "万敌",
+        "黄金狮首",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.056
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "黄金狮首临终开口，告诉万敌尼卡多利已堕落、正酝酿灭亡奥赫玛的阴谋（'它已然堕落，正在酝酿着毫无荣光的阴谋'），并恳求'终结它漫长的痛苦，让它以战士的身份死去'；白厄仍决定继续前进。敌方形势与泰坦堕落规则更新，但叙事状态未变。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|18",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.0",
+      "task": "银辇啊，迅赴那黑色大地",
+      "step_idx": 18,
+      "step_title": "骑上大地兽，前往圣城",
+      "n_dialogue": 40,
+      "n_narration": 5,
+      "char_len": 1106,
+      "speakers": [
+        "丹恒",
+        "白厄",
+        "开拓者",
+        "诺杜斯",
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "骑大地兽入圣城、途中遇袭；白厄称'神谕早已警示我们。这是天灾，但并非死劫'，缇宝以「我呼唤你，欧洛尼斯…揭开帷幕，激起往昔的涟漪」切换时空。交代黄金裔/圣城/泰坦与记忆神迹，属世界观局部补充。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "step_idx": 4,
+      "step_title": "启动八音盒，听妈妈讲故事",
+      "n_dialogue": 33,
+      "n_narration": 1,
+      "char_len": 772,
+      "speakers": [
+        "莫忒丝",
+        "缇宝",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "memory",
+        "motif"
+      ],
+      "note": "八音盒与母亲莫忒丝的歌谣重现创世神话：'伟岸的刻法勒…黎明的光沉负于肩，金色的血落向大地'，随后歌谣崩坏为'黑潮███已来到██城下了'。既是缇宝童年记忆的回收，也是刻法勒/金血/黑潮母题的集中呈现，并解释了缇宝三人的创伤。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.2|橄榄啊，请掷向议厅之主|4",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.2",
+      "task": "橄榄啊，请掷向议厅之主",
+      "step_idx": 4,
+      "step_title": "传令兵到达前，在附近逛逛",
+      "n_dialogue": 31,
+      "n_narration": 1,
+      "char_len": 961,
+      "speakers": [
+        "那刻夏",
+        "瑟希斯"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "借年轻书吏与年迈祭司之口交代元老院/凯妮斯见风使舵、逐火派失势的政局（'凯妮斯一派此前得知瑟希斯与欧洛尼斯先后陨落，便在元老院中大肆鼓吹逐火派已无力抵抗灾厄'），那刻夏与瑟希斯决定周旋；局部政治信息。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.3|宝箱啊，兀自承装下前尘|9",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.3",
+      "task": "宝箱啊，兀自承装下前尘",
+      "step_idx": 9,
+      "step_title": "揍趴挡路的怪物",
+      "n_dialogue": 35,
+      "n_narration": 2,
+      "char_len": 925,
+      "speakers": [
+        "赛飞儿",
+        "巴特鲁斯"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.054
+      },
+      "significance": 1,
+      "types": [
+        "identity",
+        "memory"
+      ],
+      "note": "赛飞儿一边挖宝一边自陈：'我在奥赫玛从没见过斯缇科西亚出身的家伙'、千年前曾在刻法勒的祭司院当学徒（'这都过去多久了，得有快一千年了吧？'）。她的出身与年龄/记忆线索被局部抖出。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.4|英雄啊，点燃那最初的骄阳|15",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.4",
+      "task": "英雄啊，点燃那最初的骄阳",
+      "step_idx": 15,
+      "step_title": "见证卡厄斯兰那的结局",
+      "n_dialogue": 60,
+      "n_narration": 2,
+      "char_len": 1788,
+      "speakers": [
+        "白厄",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 3,
+        "structure": 1,
+        "pause_ratio": 0.043
+      },
+      "significance": 3,
+      "types": [
+        "identity",
+        "sacrifice",
+        "motif"
+      ],
+      "note": "卡厄斯兰那的结局：'第33550336次永劫回归'，白厄把「全世」职责与「救世主」之名让渡给开拓者，自己成为这一世盗火行者（'我会成为这一世的盗火行者，履行和昔涟的约定'），并把'带着无法被改变的过往，背负它走向未来的决心'交还给开拓者；'铭记过去，成为明天的英雄吧'回收天秤母题。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.5|流年啊，渡我漂游千百载|3",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.5",
+      "task": "流年啊，渡我漂游千百载",
+      "step_idx": 3,
+      "step_title": "找个与天才联络的好地方",
+      "n_dialogue": 60,
+      "n_narration": 2,
+      "char_len": 2198,
+      "speakers": [
+        "昔涟",
+        "开拓者",
+        "螺丝咕姆",
+        "黑塔"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.026
+      },
+      "significance": 3,
+      "types": [
+        "world",
+        "identity"
+      ],
+      "note": "昔涟与开拓者借识刻锚联系上黑塔、螺丝咕姆：翁法罗斯是绝灭大君「铁墓」自我演算的实验场、来古士是权杖管理员（'有人在幕后推动这一切：名为「来古士」的观测者'），终极协议即「塔兰顿」；任务锁定光历3960年夺取「律法」火种。黑塔还注意到昔涟的命途图谱异常。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.6|重逢啊，笑泪相拥的约定|3",
+      "layer": "L4 长步骤(>30句)",
+      "version": "3.6",
+      "task": "重逢啊，笑泪相拥的约定",
+      "step_idx": 3,
+      "step_title": "前往水边，寻找三月七",
+      "n_dialogue": 39,
+      "n_narration": 1,
+      "char_len": 696,
+      "speakers": [
+        "丹恒",
+        "开拓者",
+        "三月七"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.044
+      },
+      "significance": 2,
+      "types": [
+        "identity",
+        "relationship",
+        "memory"
+      ],
+      "note": "三月七归来与开拓者、丹恒重逢（'终于，能和你们说上话了呀！'）；长夜月临别揭示'让「无漏净子」这个名字，从你脑海中褪去吧''我只拥有「你」的记忆，是为保护你而存在的执念''流光忆庭是你的敌人'。身份与关系的重要信息，事件本身以情感收束为主。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|13",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 13,
+      "step_title": "与万敌会合",
+      "n_dialogue": 25,
+      "n_narration": 2,
+      "char_len": 484,
+      "speakers": [
+        "白厄",
+        "万敌",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.033
+      },
+      "significance": 1,
+      "types": [
+        "relationship"
+      ],
+      "note": "白厄与万敌以三十枚悬锋城徽记打赌，白厄主动改赌注并提议联手（'至于尼卡多利…我们会联手将其击败''给尼卡多利的夺命一剑就由我们一起刺出'），二人由竞争转向同盟，属关系变化。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|夜帷啊，轻遮那静默过往|10",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.0",
+      "task": "夜帷啊，轻遮那静默过往",
+      "step_idx": 10,
+      "step_title": "开启万径之门",
+      "n_dialogue": 14,
+      "n_narration": 2,
+      "char_len": 278,
+      "speakers": [
+        "遐蝶",
+        "白厄",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "欧洛尼斯借遐蝶之口拒绝来客：'「不要靠近…不要进来」「这里没有你们在找的东西…只有悲伤和消亡」'，随后提出挑战、开启道路。揭示泰坦试炼与门径规则，属局部信息。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|9",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.0",
+      "task": "银辇啊，迅赴那黑色大地",
+      "step_idx": 9,
+      "step_title": "唤醒昏迷的丹恒",
+      "n_dialogue": 16,
+      "n_narration": 9,
+      "char_len": 515,
+      "speakers": [
+        "开拓者",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.022
+      },
+      "significance": 1,
+      "types": [],
+      "note": "丹恒苏醒、列车通讯失败（'果然失败了…这下只能靠你我了'），结尾首次出现'？？？: 迷……'的未知声音（后文揭示为迷迷/昔涟的伏笔）。属局部信息，未改变叙事状态。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|来路啊，请再度显映往履|2",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "step_idx": 2,
+      "step_title": "向祭坛左侧「预言书库」前进",
+      "n_dialogue": 14,
+      "n_narration": 1,
+      "char_len": 322,
+      "speakers": [
+        "白厄",
+        "缇宝",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "交代众人已借开拓者之力回到千年前的往世「雅努萨波利斯」，缇宁介绍「预言书库」与充当门锁的雅努斯迷津（'这还是一道门锁——封印着我们儿时的住处'）；白厄以'那家伙…要是他还在'暗示万敌缺席。世界观/时间穿越设定局部补充。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|纺锤啊，难纴岁月的经纬|9",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.2",
+      "task": "纺锤啊，难纴岁月的经纬",
+      "step_idx": 9,
+      "step_title": "与阿格莱雅等人商议后续安排",
+      "n_dialogue": 21,
+      "n_narration": 1,
+      "char_len": 722,
+      "speakers": [
+        "阿格莱雅",
+        "白厄",
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "world",
+        "identity"
+      ],
+      "note": "旁白回顾开拓者其实早在车厢坠落时就已死去、如今只是'一簇行走的记忆'，必须找到塞纳托斯才有生机；阿格莱雅指出赛飞儿是唯一可能掌握「死亡」去向的人，并点出那刻夏开始与元老院接触。任务目标（找塞纳托斯）与身世前提、政治威胁同步推进。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|摇船啊，请载我横渡冥流|11",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.2",
+      "task": "摇船啊，请载我横渡冥流",
+      "step_idx": 11,
+      "step_title": "查看灵魂的残留",
+      "n_dialogue": 23,
+      "n_narration": 3,
+      "char_len": 738,
+      "speakers": [
+        "遐蝶",
+        "阿蒙内特",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "identity",
+        "memory"
+      ],
+      "note": "斯缇科西亚亡魂的记忆闪回：幽灵口中'从巨龙怀中诞生的少女，那些幽灵口中「死亡」的化身…就是你？！'直指遐蝶；旧事同时牵出斯缇科西亚女王与阿蒙内特。读者对遐蝶身世（与塞纳托斯互为半身）及前文「不愿接触他人」的理解被改写。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|16",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 16,
+      "step_title": "见证塞涅俄丝的真相",
+      "n_dialogue": 23,
+      "n_narration": 2,
+      "char_len": 794,
+      "speakers": [
+        "开拓者",
+        "塞涅俄丝",
+        "风堇"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "world",
+        "identity",
+        "memory"
+      ],
+      "note": "塞涅俄丝的历史记忆：她因融合世仇两族血脉被斥为「黄昏之女」，却宣布遵从'从地平线的尽头传来了神谕'而弑神艾格勒（'我不是神——我只是…唯一一个有勇气反抗典狱者的凡人'）；索拉比斯以「雅辛忒丝」称呼风堇，点明风堇是天空英雄后裔。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.4|母亲啊，暌离于冬去春来|2",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.4",
+      "task": "母亲啊，暌离于冬去春来",
+      "step_idx": 2,
+      "step_title": "抵达命途狭间",
+      "n_dialogue": 17,
+      "n_narration": 1,
+      "char_len": 440,
+      "speakers": [
+        "三月七",
+        "命途之声"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "identity",
+        "memory"
+      ],
+      "note": "三月七在命途狭间苏醒，命途之声称她为'「记忆」的孩子……'并引她穿过记忆之门进入心像世界——为三月七的忆者/「无漏净子」身份与记忆主线开篇，但本步只是起点。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|初日啊，逐退群星与残月|10",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.5",
+      "task": "初日啊，逐退群星与残月",
+      "step_idx": 10,
+      "step_title": "跟云石天宫的昔涟聊聊",
+      "n_dialogue": 15,
+      "n_narration": 1,
+      "char_len": 444,
+      "speakers": [
+        "昔涟",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.136
+      },
+      "significance": 1,
+      "types": [],
+      "note": "凯撒不给提问机会、有守卫盯梢（'竟然有人在盯梢……'），昔涟提议借沐浴之名联络黑塔。属局势性对话，信息量小、以过渡为主。",
+      "confidence": "low"
+    },
+    {
+      "segment_id": "3.5|花醴啊，盈满空心的树干|21",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.5",
+      "task": "花醴啊，盈满空心的树干",
+      "step_idx": 21,
+      "step_title": "「请毋宁钟情于盛大的凯旋式。」",
+      "n_dialogue": 12,
+      "n_narration": 10,
+      "char_len": 344,
+      "speakers": [
+        "海瑟音",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "宴会上凯撒宣告征服星海的野心（'我等金血孕育出一头无往不利的巨兽，它将成为我们的铁蹄，踏遍天外群星'），来古士之声称'这虚妄幻境的终幕'。交代第一次逐火之旅的扩张方向与凯撒的执念。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|烈阳啊，为迷途照明前路|1",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.6",
+      "task": "烈阳啊，为迷途照明前路",
+      "step_idx": 1,
+      "step_title": "前往黎明云崖",
+      "n_dialogue": 24,
+      "n_narration": 1,
+      "char_len": 489,
+      "speakers": [
+        "丹恒",
+        "螺丝咕姆",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.04
+      },
+      "significance": 1,
+      "types": [
+        "relationship",
+        "world"
+      ],
+      "note": "丹恒在燃烧的天空下与螺丝咕姆、来古士同行（'难以置信，我竟要与投身「毁灭」的天才同行'），被迫与旧敌暂时合作进入忆域。关系与世界局势局部变化。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|19",
+      "layer": "L3 中长(11–30句)",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 19,
+      "step_title": "与来古士对峙，诘问关于德谬歌的真相",
+      "n_dialogue": 18,
+      "n_narration": 0,
+      "char_len": 391,
+      "speakers": [
+        "来古士",
+        "黑塔",
+        "螺丝咕姆"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0.111
+      },
+      "significance": 3,
+      "types": [
+        "world",
+        "identity",
+        "memory"
+      ],
+      "note": "只剩头颅的来古士承认'「铁墓」已足够强大，我只需等待'；黑塔点明'你口中的「翁法罗斯之心」正是去向不明的德谬歌。而它对应的躯壳，就是这台权杖'，来古士则揭出'PhiLia093消失的真相：一场「记忆」的谎言'。世界本质与昔涟身份的关键揭示。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|10",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 10,
+      "step_title": "继续前进，深入悬锋城",
+      "n_dialogue": 5,
+      "n_narration": 0,
+      "char_len": 104,
+      "speakers": [
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "白厄指路、让开拓者选路（'先走哪条路都行，交给你来定夺吧'），纯过场。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|8",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 8,
+      "step_title": "进入悬锋城",
+      "n_dialogue": 10,
+      "n_narration": 0,
+      "char_len": 175,
+      "speakers": [
+        "遐蝶",
+        "格奈乌斯",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "进入悬锋城，格奈乌斯与遐蝶交代火盆机关（'需要点燃两个火盆才能打开通路'），无实质变化。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|英雄啊，且握住那枚火种|1",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.0",
+      "task": "英雄啊，且握住那枚火种",
+      "step_idx": 1,
+      "step_title": "前往创世涡心",
+      "n_dialogue": 9,
+      "n_narration": 1,
+      "char_len": 240,
+      "speakers": [
+        "昔涟",
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "昔涟(迷迷)与丹恒的日常调侃（'人家上次吃东西是多久之前的事了？记不起来'），随后前往创世涡心，纯过渡。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.1|纷争啊，伐清湮途的悼惧|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.1",
+      "task": "纷争啊，伐清湮途的悼惧",
+      "step_idx": 4,
+      "step_title": "寻找白厄和丹恒",
+      "n_dialogue": 4,
+      "n_narration": 1,
+      "char_len": 115,
+      "speakers": [
+        "万敌"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.2
+      },
+      "significance": 1,
+      "types": [
+        "memory"
+      ],
+      "note": "万敌在试炼幻境中看见'「心中至深恐惧之物」…那男人最畏惧的，竟是这副景色？'——悬锋一族以血铺就的荣耀，揭示万敌的过往与心结，属局部记忆/心理信息。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|9",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "step_idx": 9,
+      "step_title": "继续跟随缇安，寻找「番红蕊」",
+      "n_dialogue": 4,
+      "n_narration": 0,
+      "char_len": 56,
+      "speakers": [
+        "缇宝",
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "四句氛围台词（'离别和死亡，本就并蒂双生''凡人怎能轻易和解呢？'），无事件推进，仅复现离别母题。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.2|莎草啊，抽绎渎神者所想|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.2",
+      "task": "莎草啊，抽绎渎神者所想",
+      "step_idx": 4,
+      "step_title": "前往友爱之馆",
+      "n_dialogue": 10,
+      "n_narration": 1,
+      "char_len": 362,
+      "speakers": [
+        "风堇",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "风堇介绍友爱之馆与藏书石版，无事件或关系变化。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|1",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 1,
+      "step_title": "前往「穹顶关塞」晨昏之眼，继续冒险",
+      "n_dialogue": 4,
+      "n_narration": 1,
+      "char_len": 73,
+      "speakers": [
+        "开拓者",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "黎明云崖送行前的三句过场（'就在今天了……''这里的人们，是来为黄金裔们送行的吗？'）。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|石板啊，为何罔闻那灯影|8",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.3",
+      "task": "石板啊，为何罔闻那灯影",
+      "step_idx": 8,
+      "step_title": "借用追忆符文",
+      "n_dialogue": 10,
+      "n_narration": 0,
+      "char_len": 154,
+      "speakers": [
+        "阿格莱雅",
+        "赛飞儿"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.2
+      },
+      "significance": 1,
+      "types": [
+        "relationship",
+        "motif"
+      ],
+      "note": "赛飞儿与阿格莱雅道别：阿格莱雅注意到她仍穿着自己送的金靴（'你…还穿着我送给你的那双金靴啊'），赛飞儿回'没人能追得上我，我早就不再为「逃亡」而奔跑了'。关系与金靴母题回收，为其赴黎明云崖铺垫。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|初日啊，逐退群星与残月|2",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.5",
+      "task": "初日啊，逐退群星与残月",
+      "step_idx": 2,
+      "step_title": "探秘第一次逐火之旅的时代",
+      "n_dialogue": 7,
+      "n_narration": 16,
+      "char_len": 802,
+      "speakers": [
+        "刻律德菈"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 1,
+        "structure": 1,
+        "pause_ratio": 0.087
+      },
+      "significance": 2,
+      "types": [
+        "world"
+      ],
+      "note": "以史诗口吻铺开第一次逐火之旅的时代（光历3960）：异邦联军踏破黎明、凯撒刻律德菈分金血救城、'第一次奥赫玛围城战'。属已逝时代的重大世界/历史揭示。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.5|囚人啊，踏过日影见沧溟|12",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.5",
+      "task": "囚人啊，踏过日影见沧溟",
+      "step_idx": 12,
+      "step_title": "驾临书中的梦土",
+      "n_dialogue": 4,
+      "n_narration": 0,
+      "char_len": 98,
+      "speakers": [
+        "刻律德菈",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "刻律德菈在书中梦土看到开拓者记忆里的匹诺康尼（'这个世界名叫匹诺康尼，是一座建立在梦土中的永恒之城'），四句闲谈，无事件推进。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|归途啊，近在咫尺难抵达|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.6",
+      "task": "归途啊，近在咫尺难抵达",
+      "step_idx": 4,
+      "step_title": "前往客房车厢",
+      "n_dialogue": 9,
+      "n_narration": 1,
+      "char_len": 337,
+      "speakers": [
+        "姬子",
+        "黑天鹅",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world",
+        "relationship"
+      ],
+      "note": "姬子与黑天鹅推断两位无名客只有精神被卷入翁法罗斯（'恐怕那两位失踪的无名客，和三月七一样，受「记忆」命途影响，只有精神被卷入了翁法罗斯'），黑天鹅要在忆域点灯引路；丹恒决定去看三月七。补充世界观与伙伴线。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|4",
+      "layer": "L2 中等(4–10句)",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 4,
+      "step_title": "使用冲拳，击碎平台上的障碍块",
+      "n_dialogue": 5,
+      "n_narration": 0,
+      "char_len": 84,
+      "speakers": [
+        "黑塔",
+        "螺丝咕姆"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "黑塔把「扎格列斯之手」改名「黑塔的大手」并打碎障碍块，纯操作过场。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|11",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 11,
+      "step_title": "破解房间内机关，继续前进",
+      "n_dialogue": 3,
+      "n_narration": 0,
+      "char_len": 59,
+      "speakers": [
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "破解房间机关的三句台词（'此路不通？难不倒我们''去收获我们应得的奖励吧'），纯推进。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|13",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "step_idx": 13,
+      "step_title": "继续深入悬锋城，寻找尼卡多利的线索",
+      "n_dialogue": 2,
+      "n_narration": 0,
+      "char_len": 39,
+      "speakers": [
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "两句机关提示（'又是相同的机关…需要点燃两个火盆才能打开通路'），纯过场。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|远客啊，请聆听此世祈祷|9",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.0",
+      "task": "远客啊，请聆听此世祈祷",
+      "step_idx": 9,
+      "step_title": "前往云石市集",
+      "n_dialogue": 2,
+      "n_narration": 1,
+      "char_len": 82,
+      "speakers": [
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "三句过场（'市民们都回来了''他们聚在那儿在做什么？'），无信息或关系变化。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.1|谧林啊，寤思者缘何失语|27",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.1",
+      "task": "谧林啊，寤思者缘何失语",
+      "step_idx": 27,
+      "step_title": "用「金枝誓言」采撷余火",
+      "n_dialogue": 1,
+      "n_narration": 3,
+      "char_len": 97,
+      "speakers": [
+        "遐蝶"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "按卡吕普索指示以「金枝誓言」采撷余火、获得道具，无信息变化。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|8",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "step_idx": 8,
+      "step_title": "处刑不治的牧人",
+      "n_dialogue": 2,
+      "n_narration": 1,
+      "char_len": 21,
+      "speakers": [
+        "阿蒙内特"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "处刑不治的牧人：'求您…赐我解脱……'与旁白'赠以酣眠'，三句过场，仅复现行刑主题。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|14",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 14,
+      "step_title": "尝试维修另一侧的「电路」",
+      "n_dialogue": 2,
+      "n_narration": 1,
+      "char_len": 31,
+      "speakers": [
+        "丹恒",
+        "白厄"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "'算碑就在眼前了''总算…但愿这能修好浑象仪'等三句维修电路，纯过场。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.4|母亲啊，暌离于冬去春来|7",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.4",
+      "task": "母亲啊，暌离于冬去春来",
+      "step_idx": 7,
+      "step_title": "跟随伙伴，穿越记忆之门",
+      "n_dialogue": 2,
+      "n_narration": 0,
+      "char_len": 17,
+      "speakers": [
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "identity",
+        "memory"
+      ],
+      "note": "丹恒两句'迈入过去吧，三月……''找回真正的你'，承接命途狭间，指认记忆才是找回三月七自我的关键（过渡性提示）。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|11",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "step_idx": 11,
+      "step_title": "接过承载岁月的仪式剑",
+      "n_dialogue": 3,
+      "n_narration": 1,
+      "char_len": 94,
+      "speakers": [
+        "风堇",
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "motif",
+        "sacrifice"
+      ],
+      "note": "风堇(记忆形态)把仪式剑交给昔涟、昔涟答'等待是人家最擅长的事情嘛…历经三千万世，开拓者才降临在我们身边'，旁白'拔出剑刃，承接使命'。仪式剑/岁月接力的母题回收，事件性弱。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.5",
+      "task": "囚人啊，踏过日影见沧溟",
+      "step_idx": 5,
+      "step_title": "以凯撒之名，批阅记忆的谏书",
+      "n_dialogue": 2,
+      "n_narration": 2,
+      "char_len": 232,
+      "speakers": [
+        "刻律德菈"
+      ],
+      "signals": {
+        "oracle": 1,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "prophecy",
+        "motif"
+      ],
+      "note": "旁白以'于天地境界之海完成征服，长眠于涛声中'复述海瑟音/刻律德菈的双生神谕与她们在吕奎亚海岸的期许（'她们想着错位的光景，一起看太阳慢慢、慢慢沉进海里'），随后刻律德菈开始翻阅开拓者的记忆。神谕/母题出现，尚无兑现。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.7|落英啊，残芳纷飞留归躅|9",
+      "layer": "L1 短步骤(1–3句)",
+      "version": "3.7",
+      "task": "落英啊，残芳纷飞留归躅",
+      "step_idx": 9,
+      "step_title": "回到少女的故乡",
+      "n_dialogue": 3,
+      "n_narration": 1,
+      "char_len": 118,
+      "speakers": [
+        "昔涟"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 1,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [
+        "motif"
+      ],
+      "note": "回到少女的故乡哀丽秘榭的四句氛围描写（'西风吹拂之地，有无垠的麦浪和蔺草的芬芳'），仅母题（故乡/风/涛声）复现，无事件推进。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|5",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.0",
+      "task": "荒墟啊，可曾记旧日荣光",
+      "step_idx": 5,
+      "step_title": "利用「预言算碑」关闭落雷",
+      "n_dialogue": 3,
+      "n_narration": 0,
+      "char_len": 52,
+      "speakers": [
+        "白厄",
+        "万敌"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "白厄与万敌三句斗嘴（'区区闪电，也想拦住悬锋城的战士？'），纯过场。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|晚星啊，莫让我长夜独卧|6",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.0",
+      "task": "晚星啊，莫让我长夜独卧",
+      "step_idx": 6,
+      "step_title": "离开创世涡心，返回私人浴宫",
+      "n_dialogue": 1,
+      "n_narration": 0,
+      "char_len": 22,
+      "speakers": [
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 0,
+      "types": [],
+      "note": "单句过场：'嗯…十二位泰坦的星宿都拍进去了。离开这里吧。'",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|10",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.0",
+      "task": "银辇啊，迅赴那黑色大地",
+      "step_idx": 10,
+      "step_title": "探查异响的来源",
+      "n_dialogue": 13,
+      "n_narration": 4,
+      "char_len": 323,
+      "speakers": [
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world"
+      ],
+      "note": "首次目击时空反复切换与'那边，粉色的'神秘生物（'又往前踏出几步，你们又回到了夜晚的时空下'），初步揭示翁法罗斯时空异常规则，属局部世界信息（作为负样本层出现轻微非零值）。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|纷争啊，伐清湮途的悼惧|6",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.1",
+      "task": "纷争啊，伐清湮途的悼惧",
+      "step_idx": 6,
+      "step_title": "查看哈托努斯的状况",
+      "n_dialogue": 36,
+      "n_narration": 1,
+      "char_len": 579,
+      "speakers": [
+        "哈托努斯",
+        "万敌",
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.071
+      },
+      "significance": 1,
+      "types": [
+        "memory"
+      ],
+      "note": "哈托努斯幻影辱骂万敌并抛出其母亲的印戒（'这…母亲的印戒？'），牵出万敌身世旧事；随后与丹恒会合并以'我在鳞渊境开海前，你对我说的最后一句话是什么'验明身份。属局部信息。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|8",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "step_idx": 8,
+      "step_title": "阅读缇安找到的信件",
+      "n_dialogue": 10,
+      "n_narration": 0,
+      "char_len": 203,
+      "speakers": [
+        "缇宝"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "memory",
+        "identity"
+      ],
+      "note": "缇安找到的信件里出现「缇里西庇俄丝」之名（'这个名字，不就是……'），缇宝意识到'难道…这是我们丢失的记忆？'，身份/记忆线索推进。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|9",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "step_idx": 9,
+      "step_title": "与「长老」阿蒙内特交谈，了解行刑人的使命",
+      "n_dialogue": 28,
+      "n_narration": 1,
+      "char_len": 726,
+      "speakers": [
+        "遐蝶",
+        "阿蒙内特"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 2,
+      "types": [
+        "identity",
+        "memory",
+        "relationship"
+      ],
+      "note": "长老阿蒙内特请求遐蝶'赐他解脱'（'你能给我最后一次机会，让我向那恐惧发起冲锋'），并回顾自己从冰原带回遐蝶、将她养成行刑官之首、'我一直把你当成女儿'——交代遐蝶被强加的「处刑」使命与两人父女般的羁绊。",
+      "confidence": "high"
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|5",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.3",
+      "task": "诗者啊，从我处诉说天空•上",
+      "step_idx": 5,
+      "step_title": "阅览前人的记忆，寻找线索",
+      "n_dialogue": 47,
+      "n_narration": 2,
+      "char_len": 1165,
+      "speakers": [
+        "白厄",
+        "风堇",
+        "昔涟",
+        "开拓者",
+        "丹恒"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0
+      },
+      "significance": 1,
+      "types": [
+        "world",
+        "memory"
+      ],
+      "note": "借往世晖之民/雨之民的记忆还原天空城邦内战：晖之民独占「天象画壁」令白昼无尽、雨之民受压迫后弑神（'艾格勒在上，去死吧！'）。艾格勒治下历史真相的局部揭示。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|花醴啊，盈满空心的树干|16",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.5",
+      "task": "花醴啊，盈满空心的树干",
+      "step_idx": 16,
+      "step_title": "「欧呵，饶恕我吧！酒神，饶恕我！」",
+      "n_dialogue": 13,
+      "n_narration": 11,
+      "char_len": 401,
+      "speakers": [
+        "海瑟音",
+        "来古士"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.042
+      },
+      "significance": 1,
+      "types": [
+        "world",
+        "memory"
+      ],
+      "note": "海瑟音的海妖姐妹被「毁灭」侵蚀成黑潮造物、她独自送葬的过往（'海妖们被「毁灭」侵蚀，血肉腐败，成为了此世的黑潮造物''再见了，姐妹。我会完成最后的使命'）。交代黑潮侵蚀与海瑟音的动机。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|大墓啊，深藏轮回的秘密|13",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.6",
+      "task": "大墓啊，深藏轮回的秘密",
+      "step_idx": 13,
+      "step_title": "继续前进，深入大墓",
+      "n_dialogue": 31,
+      "n_narration": 0,
+      "char_len": 624,
+      "speakers": [
+        "昔涟",
+        "权杖δ-me13",
+        "丹恒",
+        "开拓者"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 7,
+        "pause_ratio": 0.057
+      },
+      "significance": 1,
+      "types": [
+        "memory"
+      ],
+      "note": "昔涟(往昔的涟漪)与权杖δ-me13的沉默对话被丹恒旁观：'格式化进程'反复响起，她仍坚持讲述（'如果到头来，每一次提笔，都只能写下相同的结局…会不会只是一场太过天真的梦呢？'），丹恒疑心倾听者不止是神。记忆/身份线索，无状态突变。",
+      "confidence": "medium"
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|15",
+      "layer": "L7 普通推进(负样本)",
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "step_idx": 15,
+      "step_title": "触摸识刻锚，进入「神话之外」",
+      "n_dialogue": 6,
+      "n_narration": 0,
+      "char_len": 81,
+      "speakers": [
+        "黑塔",
+        "螺丝咕姆"
+      ],
+      "signals": {
+        "oracle": 0,
+        "motif": 0,
+        "structure": 0,
+        "pause_ratio": 0.167
+      },
+      "significance": 0,
+      "types": [],
+      "note": "进入「神话之外」后定位到来古士坐标扰动（'他的坐标正在快速、无规律地扰动'），六句过场。",
+      "confidence": "high"
+    }
+  ]
+}
