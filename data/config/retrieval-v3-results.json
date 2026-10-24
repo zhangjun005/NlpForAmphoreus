@@ -1,0 +1,1399 @@
+{
+ "meta": {
+  "script": "tools/retrieval_v3.py",
+  "run_command": "conda run -n nlpLesson python tools/retrieval_v3.py",
+  "design": "gold=event_segments（多段任一命中）；v3 池剔除含神谕原文的吟诵步；另跑 v3_control（不剔除）对照；方法含 SBERT（本地 bge-small-zh-v1.5）",
+  "threshold": "6-gram 覆盖率 ≥ 0.50 或整句包含",
+  "n_pool_full": 686,
+  "n_pool_v3": 661,
+  "n_removed": 25,
+  "n_eval_v3": 8,
+  "n_na_v3": 5,
+  "na_queries": [
+   "O04",
+   "O05",
+   "O07",
+   "O11",
+   "O12"
+  ],
+  "sources": [
+   "data/config/oracle-fulfillment.v2.json",
+   "data/corpus/oracles.jsonl",
+   "data/corpus/segments.jsonl",
+   "data/models/Z_sbert_seg.npy",
+   "data/models/ids.json",
+   "data/models/sbert_model/",
+   "data/config/oracle-retrieval-results.json",
+   "data/config/retrieval-v2-results.json"
+  ]
+ },
+ "gold_sets": {
+  "O01": {
+   "segments": [
+    "3.3|金丝啊，请喻救世者谶语|7"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.3|金丝啊，请喻救世者谶语|7"
+   ]
+  },
+  "O02": {
+   "segments": [
+    "3.1|门扉啊，叩声仍激荡梦中|4"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.1|门扉啊，叩声仍激荡梦中|4"
+   ]
+  },
+  "O03": {
+   "segments": [
+    "3.1|王座啊，终了那数载索寞|8"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.1|王座啊，终了那数载索寞|8"
+   ]
+  },
+  "O04": {
+   "segments": [
+    "3.2|摇船啊，请载我横渡冥流|19"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.2|摇船啊，请载我横渡冥流|19"
+   ]
+  },
+  "O05": {
+   "segments": [
+    "3.2|断梦啊，从夙世捎来启迪|1",
+    "3.2|摇船啊，请载我横渡冥流|19"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.2|断梦啊，从夙世捎来启迪|1",
+    "3.2|摇船啊，请载我横渡冥流|19"
+   ]
+  },
+  "O06": {
+   "segments": [
+    "3.2|争辩啊，代长矛分庭抗礼|2"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.2|争辩啊，代长矛分庭抗礼|2"
+   ]
+  },
+  "O07": {
+   "segments": [
+    "3.3|黎明啊，执耀于全世之终|1"
+   ],
+   "source": "fallback_current_filled",
+   "in_full_pool": [
+    "3.3|黎明啊，执耀于全世之终|1"
+   ]
+  },
+  "O08": {
+   "segments": [
+    "3.3|石板啊，为何罔闻那灯影|8"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.3|石板啊，为何罔闻那灯影|8"
+   ]
+  },
+  "O09": {
+   "segments": [
+    "3.4|英雄啊，点燃那最初的骄阳|15"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.4|英雄啊，点燃那最初的骄阳|15"
+   ]
+  },
+  "O10": {
+   "segments": [
+    "3.5|大海啊，埋葬暗酒色的梦|14"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.5|大海啊，埋葬暗酒色的梦|14"
+   ]
+  },
+  "O11": {
+   "segments": [
+    "3.5|囚人啊，踏过日影见沧溟|15"
+   ],
+   "source": "fallback_current_filled",
+   "in_full_pool": [
+    "3.5|囚人啊，踏过日影见沧溟|15"
+   ]
+  },
+  "O12": {
+   "segments": [
+    "3.6|大地啊，承载万物的苦难|10"
+   ],
+   "source": "fallback_current_filled",
+   "in_full_pool": [
+    "3.6|大地啊，承载万物的苦难|10"
+   ]
+  },
+  "O13": {
+   "segments": [
+    "3.4|英雄啊，点燃那最初的骄阳|7",
+    "3.7|魔女的孤诣课题|21"
+   ],
+   "source": "event_segments",
+   "in_full_pool": [
+    "3.4|英雄啊，点燃那最初的骄阳|7",
+    "3.7|魔女的孤诣课题|21"
+   ]
+  }
+ },
+ "removal": {
+  "n_removed": 25,
+  "removed": [
+   {
+    "segment_id": "3.1|王座啊，终了那数载索寞|2",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O01"
+   },
+   {
+    "segment_id": "3.1|来路啊，请再度显映往履|21",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O02"
+   },
+   {
+    "segment_id": "3.2|断梦啊，从夙世捎来启迪|1",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O05"
+   },
+   {
+    "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O05"
+   },
+   {
+    "segment_id": "3.2|行者啊，向冥河解缆起航|11",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O04"
+   },
+   {
+    "segment_id": "3.2|行者啊，向冥河解缆起航|14",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O08"
+   },
+   {
+    "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O05"
+   },
+   {
+    "segment_id": "3.2|学者啊，于真理门前再会|2",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O04"
+   },
+   {
+    "segment_id": "3.2|学者啊，于真理门前再会|4",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O06"
+   },
+   {
+    "segment_id": "3.3|星空啊，为纷乱千念濯洗|4",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O08"
+   },
+   {
+    "segment_id": "3.3|识院啊，悠扬间评定今昔|5",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O07"
+   },
+   {
+    "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O07"
+   },
+   {
+    "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O08"
+   },
+   {
+    "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O07"
+   },
+   {
+    "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O09"
+   },
+   {
+    "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+    "max_oracle_6gram_coverage": 0.9167,
+    "closest_oracle": "O01"
+   },
+   {
+    "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O09"
+   },
+   {
+    "segment_id": "3.4|英雄啊，点燃那最初的骄阳|6",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O02"
+   },
+   {
+    "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O03"
+   },
+   {
+    "segment_id": "3.5|囚人啊，踏过日影见沧溟|5",
+    "max_oracle_6gram_coverage": 0.8571,
+    "closest_oracle": "O10"
+   },
+   {
+    "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O10"
+   },
+   {
+    "segment_id": "3.6|大地啊，承载万物的苦难|10",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O12"
+   },
+   {
+    "segment_id": "3.6|大墓啊，深藏轮回的秘密|3",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O04"
+   },
+   {
+    "segment_id": "3.7|魔女的孤诣课题|21",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O13"
+   },
+   {
+    "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+    "max_oracle_6gram_coverage": 1.0,
+    "closest_oracle": "O09"
+   }
+  ],
+  "n_pool_full": 686,
+  "n_pool_v3": 661
+ },
+ "v3": {
+  "n_eval": 8,
+  "metrics": {
+   "keyword": {
+    "n_eval": 8,
+    "mrr": 0.0538,
+    "median_rank": 221.0,
+    "recall@1": 0.0,
+    "recall@5": 0.125,
+    "recall@10": 0.125,
+    "recall@20": 0.25
+   },
+   "tfidf_char": {
+    "n_eval": 8,
+    "mrr": 0.051,
+    "median_rank": 116.5,
+    "recall@1": 0.0,
+    "recall@5": 0.125,
+    "recall@10": 0.125,
+    "recall@20": 0.125
+   },
+   "tfidf_word": {
+    "n_eval": 8,
+    "mrr": 0.0093,
+    "median_rank": 161.5,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0
+   },
+   "bm25": {
+    "n_eval": 8,
+    "mrr": 0.0089,
+    "median_rank": 161.0,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0
+   },
+   "lsa": {
+    "n_eval": 8,
+    "mrr": 0.0138,
+    "median_rank": 78.5,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0
+   },
+   "sbert": {
+    "n_eval": 8,
+    "mrr": 0.0077,
+    "median_rank": 205.0,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0
+   }
+  },
+  "per_query": {
+   "O01": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.3|金丝啊，请喻救世者谶语|7"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.3|金丝啊，请喻救世者谶语|7": 3
+     },
+     "tfidf_char": {
+      "3.3|金丝啊，请喻救世者谶语|7": 92
+     },
+     "tfidf_word": {
+      "3.3|金丝啊，请喻救世者谶语|7": 63
+     },
+     "bm25": {
+      "3.3|金丝啊，请喻救世者谶语|7": 68
+     },
+     "lsa": {
+      "3.3|金丝啊，请喻救世者谶语|7": 77
+     },
+     "sbert": {
+      "3.3|金丝啊，请喻救世者谶语|7": 307
+     }
+    },
+    "best_rank": {
+     "keyword": 3,
+     "tfidf_char": 92,
+     "tfidf_word": 63,
+     "bm25": 68,
+     "lsa": 77,
+     "sbert": 307
+    },
+    "note": ""
+   },
+   "O02": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.1|门扉啊，叩声仍激荡梦中|4"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 202
+     },
+     "tfidf_char": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 228
+     },
+     "tfidf_word": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 218
+     },
+     "bm25": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 218
+     },
+     "lsa": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 162
+     },
+     "sbert": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 399
+     }
+    },
+    "best_rank": {
+     "keyword": 202,
+     "tfidf_char": 228,
+     "tfidf_word": 218,
+     "bm25": 218,
+     "lsa": 162,
+     "sbert": 399
+    },
+    "note": ""
+   },
+   "O03": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.1|王座啊，终了那数载索寞|8"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.1|王座啊，终了那数载索寞|8": 240
+     },
+     "tfidf_char": {
+      "3.1|王座啊，终了那数载索寞|8": 141
+     },
+     "tfidf_word": {
+      "3.1|王座啊，终了那数载索寞|8": 105
+     },
+     "bm25": {
+      "3.1|王座啊，终了那数载索寞|8": 104
+     },
+     "lsa": {
+      "3.1|王座啊，终了那数载索寞|8": 139
+     },
+     "sbert": {
+      "3.1|王座啊，终了那数载索寞|8": 256
+     }
+    },
+    "best_rank": {
+     "keyword": 240,
+     "tfidf_char": 141,
+     "tfidf_word": 105,
+     "bm25": 104,
+     "lsa": 139,
+     "sbert": 256
+    },
+    "note": ""
+   },
+   "O04": {
+    "n_gold": 0,
+    "gold_ranks": {},
+    "best_rank": null,
+    "note": "N/A（gold 全被剔除）"
+   },
+   "O05": {
+    "n_gold": 0,
+    "gold_ranks": {},
+    "best_rank": null,
+    "note": "N/A（gold 全被剔除）"
+   },
+   "O06": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.2|争辩啊，代长矛分庭抗礼|2"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 315
+     },
+     "tfidf_char": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 334
+     },
+     "tfidf_word": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 318
+     },
+     "bm25": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 318
+     },
+     "lsa": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 80
+     },
+     "sbert": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 154
+     }
+    },
+    "best_rank": {
+     "keyword": 315,
+     "tfidf_char": 334,
+     "tfidf_word": 318,
+     "bm25": 318,
+     "lsa": 80,
+     "sbert": 154
+    },
+    "note": ""
+   },
+   "O07": {
+    "n_gold": 0,
+    "gold_ranks": {},
+    "best_rank": null,
+    "note": "N/A（gold 全被剔除）"
+   },
+   "O08": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.3|石板啊，为何罔闻那灯影|8"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.3|石板啊，为何罔闻那灯影|8": 399
+     },
+     "tfidf_char": {
+      "3.3|石板啊，为何罔闻那灯影|8": 424
+     },
+     "tfidf_word": {
+      "3.3|石板啊，为何罔闻那灯影|8": 401
+     },
+     "bm25": {
+      "3.3|石板啊，为何罔闻那灯影|8": 401
+     },
+     "lsa": {
+      "3.3|石板啊，为何罔闻那灯影|8": 51
+     },
+     "sbert": {
+      "3.3|石板啊，为何罔闻那灯影|8": 117
+     }
+    },
+    "best_rank": {
+     "keyword": 399,
+     "tfidf_char": 424,
+     "tfidf_word": 401,
+     "bm25": 401,
+     "lsa": 51,
+     "sbert": 117
+    },
+    "note": ""
+   },
+   "O09": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.4|英雄啊，点燃那最初的骄阳|15"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 14
+     },
+     "tfidf_char": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 40
+     },
+     "tfidf_word": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 54
+     },
+     "bm25": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 52
+     },
+     "lsa": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 37
+     },
+     "sbert": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 484
+     }
+    },
+    "best_rank": {
+     "keyword": 14,
+     "tfidf_char": 40,
+     "tfidf_word": 54,
+     "bm25": 52,
+     "lsa": 37,
+     "sbert": 484
+    },
+    "note": ""
+   },
+   "O10": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.5|大海啊，埋葬暗酒色的梦|14"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 117
+     },
+     "tfidf_char": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 3
+     },
+     "tfidf_word": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 55
+     },
+     "bm25": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 64
+     },
+     "lsa": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 43
+     },
+     "sbert": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 114
+     }
+    },
+    "best_rank": {
+     "keyword": 117,
+     "tfidf_char": 3,
+     "tfidf_word": 55,
+     "bm25": 64,
+     "lsa": 43,
+     "sbert": 114
+    },
+    "note": ""
+   },
+   "O11": {
+    "n_gold": 0,
+    "gold_ranks": {},
+    "best_rank": null,
+    "note": "N/A（gold 全被剔除）"
+   },
+   "O12": {
+    "n_gold": 0,
+    "gold_ranks": {},
+    "best_rank": null,
+    "note": "N/A（gold 全被剔除）"
+   },
+   "O13": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.4|英雄啊，点燃那最初的骄阳|7"
+    ],
+    "gold_in_pool_ratio": 0.5,
+    "gold_ranks": {
+     "keyword": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 451
+     },
+     "tfidf_char": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 46
+     },
+     "tfidf_word": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 459
+     },
+     "bm25": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 459
+     },
+     "lsa": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 572
+     },
+     "sbert": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 38
+     }
+    },
+    "best_rank": {
+     "keyword": 451,
+     "tfidf_char": 46,
+     "tfidf_word": 459,
+     "bm25": 459,
+     "lsa": 572,
+     "sbert": 38
+    },
+    "note": "部分 gold 被剔除"
+   }
+  }
+ },
+ "v3_control": {
+  "n_eval": 13,
+  "metrics": {
+   "keyword": {
+    "n_eval": 13,
+    "mrr": 0.3647,
+    "median_rank": 6.0,
+    "recall@1": 0.3077,
+    "recall@5": 0.3846,
+    "recall@10": 0.5385,
+    "recall@20": 0.6154
+   },
+   "tfidf_char": {
+    "n_eval": 13,
+    "mrr": 0.3143,
+    "median_rank": 16.0,
+    "recall@1": 0.2308,
+    "recall@5": 0.3846,
+    "recall@10": 0.4615,
+    "recall@20": 0.5385
+   },
+   "tfidf_word": {
+    "n_eval": 13,
+    "mrr": 0.2963,
+    "median_rank": 64.0,
+    "recall@1": 0.2308,
+    "recall@5": 0.3077,
+    "recall@10": 0.4615,
+    "recall@20": 0.4615
+   },
+   "bm25": {
+    "n_eval": 13,
+    "mrr": 0.3019,
+    "median_rank": 63.0,
+    "recall@1": 0.2308,
+    "recall@5": 0.3846,
+    "recall@10": 0.4615,
+    "recall@20": 0.4615
+   },
+   "lsa": {
+    "n_eval": 13,
+    "mrr": 0.1253,
+    "median_rank": 27.0,
+    "recall@1": 0.0,
+    "recall@5": 0.3077,
+    "recall@10": 0.3846,
+    "recall@20": 0.4615
+   },
+   "sbert": {
+    "n_eval": 13,
+    "mrr": 0.0637,
+    "median_rank": 128.0,
+    "recall@1": 0.0,
+    "recall@5": 0.1538,
+    "recall@10": 0.2308,
+    "recall@20": 0.3077
+   }
+  },
+  "per_query": {
+   "O01": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.3|金丝啊，请喻救世者谶语|7"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.3|金丝啊，请喻救世者谶语|7": 6
+     },
+     "tfidf_char": {
+      "3.3|金丝啊，请喻救世者谶语|7": 104
+     },
+     "tfidf_word": {
+      "3.3|金丝啊，请喻救世者谶语|7": 84
+     },
+     "bm25": {
+      "3.3|金丝啊，请喻救世者谶语|7": 82
+     },
+     "lsa": {
+      "3.3|金丝啊，请喻救世者谶语|7": 60
+     },
+     "sbert": {
+      "3.3|金丝啊，请喻救世者谶语|7": 324
+     }
+    },
+    "best_rank": {
+     "keyword": 6,
+     "tfidf_char": 104,
+     "tfidf_word": 84,
+     "bm25": 82,
+     "lsa": 60,
+     "sbert": 324
+    },
+    "note": ""
+   },
+   "O02": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.1|门扉啊，叩声仍激荡梦中|4"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 207
+     },
+     "tfidf_char": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 245
+     },
+     "tfidf_word": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 238
+     },
+     "bm25": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 238
+     },
+     "lsa": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 104
+     },
+     "sbert": {
+      "3.1|门扉啊，叩声仍激荡梦中|4": 422
+     }
+    },
+    "best_rank": {
+     "keyword": 207,
+     "tfidf_char": 245,
+     "tfidf_word": 238,
+     "bm25": 238,
+     "lsa": 104,
+     "sbert": 422
+    },
+    "note": ""
+   },
+   "O03": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.1|王座啊，终了那数载索寞|8"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.1|王座啊，终了那数载索寞|8": 245
+     },
+     "tfidf_char": {
+      "3.1|王座啊，终了那数载索寞|8": 160
+     },
+     "tfidf_word": {
+      "3.1|王座啊，终了那数载索寞|8": 124
+     },
+     "bm25": {
+      "3.1|王座啊，终了那数载索寞|8": 122
+     },
+     "lsa": {
+      "3.1|王座啊，终了那数载索寞|8": 50
+     },
+     "sbert": {
+      "3.1|王座啊，终了那数载索寞|8": 275
+     }
+    },
+    "best_rank": {
+     "keyword": 245,
+     "tfidf_char": 160,
+     "tfidf_word": 124,
+     "bm25": 122,
+     "lsa": 50,
+     "sbert": 275
+    },
+    "note": ""
+   },
+   "O04": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.2|摇船啊，请载我横渡冥流|19"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.2|摇船啊，请载我横渡冥流|19": 6
+     },
+     "tfidf_char": {
+      "3.2|摇船啊，请载我横渡冥流|19": 16
+     },
+     "tfidf_word": {
+      "3.2|摇船啊，请载我横渡冥流|19": 8
+     },
+     "bm25": {
+      "3.2|摇船啊，请载我横渡冥流|19": 6
+     },
+     "lsa": {
+      "3.2|摇船啊，请载我横渡冥流|19": 6
+     },
+     "sbert": {
+      "3.2|摇船啊，请载我横渡冥流|19": 3
+     }
+    },
+    "best_rank": {
+     "keyword": 6,
+     "tfidf_char": 16,
+     "tfidf_word": 8,
+     "bm25": 6,
+     "lsa": 6,
+     "sbert": 3
+    },
+    "note": ""
+   },
+   "O05": {
+    "n_gold": 2,
+    "gold_segments": [
+     "3.2|断梦啊，从夙世捎来启迪|1",
+     "3.2|摇船啊，请载我横渡冥流|19"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.2|断梦啊，从夙世捎来启迪|1": 2,
+      "3.2|摇船啊，请载我横渡冥流|19": 1
+     },
+     "tfidf_char": {
+      "3.2|断梦啊，从夙世捎来启迪|1": 2,
+      "3.2|摇船啊，请载我横渡冥流|19": 1
+     },
+     "tfidf_word": {
+      "3.2|断梦啊，从夙世捎来启迪|1": 2,
+      "3.2|摇船啊，请载我横渡冥流|19": 1
+     },
+     "bm25": {
+      "3.2|断梦啊，从夙世捎来启迪|1": 2,
+      "3.2|摇船啊，请载我横渡冥流|19": 1
+     },
+     "lsa": {
+      "3.2|断梦啊，从夙世捎来启迪|1": 3,
+      "3.2|摇船啊，请载我横渡冥流|19": 2
+     },
+     "sbert": {
+      "3.2|断梦啊，从夙世捎来启迪|1": 236,
+      "3.2|摇船啊，请载我横渡冥流|19": 5
+     }
+    },
+    "best_rank": {
+     "keyword": 1,
+     "tfidf_char": 1,
+     "tfidf_word": 1,
+     "bm25": 1,
+     "lsa": 2,
+     "sbert": 5
+    },
+    "note": ""
+   },
+   "O06": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.2|争辩啊，代长矛分庭抗礼|2"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 330
+     },
+     "tfidf_char": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 356
+     },
+     "tfidf_word": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 341
+     },
+     "bm25": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 341
+     },
+     "lsa": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 237
+     },
+     "sbert": {
+      "3.2|争辩啊，代长矛分庭抗礼|2": 165
+     }
+    },
+    "best_rank": {
+     "keyword": 330,
+     "tfidf_char": 356,
+     "tfidf_word": 341,
+     "bm25": 341,
+     "lsa": 237,
+     "sbert": 165
+    },
+    "note": ""
+   },
+   "O07": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.3|黎明啊，执耀于全世之终|1"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.3|黎明啊，执耀于全世之终|1": 3
+     },
+     "tfidf_char": {
+      "3.3|黎明啊，执耀于全世之终|1": 3
+     },
+     "tfidf_word": {
+      "3.3|黎明啊，执耀于全世之终|1": 6
+     },
+     "bm25": {
+      "3.3|黎明啊，执耀于全世之终|1": 5
+     },
+     "lsa": {
+      "3.3|黎明啊，执耀于全世之终|1": 12
+     },
+     "sbert": {
+      "3.3|黎明啊，执耀于全世之终|1": 191
+     }
+    },
+    "best_rank": {
+     "keyword": 3,
+     "tfidf_char": 3,
+     "tfidf_word": 6,
+     "bm25": 5,
+     "lsa": 12,
+     "sbert": 191
+    },
+    "note": ""
+   },
+   "O08": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.3|石板啊，为何罔闻那灯影|8"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.3|石板啊，为何罔闻那灯影|8": 415
+     },
+     "tfidf_char": {
+      "3.3|石板啊，为何罔闻那灯影|8": 447
+     },
+     "tfidf_word": {
+      "3.3|石板啊，为何罔闻那灯影|8": 424
+     },
+     "bm25": {
+      "3.3|石板啊，为何罔闻那灯影|8": 424
+     },
+     "lsa": {
+      "3.3|石板啊，为何罔闻那灯影|8": 57
+     },
+     "sbert": {
+      "3.3|石板啊，为何罔闻那灯影|8": 128
+     }
+    },
+    "best_rank": {
+     "keyword": 415,
+     "tfidf_char": 447,
+     "tfidf_word": 424,
+     "bm25": 424,
+     "lsa": 57,
+     "sbert": 128
+    },
+    "note": ""
+   },
+   "O09": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.4|英雄啊，点燃那最初的骄阳|15"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 19
+     },
+     "tfidf_char": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 46
+     },
+     "tfidf_word": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 64
+     },
+     "bm25": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 63
+     },
+     "lsa": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 27
+     },
+     "sbert": {
+      "3.4|英雄啊，点燃那最初的骄阳|15": 506
+     }
+    },
+    "best_rank": {
+     "keyword": 19,
+     "tfidf_char": 46,
+     "tfidf_word": 64,
+     "bm25": 63,
+     "lsa": 27,
+     "sbert": 506
+    },
+    "note": ""
+   },
+   "O10": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.5|大海啊，埋葬暗酒色的梦|14"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 135
+     },
+     "tfidf_char": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 7
+     },
+     "tfidf_word": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 65
+     },
+     "bm25": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 80
+     },
+     "lsa": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 41
+     },
+     "sbert": {
+      "3.5|大海啊，埋葬暗酒色的梦|14": 124
+     }
+    },
+    "best_rank": {
+     "keyword": 135,
+     "tfidf_char": 7,
+     "tfidf_word": 65,
+     "bm25": 80,
+     "lsa": 41,
+     "sbert": 124
+    },
+    "note": ""
+   },
+   "O11": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.5|囚人啊，踏过日影见沧溟|15"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.5|囚人啊，踏过日影见沧溟|15": 1
+     },
+     "tfidf_char": {
+      "3.5|囚人啊，踏过日影见沧溟|15": 2
+     },
+     "tfidf_word": {
+      "3.5|囚人啊，踏过日影见沧溟|15": 2
+     },
+     "bm25": {
+      "3.5|囚人啊，踏过日影见沧溟|15": 2
+     },
+     "lsa": {
+      "3.5|囚人啊，踏过日影见沧溟|15": 4
+     },
+     "sbert": {
+      "3.5|囚人啊，踏过日影见沧溟|15": 6
+     }
+    },
+    "best_rank": {
+     "keyword": 1,
+     "tfidf_char": 2,
+     "tfidf_word": 2,
+     "bm25": 2,
+     "lsa": 4,
+     "sbert": 6
+    },
+    "note": ""
+   },
+   "O12": {
+    "n_gold": 1,
+    "gold_segments": [
+     "3.6|大地啊，承载万物的苦难|10"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.6|大地啊，承载万物的苦难|10": 1
+     },
+     "tfidf_char": {
+      "3.6|大地啊，承载万物的苦难|10": 1
+     },
+     "tfidf_word": {
+      "3.6|大地啊，承载万物的苦难|10": 1
+     },
+     "bm25": {
+      "3.6|大地啊，承载万物的苦难|10": 1
+     },
+     "lsa": {
+      "3.6|大地啊，承载万物的苦难|10": 4
+     },
+     "sbert": {
+      "3.6|大地啊，承载万物的苦难|10": 43
+     }
+    },
+    "best_rank": {
+     "keyword": 1,
+     "tfidf_char": 1,
+     "tfidf_word": 1,
+     "bm25": 1,
+     "lsa": 4,
+     "sbert": 43
+    },
+    "note": ""
+   },
+   "O13": {
+    "n_gold": 2,
+    "gold_segments": [
+     "3.4|英雄啊，点燃那最初的骄阳|7",
+     "3.7|魔女的孤诣课题|21"
+    ],
+    "gold_in_pool_ratio": 1.0,
+    "gold_ranks": {
+     "keyword": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 471,
+      "3.7|魔女的孤诣课题|21": 1
+     },
+     "tfidf_char": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 55,
+      "3.7|魔女的孤诣课题|21": 1
+     },
+     "tfidf_word": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 483,
+      "3.7|魔女的孤诣课题|21": 1
+     },
+     "bm25": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 483,
+      "3.7|魔女的孤诣课题|21": 1
+     },
+     "lsa": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 276,
+      "3.7|魔女的孤诣课题|21": 4
+     },
+     "sbert": {
+      "3.4|英雄啊，点燃那最初的骄阳|7": 42,
+      "3.7|魔女的孤诣课题|21": 15
+     }
+    },
+    "best_rank": {
+     "keyword": 1,
+     "tfidf_char": 1,
+     "tfidf_word": 1,
+     "bm25": 1,
+     "lsa": 4,
+     "sbert": 15
+    },
+    "note": ""
+   }
+  }
+ },
+ "v1_old": {
+  "metrics": {
+   "keyword": {
+    "recall@1": 0.6154,
+    "recall@5": 0.9231,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.7313,
+    "median_rank": 1.0,
+    "mean_rank": 11.85
+   },
+   "tfidf_char": {
+    "recall@1": 0.2308,
+    "recall@5": 0.9231,
+    "recall@10": 1.0,
+    "recall@20": 1.0,
+    "mrr": 0.5495,
+    "median_rank": 2.0,
+    "mean_rank": 2.38
+   },
+   "tfidf_word": {
+    "recall@1": 0.2308,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.4825,
+    "median_rank": 3.0,
+    "mean_rank": 5.85
+   },
+   "bm25": {
+    "recall@1": 0.3077,
+    "recall@5": 0.8462,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.5528,
+    "median_rank": 2.0,
+    "mean_rank": 6.0
+   },
+   "lsa": {
+    "recall@1": 0.1538,
+    "recall@5": 0.7692,
+    "recall@10": 0.9231,
+    "recall@20": 0.9231,
+    "mrr": 0.3764,
+    "median_rank": 4.0,
+    "mean_rank": 11.38
+   }
+  },
+  "n_eval": 13,
+  "note": "旧 gold=吟诵步；5 法；无 SBERT"
+ },
+ "v2_old": {
+  "v2_mask_metrics": {
+   "keyword": {
+    "n_eval": 13,
+    "recall@1": 0.4615,
+    "recall@5": 0.8462,
+    "recall@10": 0.8462,
+    "recall@20": 0.9231,
+    "mrr": 0.6602,
+    "median_rank": 2.0
+   },
+   "tfidf_char": {
+    "n_eval": 13,
+    "recall@1": 0.2308,
+    "recall@5": 0.6923,
+    "recall@10": 0.8462,
+    "recall@20": 0.8462,
+    "mrr": 0.4289,
+    "median_rank": 3.0
+   },
+   "tfidf_word": {
+    "n_eval": 13,
+    "recall@1": 0.1538,
+    "recall@5": 0.6923,
+    "recall@10": 0.8462,
+    "recall@20": 0.8462,
+    "mrr": 0.4004,
+    "median_rank": 3.0
+   },
+   "bm25": {
+    "n_eval": 13,
+    "recall@1": 0.3077,
+    "recall@5": 0.7692,
+    "recall@10": 0.7692,
+    "recall@20": 0.7692,
+    "mrr": 0.4945,
+    "median_rank": 3.0
+   },
+   "lsa": {
+    "n_eval": 13,
+    "recall@1": 0.0769,
+    "recall@5": 0.3846,
+    "recall@10": 0.5385,
+    "recall@20": 0.6154,
+    "mrr": 0.2198,
+    "median_rank": 7.0
+   }
+  },
+  "v2_mask_n_eval": 13,
+  "v2_norecite_metrics": {
+   "keyword": {
+    "n_eval": 1,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0,
+    "mrr": 0.0085,
+    "median_rank": 117.0
+   },
+   "tfidf_char": {
+    "n_eval": 1,
+    "recall@1": 0.0,
+    "recall@5": 1.0,
+    "recall@10": 1.0,
+    "recall@20": 1.0,
+    "mrr": 0.3333,
+    "median_rank": 3.0
+   },
+   "tfidf_word": {
+    "n_eval": 1,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0,
+    "mrr": 0.0263,
+    "median_rank": 38.0
+   },
+   "bm25": {
+    "n_eval": 1,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0,
+    "mrr": 0.0222,
+    "median_rank": 45.0
+   },
+   "lsa": {
+    "n_eval": 1,
+    "recall@1": 0.0,
+    "recall@5": 0.0,
+    "recall@10": 0.0,
+    "recall@20": 0.0,
+    "mrr": 0.0333,
+    "median_rank": 30.0
+   }
+  },
+  "v2_norecite_n_eval": 1,
+  "note": "mask 有泄漏；noRecite 删 gold 后仅 1 条可评"
+ },
+ "o10": {
+  "v3": {
+   "keyword": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 117
+   },
+   "tfidf_char": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 3
+   },
+   "tfidf_word": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 55
+   },
+   "bm25": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 64
+   },
+   "lsa": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 43
+   },
+   "sbert": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 114
+   }
+  },
+  "v3_control": {
+   "keyword": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 135
+   },
+   "tfidf_char": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 7
+   },
+   "tfidf_word": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 65
+   },
+   "bm25": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 80
+   },
+   "lsa": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 41
+   },
+   "sbert": {
+    "3.5|大海啊，埋葬暗酒色的梦|14": 124
+   }
+  }
+ }
+}

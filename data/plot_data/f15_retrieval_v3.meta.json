@@ -1,0 +1,17 @@
+{
+ "figure": "f15_retrieval_v3.png",
+ "title": "图15 神谕检索 v3：方法 × MRR / Recall@k（v1/v2 对照）",
+ "axes": {
+  "x": "方法（a）/ Recall@k（b）",
+  "y": "MRR / Recall"
+ },
+ "plot_data_csv": "data/plot_data/f15_retrieval_v3.csv",
+ "sources": [
+  "data/config/retrieval-v3-results.json"
+ ],
+ "filters": "gold=event_segments（多段任一命中）；v3=排除吟诵步；v3_control=不排除；v1/v2 指标取自旧结果，v1/v2 无 SBERT",
+ "generator": "tools/retrieval_v3.py",
+ "run_command": "",
+ "data_sha256_16": "c6b6cb684be046ee",
+ "created_at": "2026-10-24T21:40:37"
+}
