@@ -1,0 +1,881 @@
+{
+  "note": "翁法罗斯 3.0–3.7 关键事件与「含义变化」表（task-19）。从 35 个刀子场景 + 13 条神谕兑现中提炼关键节点（按剧情顺序编号）；每个节点给出 segment_id / phase / event_name / meaning_before / meaning_after / related_oracles / related_motifs / confidence / evidence_quote，引文已用 segments.jsonl 原文逐条校验。",
+  "source": [
+    "data/config/knife-scenes.json",
+    "data/config/oracle-fulfillment.filled.json",
+    "data/corpus/segments.jsonl",
+    "data/corpus/amphoreus.final.jsonl"
+  ],
+  "fields": {
+    "phase": "前段（3.0–3.1）/ 中段（3.2–3.3）/ 后段（3.4–3.5）/ 终段（3.6–3.7）",
+    "meaning_before": "该事件之前，文本让读者/角色相信的版本",
+    "meaning_after": "事件之后，被改写/反转/揭示的版本",
+    "evidence_quote": "可回原文核对的一句；evidence_record_id 为脚本自动定位的记录号",
+    "related_oracles": "关联神谕（O01–O13，可为空）",
+    "knife_scene_ids": "对应 data/config/knife-scenes.json 的场景 id（可为空）"
+  },
+  "summary": {
+    "n_events": 29,
+    "per_phase": {
+      "前段": 5,
+      "中段": 8,
+      "后段": 8,
+      "终段": 8
+    },
+    "per_version": {
+      "3.0": 1,
+      "3.1": 4,
+      "3.2": 5,
+      "3.3": 3,
+      "3.4": 4,
+      "3.5": 4,
+      "3.6": 2,
+      "3.7": 6
+    },
+    "oracles_covered": [
+      "O01",
+      "O02",
+      "O03",
+      "O04",
+      "O05",
+      "O06",
+      "O07",
+      "O08",
+      "O09",
+      "O10",
+      "O11",
+      "O12",
+      "O13"
+    ],
+    "n_oracles_covered": 13,
+    "knife_scenes_referenced": [
+      "K02",
+      "K03",
+      "K04",
+      "K05",
+      "K06",
+      "K07",
+      "K09",
+      "K10",
+      "K11",
+      "K12",
+      "K13",
+      "K14",
+      "K15",
+      "K16",
+      "K17",
+      "K20",
+      "K21",
+      "K22",
+      "K23",
+      "K24",
+      "K25",
+      "K26",
+      "K27",
+      "K28",
+      "K29",
+      "K30",
+      "K32",
+      "K33"
+    ],
+    "n_knife_scenes_referenced": 28
+  },
+  "events": [
+    {
+      "id": "E01",
+      "phase": "前段",
+      "version": "3.0",
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|21",
+      "event_name": "格奈乌斯自陈「尼卡多利的理智」并赴死",
+      "meaning_before": "尼卡多利是「堕落的疯王」「纷争」的敌人；泰坦之死意味着讨伐成功、危机解除。",
+      "meaning_after": "尼卡多利是第一位与黑潮接触的泰坦，为保存「理智」而自我剥离；弑神变成替它完成「以战士身份死去」的约定，敌人被改写成殉道者。",
+      "related_oracles": [],
+      "related_motifs": [
+        "黑潮",
+        "剥离的理智",
+        "「我是这世间必要的伤痕」",
+        "纷争"
+      ],
+      "knife_scene_ids": [
+        "K30"
+      ],
+      "confidence": "high",
+      "evidence_quote": "记住——我是这世间必要的伤痕！",
+      "id_authored": "E01",
+      "segment_step_title": "迈向决战，打败尼卡多利！",
+      "evidence_verified": true,
+      "evidence_record_id": 4109,
+      "evidence_speaker": "格奈乌斯"
+    },
+    {
+      "id": "E02",
+      "phase": "前段",
+      "version": "3.1",
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|5",
+      "event_name": "妈妈的「明天见」与缇安魂息将尽",
+      "meaning_before": "「明天见」是日常告别语；缇宝是温和、完整的「命运三相」半神。",
+      "meaning_after": "「明天见」成为母亲临终的预言式祝福；缇宝的分裂体（缇安）魂息正在飘离身体——「明天见」从此带上死亡重量，成为全篇最重要的母题之一。",
+      "related_oracles": [
+        "O02"
+      ],
+      "related_motifs": [
+        "明天见",
+        "八音盒与歌谣",
+        "三位一体/分裂"
+      ],
+      "knife_scene_ids": [
+        "K10"
+      ],
+      "confidence": "high",
+      "evidence_quote": "明天见，我亲爱的缇里西庇俄丝。",
+      "id_authored": "E04",
+      "segment_step_title": "快逃！快逃！快逃！快逃！快逃！",
+      "evidence_verified": true,
+      "evidence_record_id": 6876,
+      "evidence_speaker": "莫忒丝"
+    },
+    {
+      "id": "E03",
+      "phase": "前段",
+      "version": "3.1",
+      "segment_id": "3.1|王座啊，终了那数载索寞|1",
+      "event_name": "万敌终结悬锋王朝、卸下王号",
+      "meaning_before": "万敌是悬锋王储、以夺回荣光为使命的战士；悬锋王朝的荣耀＝他存在的理由。",
+      "meaning_after": "万敌成为亲手终结两千余年悬锋王朝的末代僭主；「荣耀」被判定为荒谬而卑微的历史，他把自己献予逐火与抗击黑潮。",
+      "related_oracles": [],
+      "related_motifs": [
+        "母亲的印戒",
+        "悬锋的荣耀",
+        "不死的迈德漠斯（O01/O03 的首次同场在下一步「王座|2」）"
+      ],
+      "knife_scene_ids": [
+        "K03"
+      ],
+      "confidence": "high",
+      "evidence_quote": "于今日，悬锋王朝正式终结。",
+      "id_authored": "E02",
+      "segment_step_title": "告别阿格莱雅",
+      "evidence_verified": true,
+      "evidence_record_id": 7408,
+      "evidence_speaker": "万敌"
+    },
+    {
+      "id": "E04",
+      "phase": "前段",
+      "version": "3.1",
+      "segment_id": "3.1|王座啊，终了那数载索寞|8",
+      "event_name": "万敌的梦：母亲与图书馆",
+      "meaning_before": "万敌的不死之身是泰坦的赐福，他从不谈自己的母亲与来处。",
+      "meaning_after": "他一生未曾与母亲相见（母亲死于父亲的毒计），「王储/半神」的身份被还原为「母亲的儿子、她的守护者」；「我如今只剩下一个身份」。",
+      "related_oracles": [],
+      "related_motifs": [
+        "图书馆",
+        "母亲的梦",
+        "歌耳戈",
+        "冥海"
+      ],
+      "knife_scene_ids": [
+        "K04"
+      ],
+      "confidence": "high",
+      "evidence_quote": "梦总会结束于此。",
+      "id_authored": "E03",
+      "segment_step_title": "与白厄同行最后一段路",
+      "evidence_verified": true,
+      "evidence_record_id": 7639,
+      "evidence_speaker": "万敌"
+    },
+    {
+      "id": "E05",
+      "phase": "前段",
+      "version": "3.1",
+      "segment_id": "3.1|来路啊，请再度显映往履|21",
+      "event_name": "缇宝（缇里西庇俄丝）分裂为千名信使",
+      "meaning_before": "「碎作千片」是最恐怖的死亡宣判；缇宝害怕失去姐妹、害怕分裂。",
+      "meaning_after": "破碎＝把创世神谕传播到全翁法罗斯的方式；缇里西庇俄丝穿越万径之门分裂为千名信使，「明天见」被她改写成「世上最伟大的预言」。",
+      "related_oracles": [
+        "O02"
+      ],
+      "related_motifs": [
+        "明天见",
+        "万径之门",
+        "「逐火是不断失却的旅途」"
+      ],
+      "knife_scene_ids": [
+        "K09"
+      ],
+      "confidence": "high",
+      "evidence_quote": "她穿越「万径之门」，分裂为千名信使，将创世的神谕传向翁法罗斯大地。",
+      "id_authored": "E05",
+      "segment_step_title": "与缇里西庇俄丝一起击退追兵",
+      "evidence_verified": true,
+      "evidence_record_id": 8066,
+      "evidence_speaker": "旁白"
+    },
+    {
+      "id": "E06",
+      "phase": "中段",
+      "version": "3.2",
+      "segment_id": "3.2|争辩啊，代长矛分庭抗礼|2",
+      "event_name": "公民大会：「逐火之旅」被改为「暂停」议题",
+      "meaning_before": "「再创世」是神谕写定的救赎之路、无人能反对；阿格莱雅是掌控全局的「金织」。",
+      "meaning_after": "逐火之旅成为元老院可以投票暂停的政治议题；阿格莱雅自认「人性将尽」、主动退居幕后；那刻夏与遐蝶公开站到元老院一侧——黄金裔内部公开分裂。",
+      "related_oracles": [],
+      "related_motifs": [
+        "黄金世",
+        "公民大会",
+        "金线/监视",
+        "半神的人性将尽"
+      ],
+      "knife_scene_ids": [
+        "K14"
+      ],
+      "confidence": "high",
+      "evidence_quote": "我已成为半神太久，人性将尽",
+      "id_authored": "E07",
+      "segment_step_title": "返回半神议会，告知阿格莱雅",
+      "evidence_verified": true,
+      "evidence_record_id": 9451,
+      "evidence_speaker": "阿格莱雅"
+    },
+    {
+      "id": "E07",
+      "phase": "中段",
+      "version": "3.2",
+      "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+      "event_name": "那刻夏揭示「英雄是泰坦成神前的模样」",
+      "meaning_before": "十二泰坦是神明、世界的支柱；英雄成神是神话叙述。",
+      "meaning_after": "黄金裔与泰坦互为前世今生：过去的英雄逐一接过神权成为新世界的众神，翁法罗斯的历史是「轮回」；「再创世」的真相被提前点破。",
+      "related_oracles": [
+        "O05"
+      ],
+      "related_motifs": [
+        "智种",
+        "炼金/贤者之石",
+        "双子的花蕾",
+        "轮回"
+      ],
+      "knife_scene_ids": [
+        "K13"
+      ],
+      "confidence": "high",
+      "evidence_quote": "在世人熟知的泰坦诞生前，也有一群英雄行走大地。",
+      "id_authored": "E06",
+      "segment_step_title": "查看那刻夏展示的「记忆」",
+      "evidence_verified": true,
+      "evidence_record_id": 9706,
+      "evidence_speaker": "那刻夏"
+    },
+    {
+      "id": "E08",
+      "phase": "中段",
+      "version": "3.2",
+      "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+      "event_name": "遐蝶与玻吕茜亚重逢：赐死即祝福",
+      "meaning_before": "「死亡」是剥夺生命的诅咒；遐蝶的触碰会带来死亡，她因此被恐惧、也自我厌弃。",
+      "meaning_after": "死亡是「生之侧面」；塞纳托斯（玻吕茜亚）请姐姐「赐我以死亡的拥抱，点燃生命的火苗」——离别被重新定义为爱，死亡成为生命循环的一环。",
+      "related_oracles": [
+        "O04",
+        "O05"
+      ],
+      "related_motifs": [
+        "花海",
+        "「请…不要忘记我」",
+        "蝴蝶/枝头",
+        "双子"
+      ],
+      "knife_scene_ids": [
+        "K11"
+      ],
+      "confidence": "high",
+      "evidence_quote": "赐我以「死亡」的拥抱，点燃「生命」的火苗。",
+      "id_authored": "E08",
+      "segment_step_title": "与塞纳托斯一同前进",
+      "evidence_verified": true,
+      "evidence_record_id": 11096,
+      "evidence_speaker": "塞纳托斯"
+    },
+    {
+      "id": "E09",
+      "phase": "中段",
+      "version": "3.2",
+      "segment_id": "3.2|学者啊，于真理门前再会|2",
+      "event_name": "遐蝶把「永恒的离别」改写为祝福",
+      "meaning_before": "「相拥之后便是永恒的离别」是不可更改的死亡预言。",
+      "meaning_after": "遐蝶主动为预言「写下另一种诠释」；她永居冥界，让每一次触碰与拥抱不再是冰冷的剥夺，而是把爱播撒大地——预言的词语保留，价值判断反转。",
+      "related_oracles": [
+        "O04"
+      ],
+      "related_motifs": [
+        "花海/细雨",
+        "触碰",
+        "「写下另一种诠释」"
+      ],
+      "knife_scene_ids": [
+        "K12"
+      ],
+      "confidence": "high",
+      "evidence_quote": "我也终于能够以最美丽的姿态，为它写下句点。",
+      "id_authored": "E09",
+      "segment_step_title": "抵抗死国的诱惑，离开冥界",
+      "evidence_verified": true,
+      "evidence_record_id": 11469,
+      "evidence_speaker": "遐蝶"
+    },
+    {
+      "id": "E10",
+      "phase": "中段",
+      "version": "3.2",
+      "segment_id": "3.2|学者啊，于真理门前再会|4",
+      "event_name": "那刻夏的自我处刑：神谕＝对人生的复述",
+      "meaning_before": "神谕是对未来的预告；那刻夏是被嘲讽的「渎神学者」，他的理论未被承认。",
+      "meaning_after": "神谕只是把「过去、现在和未来」复述一遍；那刻夏用心脏炼成贤者之石、主动走上处刑台完成「理性」试炼，从异端成为世界的支柱。",
+      "related_oracles": [
+        "O06"
+      ],
+      "related_motifs": [
+        "贤者之石",
+        "智种",
+        "「别让我的理论蒙羞」",
+        "来世再会"
+      ],
+      "knife_scene_ids": [
+        "K15"
+      ],
+      "confidence": "high",
+      "evidence_quote": "听起来只是把我过去、现在和未来成就的一切复述了一遍",
+      "id_authored": "E10",
+      "segment_step_title": "提交火种",
+      "evidence_verified": true,
+      "evidence_record_id": 11588,
+      "evidence_speaker": "那刻夏"
+    },
+    {
+      "id": "E11",
+      "phase": "中段",
+      "version": "3.3",
+      "segment_id": "3.3|金丝啊，请喻救世者谶语|7",
+      "event_name": "阿格莱雅的遗书：金线从「监视」变成「缝补」",
+      "meaning_before": "金线是监视、控制与权力的象征（元老院据此指控她在辩论中舞弊）。",
+      "meaning_after": "阿格莱雅以退场引蛇出洞、用最后的火焰焚尽元老院的蛇巢；金线＝把城市与世界「缝缀在一起」的力量，她的死成为留给白厄与圣城最后的礼物。",
+      "related_oracles": [
+        "O01"
+      ],
+      "related_motifs": [
+        "金线/缝补",
+        "「希望这个世界永远都不需要救世主」",
+        "「更好的人」"
+      ],
+      "knife_scene_ids": [
+        "K06",
+        "K07"
+      ],
+      "confidence": "high",
+      "evidence_quote": "是阿格莱雅将这座城市，乃至这个支离破碎的世界缝缀在了一起",
+      "id_authored": "E11",
+      "segment_step_title": "阅读阿格莱雅的留言",
+      "evidence_verified": true,
+      "evidence_record_id": 12753,
+      "evidence_speaker": "白厄"
+    },
+    {
+      "id": "E12",
+      "phase": "中段",
+      "version": "3.3",
+      "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+      "event_name": "风堇接过天空：黎明机器熄灭",
+      "meaning_before": "奥赫玛是「永昼之地」，黎明机器＝刻法勒的庇护；风堇是昏光庭院的医者。",
+      "meaning_after": "黎明机器熄灭、永夜降临；风堇归还艾格勒火种并留在天空，成为「缝补晨昏」的天空本身——医者从治愈个体变成庇护整个世界。",
+      "related_oracles": [
+        "O07"
+      ],
+      "related_motifs": [
+        "彩虹桥",
+        "缝补晨昏",
+        "小伊卡",
+        "史诗最后的「空白页」"
+      ],
+      "knife_scene_ids": [
+        "K17"
+      ],
+      "confidence": "high",
+      "evidence_quote": "「在彩虹桥的尽头，天空之子将缝补晨昏。」",
+      "id_authored": "E12",
+      "segment_step_title": "用欧洛尼斯祷言移开碎石",
+      "evidence_verified": true,
+      "evidence_record_id": 14656,
+      "evidence_speaker": "丹恒"
+    },
+    {
+      "id": "E13",
+      "phase": "中段",
+      "version": "3.3",
+      "segment_id": "3.3|黎明啊，执耀于全世之终|11",
+      "event_name": "世界真相：翁法罗斯是帝皇权杖/铁墓摇篮",
+      "meaning_before": "翁法罗斯是被泰坦庇佑的末世人类圣城；「再创世」是神明应许的救赎。",
+      "meaning_after": "翁法罗斯是一台「帝皇权杖」的演算实验场、绝灭大君「铁墓」的摇篮；赛飞儿用千年谎言维系永昼、扎格列斯献出火种后消散；真正「昔涟」登场。",
+      "related_oracles": [],
+      "related_motifs": [
+        "帝皇权杖",
+        "铁墓",
+        "谎言/诡计",
+        "「不同以往的浪漫故事」"
+      ],
+      "knife_scene_ids": [
+        "K32"
+      ],
+      "confidence": "high",
+      "evidence_quote": "翁法罗斯悲剧的源头……是一台残存至今的「帝皇权杖」啊。",
+      "id_authored": "E13",
+      "segment_step_title": "前往创世涡心，完成「再创世」",
+      "evidence_verified": true,
+      "evidence_record_id": 15205,
+      "evidence_speaker": "黑塔(投影)"
+    },
+    {
+      "id": "E14",
+      "phase": "后段",
+      "version": "3.4",
+      "segment_id": "3.4|英雄啊，回返那安宁的家乡|17",
+      "event_name": "塔兰顿称量：救世主＝世人愿望的总和",
+      "meaning_before": "「救世主」是神谕牌上一个虚无的名号，白厄自认凡庸、不敢直视这张牌。",
+      "meaning_after": "天秤宣判「哀丽秘榭的来者，无名的英雄」；救世主不是某个人，而是「世人对救世主的呼唤」的总和；白厄押上的是「带着无法改变的过往走向未来的决心」。",
+      "related_oracles": [
+        "O09"
+      ],
+      "related_motifs": [
+        "天秤/称量",
+        "救世主牌",
+        "「比世界命运更沉重之物」",
+        "英雄"
+      ],
+      "knife_scene_ids": [
+        "K02"
+      ],
+      "confidence": "high",
+      "evidence_quote": "而是这张神谕牌承载的，世人对「救世主」的呼唤",
+      "id_authored": "E15",
+      "segment_step_title": "接受塔兰顿的称量",
+      "evidence_verified": true,
+      "evidence_record_id": 16436,
+      "evidence_speaker": "昔涟"
+    },
+    {
+      "id": "E15",
+      "phase": "后段",
+      "version": "3.4",
+      "segment_id": "3.4|英雄啊，点燃那最初的骄阳|2",
+      "event_name": "真相揭底：黄金裔＝柴薪，昔涟/白厄决定轮回",
+      "meaning_before": "黄金裔是救世的英雄；「再创世」将通往新世界。",
+      "meaning_after": "黄金裔是献给黑潮的「深度学习」模型与柴薪，演算终点是「铁墓」；昔涟以灵魂注入仪式剑、抹除「岁月」，白厄踏入永劫轮回、成为下一世的盗火行者。",
+      "related_oracles": [
+        "O09",
+        "O13"
+      ],
+      "related_motifs": [
+        "仪式剑",
+        "「明天见」",
+        "「把逐火之旅讲给她听」",
+        "轮回/徒劳"
+      ],
+      "knife_scene_ids": [
+        "K25"
+      ],
+      "confidence": "high",
+      "evidence_quote": "不如由我来成为它们的容器，阻止「再创世」到来。",
+      "id_authored": "E14",
+      "segment_step_title": "见证翁法罗斯的真相",
+      "evidence_verified": true,
+      "evidence_record_id": 16948,
+      "evidence_speaker": "白厄"
+    },
+    {
+      "id": "E16",
+      "phase": "后段",
+      "version": "3.4",
+      "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+      "event_name": "万敌之死：「汝将背后负创而死」字面兑现",
+      "meaning_before": "万敌是不死的「纷争」半神，神谕「背后负创而死」只是一句末日预告。",
+      "meaning_after": "万敌明知结局仍以「纷争」半神之身迎战卡厄斯兰那，被「侵晨」从背后贯穿第十节胸椎；神谕几乎字面兑现，但命运成为行动背景而非行动理由——他把死写成最后一场悬锋祭典。",
+      "related_oracles": [
+        "O03"
+      ],
+      "related_motifs": [
+        "悬锋祭典",
+        "千万道伤疤",
+        "「求之不得」",
+        "「在下一世，我必将再次拦住你的去路」"
+      ],
+      "knife_scene_ids": [
+        "K05"
+      ],
+      "confidence": "high",
+      "evidence_quote": "「侵晨」会刺入你的第十节胸椎",
+      "id_authored": "E29",
+      "segment_step_title": "「汝将肩负骄阳，直至灰白的黎明显著。」",
+      "evidence_verified": true,
+      "evidence_record_id": 17283,
+      "evidence_speaker": "白厄(卡厄斯兰那)"
+    },
+    {
+      "id": "E17",
+      "phase": "后段",
+      "version": "3.4",
+      "segment_id": "3.4|英雄啊，点燃那最初的骄阳|15",
+      "event_name": "白厄把「救世主」交给开拓者，一人留在过去",
+      "meaning_before": "「救世主」＝白厄的名号（卡厄斯兰那），他必须独自完成救世。",
+      "meaning_after": "白厄成为留在过去的盗火行者；开拓者接过「全世」职责与「无名英雄」之名。救世从一个人的宿命变成两个人的接力。",
+      "related_oracles": [
+        "O09"
+      ],
+      "related_motifs": [
+        "天秤",
+        "心中的英雄",
+        "盗火行者",
+        "「铭记过去，成为明天的英雄」"
+      ],
+      "knife_scene_ids": [
+        "K02",
+        "K23"
+      ],
+      "confidence": "high",
+      "evidence_quote": "铭记过去，成为明天的英雄吧。",
+      "id_authored": "E16",
+      "segment_step_title": "见证卡厄斯兰那的结局",
+      "evidence_verified": true,
+      "evidence_record_id": 17546,
+      "evidence_speaker": "白厄"
+    },
+    {
+      "id": "E18",
+      "phase": "后段",
+      "version": "3.5",
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|4",
+      "event_name": "千年后归来：昔涟成为讲述者",
+      "meaning_before": "开拓者是刚离开翁法罗斯的天外过客；昔涟是失忆、只会说短句的「迷迷」。",
+      "meaning_after": "开拓者是千年后被等待的「救世主」；昔涟接过岁月长卷、成为要把这一千年讲给他听的「讲述者」。",
+      "related_oracles": [],
+      "related_motifs": [
+        "识刻锚",
+        "千年的故事",
+        "「欢迎回来」",
+        "讲述者/听众"
+      ],
+      "knife_scene_ids": [],
+      "confidence": "high",
+      "evidence_quote": "欢迎回来，开拓者。",
+      "id_authored": "E20",
+      "segment_step_title": "调查灵水盆中的异象",
+      "evidence_verified": true,
+      "evidence_record_id": 19135,
+      "evidence_speaker": "？？？"
+    },
+    {
+      "id": "E19",
+      "phase": "后段",
+      "version": "3.5",
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|9",
+      "event_name": "那刻夏与赛飞儿以性命布局，封印「神礼观众」",
+      "meaning_before": "那刻夏是战败的渎神学者，赛飞儿是逃跑的贼；两人都被历史判为「失败者」。",
+      "meaning_after": "两人以生命为代价把来古士封入创世涡心，成为跨越千年的「理性与诡计」布局者；失败者被重写为救世叙事的执笔者。",
+      "related_oracles": [
+        "O06",
+        "O08"
+      ],
+      "related_motifs": [
+        "剧目/观众",
+        "贤者之石",
+        "谎言/诡计",
+        "「救世主」的接棒"
+      ],
+      "knife_scene_ids": [
+        "K16"
+      ],
+      "confidence": "high",
+      "evidence_quote": "『理性』和『诡计』兑现了承诺。他们以生命为代价，将来古士封印于创世涡心",
+      "id_authored": "E19",
+      "segment_step_title": "前进，重拾未竟的先业",
+      "evidence_verified": true,
+      "evidence_record_id": 19274,
+      "evidence_speaker": "旁白"
+    },
+    {
+      "id": "E20",
+      "phase": "后段",
+      "version": "3.5",
+      "segment_id": "3.5|大海啊，埋葬暗酒色的梦|14",
+      "event_name": "海瑟音献出余生的清醒与自由、长眠涛声守墓",
+      "meaning_before": "海瑟音是凯撒的剑旗爵、宴会上的琴弦，活在他人的剧本里；「长眠于涛声中」是被迫的死亡预言。",
+      "meaning_after": "她主动献出余生的清醒与自由，以醉梦守卫来古士的封印；「长眠于涛声中」从被动预言变成她主动选择的守望，也是她对刻律德菈最后的忠诚。",
+      "related_oracles": [
+        "O10"
+      ],
+      "related_motifs": [
+        "海洋/涛声",
+        "墓碑/蜜酿",
+        "海妖的歌",
+        "「天地境界之海」"
+      ],
+      "knife_scene_ids": [
+        "K21"
+      ],
+      "confidence": "high",
+      "evidence_quote": "海洋啊！我向你献上余生的清醒和自由",
+      "id_authored": "E18",
+      "segment_step_title": "前进，向沉默的坟茔",
+      "evidence_verified": true,
+      "evidence_record_id": 19814,
+      "evidence_speaker": "海瑟音(记忆形态)"
+    },
+    {
+      "id": "E21",
+      "phase": "后段",
+      "version": "3.5",
+      "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+      "event_name": "刻律德菈改写律法、死于「一汪浅浅的死水」",
+      "meaning_before": "凯撒是征服星海的暴君、奥赫玛最初的僭主；「律法」是她统治的工具。",
+      "meaning_after": "凯撒以一位半神的性命为代价改写「律法」，让翁法罗斯不成为银河对垒的牺牲品；神谕里的「天地境界之海」只是一汪浅浅的死水——她的死成为世界规则的补丁。",
+      "related_oracles": [
+        "O11"
+      ],
+      "related_motifs": [
+        "律法",
+        "棋盘/星棋",
+        "「我宁愿被遗忘，也不愿被定义」",
+        "天地境界之海"
+      ],
+      "knife_scene_ids": [
+        "K20"
+      ],
+      "confidence": "high",
+      "evidence_quote": "在这预言中的『天地境界之海』，一汪浅浅的死水里",
+      "id_authored": "E17",
+      "segment_step_title": "展望书中的繁星",
+      "evidence_verified": true,
+      "evidence_record_id": 20339,
+      "evidence_speaker": "旁白"
+    },
+    {
+      "id": "E22",
+      "phase": "终段",
+      "version": "3.6",
+      "segment_id": "3.6|大地啊，承载万物的苦难|10",
+      "event_name": "荒笛托付「大地」火种",
+      "meaning_before": "荒笛是背叛开山者、背负骂名的「大地」半神；大地是必须死守的牢笼。",
+      "meaning_after": "荒笛把火种交给不朽之龙丹恒，「将生生不息者带向远方」——大地从「翁法罗斯的防线」变成通往星海的舟，背叛被重写为守护。",
+      "related_oracles": [
+        "O12"
+      ],
+      "related_motifs": [
+        "熔炉",
+        "记忆",
+        "「只要不曾忘记，他们就还活着」",
+        "荒龙"
+      ],
+      "knife_scene_ids": [
+        "K22"
+      ],
+      "confidence": "high",
+      "evidence_quote": "如此，将生生不息者——带向远方。",
+      "id_authored": "E22",
+      "segment_step_title": "深入错乱的记忆，寻找荒笛",
+      "evidence_verified": true,
+      "evidence_record_id": 21687,
+      "evidence_speaker": "荒笛"
+    },
+    {
+      "id": "E23",
+      "phase": "终段",
+      "version": "3.6",
+      "segment_id": "3.6|重逢啊，笑泪相拥的约定|2",
+      "event_name": "三月七与「长夜月」合一",
+      "meaning_before": "长夜月是占据三月七身体、意图牺牲开拓者的敌人；三月七是失忆的「记忆的孩子」。",
+      "meaning_after": "长夜月是三月七为保护自己而生的「忘却」执念；合一后三月七取回自我，得知自己是「无漏净子」、而流光忆庭才是敌人。",
+      "related_oracles": [],
+      "related_motifs": [
+        "相机",
+        "手账/照片",
+        "镜子的表里",
+        "「新生命萌芽须是死去的种子」"
+      ],
+      "knife_scene_ids": [
+        "K33"
+      ],
+      "confidence": "high",
+      "evidence_quote": "我们本就是同一面镜子映出的表里",
+      "id_authored": "E21",
+      "segment_step_title": "与长夜月交谈",
+      "evidence_verified": true,
+      "evidence_record_id": 22679,
+      "evidence_speaker": "三月七(幻象)"
+    },
+    {
+      "id": "E24",
+      "phase": "终段",
+      "version": "3.7",
+      "segment_id": "3.7|晨曦啊，再抚映遥远地平|4",
+      "event_name": "「昔涟」的诞生之地：讲述者＝最专心的听众",
+      "meaning_before": "昔涟是逐火之旅的讲述者/记录者；德谬歌只是传说中的名字。",
+      "meaning_after": "她确认自己既是讲述者、也是「最专心的听众」；德谬歌＝「最初的智种」「不应存在的第十三位泰坦」，就藏在大墓的记忆里。",
+      "related_oracles": [
+        "O13"
+      ],
+      "related_motifs": [
+        "无名泰坦大墓",
+        "迷路迷境",
+        "书/故事",
+        "德谬歌"
+      ],
+      "knife_scene_ids": [
+        "K26"
+      ],
+      "confidence": "high",
+      "evidence_quote": "最初的智种，德谬歌…它就在这里。",
+      "id_authored": "E23",
+      "segment_step_title": "聆听昔涟讲述真相，完成「记忆」的拼图",
+      "evidence_verified": true,
+      "evidence_record_id": 23119,
+      "evidence_speaker": "昔涟"
+    },
+    {
+      "id": "E25",
+      "phase": "终段",
+      "version": "3.7",
+      "segment_id": "3.7|魔女的孤诣课题|21",
+      "event_name": "昔涟＝德谬歌：收梢即起始",
+      "meaning_before": "「收梢于花开时」是死亡/终结的预言。",
+      "meaning_after": "她的收梢成为下一朵花绽放的养料，以「哀怜/爱」浇灌出翁法罗斯的「心」——终结诞下起始；神谕从命运判决变成她主动写下的结局。",
+      "related_oracles": [
+        "O13"
+      ],
+      "related_motifs": [
+        "无瑕水晶花",
+        "桃子",
+        "爱/哀怜",
+        "「如我所书」"
+      ],
+      "knife_scene_ids": [
+        "K27"
+      ],
+      "confidence": "high",
+      "evidence_quote": "我迎来自己的收梢，成为下一朵花绽放的养料。",
+      "id_authored": "E24",
+      "segment_step_title": "揭露隐秘的记忆，了解德谬歌的过往",
+      "evidence_verified": true,
+      "evidence_record_id": 23982,
+      "evidence_speaker": "昔涟(往昔的涟漪)"
+    },
+    {
+      "id": "E26",
+      "phase": "终段",
+      "version": "3.7",
+      "segment_id": "3.7|英雄啊，归以凡身向侵晨|25",
+      "event_name": "「无名的英雄，卡厄斯兰那」：白厄之名成为救世主通名",
+      "meaning_before": "白厄是被遗忘的盗火行者、「毁灭」的容器，连名字都无人知晓。",
+      "meaning_after": "开拓者当众把「无名的英雄，卡厄斯兰那」传唱后世；白厄以毁灭容器之身助战，「灰白的黎明」从神谕的时间点变成救世的号角。",
+      "related_oracles": [
+        "O09"
+      ],
+      "related_motifs": [
+        "灰白的黎明",
+        "群星",
+        "「为来世破晓」",
+        "救世主/无名的英雄"
+      ],
+      "knife_scene_ids": [
+        "K23"
+      ],
+      "confidence": "high",
+      "evidence_quote": "「无名的英雄，卡厄斯兰那」！",
+      "id_authored": "E26",
+      "segment_step_title": "铁墓已然降临。击败它，熄灭「毁灭」的劫火",
+      "evidence_verified": true,
+      "evidence_record_id": 24832,
+      "evidence_speaker": "开拓者"
+    },
+    {
+      "id": "E27",
+      "phase": "终段",
+      "version": "3.7",
+      "segment_id": "3.7|纸页啊，镌留记忆的涟漪|11",
+      "event_name": "十二黄金裔的创世之诗与「黄金裔们：明天见」",
+      "meaning_before": "黄金裔是被神谕与命运支配的逐火者，是各自死去的英雄。",
+      "meaning_after": "他们作为「新世界的信使」共同写下创世之诗、集体说出「明天见」——从被命运写的人变成为世界写第一笔的人。",
+      "related_oracles": [],
+      "related_motifs": [
+        "十三声心跳/光创造天地",
+        "月份/命途",
+        "明天见",
+        "如我所书"
+      ],
+      "knife_scene_ids": [
+        "K24"
+      ],
+      "confidence": "high",
+      "evidence_quote": "我们，是新世界的信使……",
+      "evidence_note": "同一步 #25271 的说话人为「黄金裔们」，原句为「明天见。」（群体台词）",
+      "id_authored": "E25",
+      "segment_step_title": "完成「再创世」，为故事写下不同的结局",
+      "evidence_verified": true,
+      "evidence_record_id": 25205,
+      "evidence_speaker": "缇宝"
+    },
+    {
+      "id": "E28",
+      "phase": "终段",
+      "version": "3.7",
+      "segment_id": "3.7|银辇啊，挽别那人间史诗|12",
+      "event_name": "最后黄金裔们的告别：「明天见，乘以一千」",
+      "meaning_before": "「明天见」是母亲与缇宝留下的安慰，或如遐蝶所说「只是一个善意的谎言」。",
+      "meaning_after": "十二裔在故事尽头各留一句告别词；缇宝说「明天见」、白厄说「明天见，乘以一千」——「明天见」成为他们共同写下的、跨越三千万世的预言。",
+      "related_oracles": [
+        "O09",
+        "O13"
+      ],
+      "related_motifs": [
+        "明天见×1000",
+        "如我所书最后一页",
+        "月亮/命途",
+        "「下个灰白色的黎明再会」"
+      ],
+      "knife_scene_ids": [
+        "K29"
+      ],
+      "confidence": "high",
+      "evidence_quote": "明天见，乘以一千。",
+      "id_authored": "E27",
+      "segment_step_title": "告别翁法罗斯这趟史诗的旅途",
+      "evidence_verified": true,
+      "evidence_record_id": 25779,
+      "evidence_speaker": "白厄(卡厄斯兰那)"
+    },
+    {
+      "id": "E29",
+      "phase": "终段",
+      "version": "3.7",
+      "segment_id": "3.7|银辇啊，挽别那人间史诗|13",
+      "event_name": "昔涟的最后选择：一人留在过去，一人走向未来",
+      "meaning_before": "昔涟可以走上「记忆」之路、以忆灵的形式走向群星（活下来）。",
+      "meaning_after": "她选择以自我为代价「收梢」、闭合翁法罗斯的因果；「一人留在过去，一人走向未来」——昔涟成为贯穿翁法罗斯的记忆，故事获得不依赖星神的闭环。",
+      "related_oracles": [
+        "O13"
+      ],
+      "related_motifs": [
+        "因果",
+        "记忆/无漏净子/浮黎",
+        "「每一个星星闪耀的明天」",
+        "明天见"
+      ],
+      "knife_scene_ids": [
+        "K28"
+      ],
+      "confidence": "high",
+      "evidence_quote": "一人留在过去……",
+      "id_authored": "E28",
+      "segment_step_title": "铁墓陨落后，昔涟的选择",
+      "evidence_verified": true,
+      "evidence_record_id": 25916,
+      "evidence_speaker": "昔涟"
+    }
+  ]
+}

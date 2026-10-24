@@ -1,0 +1,671 @@
+{
+  "note": "A2 独立双标注一致性：annotator（读剧情 agent，task-8）vs independent-subagent（盲标，未读既有标签）",
+  "n_samples": 74,
+  "level_exact_agreement": {
+    "count": 41,
+    "rate": 0.5541
+  },
+  "level_adjacent_agreement": {
+    "count": 73,
+    "rate": 0.9865
+  },
+  "kappa_linear": 0.6183,
+  "kappa_quadratic": 0.7881,
+  "confusion": [
+    [
+      12,
+      6,
+      0,
+      0
+    ],
+    [
+      0,
+      12,
+      15,
+      1
+    ],
+    [
+      0,
+      1,
+      6,
+      10
+    ],
+    [
+      0,
+      0,
+      0,
+      11
+    ]
+  ],
+  "type_set_exact": {
+    "count": 31,
+    "rate": 0.4189
+  },
+  "type_jaccard_mean": 0.6633,
+  "distribution": {
+    "annotator": {
+      "0": 18,
+      "1": 28,
+      "2": 17,
+      "3": 11
+    },
+    "independent": {
+      "0": 12,
+      "1": 19,
+      "2": 21,
+      "3": 22
+    }
+  },
+  "n_disagreements": 33,
+  "disagreements": [
+    {
+      "segment_id": "3.6|大墓啊，深藏轮回的秘密|13",
+      "annotator_level": 1,
+      "independent_level": 3,
+      "diff": 2,
+      "annotator_types": [
+        "memory"
+      ],
+      "independent_types": [
+        "identity",
+        "memory",
+        "motif"
+      ],
+      "annotator_note": "昔涟(往昔的涟漪)与权杖δ-me13的沉默对话被丹恒旁观：'格式化进程'反复响起，她仍坚持讲述（'如果到头来，每一次提笔，都只能写下相同的结局…会不会只是一场太过天真的梦呢？'），丹恒疑心倾听者不止是神。记忆/身份线索，无状态突变。",
+      "independent_before": "昔涟始终是开朗、从不气馁的讲述者",
+      "independent_after": "她反复面对权杖的格式化，早已怀疑一切只是徒劳，却仍旧对着从不作答的听众把故事讲下去",
+      "independent_why": "把她一贯的乐观重新解释为一遍遍自我说服，属于对人物的重新理解",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|22",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "identity",
+        "memory",
+        "motif"
+      ],
+      "independent_types": [
+        "identity",
+        "memory",
+        "relationship"
+      ],
+      "annotator_note": "昔涟(迷迷)忽然能说完整句子，却完全记不起自己（'有关自己的事，还是记不起来一点呢'），并预感要收集散落各处的记忆；梦境里出现「睡前故事/星星」与欧洛尼斯帷幕的母题（'梦是欧洛尼斯垂下的帷幕'）。身份与记忆线索，但无状态突变。",
+      "independent_before": "迷迷只会断句、被当作宠物，白厄对即将承担火种一事显得坦然",
+      "independent_after": "迷迷能流畅说话，并自述失忆、要靠收集记忆找回自己；白厄私下向遐蝶承认自己瞒着两位半神",
+      "independent_why": "同伴的状态（能言、失忆、收集记忆）持续到后续所有剧情；白厄的隐瞒也持续伏线，但本步骤没有让前文产生新解",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|谧林啊，寤思者缘何失语|2",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "memory",
+        "identity"
+      ],
+      "independent_types": [
+        "memory",
+        "relationship"
+      ],
+      "annotator_note": "缇宝与「缇安」为一枚易碎的故乡纪念品争执，缇安喊出'因为你忘了，你忘记了妈妈！'——同一身体内不同人格与记忆缺失被点出，属局部身份/记忆信息。",
+      "independent_before": "以为阿格莱雅只是遣遐蝶送来谢礼",
+      "independent_after": "目睹缇宝与缇安为「妈妈送的玻璃饰品」争吵，得知缇安的自我正在崩解、三人共有一段关于母亲的记忆",
+      "independent_why": "缇安人格的损耗与缇宝的隐瞒是贯穿3.1后半的持续状态；但本步骤本身没有重新解释前文",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.4|英雄啊，回返那安宁的家乡|2",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "memory",
+        "prophecy"
+      ],
+      "independent_types": [
+        "world",
+        "memory",
+        "prophecy"
+      ],
+      "annotator_note": "归还最后一枚火种后未达新世界，反被来古士拉入「沉浸式戏剧」；梦境声音交代神谕「汝将肩负骄阳，直至灰白的黎明显著」，并设定开拓者扮演'贯穿白厄一生中最重要的伙伴…一位始终指引其前进、却不曾在翁法罗斯历史中留名的「无名英雄」'——整段3.4自此被重读为白厄记忆的回放。",
+      "independent_before": "众人以为归还十二枚火种后「再创世」会带来新世界",
+      "independent_after": "「再创世」并未带来新世界：开拓者被来古士拉进白厄少年记忆的沉浸式戏剧，并被指定扮演不载史册的「无名英雄」",
+      "independent_why": "「再创世」的意义被当场推翻，并再次点出「汝将肩负骄阳」的神谕，属于对前文的重新框定",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|大地啊，承载万物的苦难|11",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "world",
+        "relationship"
+      ],
+      "independent_types": [
+        "world",
+        "sacrifice"
+      ],
+      "annotator_note": "刚接过「大地」火种的丹恒请求海瑟音(记忆形态)掩护，自己以「大地」权能深入忆潮找回开拓者（'海瑟音女士，可否请你为我掩护？''层岩…已尽在我的掌心'）；海瑟音指出'那道伤痕背后，就是它口中的「至深之地」'。荒笛身后权能归属落实。",
+      "independent_before": "荒笛被当作叛主弑神的疯狂野兽；丹恒被忆潮挡在「至深之地」之外",
+      "independent_after": "荒笛的「最后一次反叛」被定性为替世间生灵插上「开拓」的羽翼；丹恒取得「大地」权能，决意独入忆潮寻人",
+      "independent_why": "对荒笛的重新评价虽有一句点题，但整体仍是行动准备与权能交接，未展开成对前文的系统重解",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|旅者啊，徘徊中忘却失真|7",
+      "annotator_level": 2,
+      "independent_level": 1,
+      "diff": -1,
+      "annotator_types": [
+        "world",
+        "prophecy"
+      ],
+      "independent_types": [
+        "memory",
+        "prophecy"
+      ],
+      "annotator_note": "留声机里传出星际和平播报：'「智识」实验场■■■■已从■■■■■纠缠中脱离''绝灭大君■■■■未能如■■■■■的期望诞生''最终拯救了翁法罗斯的，除了■■■十二名■■■■■，还有一名关键的■■■■'——以未来广播形式预告结局，重写读者对局势的判断。",
+      "independent_before": "三月七的状况只能靠推测",
+      "independent_after": "在一段来路不明的「星际和平播报」里听到被遮蔽的报道：绝灭大君未能诞生、翁法罗斯获救",
+      "independent_why": "广播内容像是结局的提前泄露，但它以噪点碎片呈现、没有改变任何既有状态",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.7|星路长驰，穹宇远征|7",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "world",
+        "prophecy",
+        "identity"
+      ],
+      "independent_types": [
+        "world",
+        "identity"
+      ],
+      "annotator_note": "外界视角：'三位无名客先行者成为新世界的泰坦'，「负世」的开拓者被全城朝圣；三月七(永夜之帷)宣布'由「岁月」守望昨天，由「大地」拱卫今天，直到「开拓」再度踏入翁法罗斯，沉睡的「救世主」便会苏醒…为世界带来「明天」的预言'——世界结构与神谕兑现方式明显变化。",
+      "independent_before": "翁法罗斯与天外隔绝，「天外之界」是禁忌；开拓者只是外来的无名客",
+      "independent_after": "隔绝被打破，三位无名客先行者成为新世界的泰坦，开拓者本人成了被全城朝拜的「负世」巨神",
+      "independent_why": "世界规则与主角身份同时不可逆地改写，也重新解释了此前「天空是牢笼」的全部设定",
+      "independent_confidence": "high"
+    },
+    {
+      "segment_id": "3.4|英雄啊，回返那安宁的家乡|17",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "prophecy",
+        "relationship"
+      ],
+      "independent_types": [
+        "prophecy",
+        "relationship",
+        "identity"
+      ],
+      "annotator_note": "塔兰顿称量：白厄押上「救世主」神谕牌，泰坦宣判'供物比世界的命运更为沉重之人，是为——哀丽秘榭的来者，无名的英雄'，昔涟点破重量来自世人对救世主的共同愿望（'压落秤盘的并非白厄的决心，而是这张神谕牌承载的，世人对「救世主」的呼唤'），万敌因此承认白厄并用「救世主」称呼他；阿格莱雅宣布'逐火的征途将于今日，迎来最后两位英雄'。",
+      "independent_before": "白厄与万敌分属敌对的奥赫玛与悬锋孤军",
+      "independent_after": "塔兰顿称量判定白厄胜出，「救世主」牌承载的是世人的夙愿；万敌从此改称白厄「救世主」并加入逐火同盟，「最后两位英雄」的神谕落定",
+      "independent_why": "神谕兑现、敌手变同盟、并给出「救世主不是个人而是夙愿总和」的新解，三重叠加",
+      "independent_confidence": "high"
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|9",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "sacrifice",
+        "memory"
+      ],
+      "independent_types": [
+        "sacrifice",
+        "memory"
+      ],
+      "annotator_note": "万敌/缇宝/赛飞儿/那刻夏的「记忆形态」接力呈现最后一战：那刻夏以贤者之石、赛飞儿以谎言设局（'把他变成笼中困兽''你若要伪装成「救世主」'），旁白收束：'「理性」和「诡计」兑现了承诺。他们以生命为代价，将来古士封印于创世涡心，直至今日。'",
+      "independent_before": "那刻夏、赛飞儿、万敌等人仍被当作可能还活着的同伴",
+      "independent_after": "逐一交代结局：那刻夏与赛飞儿以生命为代价把来古士封印在创世涡心，万敌以血铺路；这一千年由他们替开拓者走完",
+      "independent_why": "牺牲不可逆，并解释了此前来古士为何长期缺席，属于对旧场的补解",
+      "independent_confidence": "high"
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|14",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "world"
+      ],
+      "independent_types": [
+        "world",
+        "relationship"
+      ],
+      "annotator_note": "黄金狮首临终开口，告诉万敌尼卡多利已堕落、正酝酿灭亡奥赫玛的阴谋（'它已然堕落，正在酝酿着毫无荣光的阴谋'），并恳求'终结它漫长的痛苦，让它以战士的身份死去'；白厄仍决定继续前进。敌方形势与泰坦堕落规则更新，但叙事状态未变。",
+      "independent_before": "尼卡多利只是堕落疯狂的敌人，悬锋城是它残存的领地",
+      "independent_after": "黄金狮首临终托付：尼卡多利已失理智并谋划灭绝奥赫玛；白厄与万敌就「回援」还是「继续前进」争执后达成一致",
+      "independent_why": "敌情与队伍内部的分歧都被确定下来并持续到决战，但没有重新解释前文",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|18",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "world"
+      ],
+      "independent_types": [
+        "world",
+        "relationship"
+      ],
+      "annotator_note": "骑大地兽入圣城、途中遇袭；白厄称'神谕早已警示我们。这是天灾，但并非死劫'，缇宝以「我呼唤你，欧洛尼斯…揭开帷幕，激起往昔的涟漪」切换时空。交代黄金裔/圣城/泰坦与记忆神迹，属世界观局部补充。",
+      "independent_before": "白厄与缇宝只是路上结识的本地向导",
+      "independent_after": "因共同抗敌与奥赫玛结盟；得知疯王尼卡多利归来袭城，并被白厄提醒「黄金裔的攻击可不分敌我」",
+      "independent_why": "结盟与敌情是持续的世界/关系变化，但未使已有剧情获得新解",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "memory",
+        "motif"
+      ],
+      "independent_types": [
+        "memory",
+        "world"
+      ],
+      "annotator_note": "八音盒与母亲莫忒丝的歌谣重现创世神话：'伟岸的刻法勒…黎明的光沉负于肩，金色的血落向大地'，随后歌谣崩坏为'黑潮███已来到██城下了'。既是缇宝童年记忆的回收，也是刻法勒/金血/黑潮母题的集中呈现，并解释了缇宝三人的创伤。",
+      "independent_before": "八音盒只是母亲的旧物，缇宝对童年几乎没有记忆",
+      "independent_after": "恢复童年记忆：八音盒本身就是缇宝的发明；母亲莫忒丝唱出的创世歌谣讲明「金色的血流遍世间英雄末裔」，随后歌谣被黑潮临城的扭曲吞没",
+      "independent_why": "既找回失落的记忆，又通过歌谣给「黄金裔的金血」这一既有母题补上前史，属于重新解释",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|重逢啊，笑泪相拥的约定|3",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "identity",
+        "relationship",
+        "memory"
+      ],
+      "independent_types": [
+        "sacrifice",
+        "identity",
+        "memory"
+      ],
+      "annotator_note": "三月七归来与开拓者、丹恒重逢（'终于，能和你们说上话了呀！'）；长夜月临别揭示'让「无漏净子」这个名字，从你脑海中褪去吧''我只拥有「你」的记忆，是为保护你而存在的执念''流光忆庭是你的敌人'。身份与关系的重要信息，事件本身以情感收束为主。",
+      "independent_before": "三月七的身体与记忆仍被长夜月占据",
+      "independent_after": "长夜月最后一次行使「忘却」、抹去「无漏净子」之名后沉入长夜，三月七取回自我并与列车组重逢",
+      "independent_why": "分身自愿消隐不可逆，且「无漏净子」一名的抹除改写了她的过去",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|荒墟啊，可曾记旧日荣光|13",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "relationship"
+      ],
+      "independent_types": [
+        "relationship"
+      ],
+      "annotator_note": "白厄与万敌以三十枚悬锋城徽记打赌，白厄主动改赌注并提议联手（'至于尼卡多利…我们会联手将其击败''给尼卡多利的夺命一剑就由我们一起刺出'），二人由竞争转向同盟，属关系变化。",
+      "independent_before": "白厄与万敌各率一队，互为竞争的对手",
+      "independent_after": "赌约改判：二人约定平分荣光、联手刺出对尼卡多利的最后一剑，竞争关系转为同盟",
+      "independent_why": "同盟关系持续到决战并影响后续（万敌让出火种），但没有重解前文",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.0|银辇啊，迅赴那黑色大地|9",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [],
+      "independent_types": [
+        "world"
+      ],
+      "annotator_note": "丹恒苏醒、列车通讯失败（'果然失败了…这下只能靠你我了'），结尾首次出现'？？？: 迷……'的未知声音（后文揭示为迷迷/昔涟的伏笔）。属局部信息，未改变叙事状态。",
+      "independent_before": "车厢被击毁迫降，两人幸存，以为还能联系列车组",
+      "independent_after": "确认与列车组彻底失联、此地的文明可能敌视外来者，目标转为先找安全据点",
+      "independent_why": "「无法求援」这条约束贯穿整个翁法罗斯篇，属持续的世界规则变化；但本步骤没有重新解释已有剧情",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|纺锤啊，难纴岁月的经纬|9",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "world",
+        "identity"
+      ],
+      "independent_types": [
+        "identity",
+        "memory",
+        "world"
+      ],
+      "annotator_note": "旁白回顾开拓者其实早在车厢坠落时就已死去、如今只是'一簇行走的记忆'，必须找到塞纳托斯才有生机；阿格莱雅指出赛飞儿是唯一可能掌握「死亡」去向的人，并点出那刻夏开始与元老院接触。任务目标（找塞纳托斯）与身世前提、政治威胁同步推进。",
+      "independent_before": "开拓者被当成受诅咒的、或身怀异能的的天外来客",
+      "independent_after": "确认开拓者早在车厢坠落时就已经死去，如今只是一簇行走的记忆；救治目标锁定为找到塞纳托斯；元老院方面由那刻夏开始发难",
+      "independent_why": "「已死」把3.0以来的整段行程重新解释为亡者行走，且直接改写目标",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|摇船啊，请载我横渡冥流|11",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "identity",
+        "memory"
+      ],
+      "independent_types": [
+        "identity",
+        "memory"
+      ],
+      "annotator_note": "斯缇科西亚亡魂的记忆闪回：幽灵口中'从巨龙怀中诞生的少女，那些幽灵口中「死亡」的化身…就是你？！'直指遐蝶；旧事同时牵出斯缇科西亚女王与阿蒙内特。读者对遐蝶身世（与塞纳托斯互为半身）及前文「不愿接触他人」的理解被改写。",
+      "independent_before": "遐蝶是哀地里亚的「死亡女神」候补，来斯缇科西亚只为寻找塞纳托斯",
+      "independent_after": "确认她本人就是传说中从巨龙怀中诞生、为世间带来死亡的少女；她曾应一个少年之请亲手了结他，且自己对此毫无记忆",
+      "independent_why": "身份揭示直接改写她的来处与「诅咒」的含义，并解释了此前她避讳接触、被恐惧的种种描写",
+      "independent_confidence": "high"
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|16",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "world",
+        "identity",
+        "memory"
+      ],
+      "independent_types": [
+        "memory",
+        "prophecy",
+        "world"
+      ],
+      "annotator_note": "塞涅俄丝的历史记忆：她因融合世仇两族血脉被斥为「黄昏之女」，却宣布遵从'从地平线的尽头传来了神谕'而弑神艾格勒（'我不是神——我只是…唯一一个有勇气反抗典狱者的凡人'）；索拉比斯以「雅辛忒丝」称呼风堇，点明风堇是天空英雄后裔。",
+      "independent_before": "塞涅俄丝是被传颂的「阳雷骑士」，天空城的往事只是空白",
+      "independent_after": "记忆中的她自陈只是「唯一有勇气反抗典狱者的凡人」，其弑神之举正是「凡人英雄开创时代」那道神谕的开端；索拉比斯则暗示「那时的她」已不同于现在",
+      "independent_why": "把逐火神谕的源头指认为塞涅俄丝，等于给整条主线换了一个起点",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|花醴啊，盈满空心的树干|21",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "world"
+      ],
+      "independent_types": [
+        "world",
+        "memory"
+      ],
+      "annotator_note": "宴会上凯撒宣告征服星海的野心（'我等金血孕育出一头无往不利的巨兽，它将成为我们的铁蹄，踏遍天外群星'），来古士之声称'这虚妄幻境的终幕'。交代第一次逐火之旅的扩张方向与凯撒的执念。",
+      "independent_before": "以为这场宴会只是海瑟音的醉梦追忆",
+      "independent_after": "宴会上凯撒当众宣告：金血孕育出的「巨兽」将成为踏遍天外群星的铁蹄——昭示铁墓的由来，也是虚妄幻境的终幕",
+      "independent_why": "把宴会梦境与铁墓计划接上，属于对既有设定的确证与场景收束",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|烈阳啊，为迷途照明前路|1",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "relationship",
+        "world"
+      ],
+      "independent_types": [
+        "identity",
+        "relationship"
+      ],
+      "annotator_note": "丹恒在燃烧的天空下与螺丝咕姆、来古士同行（'难以置信，我竟要与投身「毁灭」的天才同行'），被迫与旧敌暂时合作进入忆域。关系与世界局势局部变化。",
+      "independent_before": "丹恒被隔在世界之外，来古士是潜伏的敌人",
+      "independent_after": "丹恒借螺丝咕姆的密钥再度潜入，并与螺丝咕姆、来古士（赞达尔）达成「暂时的协议」——机会只有一次",
+      "independent_why": "敌我配置被临时改写（与敌人同行），说话者标签同时易为「来古士(赞达尔)」，但真相尚未摊开",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|门扉啊，叩声仍激荡梦中|9",
+      "annotator_level": 0,
+      "independent_level": 1,
+      "diff": 1,
+      "annotator_types": [],
+      "independent_types": [
+        "motif"
+      ],
+      "annotator_note": "四句氛围台词（'离别和死亡，本就并蒂双生''凡人怎能轻易和解呢？'），无事件推进，仅复现离别母题。",
+      "independent_before": "「离别和死亡」只是遐蝶常挂嘴边的感慨",
+      "independent_after": "这句感慨在岁月的景象中再度响起，与缇宝三人即将到来的离别形成呼应",
+      "independent_why": "只是母题复现与情绪铺垫，没有事件层面的变化",
+      "independent_confidence": "low"
+    },
+    {
+      "segment_id": "3.2|莎草啊，抽绎渎神者所想|4",
+      "annotator_level": 0,
+      "independent_level": 1,
+      "diff": 1,
+      "annotator_types": [],
+      "independent_types": [
+        "world"
+      ],
+      "annotator_note": "风堇介绍友爱之馆与藏书石版，无事件或关系变化。",
+      "independent_before": "只知道树庭遭灾",
+      "independent_after": "与风堇进入友爱之馆查资料，怀疑树庭之灾另有内情",
+      "independent_why": "只是调查起点与怀疑，尚无实据",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.3|石板啊，为何罔闻那灯影|8",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "relationship",
+        "motif"
+      ],
+      "independent_types": [
+        "relationship",
+        "sacrifice"
+      ],
+      "annotator_note": "赛飞儿与阿格莱雅道别：阿格莱雅注意到她仍穿着自己送的金靴（'你…还穿着我送给你的那双金靴啊'），赛飞儿回'没人能追得上我，我早就不再为「逃亡」而奔跑了'。关系与金靴母题回收，为其赴黎明云崖铺垫。",
+      "independent_before": "赛飞儿是拿钱办事的盗贼向导",
+      "independent_after": "她与阿格莱雅之间的旧情被点明（那双金靴），随后独自前往黎明云崖，语气像是诀别",
+      "independent_why": "这层关系与她的赴死选择在后续兑现（她以「诡计」维系永昼并逝去），但本步骤只是暗示",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|囚人啊，踏过日影见沧溟|12",
+      "annotator_level": 0,
+      "independent_level": 1,
+      "diff": 1,
+      "annotator_types": [],
+      "independent_types": [
+        "memory"
+      ],
+      "annotator_note": "刻律德菈在书中梦土看到开拓者记忆里的匹诺康尼（'这个世界名叫匹诺康尼，是一座建立在梦土中的永恒之城'），四句闲谈，无事件推进。",
+      "independent_before": "刻律德菈逐页翻阅「救世主」的记忆之书",
+      "independent_after": "这一页是梦土匹诺康尼，由昔涟做讲解",
+      "independent_why": "只是书中翻页的过场与外邦见闻",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.6|归途啊，近在咫尺难抵达|4",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "world",
+        "relationship"
+      ],
+      "independent_types": [
+        "world",
+        "memory"
+      ],
+      "annotator_note": "姬子与黑天鹅推断两位无名客只有精神被卷入翁法罗斯（'恐怕那两位失踪的无名客，和三月七一样，受「记忆」命途影响，只有精神被卷入了翁法罗斯'），黑天鹅要在忆域点灯引路；丹恒决定去看三月七。补充世界观与伙伴线。",
+      "independent_before": "以为开拓者与丹恒是肉身被困在翁法罗斯",
+      "independent_after": "黑天鹅与姬子判断两人的肉身仍在真空中漂浮的车厢，只有精神被「记忆」卷入翁法罗斯；她将渗入忆域点灯引路",
+      "independent_why": "解释了「为何无法联系列车」，重写了此行的性质，但仍以推测口吻给出，故不给3",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|8",
+      "annotator_level": 0,
+      "independent_level": 1,
+      "diff": 1,
+      "annotator_types": [],
+      "independent_types": [
+        "world"
+      ],
+      "annotator_note": "处刑不治的牧人：'求您…赐我解脱……'与旁白'赠以酣眠'，三句过场，仅复现行刑主题。",
+      "independent_before": "只知道哀地里亚以「死亡」为信仰",
+      "independent_after": "亲见处刑流程：不治的牧人求死，阿蒙内特只说了「你知道该怎么做」，旁白记下「赠以酣眠」",
+      "independent_why": "只是把「处刑即慈悲」的地方风俗摆出来，是下一段对话的引子",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|归风啊，席卷旧尘登云天|11",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "motif",
+        "sacrifice"
+      ],
+      "independent_types": [
+        "motif",
+        "sacrifice"
+      ],
+      "annotator_note": "风堇(记忆形态)把仪式剑交给昔涟、昔涟答'等待是人家最擅长的事情嘛…历经三千万世，开拓者才降临在我们身边'，旁白'拔出剑刃，承接使命'。仪式剑/岁月接力的母题回收，事件性弱。",
+      "independent_before": "仪式剑仍由昔涟与风堇保管",
+      "independent_after": "开拓者亲手拔剑，接过承载「岁月」的使命",
+      "independent_why": "使命交接与信物转移是持续的，但没有重新解释前文",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.7|落英啊，残芳纷飞留归躅|9",
+      "annotator_level": 0,
+      "independent_level": 1,
+      "diff": 1,
+      "annotator_types": [
+        "motif"
+      ],
+      "independent_types": [
+        "motif",
+        "memory"
+      ],
+      "annotator_note": "回到少女的故乡哀丽秘榭的四句氛围描写（'西风吹拂之地，有无垠的麦浪和蔺草的芬芳'），仅母题（故乡/风/涛声）复现，无事件推进。",
+      "independent_before": "故事已推进到要闭合「∞」最后缺口的时刻",
+      "independent_after": "回到少女的故乡哀丽秘榭，麦浪、涛声与停滞的时光把「起点」重新摆到眼前",
+      "independent_why": "是抒情性的回望与母题收束，没有新的事件或规则变化",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.1|纷争啊，伐清湮途的悼惧|6",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "memory"
+      ],
+      "independent_types": [
+        "world",
+        "memory"
+      ],
+      "annotator_note": "哈托努斯幻影辱骂万敌并抛出其母亲的印戒（'这…母亲的印戒？'），牵出万敌身世旧事；随后与丹恒会合并以'我在鳞渊境开海前，你对我说的最后一句话是什么'验明身份。属局部信息。",
+      "independent_before": "以为「纷争」试炼只针对白厄一人",
+      "independent_after": "确认试炼是所有挑战者与妄念共构的战场；万敌母亲留下的印戒在幻影中现身，触到他的旧伤",
+      "independent_why": "试炼规则被改写为持续的「世界规则」，并让万敌的过去浮出水面，但没有重新解释已有剧情",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.2|行者啊，向冥河解缆起航|9",
+      "annotator_level": 2,
+      "independent_level": 3,
+      "diff": 1,
+      "annotator_types": [
+        "identity",
+        "memory",
+        "relationship"
+      ],
+      "independent_types": [
+        "memory",
+        "sacrifice",
+        "identity"
+      ],
+      "annotator_note": "长老阿蒙内特请求遐蝶'赐他解脱'（'你能给我最后一次机会，让我向那恐惧发起冲锋'），并回顾自己从冰原带回遐蝶、将她养成行刑官之首、'我一直把你当成女儿'——交代遐蝶被强加的「处刑」使命与两人父女般的羁绊。",
+      "independent_before": "遐蝶被哀地里亚当作圣女与行刑人使唤，来历不明",
+      "independent_after": "揭示阿蒙内特把她当女儿养大、并以自己的死完成最后一课；「处刑」这道强加的重任与她被诅咒的由来一并说清",
+      "independent_why": "既交代身世，又解释了她在3.0就显露的「不能触碰」这一细节",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.3|诗者啊，从我处诉说天空•上|5",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "world",
+        "memory"
+      ],
+      "independent_types": [
+        "world",
+        "memory"
+      ],
+      "annotator_note": "借往世晖之民/雨之民的记忆还原天空城邦内战：晖之民独占「天象画壁」令白昼无尽、雨之民受压迫后弑神（'艾格勒在上，去死吧！'）。艾格勒治下历史真相的局部揭示。",
+      "independent_before": "天空之城只是艾格勒的领域，结局成谜",
+      "independent_after": "从前人记忆中得知：晖之民以神选自居压迫雨之民，雨之民谋划反击，天空城邦毁于内乱；天象可由「浑象仪」操弄",
+      "independent_why": "给出天空篇的历史骨架与装置规则，是后续行动的根据，但没有直接重解主线",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.5|花醴啊，盈满空心的树干|16",
+      "annotator_level": 1,
+      "independent_level": 2,
+      "diff": 1,
+      "annotator_types": [
+        "world",
+        "memory"
+      ],
+      "independent_types": [
+        "world",
+        "sacrifice",
+        "memory"
+      ],
+      "annotator_note": "海瑟音的海妖姐妹被「毁灭」侵蚀成黑潮造物、她独自送葬的过往（'海妖们被「毁灭」侵蚀，血肉腐败，成为了此世的黑潮造物''再见了，姐妹。我会完成最后的使命'）。交代黑潮侵蚀与海瑟音的动机。",
+      "independent_before": "海瑟音只是避世的海妖半神",
+      "independent_after": "她的同胞海妖被「毁灭」侵蚀成黑潮造物，她成了海床间唯一清醒者，独自为姐妹送葬并寻找满溢之杯的碎片",
+      "independent_why": "揭示黑潮由「毁灭」侵蚀生灵而来的机制并交代她的来处，但机制在3.4已点过，此处是补充",
+      "independent_confidence": "medium"
+    },
+    {
+      "segment_id": "3.7|魔女的孤诣课题|15",
+      "annotator_level": 0,
+      "independent_level": 1,
+      "diff": 1,
+      "annotator_types": [],
+      "independent_types": [
+        "world"
+      ],
+      "annotator_note": "进入「神话之外」后定位到来古士坐标扰动（'他的坐标正在快速、无规律地扰动'），六句过场。",
+      "independent_before": "以为「神话之外」是普通的实验室入口",
+      "independent_after": "进入后发现没有任何模拟信号能解释的坐标扰动，只能确认对手就在此处",
+      "independent_why": "只是场景与对手状态的说明",
+      "independent_confidence": "medium"
+    }
+  ]
+}
