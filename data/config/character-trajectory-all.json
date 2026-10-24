@@ -2,28 +2,38 @@
  "meta": {
   "script": "tools/character_trajectory.py --all",
   "run_command": "conda run -n nlpLesson python tools/character_trajectory.py --all",
-  "characters": [
-   "白厄",
-   "万敌",
-   "阿格莱雅",
-   "缇宝",
-   "遐蝶",
-   "那刻夏",
-   "风堇",
-   "赛飞儿",
-   "海瑟音",
-   "刻律德菈",
-   "荒笛",
-   "开拓者",
-   "昔涟"
-  ],
+  "groups": {
+   "A_黄金裔11": [
+    "白厄",
+    "万敌",
+    "阿格莱雅",
+    "缇宝",
+    "遐蝶",
+    "那刻夏",
+    "风堇",
+    "赛飞儿",
+    "海瑟音",
+    "刻律德菈",
+    "昔涟"
+   ],
+   "B_单列3": [
+    "开拓者",
+    "三月七",
+    "丹恒"
+   ],
+   "NPC_2": [
+    "荒笛",
+    "玻吕茜亚"
+   ]
+  },
+  "note": "按用户最终口径：黄金裔=11 位（岁月席位历史多次更换，欧洛尼斯一线 / 德谬歌与昔涟演化）；荒笛、玻吕茜亚为 NPC，不进 A/B 主表；玻吕茜亚仅在遐蝶/O05 注记中出现。",
   "n_records_total": 26332,
   "n_segments_total": 723,
   "n_pool": 686,
   "n_knife": 36,
   "n_events": 30,
   "n_annot": 74,
-  "window": "前 3 + 本条 + 后 3（同一步骤内按 id 升序）",
+  "window": "前 3 + 本条 + 后 3（同一步骤内，按 id 升序）",
   "sparse_rule": "该步总记录<6 或该角色记录<3 → 整步放入",
   "sources": [
    "amphoreus.final.jsonl",
@@ -34,12 +44,14 @@
    "annotation-labels.json",
    "baseline-a-scores.json",
    "baseline-b-scores.json"
-  ],
-  "note": "全量出场来自 canonical_speaker；精读覆盖以 K36/30/74 文件实际内容为准。"
+  ]
  },
  "summary_table": [
   {
    "name": "白厄",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 2550,
    "n_steps": 202,
    "n_tasks": 38,
@@ -93,6 +105,9 @@
   },
   {
    "name": "万敌",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 768,
    "n_steps": 76,
    "n_tasks": 27,
@@ -145,6 +160,9 @@
   },
   {
    "name": "阿格莱雅",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 942,
    "n_steps": 93,
    "n_tasks": 40,
@@ -197,6 +215,9 @@
   },
   {
    "name": "缇宝",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 1129,
    "n_steps": 123,
    "n_tasks": 35,
@@ -249,6 +270,9 @@
   },
   {
    "name": "遐蝶",
+   "group": "A",
+   "pair_with": "玻吕茜亚（NPC，遐蝶之妹；O05 双子共有神谕 holder=玻吕茜亚，不进任何组）",
+   "group_note": null,
    "n_records": 1497,
    "n_steps": 156,
    "n_tasks": 33,
@@ -302,6 +326,9 @@
   },
   {
    "name": "那刻夏",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 696,
    "n_steps": 65,
    "n_tasks": 24,
@@ -355,6 +382,9 @@
   },
   {
    "name": "风堇",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 775,
    "n_steps": 78,
    "n_tasks": 22,
@@ -411,6 +441,9 @@
   },
   {
    "name": "赛飞儿",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 649,
    "n_steps": 61,
    "n_tasks": 18,
@@ -465,6 +498,9 @@
   },
   {
    "name": "海瑟音",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 376,
    "n_steps": 45,
    "n_tasks": 12,
@@ -518,6 +554,9 @@
   },
   {
    "name": "刻律德菈",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 296,
    "n_steps": 31,
    "n_tasks": 10,
@@ -568,48 +607,65 @@
    ]
   },
   {
-   "name": "荒笛",
-   "n_records": 70,
-   "n_steps": 4,
-   "n_tasks": 2,
-   "n_versions_present": 1,
+   "name": "昔涟",
+   "group": "A",
+   "pair_with": null,
+   "group_note": null,
+   "n_records": 2393,
+   "n_steps": 222,
+   "n_tasks": 37,
+   "n_versions_present": 8,
    "versions_present": [
-    "3.6"
-   ],
-   "versions_absent": [
     "3.0",
     "3.1",
     "3.2",
     "3.3",
     "3.4",
     "3.5",
+    "3.6",
     "3.7"
    ],
-   "top_form": "无形态（70）",
-   "top_address": "半神2",
-   "top_motif": "记忆5、火种1、逐火1",
-   "mean_score_a": 0.1833,
-   "mean_score_b1": 0.8171,
-   "top100_b1": 0.5,
-   "knife_n": 1,
-   "key_n": 1,
-   "annotation_n": 0,
-   "deep_n": 1,
-   "deep_rate": 0.25,
-   "all_read_n": 1,
-   "all_read_rate": 0.25,
-   "unread_versions": [],
-   "unread_task_count": 1,
+   "versions_absent": [],
+   "top_form": "无形态（1431）",
+   "top_address": "开拓者179、伙伴37、英雄33",
+   "top_motif": "记忆162、逐火31、迷迷24",
+   "mean_score_a": -0.0124,
+   "mean_score_b1": 0.0645,
+   "top100_b1": 0.1448,
+   "knife_n": 15,
+   "key_n": 16,
+   "annotation_n": 22,
+   "deep_n": 18,
+   "deep_rate": 0.0811,
+   "all_read_n": 31,
+   "all_read_rate": 0.1396,
+   "unread_versions": [
+    "3.1"
+   ],
+   "unread_task_count": 22,
    "unread_tasks": [
     {
-     "task": "诸神啊，奏响创世的凯歌",
-     "steps": 1,
+     "task": "谧林啊，寤思者缘何失语",
+     "steps": 20,
+     "covered": 0
+    },
+    {
+     "task": "初日啊，逐退群星与残月",
+     "steps": 19,
+     "covered": 0
+    },
+    {
+     "task": "摇船啊，请载我横渡冥流",
+     "steps": 17,
      "covered": 0
     }
    ]
   },
   {
    "name": "开拓者",
+   "group": "B",
+   "pair_with": null,
+   "group_note": null,
    "n_records": 3058,
    "n_steps": 387,
    "n_tasks": 58,
@@ -659,10 +715,71 @@
    ]
   },
   {
-   "name": "昔涟",
-   "n_records": 2393,
-   "n_steps": 222,
-   "n_tasks": 37,
+   "name": "三月七",
+   "group": "B",
+   "pair_with": "长夜月（同一人形态：长夜月/永夜之帷/幻象/记忆形态）",
+   "group_note": null,
+   "n_records": 664,
+   "n_steps": 53,
+   "n_tasks": 15,
+   "n_versions_present": 6,
+   "versions_present": [
+    "3.0",
+    "3.2",
+    "3.4",
+    "3.5",
+    "3.6",
+    "3.7"
+   ],
+   "versions_absent": [
+    "3.1",
+    "3.3"
+   ],
+   "top_form": "长夜月（273）",
+   "top_address": "开拓者51、伙伴6、英雄6",
+   "top_motif": "记忆55、火种6、无名4",
+   "mean_score_a": 0.0439,
+   "mean_score_b1": 0.1604,
+   "top100_b1": 0.1509,
+   "knife_n": 6,
+   "key_n": 5,
+   "annotation_n": 4,
+   "deep_n": 6,
+   "deep_rate": 0.1132,
+   "all_read_n": 9,
+   "all_read_rate": 0.1698,
+   "unread_versions": [
+    "3.0",
+    "3.4",
+    "3.5"
+   ],
+   "unread_task_count": 10,
+   "unread_tasks": [
+    {
+     "task": "母亲啊，暌离于冬去春来",
+     "steps": 6,
+     "covered": 0
+    },
+    {
+     "task": "银辇啊，迅赴那黑色大地",
+     "steps": 5,
+     "covered": 0
+    },
+    {
+     "task": "旅者啊，徘徊中忘却失真",
+     "steps": 5,
+     "covered": 0
+    }
+   ]
+  },
+  {
+   "name": "丹恒",
+   "group": "B",
+   "pair_with": "荒笛（大地承接：荒笛 → 丹恒）",
+   "group_note": null,
+   "n_records": 1541,
+   "n_steps": 210,
+   "n_tasks": 38,
    "n_versions_present": 8,
    "versions_present": [
     "3.0",
@@ -675,37 +792,130 @@
     "3.7"
    ],
    "versions_absent": [],
-   "top_form": "无形态（1431）",
-   "top_address": "开拓者179、伙伴37、英雄33",
-   "top_motif": "记忆162、逐火31、迷迷24",
-   "mean_score_a": -0.0124,
-   "mean_score_b1": 0.0645,
-   "top100_b1": 0.1448,
-   "knife_n": 15,
-   "key_n": 16,
+   "top_form": "无形态（1453）",
+   "top_address": "开拓者64、黄金裔28、半神13",
+   "top_motif": "记忆46、火种20、逐火11",
+   "mean_score_a": -0.0822,
+   "mean_score_b1": -0.0247,
+   "top100_b1": 0.1154,
+   "knife_n": 13,
+   "key_n": 12,
    "annotation_n": 22,
-   "deep_n": 18,
-   "deep_rate": 0.0811,
+   "deep_n": 13,
+   "deep_rate": 0.0619,
    "all_read_n": 31,
-   "all_read_rate": 0.1396,
+   "all_read_rate": 0.1476,
    "unread_versions": [
-    "3.1"
+    "3.4"
    ],
-   "unread_task_count": 22,
+   "unread_task_count": 27,
    "unread_tasks": [
     {
-     "task": "谧林啊，寤思者缘何失语",
+     "task": "远客啊，请聆听此世祈祷",
+     "steps": 22,
+     "covered": 0
+    },
+    {
+     "task": "大墓啊，深藏轮回的秘密",
+     "steps": 21,
+     "covered": 0
+    },
+    {
+     "task": "银辇啊，迅赴那黑色大地",
      "steps": 20,
      "covered": 0
-    },
+    }
+   ]
+  },
+  {
+   "name": "荒笛",
+   "group": "NPC",
+   "pair_with": "丹恒（大地承接：荒笛 → 丹恒）",
+   "group_note": "NPC：荒笛 70 条/4 步，样本量小；大地承接：荒笛 → 丹恒（丹恒在 B 组）",
+   "n_records": 70,
+   "n_steps": 4,
+   "n_tasks": 2,
+   "n_versions_present": 1,
+   "versions_present": [
+    "3.6"
+   ],
+   "versions_absent": [
+    "3.0",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.7"
+   ],
+   "top_form": "无形态（70）",
+   "top_address": "半神2",
+   "top_motif": "记忆5、火种1、逐火1",
+   "mean_score_a": 0.1833,
+   "mean_score_b1": 0.8171,
+   "top100_b1": 0.5,
+   "knife_n": 1,
+   "key_n": 1,
+   "annotation_n": 0,
+   "deep_n": 1,
+   "deep_rate": 0.25,
+   "all_read_n": 1,
+   "all_read_rate": 0.25,
+   "unread_versions": [],
+   "unread_task_count": 1,
+   "unread_tasks": [
     {
-     "task": "初日啊，逐退群星与残月",
-     "steps": 19,
+     "task": "诸神啊，奏响创世的凯歌",
+     "steps": 1,
+     "covered": 0
+    }
+   ]
+  },
+  {
+   "name": "玻吕茜亚",
+   "group": "NPC",
+   "pair_with": null,
+   "group_note": "NPC：遐蝶之妹；O05 双子共有神谕 holder=玻吕茜亚，不归遐蝶",
+   "n_records": 72,
+   "n_steps": 5,
+   "n_tasks": 3,
+   "n_versions_present": 1,
+   "versions_present": [
+    "3.2"
+   ],
+   "versions_absent": [
+    "3.0",
+    "3.1",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.6",
+    "3.7"
+   ],
+   "top_form": "无形态（65）",
+   "top_address": "阁下3",
+   "top_motif": "太阳1",
+   "mean_score_a": 0.6033,
+   "mean_score_b1": 0.9428,
+   "top100_b1": 0.8,
+   "knife_n": 1,
+   "key_n": 1,
+   "annotation_n": 0,
+   "deep_n": 1,
+   "deep_rate": 0.2,
+   "all_read_n": 1,
+   "all_read_rate": 0.2,
+   "unread_versions": [],
+   "unread_task_count": 2,
+   "unread_tasks": [
+    {
+     "task": "摇船啊，请载我横渡冥流",
+     "steps": 2,
      "covered": 0
     },
     {
-     "task": "摇船啊，请载我横渡冥流",
-     "steps": 17,
+     "task": "橄榄啊，请掷向议厅之主",
+     "steps": 1,
      "covered": 0
     }
    ]
@@ -1959,6 +2169,9 @@
     "3.7|落英啊，残芳纷飞留归躅|6",
     "3.7|落英啊，残芳纷飞留归躅|7"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 202,
     "covered": 22,
@@ -3056,6 +3269,9 @@
     "3.7|银辇啊，挽别那人间史诗|8",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 76,
     "covered": 15,
@@ -4314,6 +4530,9 @@
     "3.7|银辇啊，挽别那人间史诗|8",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 93,
     "covered": 18,
@@ -5790,6 +6009,9 @@
     "3.7|银辇啊，挽别那人间史诗|8",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 123,
     "covered": 16,
@@ -7017,6 +7239,9 @@
     "3.7|银辇啊，挽别那人间史诗|6",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": "玻吕茜亚（NPC，遐蝶之妹；O05 双子共有神谕 holder=玻吕茜亚，不进任何组）",
+   "note": null,
    "coverage_detail": {
     "steps": 156,
     "covered": 14,
@@ -8035,6 +8260,9 @@
     "3.7|银辇啊，挽别那人间史诗|10",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 65,
     "covered": 12,
@@ -9015,6 +9243,9 @@
     "3.7|银辇啊，挽别那人间史诗|8",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 78,
     "covered": 6,
@@ -9905,6 +10136,9 @@
     "3.7|银辇啊，挽别那人间史诗|6",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 61,
     "covered": 10,
@@ -10634,6 +10868,9 @@
     "3.7|银辇啊，挽别那人间史诗|10",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 45,
     "covered": 7,
@@ -11244,6 +11481,9 @@
     "3.7|银辇啊，挽别那人间史诗|8",
     "3.7|银辇啊，挽别那人间史诗|12"
    ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 31,
     "covered": 7,
@@ -11329,258 +11569,830 @@
     "unread_task_count": 4
    }
   },
-  "荒笛": {
-   "name": "荒笛",
+  "昔涟": {
+   "name": "昔涟",
    "summary": {
-    "n_records": 70,
-    "n_steps": 4,
-    "n_steps_in_pool": 4,
-    "n_tasks": 2,
-    "n_versions_present": 1,
+    "n_records": 2393,
+    "n_steps": 222,
+    "n_steps_in_pool": 221,
+    "n_tasks": 37,
+    "n_versions_present": 8,
     "versions_present": [
-     "3.6"
-    ],
-    "versions_absent": [
      "3.0",
      "3.1",
      "3.2",
      "3.3",
      "3.4",
      "3.5",
+     "3.6",
      "3.7"
     ],
-    "mean_text_len": 23.54,
-    "mean_score_a": 0.1833,
-    "mean_score_b1": 0.8171,
-    "top100_a": 0.25,
-    "top100_b1": 0.5,
-    "median_rank_a": 228.0,
-    "median_rank_b1": 108.0
+    "versions_absent": [],
+    "mean_text_len": 20.87,
+    "mean_score_a": -0.0124,
+    "mean_score_b1": 0.0645,
+    "top100_a": 0.1131,
+    "top100_b1": 0.1448,
+    "median_rank_a": 344.0,
+    "median_rank_b1": 315.0
    },
    "per_version": {
     "3.0": {
-     "n_records": 0,
-     "share_of_records": 0.0,
-     "n_steps": 0,
-     "n_steps_in_pool": 0,
-     "n_tasks": 0,
-     "forms": {},
-     "address_own": {},
-     "address_other_same_steps": {},
-     "motif_own": {},
-     "motif_other_same_steps": {},
-     "mean_score_a": null,
-     "mean_score_b1": null,
-     "top100_a": null,
-     "top100_b1": null,
-     "median_rank_a": null,
-     "median_rank_b1": null,
-     "mean_text_len": null
-    },
-    "3.1": {
-     "n_records": 0,
-     "share_of_records": 0.0,
-     "n_steps": 0,
-     "n_steps_in_pool": 0,
-     "n_tasks": 0,
-     "forms": {},
-     "address_own": {},
-     "address_other_same_steps": {},
-     "motif_own": {},
-     "motif_other_same_steps": {},
-     "mean_score_a": null,
-     "mean_score_b1": null,
-     "top100_a": null,
-     "top100_b1": null,
-     "median_rank_a": null,
-     "median_rank_b1": null,
-     "mean_text_len": null
-    },
-    "3.2": {
-     "n_records": 0,
-     "share_of_records": 0.0,
-     "n_steps": 0,
-     "n_steps_in_pool": 0,
-     "n_tasks": 0,
-     "forms": {},
-     "address_own": {},
-     "address_other_same_steps": {},
-     "motif_own": {},
-     "motif_other_same_steps": {},
-     "mean_score_a": null,
-     "mean_score_b1": null,
-     "top100_a": null,
-     "top100_b1": null,
-     "median_rank_a": null,
-     "median_rank_b1": null,
-     "mean_text_len": null
-    },
-    "3.3": {
-     "n_records": 0,
-     "share_of_records": 0.0,
-     "n_steps": 0,
-     "n_steps_in_pool": 0,
-     "n_tasks": 0,
-     "forms": {},
-     "address_own": {},
-     "address_other_same_steps": {},
-     "motif_own": {},
-     "motif_other_same_steps": {},
-     "mean_score_a": null,
-     "mean_score_b1": null,
-     "top100_a": null,
-     "top100_b1": null,
-     "median_rank_a": null,
-     "median_rank_b1": null,
-     "mean_text_len": null
-    },
-    "3.4": {
-     "n_records": 0,
-     "share_of_records": 0.0,
-     "n_steps": 0,
-     "n_steps_in_pool": 0,
-     "n_tasks": 0,
-     "forms": {},
-     "address_own": {},
-     "address_other_same_steps": {},
-     "motif_own": {},
-     "motif_other_same_steps": {},
-     "mean_score_a": null,
-     "mean_score_b1": null,
-     "top100_a": null,
-     "top100_b1": null,
-     "median_rank_a": null,
-     "median_rank_b1": null,
-     "mean_text_len": null
-    },
-    "3.5": {
-     "n_records": 0,
-     "share_of_records": 0.0,
-     "n_steps": 0,
-     "n_steps_in_pool": 0,
-     "n_tasks": 0,
-     "forms": {},
-     "address_own": {},
-     "address_other_same_steps": {},
-     "motif_own": {},
-     "motif_other_same_steps": {},
-     "mean_score_a": null,
-     "mean_score_b1": null,
-     "top100_a": null,
-     "top100_b1": null,
-     "median_rank_a": null,
-     "median_rank_b1": null,
-     "mean_text_len": null
-    },
-    "3.6": {
-     "n_records": 70,
-     "share_of_records": 1.0,
-     "n_steps": 4,
-     "n_steps_in_pool": 4,
-     "n_tasks": 2,
+     "n_records": 92,
+     "share_of_records": 0.0384,
+     "n_steps": 11,
+     "n_steps_in_pool": 11,
+     "n_tasks": 4,
      "forms": {
-      "null": 70
+      "迷迷": 92
      },
      "address_own": {
-      "半神": 2
+      "伙伴": 10,
+      "开拓者": 2
      },
      "address_other_same_steps": {
-      "半神": 12,
-      "开拓者": 4,
-      "英雄": 4,
-      "阁下": 3,
+      "开拓者": 28,
+      "阁下": 27,
+      "黄金裔": 11,
+      "老师": 7,
+      "半神": 3,
       "伙伴": 2,
+      "英雄": 2,
+      "救世主": 1
+     },
+     "motif_own": {
+      "记忆": 18,
+      "迷迷": 5
+     },
+     "motif_other_same_steps": {
+      "火种": 14,
+      "记忆": 11,
+      "迷迷": 3,
+      "明天见": 1,
+      "黎明": 1
+     },
+     "mean_score_a": -0.0261,
+     "mean_score_b1": 0.168,
+     "top100_a": 0.0909,
+     "top100_b1": 0.2727,
+     "median_rank_a": 357.0,
+     "median_rank_b1": 270.0,
+     "mean_text_len": 16.92
+    },
+    "3.1": {
+     "n_records": 154,
+     "share_of_records": 0.0644,
+     "n_steps": 23,
+     "n_steps_in_pool": 23,
+     "n_tasks": 2,
+     "forms": {
+      "迷迷": 154
+     },
+     "address_own": {
+      "伙伴": 8,
+      "开拓者": 7
+     },
+     "address_other_same_steps": {
+      "阁下": 26,
+      "老师": 14,
+      "开拓者": 10,
+      "小灰": 8,
+      "黄金裔": 7,
+      "半神": 2,
+      "英雄": 2,
       "救世主": 2,
-      "黄金裔": 1,
+      "伙伴": 1
+     },
+     "motif_own": {
+      "记忆": 13,
+      "迷迷": 4,
+      "火种": 2,
+      "太阳": 1
+     },
+     "motif_other_same_steps": {
+      "火种": 35,
+      "迷迷": 4,
+      "记忆": 4,
+      "逐火": 4
+     },
+     "mean_score_a": -0.0111,
+     "mean_score_b1": 0.0909,
+     "top100_a": 0.087,
+     "top100_b1": 0.0,
+     "median_rank_a": 309.0,
+     "median_rank_b1": 224.0,
+     "mean_text_len": 19.23
+    },
+    "3.2": {
+     "n_records": 136,
+     "share_of_records": 0.0568,
+     "n_steps": 27,
+     "n_steps_in_pool": 26,
+     "n_tasks": 4,
+     "forms": {
+      "迷迷": 136
+     },
+     "address_own": {
+      "开拓者": 7,
+      "伙伴": 4,
+      "英雄": 1,
+      "黄金裔": 1
+     },
+     "address_other_same_steps": {
+      "阁下": 52,
+      "开拓者": 29,
+      "老师": 14,
+      "黄金裔": 14,
+      "半神": 5,
+      "英雄": 4,
+      "小灰": 3
+     },
+     "motif_own": {
+      "记忆": 4,
+      "火种": 1,
+      "迷迷": 1
+     },
+     "motif_other_same_steps": {
+      "逐火": 14,
+      "迷迷": 13,
+      "记忆": 12,
+      "火种": 11,
+      "明天见": 3,
+      "黎明": 2,
+      "无名": 2
+     },
+     "mean_score_a": 0.2885,
+     "mean_score_b1": 0.3647,
+     "top100_a": 0.3077,
+     "top100_b1": 0.3462,
+     "median_rank_a": 207.0,
+     "median_rank_b1": 175.5,
+     "mean_text_len": 19.42
+    },
+    "3.3": {
+     "n_records": 155,
+     "share_of_records": 0.0648,
+     "n_steps": 32,
+     "n_steps_in_pool": 32,
+     "n_tasks": 6,
+     "forms": {
+      "迷迷": 150,
+      "null": 5
+     },
+     "address_own": {
+      "开拓者": 5,
+      "半神": 1,
+      "伙伴": 1,
+      "救世主": 1,
+      "黄金裔": 1
+     },
+     "address_other_same_steps": {
+      "阁下": 60,
+      "黄金裔": 42,
+      "开拓者": 34,
+      "英雄": 30,
+      "老师": 25,
+      "半神": 13,
+      "伙伴": 11,
+      "灰宝": 5,
+      "救世主": 4,
       "小灰": 1
      },
      "motif_own": {
-      "记忆": 5,
-      "火种": 1,
-      "逐火": 1
+      "记忆": 13,
+      "逐火": 2,
+      "迷迷": 1
      },
      "motif_other_same_steps": {
-      "记忆": 13,
-      "逐火": 12,
-      "火种": 7,
-      "黎明": 3,
-      "无名": 2,
-      "逐火是不断失却的旅途": 2,
-      "明天见": 1,
-      "烈阳": 1
+      "火种": 48,
+      "逐火": 36,
+      "黎明": 21,
+      "记忆": 11,
+      "无名": 9,
+      "烈阳": 8,
+      "迷迷": 3,
+      "太阳": 1,
+      "不要回头": 1
      },
-     "mean_score_a": 0.1833,
-     "mean_score_b1": 0.8171,
-     "top100_a": 0.25,
-     "top100_b1": 0.5,
-     "median_rank_a": 228.0,
-     "median_rank_b1": 108.0,
-     "mean_text_len": 23.54
+     "mean_score_a": -0.009,
+     "mean_score_b1": 0.1257,
+     "top100_a": 0.0625,
+     "top100_b1": 0.2188,
+     "median_rank_a": 315.5,
+     "median_rank_b1": 289.5,
+     "mean_text_len": 18.34
+    },
+    "3.4": {
+     "n_records": 294,
+     "share_of_records": 0.1229,
+     "n_steps": 20,
+     "n_steps_in_pool": 20,
+     "n_tasks": 5,
+     "forms": {
+      "null": 264,
+      "往昔的涟漪": 21,
+      "迷迷": 9
+     },
+     "address_own": {
+      "救世主": 8,
+      "伙伴": 7,
+      "英雄": 4,
+      "老师": 1,
+      "半神": 1,
+      "开拓者": 1
+     },
+     "address_other_same_steps": {
+      "英雄": 19,
+      "阁下": 16,
+      "伙伴": 14,
+      "开拓者": 11,
+      "救世主": 10,
+      "黄金裔": 10,
+      "老师": 8,
+      "半神": 6
+     },
+     "motif_own": {
+      "记忆": 8,
+      "逐火": 3,
+      "火种": 1
+     },
+     "motif_other_same_steps": {
+      "火种": 10,
+      "记忆": 10,
+      "逐火": 8,
+      "黎明": 4,
+      "烈阳": 2,
+      "无名": 2,
+      "太阳": 1
+     },
+     "mean_score_a": -0.0539,
+     "mean_score_b1": -0.0347,
+     "top100_a": 0.05,
+     "top100_b1": 0.1,
+     "median_rank_a": 347.0,
+     "median_rank_b1": 363.5,
+     "mean_text_len": 23.26
+    },
+    "3.5": {
+     "n_records": 449,
+     "share_of_records": 0.1876,
+     "n_steps": 39,
+     "n_steps_in_pool": 39,
+     "n_tasks": 4,
+     "forms": {
+      "null": 440,
+      "记忆形态": 9
+     },
+     "address_own": {
+      "开拓者": 83,
+      "英雄": 10,
+      "救世主": 8,
+      "半神": 5,
+      "阁下": 4,
+      "黄金裔": 2,
+      "伙伴": 2
+     },
+     "address_other_same_steps": {
+      "救世主": 41,
+      "开拓者": 18,
+      "黄金裔": 14,
+      "英雄": 14,
+      "半神": 8,
+      "阁下": 6,
+      "伙伴": 1
+     },
+     "motif_own": {
+      "记忆": 23,
+      "逐火": 12,
+      "火种": 6,
+      "迷迷": 4,
+      "黎明": 2,
+      "无名": 1
+     },
+     "motif_other_same_steps": {
+      "逐火": 28,
+      "记忆": 16,
+      "火种": 15,
+      "无名": 3,
+      "黎明": 2,
+      "迷迷": 1
+     },
+     "mean_score_a": -0.0915,
+     "mean_score_b1": -0.0583,
+     "top100_a": 0.1538,
+     "top100_b1": 0.0513,
+     "median_rank_a": 370.0,
+     "median_rank_b1": 354.0,
+     "mean_text_len": 25.34
+    },
+    "3.6": {
+     "n_records": 185,
+     "share_of_records": 0.0773,
+     "n_steps": 21,
+     "n_steps_in_pool": 21,
+     "n_tasks": 6,
+     "forms": {
+      "null": 95,
+      "往昔的涟漪": 90
+     },
+     "address_own": {
+      "开拓者": 19,
+      "救世主": 3,
+      "英雄": 2,
+      "半神": 1
+     },
+     "address_other_same_steps": {
+      "开拓者": 37,
+      "英雄": 8,
+      "伙伴": 6,
+      "半神": 4,
+      "救世主": 3,
+      "黄金裔": 2,
+      "老师": 2,
+      "阁下": 1,
+      "小灰": 1
+     },
+     "motif_own": {
+      "记忆": 18,
+      "逐火": 6,
+      "迷迷": 2,
+      "黎明": 2,
+      "火种": 1,
+      "逐火是不断失却的旅途": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 62,
+      "火种": 10,
+      "逐火": 8,
+      "无名": 6,
+      "黎明": 3,
+      "迷迷": 2,
+      "德谬歌": 2,
+      "明天见": 1,
+      "烈阳": 1,
+      "逐火是不断失却的旅途": 1
+     },
+     "mean_score_a": -0.0387,
+     "mean_score_b1": 0.135,
+     "top100_a": 0.1905,
+     "top100_b1": 0.2857,
+     "median_rank_a": 476.0,
+     "median_rank_b1": 325.0,
+     "mean_text_len": 23.49
     },
     "3.7": {
-     "n_records": 0,
-     "share_of_records": 0.0,
-     "n_steps": 0,
-     "n_steps_in_pool": 0,
-     "n_tasks": 0,
-     "forms": {},
-     "address_own": {},
-     "address_other_same_steps": {},
-     "motif_own": {},
-     "motif_other_same_steps": {},
-     "mean_score_a": null,
-     "mean_score_b1": null,
-     "top100_a": null,
-     "top100_b1": null,
-     "median_rank_a": null,
-     "median_rank_b1": null,
-     "mean_text_len": null
+     "n_records": 928,
+     "share_of_records": 0.3878,
+     "n_steps": 49,
+     "n_steps_in_pool": 49,
+     "n_tasks": 6,
+     "forms": {
+      "null": 627,
+      "记忆形态": 162,
+      "往昔的涟漪": 96,
+      "迷迷": 23,
+      "另一位作者": 20
+     },
+     "address_own": {
+      "开拓者": 55,
+      "英雄": 16,
+      "救世主": 8,
+      "伙伴": 5,
+      "老师": 2
+     },
+     "address_other_same_steps": {
+      "开拓者": 32,
+      "英雄": 21,
+      "救世主": 11,
+      "阁下": 8,
+      "小灰": 3,
+      "老师": 2,
+      "灰宝": 1,
+      "伙伴": 1
+     },
+     "motif_own": {
+      "记忆": 65,
+      "逐火": 8,
+      "黎明": 7,
+      "迷迷": 7,
+      "德谬歌": 3,
+      "无名": 2,
+      "逐火是不断失却的旅途": 2,
+      "灰白的黎明": 2,
+      "明天见": 1,
+      "烈阳": 1,
+      "骄阳": 1,
+      "火种": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 45,
+      "逐火": 17,
+      "黎明": 11,
+      "德谬歌": 9,
+      "无名": 6,
+      "明天见": 3,
+      "逐火是不断失却的旅途": 2,
+      "烈阳": 1,
+      "迷迷": 1,
+      "灰白的黎明": 1,
+      "火种": 1,
+      "太阳": 1
+     },
+     "mean_score_a": -0.0808,
+     "mean_score_b1": -0.0625,
+     "top100_a": 0.0204,
+     "top100_b1": 0.0612,
+     "median_rank_a": 366.0,
+     "median_rank_b1": 368.0,
+     "mean_text_len": 18.74
     }
    },
    "forms_overall": {
-    "null": 70
+    "null": 1431,
+    "迷迷": 564,
+    "往昔的涟漪": 207,
+    "记忆形态": 171,
+    "另一位作者": 20
    },
    "per_task": [
     {
-     "task": "诸神啊，奏响创世的凯歌",
-     "n_records": 13,
+     "task": "学者啊，于真理门前再会",
+     "n_records": 2,
+     "n_steps": 1,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "长夜啊，先于黎明前到来",
+     "n_records": 3,
      "n_steps": 1,
      "versions": [
       "3.6"
      ]
     },
     {
-     "task": "大地啊，承载万物的苦难",
-     "n_records": 57,
-     "n_steps": 3,
+     "task": "英雄啊，且握住那枚火种",
+     "n_records": 5,
+     "n_steps": 1,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "行者啊，向冥河解缆起航",
+     "n_records": 12,
+     "n_steps": 1,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "诸神啊，奏响创世的凯歌",
+     "n_records": 17,
+     "n_steps": 1,
      "versions": [
       "3.6"
+     ]
+    },
+    {
+     "task": "英雄啊，将创世的凯歌奏响",
+     "n_records": 21,
+     "n_steps": 1,
+     "versions": [
+      "3.4"
+     ]
+    },
+    {
+     "task": "忆者啊，命途长河上溯洄",
+     "n_records": 22,
+     "n_steps": 1,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "母亲啊，暌离于冬去春来",
+     "n_records": 29,
+     "n_steps": 1,
+     "versions": [
+      "3.4"
+     ]
+    },
+    {
+     "task": "英雄啊，点燃那最初的骄阳",
+     "n_records": 62,
+     "n_steps": 1,
+     "versions": [
+      "3.4"
+     ]
+    },
+    {
+     "task": "旅者啊，徘徊中忘却失真",
+     "n_records": 20,
+     "n_steps": 2,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "夜帷啊，轻遮那静默过往",
+     "n_records": 23,
+     "n_steps": 2,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "重逢啊，笑泪相拥的约定",
+     "n_records": 29,
+     "n_steps": 2,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "星空啊，为纷乱千念濯洗",
+     "n_records": 33,
+     "n_steps": 2,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "魔女的孤诣课题",
+     "n_records": 327,
+     "n_steps": 2,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "英雄啊，兑现那染血的冀望",
+     "n_records": 11,
+     "n_steps": 3,
+     "versions": [
+      "3.4"
+     ]
+    },
+    {
+     "task": "仇寇啊，且领受金血烧灼",
+     "n_records": 13,
+     "n_steps": 3,
+     "versions": [
+      "3.1"
+     ]
+    },
+    {
+     "task": "金丝啊，请喻救世者谶语",
+     "n_records": 13,
+     "n_steps": 3,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "晨曦啊，再抚映遥远地平",
+     "n_records": 60,
+     "n_steps": 3,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "流年啊，渡我漂游千百载",
+     "n_records": 84,
+     "n_steps": 3,
+     "versions": [
+      "3.5"
+     ]
+    },
+    {
+     "task": "银辇啊，挽别那人间史诗",
+     "n_records": 97,
+     "n_steps": 3,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "诗者啊，从我处诉说天空•下",
+     "n_records": 7,
+     "n_steps": 4,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "悬锋啊，请涤去你的血锈•上",
+     "n_records": 20,
+     "n_steps": 4,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "悬锋啊，请涤去你的血锈•下",
+     "n_records": 44,
+     "n_steps": 4,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "归风啊，席卷旧尘登云天",
+     "n_records": 38,
+     "n_steps": 5,
+     "versions": [
+      "3.5"
+     ]
+    },
+    {
+     "task": "书卷啊，可曾令锋刃回眸",
+     "n_records": 40,
+     "n_steps": 5,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "黎明啊，执耀于全世之终",
+     "n_records": 21,
+     "n_steps": 6,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "纺锤啊，难纴岁月的经纬",
+     "n_records": 44,
+     "n_steps": 8,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "纸页啊，镌留记忆的涟漪",
+     "n_records": 111,
+     "n_steps": 10,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "诗者啊，从我处诉说天空•上",
+     "n_records": 41,
+     "n_steps": 12,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "囚人啊，踏过日影见沧溟",
+     "n_records": 110,
+     "n_steps": 12,
+     "versions": [
+      "3.5"
+     ]
+    },
+    {
+     "task": "落英啊，残芳纷飞留归躅",
+     "n_records": 239,
+     "n_steps": 12,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "大墓啊，深藏轮回的秘密",
+     "n_records": 94,
+     "n_steps": 14,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "英雄啊，回返那安宁的家乡",
+     "n_records": 171,
+     "n_steps": 14,
+     "versions": [
+      "3.4"
+     ]
+    },
+    {
+     "task": "摇船啊，请载我横渡冥流",
+     "n_records": 78,
+     "n_steps": 17,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "英雄啊，归以凡身向侵晨",
+     "n_records": 94,
+     "n_steps": 19,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "初日啊，逐退群星与残月",
+     "n_records": 217,
+     "n_steps": 19,
+     "versions": [
+      "3.5"
+     ]
+    },
+    {
+     "task": "谧林啊，寤思者缘何失语",
+     "n_records": 141,
+     "n_steps": 20,
+     "versions": [
+      "3.1"
      ]
     }
    ],
    "low_presence": {
     "versions": [
-     "3.0",
-     "3.1",
-     "3.2",
-     "3.3",
-     "3.4",
-     "3.5",
-     "3.7"
+     "3.0"
     ],
     "tasks": [
      {
-      "task": "诸神啊，奏响创世的凯歌",
-      "n_records": 13,
+      "task": "学者啊，于真理门前再会",
+      "n_records": 2,
+      "n_steps": 1,
+      "versions": [
+       "3.2"
+      ]
+     },
+     {
+      "task": "长夜啊，先于黎明前到来",
+      "n_records": 3,
       "n_steps": 1,
       "versions": [
        "3.6"
       ]
      },
      {
-      "task": "大地啊，承载万物的苦难",
-      "n_records": 57,
-      "n_steps": 3,
+      "task": "英雄啊，且握住那枚火种",
+      "n_records": 5,
+      "n_steps": 1,
+      "versions": [
+       "3.0"
+      ]
+     },
+     {
+      "task": "行者啊，向冥河解缆起航",
+      "n_records": 12,
+      "n_steps": 1,
+      "versions": [
+       "3.2"
+      ]
+     },
+     {
+      "task": "诸神啊，奏响创世的凯歌",
+      "n_records": 17,
+      "n_steps": 1,
+      "versions": [
+       "3.6"
+      ]
+     },
+     {
+      "task": "英雄啊，将创世的凯歌奏响",
+      "n_records": 21,
+      "n_steps": 1,
+      "versions": [
+       "3.4"
+      ]
+     },
+     {
+      "task": "忆者啊，命途长河上溯洄",
+      "n_records": 22,
+      "n_steps": 1,
+      "versions": [
+       "3.6"
+      ]
+     },
+     {
+      "task": "母亲啊，暌离于冬去春来",
+      "n_records": 29,
+      "n_steps": 1,
+      "versions": [
+       "3.4"
+      ]
+     },
+     {
+      "task": "英雄啊，点燃那最初的骄阳",
+      "n_records": 62,
+      "n_steps": 1,
+      "versions": [
+       "3.4"
+      ]
+     },
+     {
+      "task": "旅者啊，徘徊中忘却失真",
+      "n_records": 20,
+      "n_steps": 2,
       "versions": [
        "3.6"
       ]
@@ -11590,80 +12402,626 @@
    },
    "oracle_quotes": [
     {
-     "oracle_id": "O12",
+     "oracle_id": "O09",
+     "stage": "改写反转",
+     "version": "3.7",
+     "record_id": 26045,
+     "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
+     "citation_form": "完整引用"
+    },
+    {
+     "oracle_id": "O13",
      "stage": "结局宣告",
-     "version": "3.6",
-     "record_id": 21694,
-     "segment_id": "3.6|大地啊，承载万物的苦难|10",
+     "version": "3.7",
+     "record_id": 23958,
+     "segment_id": "3.7|魔女的孤诣课题|21",
      "citation_form": "完整引用"
     }
    ],
    "coverage": {
-    "n_steps": 4,
-    "n_steps_in_pool": 4,
+    "n_steps": 222,
+    "n_steps_in_pool": 221,
     "knife": {
-     "n": 1,
+     "n": 15,
      "n_total": 36,
-     "rate": 0.25
+     "rate": 0.0676
     },
     "key_events": {
-     "n": 1,
+     "n": 16,
      "n_total": 30,
-     "rate": 0.25
+     "rate": 0.0721
     },
     "annotation": {
-     "n": 0,
+     "n": 22,
      "n_total": 74,
-     "rate": 0.0
+     "rate": 0.0991
     },
     "union_knife_key_events": {
-     "n": 1,
-     "rate": 0.25
+     "n": 18,
+     "rate": 0.0811
     },
     "union_all_close_reads": {
-     "n": 1,
-     "rate": 0.25
+     "n": 31,
+     "rate": 0.1396
     },
-    "n_uncovered_knife_key": 3,
+    "n_uncovered_knife_key": 204,
     "uncovered_by_version": {
-     "3.6": 3
+     "3.7": 42,
+     "3.5": 37,
+     "3.3": 29,
+     "3.2": 26,
+     "3.1": 23,
+     "3.6": 20,
+     "3.4": 18,
+     "3.0": 9
     }
    },
-   "timeline_form_changes": [],
-   "all_steps": [
-    "3.6|大地啊，承载万物的苦难|3",
-    "3.6|大地啊，承载万物的苦难|8",
-    "3.6|大地啊，承载万物的苦难|10",
-    "3.6|诸神啊，奏响创世的凯歌|4"
+   "timeline_form_changes": [
+    {
+     "order": 5,
+     "version": "3.0",
+     "task": "夜帷啊，轻遮那静默过往",
+     "step_idx": 23,
+     "form": "迷迷",
+     "text": "名字？我的？不记得。"
+    },
+    {
+     "order": 44,
+     "version": "3.4",
+     "task": "英雄啊，将创世的凯歌奏响",
+     "step_idx": 2,
+     "form": "往昔的涟漪",
+     "text": "其实你早就猜到答案了呢？"
+    },
+    {
+     "order": 48,
+     "version": "3.5",
+     "task": "归风啊，席卷旧尘登云天",
+     "step_idx": 11,
+     "form": "记忆形态",
+     "text": "多久都没有关系哦？毕竟，等待是人家最擅长的事情嘛。"
+    },
+    {
+     "order": 58,
+     "version": "3.6",
+     "task": "大墓啊，深藏轮回的秘密",
+     "step_idx": 6,
+     "form": "往昔的涟漪",
+     "text": "……"
+    },
+    {
+     "order": 63,
+     "version": "3.7",
+     "task": "魔女的孤诣课题",
+     "step_idx": 21,
+     "form": "记忆形态",
+     "text": ">>>……"
+    },
+    {
+     "order": 63,
+     "version": "3.7",
+     "task": "魔女的孤诣课题",
+     "step_idx": 21,
+     "form": "往昔的涟漪",
+     "text": "……"
+    },
+    {
+     "order": 63,
+     "version": "3.7",
+     "task": "魔女的孤诣课题",
+     "step_idx": 21,
+     "form": "迷迷",
+     "text": "你是？我是…是谁？"
+    },
+    {
+     "order": 65,
+     "version": "3.7",
+     "task": "纸页啊，镌留记忆的涟漪",
+     "step_idx": 3,
+     "form": "记忆形态",
+     "text": "世界前所未有地安静，真好呀，仿佛能听见心跳的声音。"
+    },
+    {
+     "order": 65,
+     "version": "3.7",
+     "task": "纸页啊，镌留记忆的涟漪",
+     "step_idx": 11,
+     "form": "往昔的涟漪",
+     "text": "真是一段感伤，却又温暖的旅途呀。"
+    },
+    {
+     "order": 67,
+     "version": "3.7",
+     "task": "落英啊，残芳纷飞留归躅",
+     "step_idx": 3,
+     "form": "迷迷",
+     "text": "迷…迷？"
+    },
+    {
+     "order": 67,
+     "version": "3.7",
+     "task": "落英啊，残芳纷飞留归躅",
+     "step_idx": 3,
+     "form": "往昔的涟漪",
+     "text": "…记忆中的旋律，我收到啦。"
+    },
+    {
+     "order": 67,
+     "version": "3.7",
+     "task": "落英啊，残芳纷飞留归躅",
+     "step_idx": 6,
+     "form": "记忆形态",
+     "text": "你要握紧这柄仪式剑。在我离去后，它会把你送回时间的起点，一段新故事的开篇。"
+    },
+    {
+     "order": 67,
+     "version": "3.7",
+     "task": "落英啊，残芳纷飞留归躅",
+     "step_idx": 11,
+     "form": "另一位作者",
+     "text": "然后，要再加上「一」——不同以往的「一」，向前开拓的「一」♪"
+    }
    ],
+   "all_steps": [
+    "3.0|夜帷啊，轻遮那静默过往|23",
+    "3.0|夜帷啊，轻遮那静默过往|25",
+    "3.0|悬锋啊，请涤去你的血锈•上|1",
+    "3.0|悬锋啊，请涤去你的血锈•上|2",
+    "3.0|悬锋啊，请涤去你的血锈•上|3",
+    "3.0|悬锋啊，请涤去你的血锈•上|4",
+    "3.0|悬锋啊，请涤去你的血锈•下|2",
+    "3.0|悬锋啊，请涤去你的血锈•下|3",
+    "3.0|悬锋啊，请涤去你的血锈•下|21",
+    "3.0|悬锋啊，请涤去你的血锈•下|22",
+    "3.0|英雄啊，且握住那枚火种|1",
+    "3.1|谧林啊，寤思者缘何失语|8",
+    "3.1|谧林啊，寤思者缘何失语|9",
+    "3.1|谧林啊，寤思者缘何失语|12",
+    "3.1|谧林啊，寤思者缘何失语|13",
+    "3.1|谧林啊，寤思者缘何失语|14",
+    "3.1|谧林啊，寤思者缘何失语|15",
+    "3.1|谧林啊，寤思者缘何失语|16",
+    "3.1|谧林啊，寤思者缘何失语|17",
+    "3.1|谧林啊，寤思者缘何失语|18",
+    "3.1|谧林啊，寤思者缘何失语|19",
+    "3.1|谧林啊，寤思者缘何失语|20",
+    "3.1|谧林啊，寤思者缘何失语|21",
+    "3.1|谧林啊，寤思者缘何失语|22",
+    "3.1|谧林啊，寤思者缘何失语|23",
+    "3.1|谧林啊，寤思者缘何失语|24",
+    "3.1|谧林啊，寤思者缘何失语|25",
+    "3.1|谧林啊，寤思者缘何失语|26",
+    "3.1|谧林啊，寤思者缘何失语|28",
+    "3.1|谧林啊，寤思者缘何失语|29",
+    "3.1|谧林啊，寤思者缘何失语|30",
+    "3.1|仇寇啊，且领受金血烧灼|2",
+    "3.1|仇寇啊，且领受金血烧灼|4",
+    "3.1|仇寇啊，且领受金血烧灼|5",
+    "3.2|纺锤啊，难纴岁月的经纬|2",
+    "3.2|纺锤啊，难纴岁月的经纬|3",
+    "3.2|纺锤啊，难纴岁月的经纬|4",
+    "3.2|纺锤啊，难纴岁月的经纬|5",
+    "3.2|纺锤啊，难纴岁月的经纬|6",
+    "3.2|纺锤啊，难纴岁月的经纬|7",
+    "3.2|纺锤啊，难纴岁月的经纬|8",
+    "3.2|纺锤啊，难纴岁月的经纬|9",
+    "3.2|行者啊，向冥河解缆起航|2",
+    "3.2|摇船啊，请载我横渡冥流|1",
+    "3.2|摇船啊，请载我横渡冥流|2",
+    "3.2|摇船啊，请载我横渡冥流|3",
+    "3.2|摇船啊，请载我横渡冥流|4",
+    "3.2|摇船啊，请载我横渡冥流|5",
+    "3.2|摇船啊，请载我横渡冥流|6",
+    "3.2|摇船啊，请载我横渡冥流|7",
+    "3.2|摇船啊，请载我横渡冥流|8",
+    "3.2|摇船啊，请载我横渡冥流|9",
+    "3.2|摇船啊，请载我横渡冥流|10",
+    "3.2|摇船啊，请载我横渡冥流|11",
+    "3.2|摇船啊，请载我横渡冥流|12",
+    "3.2|摇船啊，请载我横渡冥流|13",
+    "3.2|摇船啊，请载我横渡冥流|14",
+    "3.2|摇船啊，请载我横渡冥流|15",
+    "3.2|摇船啊，请载我横渡冥流|16",
+    "3.2|摇船啊，请载我横渡冥流|17",
+    "3.2|学者啊，于真理门前再会|2",
+    "3.3|星空啊，为纷乱千念濯洗|3",
+    "3.3|星空啊，为纷乱千念濯洗|4",
+    "3.3|书卷啊，可曾令锋刃回眸|1",
+    "3.3|书卷啊，可曾令锋刃回眸|2",
+    "3.3|书卷啊，可曾令锋刃回眸|5",
+    "3.3|书卷啊，可曾令锋刃回眸|6",
+    "3.3|书卷啊，可曾令锋刃回眸|7",
+    "3.3|金丝啊，请喻救世者谶语|1",
+    "3.3|金丝啊，请喻救世者谶语|3",
+    "3.3|金丝啊，请喻救世者谶语|7",
+    "3.3|诗者啊，从我处诉说天空•上|1",
+    "3.3|诗者啊，从我处诉说天空•上|2",
+    "3.3|诗者啊，从我处诉说天空•上|4",
+    "3.3|诗者啊，从我处诉说天空•上|5",
+    "3.3|诗者啊，从我处诉说天空•上|8",
+    "3.3|诗者啊，从我处诉说天空•上|10",
+    "3.3|诗者啊，从我处诉说天空•上|11",
+    "3.3|诗者啊，从我处诉说天空•上|12",
+    "3.3|诗者啊，从我处诉说天空•上|15",
+    "3.3|诗者啊，从我处诉说天空•上|19",
+    "3.3|诗者啊，从我处诉说天空•上|25",
+    "3.3|诗者啊，从我处诉说天空•上|30",
+    "3.3|诗者啊，从我处诉说天空•下|2",
+    "3.3|诗者啊，从我处诉说天空•下|4",
+    "3.3|诗者啊，从我处诉说天空•下|5",
+    "3.3|诗者啊，从我处诉说天空•下|6",
+    "3.3|黎明啊，执耀于全世之终|1",
+    "3.3|黎明啊，执耀于全世之终|6",
+    "3.3|黎明啊，执耀于全世之终|7",
+    "3.3|黎明啊，执耀于全世之终|8",
+    "3.3|黎明啊，执耀于全世之终|10",
+    "3.3|黎明啊，执耀于全世之终|11",
+    "3.4|英雄啊，兑现那染血的冀望|5",
+    "3.4|英雄啊，兑现那染血的冀望|6",
+    "3.4|英雄啊，兑现那染血的冀望|7",
+    "3.4|母亲啊，暌离于冬去春来|8",
+    "3.4|英雄啊，回返那安宁的家乡|3",
+    "3.4|英雄啊，回返那安宁的家乡|4",
+    "3.4|英雄啊，回返那安宁的家乡|5",
+    "3.4|英雄啊，回返那安宁的家乡|6",
+    "3.4|英雄啊，回返那安宁的家乡|7",
+    "3.4|英雄啊，回返那安宁的家乡|8",
+    "3.4|英雄啊，回返那安宁的家乡|9",
+    "3.4|英雄啊，回返那安宁的家乡|10",
+    "3.4|英雄啊，回返那安宁的家乡|11",
+    "3.4|英雄啊，回返那安宁的家乡|13",
+    "3.4|英雄啊，回返那安宁的家乡|17",
+    "3.4|英雄啊，回返那安宁的家乡|18",
+    "3.4|英雄啊，回返那安宁的家乡|19",
+    "3.4|英雄啊，回返那安宁的家乡|20",
+    "3.4|英雄啊，点燃那最初的骄阳|2",
+    "3.4|英雄啊，将创世的凯歌奏响|2",
+    "3.5|流年啊，渡我漂游千百载|2",
+    "3.5|流年啊，渡我漂游千百载|3",
+    "3.5|流年啊，渡我漂游千百载|5",
+    "3.5|初日啊，逐退群星与残月|3",
+    "3.5|初日啊，逐退群星与残月|4",
+    "3.5|初日啊，逐退群星与残月|5",
+    "3.5|初日啊，逐退群星与残月|6",
+    "3.5|初日啊，逐退群星与残月|7",
+    "3.5|初日啊，逐退群星与残月|8",
+    "3.5|初日啊，逐退群星与残月|9",
+    "3.5|初日啊，逐退群星与残月|10",
+    "3.5|初日啊，逐退群星与残月|11",
+    "3.5|初日啊，逐退群星与残月|12",
+    "3.5|初日啊，逐退群星与残月|13",
+    "3.5|初日啊，逐退群星与残月|14",
+    "3.5|初日啊，逐退群星与残月|15",
+    "3.5|初日啊，逐退群星与残月|16",
+    "3.5|初日啊，逐退群星与残月|17",
+    "3.5|初日啊，逐退群星与残月|18",
+    "3.5|初日啊，逐退群星与残月|19",
+    "3.5|初日啊，逐退群星与残月|20",
+    "3.5|初日啊，逐退群星与残月|21",
+    "3.5|归风啊，席卷旧尘登云天|4",
+    "3.5|归风啊，席卷旧尘登云天|5",
+    "3.5|归风啊，席卷旧尘登云天|6",
+    "3.5|归风啊，席卷旧尘登云天|10",
+    "3.5|归风啊，席卷旧尘登云天|11",
+    "3.5|囚人啊，踏过日影见沧溟|3",
+    "3.5|囚人啊，踏过日影见沧溟|4",
+    "3.5|囚人啊，踏过日影见沧溟|6",
+    "3.5|囚人啊，踏过日影见沧溟|7",
+    "3.5|囚人啊，踏过日影见沧溟|8",
+    "3.5|囚人啊，踏过日影见沧溟|9",
+    "3.5|囚人啊，踏过日影见沧溟|10",
+    "3.5|囚人啊，踏过日影见沧溟|11",
+    "3.5|囚人啊，踏过日影见沧溟|12",
+    "3.5|囚人啊，踏过日影见沧溟|13",
+    "3.5|囚人啊，踏过日影见沧溟|14",
+    "3.5|囚人啊，踏过日影见沧溟|15",
+    "3.6|长夜啊，先于黎明前到来|2",
+    "3.6|旅者啊，徘徊中忘却失真|8",
+    "3.6|旅者啊，徘徊中忘却失真|9",
+    "3.6|忆者啊，命途长河上溯洄|3",
+    "3.6|大墓啊，深藏轮回的秘密|6",
+    "3.6|大墓啊，深藏轮回的秘密|7",
+    "3.6|大墓啊，深藏轮回的秘密|9",
+    "3.6|大墓啊，深藏轮回的秘密|10",
+    "3.6|大墓啊，深藏轮回的秘密|11",
+    "3.6|大墓啊，深藏轮回的秘密|13",
+    "3.6|大墓啊，深藏轮回的秘密|14",
+    "3.6|大墓啊，深藏轮回的秘密|16",
+    "3.6|大墓啊，深藏轮回的秘密|17",
+    "3.6|大墓啊，深藏轮回的秘密|19",
+    "3.6|大墓啊，深藏轮回的秘密|21",
+    "3.6|大墓啊，深藏轮回的秘密|22",
+    "3.6|大墓啊，深藏轮回的秘密|24",
+    "3.6|大墓啊，深藏轮回的秘密|25",
+    "3.6|重逢啊，笑泪相拥的约定|1",
+    "3.6|重逢啊，笑泪相拥的约定|2",
+    "3.6|诸神啊，奏响创世的凯歌|4",
+    "3.7|晨曦啊，再抚映遥远地平|2",
+    "3.7|晨曦啊，再抚映遥远地平|3",
+    "3.7|晨曦啊，再抚映遥远地平|4",
+    "3.7|魔女的孤诣课题|21",
+    "3.7|魔女的孤诣课题|24",
+    "3.7|英雄啊，归以凡身向侵晨|2",
+    "3.7|英雄啊，归以凡身向侵晨|3",
+    "3.7|英雄啊，归以凡身向侵晨|5",
+    "3.7|英雄啊，归以凡身向侵晨|8",
+    "3.7|英雄啊，归以凡身向侵晨|10",
+    "3.7|英雄啊，归以凡身向侵晨|11",
+    "3.7|英雄啊，归以凡身向侵晨|12",
+    "3.7|英雄啊，归以凡身向侵晨|13",
+    "3.7|英雄啊，归以凡身向侵晨|14",
+    "3.7|英雄啊，归以凡身向侵晨|15",
+    "3.7|英雄啊，归以凡身向侵晨|16",
+    "3.7|英雄啊，归以凡身向侵晨|17",
+    "3.7|英雄啊，归以凡身向侵晨|18",
+    "3.7|英雄啊，归以凡身向侵晨|19",
+    "3.7|英雄啊，归以凡身向侵晨|20",
+    "3.7|英雄啊，归以凡身向侵晨|21",
+    "3.7|英雄啊，归以凡身向侵晨|22",
+    "3.7|英雄啊，归以凡身向侵晨|23",
+    "3.7|英雄啊，归以凡身向侵晨|25",
+    "3.7|纸页啊，镌留记忆的涟漪|1",
+    "3.7|纸页啊，镌留记忆的涟漪|3",
+    "3.7|纸页啊，镌留记忆的涟漪|4",
+    "3.7|纸页啊，镌留记忆的涟漪|5",
+    "3.7|纸页啊，镌留记忆的涟漪|6",
+    "3.7|纸页啊，镌留记忆的涟漪|8",
+    "3.7|纸页啊，镌留记忆的涟漪|9",
+    "3.7|纸页啊，镌留记忆的涟漪|10",
+    "3.7|纸页啊，镌留记忆的涟漪|11",
+    "3.7|纸页啊，镌留记忆的涟漪|12",
+    "3.7|银辇啊，挽别那人间史诗|11",
+    "3.7|银辇啊，挽别那人间史诗|12",
+    "3.7|银辇啊，挽别那人间史诗|13",
+    "3.7|落英啊，残芳纷飞留归躅|2",
+    "3.7|落英啊，残芳纷飞留归躅|3",
+    "3.7|落英啊，残芳纷飞留归躅|4",
+    "3.7|落英啊，残芳纷飞留归躅|5",
+    "3.7|落英啊，残芳纷飞留归躅|6",
+    "3.7|落英啊，残芳纷飞留归躅|7",
+    "3.7|落英啊，残芳纷飞留归躅|8",
+    "3.7|落英啊，残芳纷飞留归躅|9",
+    "3.7|落英啊，残芳纷飞留归躅|10",
+    "3.7|落英啊，残芳纷飞留归躅|11",
+    "3.7|落英啊，残芳纷飞留归躅|12",
+    "3.7|落英啊，残芳纷飞留归躅|13"
+   ],
+   "group": "A",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
-    "steps": 4,
-    "covered": 1,
+    "steps": 222,
+    "covered": 18,
     "per_version": {
-     "3.6": {
-      "steps": 4,
+     "3.0": {
+      "steps": 11,
+      "covered": 2
+     },
+     "3.1": {
+      "steps": 23,
+      "covered": 0
+     },
+     "3.2": {
+      "steps": 27,
       "covered": 1
+     },
+     "3.3": {
+      "steps": 32,
+      "covered": 3
+     },
+     "3.4": {
+      "steps": 20,
+      "covered": 2
+     },
+     "3.5": {
+      "steps": 39,
+      "covered": 2
+     },
+     "3.6": {
+      "steps": 21,
+      "covered": 1
+     },
+     "3.7": {
+      "steps": 49,
+      "covered": 7
      }
     },
     "per_task": {
-     "大地啊，承载万物的苦难": {
+     "谧林啊，寤思者缘何失语": {
+      "steps": 20,
+      "covered": 0
+     },
+     "初日啊，逐退群星与残月": {
+      "steps": 19,
+      "covered": 0
+     },
+     "英雄啊，归以凡身向侵晨": {
+      "steps": 19,
+      "covered": 1
+     },
+     "摇船啊，请载我横渡冥流": {
+      "steps": 17,
+      "covered": 0
+     },
+     "英雄啊，回返那安宁的家乡": {
+      "steps": 14,
+      "covered": 1
+     },
+     "大墓啊，深藏轮回的秘密": {
+      "steps": 14,
+      "covered": 0
+     },
+     "诗者啊，从我处诉说天空•上": {
+      "steps": 12,
+      "covered": 0
+     },
+     "囚人啊，踏过日影见沧溟": {
+      "steps": 12,
+      "covered": 1
+     },
+     "落英啊，残芳纷飞留归躅": {
+      "steps": 12,
+      "covered": 0
+     },
+     "纸页啊，镌留记忆的涟漪": {
+      "steps": 10,
+      "covered": 2
+     },
+     "纺锤啊，难纴岁月的经纬": {
+      "steps": 8,
+      "covered": 0
+     },
+     "黎明啊，执耀于全世之终": {
+      "steps": 6,
+      "covered": 2
+     },
+     "书卷啊，可曾令锋刃回眸": {
+      "steps": 5,
+      "covered": 0
+     },
+     "归风啊，席卷旧尘登云天": {
+      "steps": 5,
+      "covered": 1
+     },
+     "悬锋啊，请涤去你的血锈•上": {
+      "steps": 4,
+      "covered": 0
+     },
+     "悬锋啊，请涤去你的血锈•下": {
+      "steps": 4,
+      "covered": 1
+     },
+     "诗者啊，从我处诉说天空•下": {
+      "steps": 4,
+      "covered": 0
+     },
+     "仇寇啊，且领受金血烧灼": {
+      "steps": 3,
+      "covered": 0
+     },
+     "金丝啊，请喻救世者谶语": {
       "steps": 3,
       "covered": 1
+     },
+     "英雄啊，兑现那染血的冀望": {
+      "steps": 3,
+      "covered": 0
+     },
+     "流年啊，渡我漂游千百载": {
+      "steps": 3,
+      "covered": 0
+     },
+     "晨曦啊，再抚映遥远地平": {
+      "steps": 3,
+      "covered": 1
+     },
+     "银辇啊，挽别那人间史诗": {
+      "steps": 3,
+      "covered": 2
+     },
+     "夜帷啊，轻遮那静默过往": {
+      "steps": 2,
+      "covered": 1
+     },
+     "星空啊，为纷乱千念濯洗": {
+      "steps": 2,
+      "covered": 0
+     },
+     "旅者啊，徘徊中忘却失真": {
+      "steps": 2,
+      "covered": 0
+     },
+     "重逢啊，笑泪相拥的约定": {
+      "steps": 2,
+      "covered": 1
+     },
+     "魔女的孤诣课题": {
+      "steps": 2,
+      "covered": 1
+     },
+     "英雄啊，且握住那枚火种": {
+      "steps": 1,
+      "covered": 0
+     },
+     "行者啊，向冥河解缆起航": {
+      "steps": 1,
+      "covered": 0
+     },
+     "学者啊，于真理门前再会": {
+      "steps": 1,
+      "covered": 1
+     },
+     "母亲啊，暌离于冬去春来": {
+      "steps": 1,
+      "covered": 0
+     },
+     "英雄啊，点燃那最初的骄阳": {
+      "steps": 1,
+      "covered": 1
+     },
+     "英雄啊，将创世的凯歌奏响": {
+      "steps": 1,
+      "covered": 0
+     },
+     "长夜啊，先于黎明前到来": {
+      "steps": 1,
+      "covered": 0
+     },
+     "忆者啊，命途长河上溯洄": {
+      "steps": 1,
+      "covered": 0
      },
      "诸神啊，奏响创世的凯歌": {
       "steps": 1,
       "covered": 0
      }
     },
-    "unread_versions": [],
+    "unread_versions": [
+     "3.1"
+    ],
     "unread_tasks": [
      {
-      "task": "诸神啊，奏响创世的凯歌",
-      "steps": 1,
+      "task": "谧林啊，寤思者缘何失语",
+      "steps": 20,
+      "covered": 0
+     },
+     {
+      "task": "初日啊，逐退群星与残月",
+      "steps": 19,
+      "covered": 0
+     },
+     {
+      "task": "摇船啊，请载我横渡冥流",
+      "steps": 17,
+      "covered": 0
+     },
+     {
+      "task": "大墓啊，深藏轮回的秘密",
+      "steps": 14,
+      "covered": 0
+     },
+     {
+      "task": "诗者啊，从我处诉说天空•上",
+      "steps": 12,
+      "covered": 0
+     },
+     {
+      "task": "落英啊，残芳纷飞留归躅",
+      "steps": 12,
+      "covered": 0
+     },
+     {
+      "task": "纺锤啊，难纴岁月的经纬",
+      "steps": 8,
+      "covered": 0
+     },
+     {
+      "task": "书卷啊，可曾令锋刃回眸",
+      "steps": 5,
       "covered": 0
      }
     ],
-    "unread_task_count": 1
+    "unread_task_count": 22
    }
   },
   "开拓者": {
@@ -13136,6 +14494,9 @@
     "3.7|落英啊，残芳纷飞留归躅|10",
     "3.7|落英啊，残芳纷飞留归躅|11"
    ],
+   "group": "B",
+   "pair_with": null,
+   "note": null,
    "coverage_detail": {
     "steps": 387,
     "covered": 25,
@@ -13453,13 +14814,869 @@
     "unread_task_count": 38
    }
   },
-  "昔涟": {
-   "name": "昔涟",
+  "三月七": {
+   "name": "三月七",
    "summary": {
-    "n_records": 2393,
-    "n_steps": 222,
-    "n_steps_in_pool": 221,
-    "n_tasks": 37,
+    "n_records": 664,
+    "n_steps": 53,
+    "n_steps_in_pool": 53,
+    "n_tasks": 15,
+    "n_versions_present": 6,
+    "versions_present": [
+     "3.0",
+     "3.2",
+     "3.4",
+     "3.5",
+     "3.6",
+     "3.7"
+    ],
+    "versions_absent": [
+     "3.1",
+     "3.3"
+    ],
+    "mean_text_len": 23.08,
+    "mean_score_a": 0.0439,
+    "mean_score_b1": 0.1604,
+    "top100_a": 0.0943,
+    "top100_b1": 0.1509,
+    "median_rank_a": 264.0,
+    "median_rank_b1": 269.0
+   },
+   "per_version": {
+    "3.0": {
+     "n_records": 32,
+     "share_of_records": 0.0482,
+     "n_steps": 5,
+     "n_steps_in_pool": 5,
+     "n_tasks": 1,
+     "forms": {
+      "null": 31,
+      "幻象": 1
+     },
+     "address_own": {
+      "开拓者": 1
+     },
+     "address_other_same_steps": {
+      "开拓者": 4,
+      "伙伴": 1,
+      "老师": 1
+     },
+     "motif_own": {},
+     "motif_other_same_steps": {
+      "记忆": 10,
+      "无名": 4
+     },
+     "mean_score_a": -0.2098,
+     "mean_score_b1": -0.1321,
+     "top100_a": 0.0,
+     "top100_b1": 0.0,
+     "median_rank_a": 480.0,
+     "median_rank_b1": 388.0,
+     "mean_text_len": 22.94
+    },
+    "3.1": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.2": {
+     "n_records": 2,
+     "share_of_records": 0.003,
+     "n_steps": 1,
+     "n_steps_in_pool": 1,
+     "n_tasks": 1,
+     "forms": {
+      "null": 2
+     },
+     "address_own": {
+      "开拓者": 2
+     },
+     "address_other_same_steps": {
+      "阁下": 4,
+      "开拓者": 2,
+      "半神": 2,
+      "小灰": 1,
+      "英雄": 1,
+      "伙伴": 1
+     },
+     "motif_own": {},
+     "motif_other_same_steps": {
+      "黎明": 1,
+      "记忆": 1
+     },
+     "mean_score_a": 0.2588,
+     "mean_score_b1": 0.7529,
+     "top100_a": 0.0,
+     "top100_b1": 1.0,
+     "median_rank_a": 168.0,
+     "median_rank_b1": 93.0,
+     "mean_text_len": 10.0
+    },
+    "3.3": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.4": {
+     "n_records": 58,
+     "share_of_records": 0.0873,
+     "n_steps": 6,
+     "n_steps_in_pool": 6,
+     "n_tasks": 1,
+     "forms": {
+      "null": 58
+     },
+     "address_own": {
+      "开拓者": 3,
+      "伙伴": 1
+     },
+     "address_other_same_steps": {
+      "伙伴": 1
+     },
+     "motif_own": {
+      "记忆": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 13
+     },
+     "mean_score_a": -0.0058,
+     "mean_score_b1": -0.1898,
+     "top100_a": 0.0,
+     "top100_b1": 0.0,
+     "median_rank_a": 292.0,
+     "median_rank_b1": 431.0,
+     "mean_text_len": 20.52
+    },
+    "3.5": {
+     "n_records": 54,
+     "share_of_records": 0.0813,
+     "n_steps": 3,
+     "n_steps_in_pool": 3,
+     "n_tasks": 1,
+     "forms": {
+      "null": 40,
+      "长夜月": 14
+     },
+     "address_own": {
+      "开拓者": 5,
+      "英雄": 3,
+      "黄金裔": 2,
+      "救世主": 1
+     },
+     "address_other_same_steps": {
+      "开拓者": 1
+     },
+     "motif_own": {
+      "记忆": 7,
+      "火种": 2,
+      "无名": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 2
+     },
+     "mean_score_a": 0.4603,
+     "mean_score_b1": 0.443,
+     "top100_a": 0.3333,
+     "top100_b1": 0.0,
+     "median_rank_a": 166.0,
+     "median_rank_b1": 114.0,
+     "mean_text_len": 27.72
+    },
+    "3.6": {
+     "n_records": 429,
+     "share_of_records": 0.6461,
+     "n_steps": 12,
+     "n_steps_in_pool": 12,
+     "n_tasks": 5,
+     "forms": {
+      "长夜月": 258,
+      "幻象": 95,
+      "null": 76
+     },
+     "address_own": {
+      "开拓者": 29,
+      "伙伴": 5,
+      "英雄": 3,
+      "救世主": 3,
+      "老师": 2,
+      "黄金裔": 1,
+      "小灰": 1
+     },
+     "address_other_same_steps": {
+      "开拓者": 29,
+      "英雄": 5,
+      "半神": 3,
+      "阁下": 1,
+      "黄金裔": 1
+     },
+     "motif_own": {
+      "记忆": 42,
+      "火种": 4,
+      "无名": 3,
+      "逐火": 3
+     },
+     "motif_other_same_steps": {
+      "记忆": 30,
+      "火种": 7,
+      "逐火": 6,
+      "无名": 3,
+      "黎明": 3,
+      "迷迷": 2,
+      "德谬歌": 2,
+      "逐火是不断失却的旅途": 2,
+      "明天见": 1,
+      "烈阳": 1
+     },
+     "mean_score_a": 0.1158,
+     "mean_score_b1": 0.2888,
+     "top100_a": 0.25,
+     "top100_b1": 0.3333,
+     "median_rank_a": 206.0,
+     "median_rank_b1": 253.0,
+     "mean_text_len": 23.44
+    },
+    "3.7": {
+     "n_records": 89,
+     "share_of_records": 0.134,
+     "n_steps": 26,
+     "n_steps_in_pool": 26,
+     "n_tasks": 6,
+     "forms": {
+      "永夜之帷": 64,
+      "null": 21,
+      "记忆形态": 3,
+      "长夜月": 1
+     },
+     "address_own": {
+      "开拓者": 11,
+      "救世主": 1
+     },
+     "address_other_same_steps": {
+      "开拓者": 50,
+      "英雄": 24,
+      "救世主": 9,
+      "阁下": 7,
+      "伙伴": 5,
+      "老师": 3,
+      "灰宝": 1,
+      "小灰": 1
+     },
+     "motif_own": {
+      "记忆": 5,
+      "黎明": 1,
+      "逐火": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 48,
+      "逐火": 14,
+      "黎明": 12,
+      "无名": 8,
+      "德谬歌": 5,
+      "明天见": 4,
+      "火种": 2,
+      "迷迷": 2,
+      "烈阳": 1,
+      "灰白的黎明": 1,
+      "太阳": 1,
+      "逐火是不断失却的旅途": 1
+     },
+     "mean_score_a": 0.0147,
+     "mean_score_b1": 0.1828,
+     "top100_a": 0.0385,
+     "top100_b1": 0.1154,
+     "median_rank_a": 248.0,
+     "median_rank_b1": 256.0,
+     "mean_text_len": 20.57
+    }
+   },
+   "forms_overall": {
+    "长夜月": 273,
+    "null": 228,
+    "幻象": 96,
+    "永夜之帷": 64,
+    "记忆形态": 3
+   },
+   "per_task": [
+    {
+     "task": "学者啊，于真理门前再会",
+     "n_records": 2,
+     "n_steps": 1,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "晨曦啊，再抚映遥远地平",
+     "n_records": 11,
+     "n_steps": 1,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "诸神啊，奏响创世的凯歌",
+     "n_records": 29,
+     "n_steps": 1,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "长夜啊，先于黎明前到来",
+     "n_records": 104,
+     "n_steps": 1,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "纸页啊，镌留记忆的涟漪",
+     "n_records": 2,
+     "n_steps": 2,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "落英啊，残芳纷飞留归躅",
+     "n_records": 5,
+     "n_steps": 2,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "大墓啊，深藏轮回的秘密",
+     "n_records": 104,
+     "n_steps": 2,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "星路长驰，穹宇远征",
+     "n_records": 17,
+     "n_steps": 3,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "银辇啊，挽别那人间史诗",
+     "n_records": 18,
+     "n_steps": 3,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "游子啊，审谛蜡板的印痕",
+     "n_records": 54,
+     "n_steps": 3,
+     "versions": [
+      "3.5"
+     ]
+    },
+    {
+     "task": "重逢啊，笑泪相拥的约定",
+     "n_records": 174,
+     "n_steps": 3,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "旅者啊，徘徊中忘却失真",
+     "n_records": 18,
+     "n_steps": 5,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "银辇啊，迅赴那黑色大地",
+     "n_records": 32,
+     "n_steps": 5,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "母亲啊，暌离于冬去春来",
+     "n_records": 58,
+     "n_steps": 6,
+     "versions": [
+      "3.4"
+     ]
+    },
+    {
+     "task": "英雄啊，归以凡身向侵晨",
+     "n_records": 36,
+     "n_steps": 15,
+     "versions": [
+      "3.7"
+     ]
+    }
+   ],
+   "low_presence": {
+    "versions": [
+     "3.0",
+     "3.1",
+     "3.2",
+     "3.3"
+    ],
+    "tasks": [
+     {
+      "task": "学者啊，于真理门前再会",
+      "n_records": 2,
+      "n_steps": 1,
+      "versions": [
+       "3.2"
+      ]
+     },
+     {
+      "task": "晨曦啊，再抚映遥远地平",
+      "n_records": 11,
+      "n_steps": 1,
+      "versions": [
+       "3.7"
+      ]
+     },
+     {
+      "task": "诸神啊，奏响创世的凯歌",
+      "n_records": 29,
+      "n_steps": 1,
+      "versions": [
+       "3.6"
+      ]
+     },
+     {
+      "task": "长夜啊，先于黎明前到来",
+      "n_records": 104,
+      "n_steps": 1,
+      "versions": [
+       "3.6"
+      ]
+     },
+     {
+      "task": "纸页啊，镌留记忆的涟漪",
+      "n_records": 2,
+      "n_steps": 2,
+      "versions": [
+       "3.7"
+      ]
+     },
+     {
+      "task": "落英啊，残芳纷飞留归躅",
+      "n_records": 5,
+      "n_steps": 2,
+      "versions": [
+       "3.7"
+      ]
+     },
+     {
+      "task": "大墓啊，深藏轮回的秘密",
+      "n_records": 104,
+      "n_steps": 2,
+      "versions": [
+       "3.6"
+      ]
+     },
+     {
+      "task": "星路长驰，穹宇远征",
+      "n_records": 17,
+      "n_steps": 3,
+      "versions": [
+       "3.7"
+      ]
+     },
+     {
+      "task": "银辇啊，挽别那人间史诗",
+      "n_records": 18,
+      "n_steps": 3,
+      "versions": [
+       "3.7"
+      ]
+     },
+     {
+      "task": "游子啊，审谛蜡板的印痕",
+      "n_records": 54,
+      "n_steps": 3,
+      "versions": [
+       "3.5"
+      ]
+     }
+    ],
+    "note": "版本按台词占比<5%或为 0 判定；任务按步骤数≤3 判定（低存在感、可能被精读遗漏）"
+   },
+   "oracle_quotes": [],
+   "coverage": {
+    "n_steps": 53,
+    "n_steps_in_pool": 53,
+    "knife": {
+     "n": 6,
+     "n_total": 36,
+     "rate": 0.1132
+    },
+    "key_events": {
+     "n": 5,
+     "n_total": 30,
+     "rate": 0.0943
+    },
+    "annotation": {
+     "n": 4,
+     "n_total": 74,
+     "rate": 0.0755
+    },
+    "union_knife_key_events": {
+     "n": 6,
+     "rate": 0.1132
+    },
+    "union_all_close_reads": {
+     "n": 9,
+     "rate": 0.1698
+    },
+    "n_uncovered_knife_key": 47,
+    "uncovered_by_version": {
+     "3.7": 22,
+     "3.6": 11,
+     "3.4": 6,
+     "3.0": 5,
+     "3.5": 3
+    }
+   },
+   "timeline_form_changes": [
+    {
+     "order": 1,
+     "version": "3.0",
+     "task": "银辇啊，迅赴那黑色大地",
+     "step_idx": 12,
+     "form": "幻象",
+     "text": "醒~醒，该按快门啦！"
+    },
+    {
+     "order": 47,
+     "version": "3.5",
+     "task": "游子啊，审谛蜡板的印痕",
+     "step_idx": 7,
+     "form": "长夜月",
+     "text": "翁法罗斯的三月，属于永夜之帷的时间…暂时以长夜月这个称呼，将我放进你的回忆中吧♭"
+    },
+    {
+     "order": 52,
+     "version": "3.6",
+     "task": "长夜啊，先于黎明前到来",
+     "step_idx": 2,
+     "form": "幻象",
+     "text": "呵，这样啊。"
+    },
+    {
+     "order": 52,
+     "version": "3.6",
+     "task": "长夜啊，先于黎明前到来",
+     "step_idx": 2,
+     "form": "长夜月",
+     "text": "被「忘却」的浪潮吞没吧。"
+    },
+    {
+     "order": 54,
+     "version": "3.6",
+     "task": "旅者啊，徘徊中忘却失真",
+     "step_idx": 6,
+     "form": "幻象",
+     "text": "喂喂喂？是开拓者吗？"
+    },
+    {
+     "order": 54,
+     "version": "3.6",
+     "task": "旅者啊，徘徊中忘却失真",
+     "step_idx": 8,
+     "form": "长夜月",
+     "text": "我们在守护「三月七」的愿望呀，开拓者。"
+    },
+    {
+     "order": 59,
+     "version": "3.6",
+     "task": "重逢啊，笑泪相拥的约定",
+     "step_idx": 2,
+     "form": "幻象",
+     "text": "虽然知道你是诚心诚意在夸我……"
+    },
+    {
+     "order": 59,
+     "version": "3.6",
+     "task": "重逢啊，笑泪相拥的约定",
+     "step_idx": 2,
+     "form": "长夜月",
+     "text": "悟性很高呢，小忆灵。但只凭你和「同谐」的小鸟——想困住我，多少有些勉强了呀？"
+    },
+    {
+     "order": 61,
+     "version": "3.7",
+     "task": "晨曦啊，再抚映遥远地平",
+     "step_idx": 2,
+     "form": "永夜之帷",
+     "text": "我是能利用「岁月」的夹缝，但开拓者和丹恒…不会要干等好几千年吧？"
+    },
+    {
+     "order": 65,
+     "version": "3.7",
+     "task": "纸页啊，镌留记忆的涟漪",
+     "step_idx": 1,
+     "form": "长夜月",
+     "text": "铁墓是一艘完美的航船，若能暗中埋下种子，在「智识」被它引爆的瞬间，「记忆」也将遍"
+    },
+    {
+     "order": 65,
+     "version": "3.7",
+     "task": "纸页啊，镌留记忆的涟漪",
+     "step_idx": 12,
+     "form": "永夜之帷",
+     "text": "长夜月，我将「记忆」织作群星——"
+    },
+    {
+     "order": 67,
+     "version": "3.7",
+     "task": "落英啊，残芳纷飞留归躅",
+     "step_idx": 4,
+     "form": "记忆形态",
+     "text": "可恶，这些怪物…到底是什么来头？！"
+    }
+   ],
+   "all_steps": [
+    "3.0|银辇啊，迅赴那黑色大地|1",
+    "3.0|银辇啊，迅赴那黑色大地|2",
+    "3.0|银辇啊，迅赴那黑色大地|3",
+    "3.0|银辇啊，迅赴那黑色大地|6",
+    "3.0|银辇啊，迅赴那黑色大地|12",
+    "3.2|学者啊，于真理门前再会|2",
+    "3.4|母亲啊，暌离于冬去春来|2",
+    "3.4|母亲啊，暌离于冬去春来|3",
+    "3.4|母亲啊，暌离于冬去春来|4",
+    "3.4|母亲啊，暌离于冬去春来|5",
+    "3.4|母亲啊，暌离于冬去春来|6",
+    "3.4|母亲啊，暌离于冬去春来|8",
+    "3.5|游子啊，审谛蜡板的印痕|5",
+    "3.5|游子啊，审谛蜡板的印痕|6",
+    "3.5|游子啊，审谛蜡板的印痕|7",
+    "3.6|长夜啊，先于黎明前到来|2",
+    "3.6|旅者啊，徘徊中忘却失真|6",
+    "3.6|旅者啊，徘徊中忘却失真|8",
+    "3.6|旅者啊，徘徊中忘却失真|9",
+    "3.6|旅者啊，徘徊中忘却失真|10",
+    "3.6|旅者啊，徘徊中忘却失真|11",
+    "3.6|大墓啊，深藏轮回的秘密|5",
+    "3.6|大墓啊，深藏轮回的秘密|25",
+    "3.6|重逢啊，笑泪相拥的约定|1",
+    "3.6|重逢啊，笑泪相拥的约定|2",
+    "3.6|重逢啊，笑泪相拥的约定|3",
+    "3.6|诸神啊，奏响创世的凯歌|4",
+    "3.7|晨曦啊，再抚映遥远地平|2",
+    "3.7|星路长驰，穹宇远征|6",
+    "3.7|星路长驰，穹宇远征|7",
+    "3.7|星路长驰，穹宇远征|8",
+    "3.7|英雄啊，归以凡身向侵晨|2",
+    "3.7|英雄啊，归以凡身向侵晨|3",
+    "3.7|英雄啊，归以凡身向侵晨|5",
+    "3.7|英雄啊，归以凡身向侵晨|7",
+    "3.7|英雄啊，归以凡身向侵晨|8",
+    "3.7|英雄啊，归以凡身向侵晨|9",
+    "3.7|英雄啊，归以凡身向侵晨|10",
+    "3.7|英雄啊，归以凡身向侵晨|12",
+    "3.7|英雄啊，归以凡身向侵晨|13",
+    "3.7|英雄啊，归以凡身向侵晨|15",
+    "3.7|英雄啊，归以凡身向侵晨|17",
+    "3.7|英雄啊，归以凡身向侵晨|19",
+    "3.7|英雄啊，归以凡身向侵晨|22",
+    "3.7|英雄啊，归以凡身向侵晨|23",
+    "3.7|英雄啊，归以凡身向侵晨|25",
+    "3.7|纸页啊，镌留记忆的涟漪|1",
+    "3.7|纸页啊，镌留记忆的涟漪|12",
+    "3.7|银辇啊，挽别那人间史诗|11",
+    "3.7|银辇啊，挽别那人间史诗|12",
+    "3.7|银辇啊，挽别那人间史诗|13",
+    "3.7|落英啊，残芳纷飞留归躅|4",
+    "3.7|落英啊，残芳纷飞留归躅|11"
+   ],
+   "group": "B",
+   "pair_with": "长夜月（同一人形态：长夜月/永夜之帷/幻象/记忆形态）",
+   "note": null,
+   "coverage_detail": {
+    "steps": 53,
+    "covered": 6,
+    "per_version": {
+     "3.0": {
+      "steps": 5,
+      "covered": 0
+     },
+     "3.2": {
+      "steps": 1,
+      "covered": 1
+     },
+     "3.4": {
+      "steps": 6,
+      "covered": 0
+     },
+     "3.5": {
+      "steps": 3,
+      "covered": 0
+     },
+     "3.6": {
+      "steps": 12,
+      "covered": 1
+     },
+     "3.7": {
+      "steps": 26,
+      "covered": 4
+     }
+    },
+    "per_task": {
+     "英雄啊，归以凡身向侵晨": {
+      "steps": 15,
+      "covered": 1
+     },
+     "母亲啊，暌离于冬去春来": {
+      "steps": 6,
+      "covered": 0
+     },
+     "银辇啊，迅赴那黑色大地": {
+      "steps": 5,
+      "covered": 0
+     },
+     "旅者啊，徘徊中忘却失真": {
+      "steps": 5,
+      "covered": 0
+     },
+     "游子啊，审谛蜡板的印痕": {
+      "steps": 3,
+      "covered": 0
+     },
+     "重逢啊，笑泪相拥的约定": {
+      "steps": 3,
+      "covered": 1
+     },
+     "星路长驰，穹宇远征": {
+      "steps": 3,
+      "covered": 0
+     },
+     "银辇啊，挽别那人间史诗": {
+      "steps": 3,
+      "covered": 2
+     },
+     "大墓啊，深藏轮回的秘密": {
+      "steps": 2,
+      "covered": 0
+     },
+     "纸页啊，镌留记忆的涟漪": {
+      "steps": 2,
+      "covered": 1
+     },
+     "落英啊，残芳纷飞留归躅": {
+      "steps": 2,
+      "covered": 0
+     },
+     "学者啊，于真理门前再会": {
+      "steps": 1,
+      "covered": 1
+     },
+     "长夜啊，先于黎明前到来": {
+      "steps": 1,
+      "covered": 0
+     },
+     "诸神啊，奏响创世的凯歌": {
+      "steps": 1,
+      "covered": 0
+     },
+     "晨曦啊，再抚映遥远地平": {
+      "steps": 1,
+      "covered": 0
+     }
+    },
+    "unread_versions": [
+     "3.0",
+     "3.4",
+     "3.5"
+    ],
+    "unread_tasks": [
+     {
+      "task": "母亲啊，暌离于冬去春来",
+      "steps": 6,
+      "covered": 0
+     },
+     {
+      "task": "银辇啊，迅赴那黑色大地",
+      "steps": 5,
+      "covered": 0
+     },
+     {
+      "task": "旅者啊，徘徊中忘却失真",
+      "steps": 5,
+      "covered": 0
+     },
+     {
+      "task": "游子啊，审谛蜡板的印痕",
+      "steps": 3,
+      "covered": 0
+     },
+     {
+      "task": "星路长驰，穹宇远征",
+      "steps": 3,
+      "covered": 0
+     },
+     {
+      "task": "大墓啊，深藏轮回的秘密",
+      "steps": 2,
+      "covered": 0
+     },
+     {
+      "task": "落英啊，残芳纷飞留归躅",
+      "steps": 2,
+      "covered": 0
+     },
+     {
+      "task": "长夜啊，先于黎明前到来",
+      "steps": 1,
+      "covered": 0
+     }
+    ],
+    "unread_task_count": 10
+   }
+  },
+  "丹恒": {
+   "name": "丹恒",
+   "summary": {
+    "n_records": 1541,
+    "n_steps": 210,
+    "n_steps_in_pool": 208,
+    "n_tasks": 38,
     "n_versions_present": 8,
     "versions_present": [
      "3.0",
@@ -13472,540 +15689,522 @@
      "3.7"
     ],
     "versions_absent": [],
-    "mean_text_len": 20.87,
-    "mean_score_a": -0.0124,
-    "mean_score_b1": 0.0645,
-    "top100_a": 0.1131,
-    "top100_b1": 0.1448,
-    "median_rank_a": 344.0,
-    "median_rank_b1": 315.0
+    "mean_text_len": 19.52,
+    "mean_score_a": -0.0822,
+    "mean_score_b1": -0.0247,
+    "top100_a": 0.0769,
+    "top100_b1": 0.1154,
+    "median_rank_a": 380.0,
+    "median_rank_b1": 336.5
    },
    "per_version": {
     "3.0": {
-     "n_records": 92,
-     "share_of_records": 0.0384,
-     "n_steps": 11,
-     "n_steps_in_pool": 11,
-     "n_tasks": 4,
+     "n_records": 416,
+     "share_of_records": 0.27,
+     "n_steps": 70,
+     "n_steps_in_pool": 70,
+     "n_tasks": 7,
      "forms": {
-      "迷迷": 92
+      "null": 416
      },
      "address_own": {
-      "伙伴": 10,
-      "开拓者": 2
-     },
-     "address_other_same_steps": {
-      "开拓者": 28,
-      "阁下": 27,
-      "黄金裔": 11,
-      "老师": 7,
-      "半神": 3,
-      "伙伴": 2,
+      "开拓者": 16,
+      "黄金裔": 9,
       "英雄": 2,
-      "救世主": 1
-     },
-     "motif_own": {
-      "记忆": 18,
-      "迷迷": 5
-     },
-     "motif_other_same_steps": {
-      "火种": 14,
-      "记忆": 11,
-      "迷迷": 3,
-      "明天见": 1,
-      "黎明": 1
-     },
-     "mean_score_a": -0.0261,
-     "mean_score_b1": 0.168,
-     "top100_a": 0.0909,
-     "top100_b1": 0.2727,
-     "median_rank_a": 357.0,
-     "median_rank_b1": 270.0,
-     "mean_text_len": 16.92
-    },
-    "3.1": {
-     "n_records": 154,
-     "share_of_records": 0.0644,
-     "n_steps": 23,
-     "n_steps_in_pool": 23,
-     "n_tasks": 2,
-     "forms": {
-      "迷迷": 154
-     },
-     "address_own": {
-      "伙伴": 8,
-      "开拓者": 7
-     },
-     "address_other_same_steps": {
-      "阁下": 26,
-      "老师": 14,
-      "开拓者": 10,
-      "小灰": 8,
-      "黄金裔": 7,
-      "半神": 2,
-      "英雄": 2,
-      "救世主": 2,
-      "伙伴": 1
-     },
-     "motif_own": {
-      "记忆": 13,
-      "迷迷": 4,
-      "火种": 2,
-      "太阳": 1
-     },
-     "motif_other_same_steps": {
-      "火种": 35,
-      "迷迷": 4,
-      "记忆": 4,
-      "逐火": 4
-     },
-     "mean_score_a": -0.0111,
-     "mean_score_b1": 0.0909,
-     "top100_a": 0.087,
-     "top100_b1": 0.0,
-     "median_rank_a": 309.0,
-     "median_rank_b1": 224.0,
-     "mean_text_len": 19.23
-    },
-    "3.2": {
-     "n_records": 136,
-     "share_of_records": 0.0568,
-     "n_steps": 27,
-     "n_steps_in_pool": 26,
-     "n_tasks": 4,
-     "forms": {
-      "迷迷": 136
-     },
-     "address_own": {
-      "开拓者": 7,
-      "伙伴": 4,
-      "英雄": 1,
-      "黄金裔": 1
-     },
-     "address_other_same_steps": {
-      "阁下": 52,
-      "开拓者": 29,
-      "老师": 14,
-      "黄金裔": 14,
-      "半神": 5,
-      "英雄": 4,
-      "小灰": 3
-     },
-     "motif_own": {
-      "记忆": 4,
-      "火种": 1,
-      "迷迷": 1
-     },
-     "motif_other_same_steps": {
-      "逐火": 14,
-      "迷迷": 13,
-      "记忆": 12,
-      "火种": 11,
-      "明天见": 3,
-      "黎明": 2,
-      "无名": 2
-     },
-     "mean_score_a": 0.2885,
-     "mean_score_b1": 0.3647,
-     "top100_a": 0.3077,
-     "top100_b1": 0.3462,
-     "median_rank_a": 207.0,
-     "median_rank_b1": 175.5,
-     "mean_text_len": 19.42
-    },
-    "3.3": {
-     "n_records": 155,
-     "share_of_records": 0.0648,
-     "n_steps": 32,
-     "n_steps_in_pool": 32,
-     "n_tasks": 6,
-     "forms": {
-      "迷迷": 150,
-      "null": 5
-     },
-     "address_own": {
-      "开拓者": 5,
-      "半神": 1,
       "伙伴": 1,
-      "救世主": 1,
-      "黄金裔": 1
+      "阁下": 1
      },
      "address_other_same_steps": {
-      "阁下": 60,
-      "黄金裔": 42,
-      "开拓者": 34,
-      "英雄": 30,
-      "老师": 25,
-      "半神": 13,
-      "伙伴": 11,
-      "灰宝": 5,
-      "救世主": 4,
+      "黄金裔": 61,
+      "老师": 35,
+      "阁下": 34,
+      "开拓者": 28,
+      "英雄": 23,
+      "半神": 11,
+      "救世主": 8,
+      "伙伴": 5,
       "小灰": 1
      },
      "motif_own": {
-      "记忆": 13,
-      "逐火": 2,
+      "火种": 3,
+      "无名": 2,
+      "记忆": 1
+     },
+     "motif_other_same_steps": {
+      "火种": 27,
+      "记忆": 23,
+      "无名": 6,
+      "黎明": 3,
+      "迷迷": 3,
+      "太阳": 1,
+      "逐火": 1,
+      "明天见": 1
+     },
+     "mean_score_a": -0.1691,
+     "mean_score_b1": -0.1954,
+     "top100_a": 0.0429,
+     "top100_b1": 0.0429,
+     "median_rank_a": 422.5,
+     "median_rank_b1": 392.5,
+     "mean_text_len": 19.7
+    },
+    "3.1": {
+     "n_records": 110,
+     "share_of_records": 0.0714,
+     "n_steps": 11,
+     "n_steps_in_pool": 11,
+     "n_tasks": 7,
+     "forms": {
+      "null": 110
+     },
+     "address_own": {
+      "黄金裔": 5,
+      "开拓者": 2
+     },
+     "address_other_same_steps": {
+      "老师": 10,
+      "开拓者": 8,
+      "阁下": 6,
+      "黄金裔": 5,
+      "英雄": 4,
+      "救世主": 3,
+      "灰宝": 2,
+      "小灰": 1,
+      "半神": 1
+     },
+     "motif_own": {
+      "火种": 3,
+      "无名": 2,
+      "逐火": 1,
       "迷迷": 1
      },
      "motif_other_same_steps": {
-      "火种": 48,
-      "逐火": 36,
-      "黎明": 21,
-      "记忆": 11,
-      "无名": 9,
-      "烈阳": 8,
-      "迷迷": 3,
-      "太阳": 1,
+      "火种": 22,
+      "记忆": 6,
+      "明天见": 5,
+      "逐火": 4,
+      "太阳": 2,
+      "迷迷": 2,
+      "逐火是不断失却的旅途": 1
+     },
+     "mean_score_a": 0.1358,
+     "mean_score_b1": 0.2729,
+     "top100_a": 0.0909,
+     "top100_b1": 0.2727,
+     "median_rank_a": 227.0,
+     "median_rank_b1": 205.0,
+     "mean_text_len": 24.34
+    },
+    "3.2": {
+     "n_records": 119,
+     "share_of_records": 0.0772,
+     "n_steps": 13,
+     "n_steps_in_pool": 13,
+     "n_tasks": 3,
+     "forms": {
+      "null": 119
+     },
+     "address_own": {
+      "开拓者": 7,
+      "英雄": 4,
+      "黄金裔": 4,
+      "半神": 2
+     },
+     "address_other_same_steps": {
+      "老师": 33,
+      "开拓者": 20,
+      "黄金裔": 8,
+      "阁下": 7,
+      "英雄": 5,
+      "半神": 2,
+      "灰宝": 1,
+      "小灰": 1,
+      "伙伴": 1
+     },
+     "motif_own": {
+      "迷迷": 5,
+      "逐火": 4,
+      "火种": 3,
+      "记忆": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 28,
+      "火种": 10,
+      "逐火": 5,
+      "黎明": 3,
+      "迷迷": 1
+     },
+     "mean_score_a": -0.0531,
+     "mean_score_b1": 0.0646,
+     "top100_a": 0.0,
+     "top100_b1": 0.2308,
+     "median_rank_a": 335.0,
+     "median_rank_b1": 301.0,
+     "mean_text_len": 24.92
+    },
+    "3.3": {
+     "n_records": 206,
+     "share_of_records": 0.1337,
+     "n_steps": 45,
+     "n_steps_in_pool": 45,
+     "n_tasks": 6,
+     "forms": {
+      "null": 206
+     },
+     "address_own": {
+      "开拓者": 10,
+      "黄金裔": 6,
+      "阁下": 3,
+      "伙伴": 3,
+      "英雄": 2
+     },
+     "address_other_same_steps": {
+      "阁下": 63,
+      "英雄": 56,
+      "黄金裔": 42,
+      "老师": 32,
+      "开拓者": 27,
+      "半神": 9,
+      "伙伴": 8,
+      "灰宝": 8,
+      "救世主": 7
+     },
+     "motif_own": {
+      "火种": 6,
+      "逐火": 4,
+      "黎明": 2,
+      "无名": 2,
+      "记忆": 2
+     },
+     "motif_other_same_steps": {
+      "火种": 63,
+      "逐火": 37,
+      "黎明": 22,
+      "记忆": 21,
+      "烈阳": 12,
+      "无名": 10,
+      "太阳": 2,
+      "迷迷": 1,
       "不要回头": 1
      },
-     "mean_score_a": -0.009,
-     "mean_score_b1": 0.1257,
-     "top100_a": 0.0625,
-     "top100_b1": 0.2188,
-     "median_rank_a": 315.5,
-     "median_rank_b1": 289.5,
-     "mean_text_len": 18.34
+     "mean_score_a": -0.0394,
+     "mean_score_b1": 0.0414,
+     "top100_a": 0.0667,
+     "top100_b1": 0.1111,
+     "median_rank_a": 325.0,
+     "median_rank_b1": 328.0,
+     "mean_text_len": 18.86
     },
     "3.4": {
-     "n_records": 294,
-     "share_of_records": 0.1229,
+     "n_records": 32,
+     "share_of_records": 0.0208,
+     "n_steps": 4,
+     "n_steps_in_pool": 4,
+     "n_tasks": 2,
+     "forms": {
+      "null": 32
+     },
+     "address_own": {
+      "开拓者": 2
+     },
+     "address_other_same_steps": {
+      "开拓者": 6,
+      "阁下": 4,
+      "半神": 1
+     },
+     "motif_own": {},
+     "motif_other_same_steps": {
+      "无名": 5
+     },
+     "mean_score_a": -0.2615,
+     "mean_score_b1": -0.465,
+     "top100_a": 0.0,
+     "top100_b1": 0.0,
+     "median_rank_a": 494.5,
+     "median_rank_b1": 452.5,
+     "mean_text_len": 18.72
+    },
+    "3.5": {
+     "n_records": 2,
+     "share_of_records": 0.0013,
+     "n_steps": 1,
+     "n_steps_in_pool": 1,
+     "n_tasks": 1,
+     "forms": {
+      "null": 2
+     },
+     "address_own": {},
+     "address_other_same_steps": {
+      "黄金裔": 5,
+      "英雄": 3,
+      "救世主": 3,
+      "半神": 2,
+      "开拓者": 1
+     },
+     "motif_own": {},
+     "motif_other_same_steps": {
+      "逐火": 5,
+      "记忆": 4
+     },
+     "mean_score_a": 0.5084,
+     "mean_score_b1": 1.3153,
+     "top100_a": 1.0,
+     "top100_b1": 1.0,
+     "median_rank_a": 79.0,
+     "median_rank_b1": 17.0,
+     "mean_text_len": 18.0
+    },
+    "3.6": {
+     "n_records": 588,
+     "share_of_records": 0.3816,
+     "n_steps": 46,
+     "n_steps_in_pool": 44,
+     "n_tasks": 7,
+     "forms": {
+      "null": 503,
+      "丹枫": 84,
+      "丹恒": 1
+     },
+     "address_own": {
+      "开拓者": 24,
+      "半神": 11,
+      "黄金裔": 4,
+      "伙伴": 3,
+      "英雄": 2
+     },
+     "address_other_same_steps": {
+      "开拓者": 54,
+      "阁下": 26,
+      "英雄": 12,
+      "救世主": 9,
+      "伙伴": 8,
+      "半神": 7,
+      "老师": 4,
+      "小灰": 3,
+      "黄金裔": 2
+     },
+     "motif_own": {
+      "记忆": 42,
+      "火种": 5,
+      "无名": 4,
+      "迷迷": 3,
+      "逐火": 2,
+      "黎明": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 71,
+      "逐火": 19,
+      "无名": 12,
+      "黎明": 8,
+      "火种": 8,
+      "逐火是不断失却的旅途": 3,
+      "德谬歌": 3,
+      "迷迷": 2,
+      "烈阳": 2,
+      "不要回头": 1,
+      "明天见": 1
+     },
+     "mean_score_a": -0.0674,
+     "mean_score_b1": 0.0488,
+     "top100_a": 0.1591,
+     "top100_b1": 0.1818,
+     "median_rank_a": 420.0,
+     "median_rank_b1": 310.5,
+     "mean_text_len": 18.02
+    },
+    "3.7": {
+     "n_records": 68,
+     "share_of_records": 0.0441,
      "n_steps": 20,
      "n_steps_in_pool": 20,
      "n_tasks": 5,
      "forms": {
-      "null": 264,
-      "往昔的涟漪": 21,
-      "迷迷": 9
+      "null": 65,
+      "记忆形态": 3
      },
      "address_own": {
-      "救世主": 8,
-      "伙伴": 7,
-      "英雄": 4,
-      "老师": 1,
-      "半神": 1,
-      "开拓者": 1
+      "开拓者": 3
      },
      "address_other_same_steps": {
-      "英雄": 19,
-      "阁下": 16,
-      "伙伴": 14,
-      "开拓者": 11,
-      "救世主": 10,
-      "黄金裔": 10,
-      "老师": 8,
-      "半神": 6
-     },
-     "motif_own": {
-      "记忆": 8,
-      "逐火": 3,
-      "火种": 1
-     },
-     "motif_other_same_steps": {
-      "火种": 10,
-      "记忆": 10,
-      "逐火": 8,
-      "黎明": 4,
-      "烈阳": 2,
-      "无名": 2,
-      "太阳": 1
-     },
-     "mean_score_a": -0.0539,
-     "mean_score_b1": -0.0347,
-     "top100_a": 0.05,
-     "top100_b1": 0.1,
-     "median_rank_a": 347.0,
-     "median_rank_b1": 363.5,
-     "mean_text_len": 23.26
-    },
-    "3.5": {
-     "n_records": 449,
-     "share_of_records": 0.1876,
-     "n_steps": 39,
-     "n_steps_in_pool": 39,
-     "n_tasks": 4,
-     "forms": {
-      "null": 440,
-      "记忆形态": 9
-     },
-     "address_own": {
-      "开拓者": 83,
-      "英雄": 10,
-      "救世主": 8,
-      "半神": 5,
-      "阁下": 4,
-      "黄金裔": 2,
-      "伙伴": 2
-     },
-     "address_other_same_steps": {
-      "救世主": 41,
-      "开拓者": 18,
-      "黄金裔": 14,
-      "英雄": 14,
-      "半神": 8,
+      "开拓者": 41,
+      "英雄": 22,
+      "救世主": 7,
       "阁下": 6,
-      "伙伴": 1
+      "伙伴": 4,
+      "老师": 3,
+      "小灰": 2,
+      "灰宝": 1
      },
-     "motif_own": {
-      "记忆": 23,
+     "motif_own": {},
+     "motif_other_same_steps": {
+      "记忆": 24,
       "逐火": 12,
-      "火种": 6,
-      "迷迷": 4,
-      "黎明": 2,
-      "无名": 1
-     },
-     "motif_other_same_steps": {
-      "逐火": 28,
-      "记忆": 16,
-      "火种": 15,
-      "无名": 3,
-      "黎明": 2,
-      "迷迷": 1
-     },
-     "mean_score_a": -0.0915,
-     "mean_score_b1": -0.0583,
-     "top100_a": 0.1538,
-     "top100_b1": 0.0513,
-     "median_rank_a": 370.0,
-     "median_rank_b1": 354.0,
-     "mean_text_len": 25.34
-    },
-    "3.6": {
-     "n_records": 185,
-     "share_of_records": 0.0773,
-     "n_steps": 21,
-     "n_steps_in_pool": 21,
-     "n_tasks": 6,
-     "forms": {
-      "null": 95,
-      "往昔的涟漪": 90
-     },
-     "address_own": {
-      "开拓者": 19,
-      "救世主": 3,
-      "英雄": 2,
-      "半神": 1
-     },
-     "address_other_same_steps": {
-      "开拓者": 37,
-      "英雄": 8,
-      "伙伴": 6,
-      "半神": 4,
-      "救世主": 3,
-      "黄金裔": 2,
-      "老师": 2,
-      "阁下": 1,
-      "小灰": 1
-     },
-     "motif_own": {
-      "记忆": 18,
-      "逐火": 6,
-      "迷迷": 2,
-      "黎明": 2,
-      "火种": 1,
-      "逐火是不断失却的旅途": 1
-     },
-     "motif_other_same_steps": {
-      "记忆": 62,
-      "火种": 10,
-      "逐火": 8,
-      "无名": 6,
-      "黎明": 3,
-      "迷迷": 2,
-      "德谬歌": 2,
-      "明天见": 1,
-      "烈阳": 1,
-      "逐火是不断失却的旅途": 1
-     },
-     "mean_score_a": -0.0387,
-     "mean_score_b1": 0.135,
-     "top100_a": 0.1905,
-     "top100_b1": 0.2857,
-     "median_rank_a": 476.0,
-     "median_rank_b1": 325.0,
-     "mean_text_len": 23.49
-    },
-    "3.7": {
-     "n_records": 928,
-     "share_of_records": 0.3878,
-     "n_steps": 49,
-     "n_steps_in_pool": 49,
-     "n_tasks": 6,
-     "forms": {
-      "null": 627,
-      "记忆形态": 162,
-      "往昔的涟漪": 96,
-      "迷迷": 23,
-      "另一位作者": 20
-     },
-     "address_own": {
-      "开拓者": 55,
-      "英雄": 16,
-      "救世主": 8,
-      "伙伴": 5,
-      "老师": 2
-     },
-     "address_other_same_steps": {
-      "开拓者": 32,
-      "英雄": 21,
-      "救世主": 11,
-      "阁下": 8,
-      "小灰": 3,
-      "老师": 2,
-      "灰宝": 1,
-      "伙伴": 1
-     },
-     "motif_own": {
-      "记忆": 65,
-      "逐火": 8,
-      "黎明": 7,
-      "迷迷": 7,
+      "黎明": 12,
+      "无名": 4,
       "德谬歌": 3,
-      "无名": 2,
-      "逐火是不断失却的旅途": 2,
-      "灰白的黎明": 2,
-      "明天见": 1,
-      "烈阳": 1,
-      "骄阳": 1,
-      "火种": 1
-     },
-     "motif_other_same_steps": {
-      "记忆": 45,
-      "逐火": 17,
-      "黎明": 11,
-      "德谬歌": 9,
-      "无名": 6,
       "明天见": 3,
-      "逐火是不断失却的旅途": 2,
+      "迷迷": 2,
+      "灰白的黎明": 2,
       "烈阳": 1,
-      "迷迷": 1,
-      "灰白的黎明": 1,
+      "太阳": 1,
       "火种": 1,
-      "太阳": 1
+      "逐火是不断失却的旅途": 1
      },
-     "mean_score_a": -0.0808,
-     "mean_score_b1": -0.0625,
-     "top100_a": 0.0204,
-     "top100_b1": 0.0612,
-     "median_rank_a": 366.0,
-     "median_rank_b1": 368.0,
-     "mean_text_len": 18.74
+     "mean_score_a": -0.0395,
+     "mean_score_b1": 0.0614,
+     "top100_a": 0.05,
+     "top100_b1": 0.05,
+     "median_rank_a": 293.0,
+     "median_rank_b1": 287.5,
+     "mean_text_len": 16.68
     }
    },
    "forms_overall": {
-    "null": 1431,
-    "迷迷": 564,
-    "往昔的涟漪": 207,
-    "记忆形态": 171,
-    "另一位作者": 20
+    "null": 1453,
+    "丹枫": 84,
+    "记忆形态": 3,
+    "丹恒": 1
    },
    "per_task": [
     {
-     "task": "学者啊，于真理门前再会",
+     "task": "仇寇啊，且领受金血烧灼",
+     "n_records": 1,
+     "n_steps": 1,
+     "versions": [
+      "3.1"
+     ]
+    },
+    {
+     "task": "悬锋啊，请涤去你的血锈•上",
+     "n_records": 1,
+     "n_steps": 1,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "纸页啊，镌留记忆的涟漪",
+     "n_records": 1,
+     "n_steps": 1,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "囚人啊，踏过日影见沧溟",
      "n_records": 2,
      "n_steps": 1,
      "versions": [
-      "3.2"
+      "3.5"
      ]
     },
     {
-     "task": "长夜啊，先于黎明前到来",
-     "n_records": 3,
-     "n_steps": 1,
-     "versions": [
-      "3.6"
-     ]
-    },
-    {
-     "task": "英雄啊，且握住那枚火种",
+     "task": "门扉啊，叩声仍激荡梦中",
      "n_records": 5,
      "n_steps": 1,
      "versions": [
-      "3.0"
+      "3.1"
      ]
     },
     {
-     "task": "行者啊，向冥河解缆起航",
+     "task": "晨曦啊，再抚映遥远地平",
+     "n_records": 10,
+     "n_steps": 1,
+     "versions": [
+      "3.7"
+     ]
+    },
+    {
+     "task": "悲音啊，莫让生者空垂涕",
      "n_records": 12,
      "n_steps": 1,
      "versions": [
-      "3.2"
+      "3.1"
      ]
     },
     {
-     "task": "诸神啊，奏响创世的凯歌",
-     "n_records": 17,
+     "task": "悬锋啊，请涤去你的血锈•下",
+     "n_records": 15,
      "n_steps": 1,
-     "versions": [
-      "3.6"
-     ]
-    },
-    {
-     "task": "英雄啊，将创世的凯歌奏响",
-     "n_records": 21,
-     "n_steps": 1,
-     "versions": [
-      "3.4"
-     ]
-    },
-    {
-     "task": "忆者啊，命途长河上溯洄",
-     "n_records": 22,
-     "n_steps": 1,
-     "versions": [
-      "3.6"
-     ]
-    },
-    {
-     "task": "母亲啊，暌离于冬去春来",
-     "n_records": 29,
-     "n_steps": 1,
-     "versions": [
-      "3.4"
-     ]
-    },
-    {
-     "task": "英雄啊，点燃那最初的骄阳",
-     "n_records": 62,
-     "n_steps": 1,
-     "versions": [
-      "3.4"
-     ]
-    },
-    {
-     "task": "旅者啊，徘徊中忘却失真",
-     "n_records": 20,
-     "n_steps": 2,
-     "versions": [
-      "3.6"
-     ]
-    },
-    {
-     "task": "夜帷啊，轻遮那静默过往",
-     "n_records": 23,
-     "n_steps": 2,
      "versions": [
       "3.0"
      ]
     },
     {
-     "task": "重逢啊，笑泪相拥的约定",
-     "n_records": 29,
-     "n_steps": 2,
+     "task": "谧林啊，寤思者缘何失语",
+     "n_records": 18,
+     "n_steps": 1,
      "versions": [
-      "3.6"
+      "3.1"
      ]
     },
     {
-     "task": "星空啊，为纷乱千念濯洗",
-     "n_records": 33,
-     "n_steps": 2,
+     "task": "书卷啊，可曾令锋刃回眸",
+     "n_records": 22,
+     "n_steps": 1,
      "versions": [
       "3.3"
      ]
     },
     {
-     "task": "魔女的孤诣课题",
-     "n_records": 327,
+     "task": "诸神啊，奏响创世的凯歌",
+     "n_records": 24,
+     "n_steps": 1,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "来路啊，请再度显映往履",
+     "n_records": 26,
+     "n_steps": 1,
+     "versions": [
+      "3.1"
+     ]
+    },
+    {
+     "task": "学者啊，于真理门前再会",
+     "n_records": 3,
+     "n_steps": 2,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "旅者啊，徘徊中忘却失真",
+     "n_records": 3,
+     "n_steps": 2,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "王座啊，终了那数载索寞",
+     "n_records": 7,
+     "n_steps": 2,
+     "versions": [
+      "3.1"
+     ]
+    },
+    {
+     "task": "母亲啊，暌离于冬去春来",
+     "n_records": 8,
+     "n_steps": 2,
+     "versions": [
+      "3.4"
+     ]
+    },
+    {
+     "task": "英雄啊，且握住那枚火种",
+     "n_records": 8,
+     "n_steps": 2,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "银辇啊，挽别那人间史诗",
+     "n_records": 10,
      "n_steps": 2,
      "versions": [
       "3.7"
@@ -14013,270 +16212,1042 @@
     },
     {
      "task": "英雄啊，兑现那染血的冀望",
-     "n_records": 11,
-     "n_steps": 3,
+     "n_records": 24,
+     "n_steps": 2,
      "versions": [
       "3.4"
      ]
     },
     {
-     "task": "仇寇啊，且领受金血烧灼",
-     "n_records": 13,
+     "task": "落英啊，残芳纷飞留归躅",
+     "n_records": 9,
      "n_steps": 3,
      "versions": [
-      "3.1"
+      "3.7"
+     ]
+    },
+    {
+     "task": "重逢啊，笑泪相拥的约定",
+     "n_records": 30,
+     "n_steps": 3,
+     "versions": [
+      "3.6"
      ]
     },
     {
      "task": "金丝啊，请喻救世者谶语",
-     "n_records": 13,
-     "n_steps": 3,
-     "versions": [
-      "3.3"
-     ]
-    },
-    {
-     "task": "晨曦啊，再抚映遥远地平",
-     "n_records": 60,
-     "n_steps": 3,
-     "versions": [
-      "3.7"
-     ]
-    },
-    {
-     "task": "流年啊，渡我漂游千百载",
-     "n_records": 84,
-     "n_steps": 3,
-     "versions": [
-      "3.5"
-     ]
-    },
-    {
-     "task": "银辇啊，挽别那人间史诗",
-     "n_records": 97,
-     "n_steps": 3,
-     "versions": [
-      "3.7"
-     ]
-    },
-    {
-     "task": "诗者啊，从我处诉说天空•下",
-     "n_records": 7,
+     "n_records": 16,
      "n_steps": 4,
      "versions": [
       "3.3"
      ]
     },
     {
-     "task": "悬锋啊，请涤去你的血锈•上",
-     "n_records": 20,
-     "n_steps": 4,
-     "versions": [
-      "3.0"
-     ]
-    },
-    {
-     "task": "悬锋啊，请涤去你的血锈•下",
-     "n_records": 44,
-     "n_steps": 4,
-     "versions": [
-      "3.0"
-     ]
-    },
-    {
-     "task": "归风啊，席卷旧尘登云天",
+     "task": "识院啊，悠扬间评定今昔",
      "n_records": 38,
-     "n_steps": 5,
-     "versions": [
-      "3.5"
-     ]
-    },
-    {
-     "task": "书卷啊，可曾令锋刃回眸",
-     "n_records": 40,
-     "n_steps": 5,
-     "versions": [
-      "3.3"
-     ]
-    },
-    {
-     "task": "黎明啊，执耀于全世之终",
-     "n_records": 21,
-     "n_steps": 6,
+     "n_steps": 4,
      "versions": [
       "3.3"
      ]
     },
     {
      "task": "纺锤啊，难纴岁月的经纬",
-     "n_records": 44,
-     "n_steps": 8,
+     "n_records": 40,
+     "n_steps": 4,
      "versions": [
       "3.2"
      ]
     },
     {
-     "task": "纸页啊，镌留记忆的涟漪",
-     "n_records": 111,
-     "n_steps": 10,
-     "versions": [
-      "3.7"
-     ]
-    },
-    {
-     "task": "诗者啊，从我处诉说天空•上",
+     "task": "纷争啊，伐清湮途的悼惧",
      "n_records": 41,
-     "n_steps": 12,
+     "n_steps": 4,
      "versions": [
-      "3.3"
+      "3.1"
      ]
     },
     {
-     "task": "囚人啊，踏过日影见沧溟",
-     "n_records": 110,
-     "n_steps": 12,
-     "versions": [
-      "3.5"
-     ]
-    },
-    {
-     "task": "落英啊，残芳纷飞留归躅",
-     "n_records": 239,
-     "n_steps": 12,
-     "versions": [
-      "3.7"
-     ]
-    },
-    {
-     "task": "大墓啊，深藏轮回的秘密",
-     "n_records": 94,
-     "n_steps": 14,
+     "task": "烈阳啊，为迷途照明前路",
+     "n_records": 45,
+     "n_steps": 5,
      "versions": [
       "3.6"
      ]
     },
     {
-     "task": "英雄啊，回返那安宁的家乡",
-     "n_records": 171,
-     "n_steps": 14,
+     "task": "归途啊，近在咫尺难抵达",
+     "n_records": 68,
+     "n_steps": 6,
      "versions": [
-      "3.4"
+      "3.6"
      ]
     },
     {
-     "task": "摇船啊，请载我横渡冥流",
-     "n_records": 78,
-     "n_steps": 17,
+     "task": "诗者啊，从我处诉说天空•下",
+     "n_records": 22,
+     "n_steps": 7,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "莎草啊，抽绎渎神者所想",
+     "n_records": 76,
+     "n_steps": 7,
      "versions": [
       "3.2"
      ]
     },
     {
+     "task": "大地啊，承载万物的苦难",
+     "n_records": 238,
+     "n_steps": 8,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "晚星啊，莫让我长夜独卧",
+     "n_records": 68,
+     "n_steps": 9,
+     "versions": [
+      "3.0"
+     ]
+    },
+    {
+     "task": "黎明啊，执耀于全世之终",
+     "n_records": 64,
+     "n_steps": 10,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
      "task": "英雄啊，归以凡身向侵晨",
-     "n_records": 94,
-     "n_steps": 19,
+     "n_records": 38,
+     "n_steps": 13,
      "versions": [
       "3.7"
      ]
     },
     {
-     "task": "初日啊，逐退群星与残月",
-     "n_records": 217,
-     "n_steps": 19,
+     "task": "夜帷啊，轻遮那静默过往",
+     "n_records": 50,
+     "n_steps": 15,
      "versions": [
-      "3.5"
+      "3.0"
      ]
     },
     {
-     "task": "谧林啊，寤思者缘何失语",
-     "n_records": 141,
+     "task": "诗者啊，从我处诉说天空•上",
+     "n_records": 44,
+     "n_steps": 19,
+     "versions": [
+      "3.3"
+     ]
+    },
+    {
+     "task": "银辇啊，迅赴那黑色大地",
+     "n_records": 124,
      "n_steps": 20,
      "versions": [
-      "3.1"
+      "3.0"
+     ]
+    },
+    {
+     "task": "大墓啊，深藏轮回的秘密",
+     "n_records": 180,
+     "n_steps": 21,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "远客啊，请聆听此世祈祷",
+     "n_records": 150,
+     "n_steps": 22,
+     "versions": [
+      "3.0"
      ]
     }
    ],
    "low_presence": {
     "versions": [
-     "3.0"
+     "3.4",
+     "3.5",
+     "3.7"
     ],
     "tasks": [
      {
-      "task": "学者啊，于真理门前再会",
-      "n_records": 2,
+      "task": "仇寇啊，且领受金血烧灼",
+      "n_records": 1,
       "n_steps": 1,
       "versions": [
-       "3.2"
+       "3.1"
       ]
      },
      {
-      "task": "长夜啊，先于黎明前到来",
-      "n_records": 3,
-      "n_steps": 1,
-      "versions": [
-       "3.6"
-      ]
-     },
-     {
-      "task": "英雄啊，且握住那枚火种",
-      "n_records": 5,
+      "task": "悬锋啊，请涤去你的血锈•上",
+      "n_records": 1,
       "n_steps": 1,
       "versions": [
        "3.0"
       ]
      },
      {
-      "task": "行者啊，向冥河解缆起航",
+      "task": "纸页啊，镌留记忆的涟漪",
+      "n_records": 1,
+      "n_steps": 1,
+      "versions": [
+       "3.7"
+      ]
+     },
+     {
+      "task": "囚人啊，踏过日影见沧溟",
+      "n_records": 2,
+      "n_steps": 1,
+      "versions": [
+       "3.5"
+      ]
+     },
+     {
+      "task": "门扉啊，叩声仍激荡梦中",
+      "n_records": 5,
+      "n_steps": 1,
+      "versions": [
+       "3.1"
+      ]
+     },
+     {
+      "task": "晨曦啊，再抚映遥远地平",
+      "n_records": 10,
+      "n_steps": 1,
+      "versions": [
+       "3.7"
+      ]
+     },
+     {
+      "task": "悲音啊，莫让生者空垂涕",
       "n_records": 12,
       "n_steps": 1,
       "versions": [
-       "3.2"
+       "3.1"
       ]
      },
      {
-      "task": "诸神啊，奏响创世的凯歌",
-      "n_records": 17,
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "n_records": 15,
       "n_steps": 1,
       "versions": [
-       "3.6"
+       "3.0"
       ]
      },
      {
-      "task": "英雄啊，将创世的凯歌奏响",
-      "n_records": 21,
+      "task": "谧林啊，寤思者缘何失语",
+      "n_records": 18,
       "n_steps": 1,
       "versions": [
-       "3.4"
+       "3.1"
       ]
      },
      {
-      "task": "忆者啊，命途长河上溯洄",
+      "task": "书卷啊，可曾令锋刃回眸",
       "n_records": 22,
       "n_steps": 1,
       "versions": [
+       "3.3"
+      ]
+     }
+    ],
+    "note": "版本按台词占比<5%或为 0 判定；任务按步骤数≤3 判定（低存在感、可能被精读遗漏）"
+   },
+   "oracle_quotes": [
+    {
+     "oracle_id": "O07",
+     "stage": "他人解释",
+     "version": "3.3",
+     "record_id": 13150,
+     "segment_id": "3.3|识院啊，悠扬间评定今昔|6",
+     "citation_form": "完整引用"
+    },
+    {
+     "oracle_id": "O07",
+     "stage": "结局宣告",
+     "version": "3.3",
+     "record_id": 14656,
+     "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+     "citation_form": "完整引用"
+    }
+   ],
+   "coverage": {
+    "n_steps": 210,
+    "n_steps_in_pool": 208,
+    "knife": {
+     "n": 13,
+     "n_total": 36,
+     "rate": 0.0619
+    },
+    "key_events": {
+     "n": 12,
+     "n_total": 30,
+     "rate": 0.0571
+    },
+    "annotation": {
+     "n": 22,
+     "n_total": 74,
+     "rate": 0.1048
+    },
+    "union_knife_key_events": {
+     "n": 13,
+     "rate": 0.0619
+    },
+    "union_all_close_reads": {
+     "n": 31,
+     "rate": 0.1476
+    },
+    "n_uncovered_knife_key": 197,
+    "uncovered_by_version": {
+     "3.0": 69,
+     "3.6": 44,
+     "3.3": 42,
+     "3.7": 17,
+     "3.2": 11,
+     "3.1": 10,
+     "3.4": 4
+    }
+   },
+   "timeline_form_changes": [
+    {
+     "order": 54,
+     "version": "3.6",
+     "task": "旅者啊，徘徊中忘却失真",
+     "step_idx": 8,
+     "form": "丹恒",
+     "text": "找到她了吗，开拓者？"
+    },
+    {
+     "order": 57,
+     "version": "3.6",
+     "task": "大地啊，承载万物的苦难",
+     "step_idx": 3,
+     "form": "丹枫",
+     "text": "持明蜕生本该遗忘前尘旧事，但龙师们当年从中作梗，让「我」残留在你心识深处……"
+    },
+    {
+     "order": 67,
+     "version": "3.7",
+     "task": "落英啊，残芳纷飞留归躅",
+     "step_idx": 3,
+     "form": "记忆形态",
+     "text": "怎么可能？！呼吸……"
+    }
+   ],
+   "all_steps": [
+    "3.0|银辇啊，迅赴那黑色大地|1",
+    "3.0|银辇啊，迅赴那黑色大地|2",
+    "3.0|银辇啊，迅赴那黑色大地|3",
+    "3.0|银辇啊，迅赴那黑色大地|5",
+    "3.0|银辇啊，迅赴那黑色大地|7",
+    "3.0|银辇啊，迅赴那黑色大地|8",
+    "3.0|银辇啊，迅赴那黑色大地|9",
+    "3.0|银辇啊，迅赴那黑色大地|10",
+    "3.0|银辇啊，迅赴那黑色大地|11",
+    "3.0|银辇啊，迅赴那黑色大地|12",
+    "3.0|银辇啊，迅赴那黑色大地|13",
+    "3.0|银辇啊，迅赴那黑色大地|14",
+    "3.0|银辇啊，迅赴那黑色大地|15",
+    "3.0|银辇啊，迅赴那黑色大地|17",
+    "3.0|银辇啊，迅赴那黑色大地|18",
+    "3.0|银辇啊，迅赴那黑色大地|19",
+    "3.0|银辇啊，迅赴那黑色大地|20",
+    "3.0|银辇啊，迅赴那黑色大地|21",
+    "3.0|银辇啊，迅赴那黑色大地|22",
+    "3.0|银辇啊，迅赴那黑色大地|23",
+    "3.0|远客啊，请聆听此世祈祷|5",
+    "3.0|远客啊，请聆听此世祈祷|8",
+    "3.0|远客啊，请聆听此世祈祷|9",
+    "3.0|远客啊，请聆听此世祈祷|10",
+    "3.0|远客啊，请聆听此世祈祷|11",
+    "3.0|远客啊，请聆听此世祈祷|12",
+    "3.0|远客啊，请聆听此世祈祷|13",
+    "3.0|远客啊，请聆听此世祈祷|15",
+    "3.0|远客啊，请聆听此世祈祷|16",
+    "3.0|远客啊，请聆听此世祈祷|17",
+    "3.0|远客啊，请聆听此世祈祷|18",
+    "3.0|远客啊，请聆听此世祈祷|19",
+    "3.0|远客啊，请聆听此世祈祷|20",
+    "3.0|远客啊，请聆听此世祈祷|21",
+    "3.0|远客啊，请聆听此世祈祷|22",
+    "3.0|远客啊，请聆听此世祈祷|23",
+    "3.0|远客啊，请聆听此世祈祷|24",
+    "3.0|远客啊，请聆听此世祈祷|26",
+    "3.0|远客啊，请聆听此世祈祷|27",
+    "3.0|远客啊，请聆听此世祈祷|28",
+    "3.0|远客啊，请聆听此世祈祷|29",
+    "3.0|远客啊，请聆听此世祈祷|30",
+    "3.0|晚星啊，莫让我长夜独卧|1",
+    "3.0|晚星啊，莫让我长夜独卧|2",
+    "3.0|晚星啊，莫让我长夜独卧|3",
+    "3.0|晚星啊，莫让我长夜独卧|4",
+    "3.0|晚星啊，莫让我长夜独卧|6",
+    "3.0|晚星啊，莫让我长夜独卧|7",
+    "3.0|晚星啊，莫让我长夜独卧|8",
+    "3.0|晚星啊，莫让我长夜独卧|9",
+    "3.0|晚星啊，莫让我长夜独卧|10",
+    "3.0|夜帷啊，轻遮那静默过往|2",
+    "3.0|夜帷啊，轻遮那静默过往|3",
+    "3.0|夜帷啊，轻遮那静默过往|4",
+    "3.0|夜帷啊，轻遮那静默过往|6",
+    "3.0|夜帷啊，轻遮那静默过往|9",
+    "3.0|夜帷啊，轻遮那静默过往|11",
+    "3.0|夜帷啊，轻遮那静默过往|12",
+    "3.0|夜帷啊，轻遮那静默过往|13",
+    "3.0|夜帷啊，轻遮那静默过往|14",
+    "3.0|夜帷啊，轻遮那静默过往|15",
+    "3.0|夜帷啊，轻遮那静默过往|17",
+    "3.0|夜帷啊，轻遮那静默过往|18",
+    "3.0|夜帷啊，轻遮那静默过往|19",
+    "3.0|夜帷啊，轻遮那静默过往|20",
+    "3.0|夜帷啊，轻遮那静默过往|25",
+    "3.0|悬锋啊，请涤去你的血锈•上|1",
+    "3.0|悬锋啊，请涤去你的血锈•下|21",
+    "3.0|英雄啊，且握住那枚火种|1",
+    "3.0|英雄啊，且握住那枚火种|4",
+    "3.1|纷争啊，伐清湮途的悼惧|2",
+    "3.1|纷争啊，伐清湮途的悼惧|6",
+    "3.1|纷争啊，伐清湮途的悼惧|7",
+    "3.1|纷争啊，伐清湮途的悼惧|8",
+    "3.1|谧林啊，寤思者缘何失语|5",
+    "3.1|悲音啊，莫让生者空垂涕|4",
+    "3.1|门扉啊，叩声仍激荡梦中|11",
+    "3.1|仇寇啊，且领受金血烧灼|4",
+    "3.1|王座啊，终了那数载索寞|4",
+    "3.1|王座啊，终了那数载索寞|5",
+    "3.1|来路啊，请再度显映往履|21",
+    "3.2|纺锤啊，难纴岁月的经纬|4",
+    "3.2|纺锤啊，难纴岁月的经纬|5",
+    "3.2|纺锤啊，难纴岁月的经纬|6",
+    "3.2|纺锤啊，难纴岁月的经纬|7",
+    "3.2|莎草啊，抽绎渎神者所想|1",
+    "3.2|莎草啊，抽绎渎神者所想|2",
+    "3.2|莎草啊，抽绎渎神者所想|3",
+    "3.2|莎草啊，抽绎渎神者所想|4",
+    "3.2|莎草啊，抽绎渎神者所想|5",
+    "3.2|莎草啊，抽绎渎神者所想|6",
+    "3.2|莎草啊，抽绎渎神者所想|7",
+    "3.2|学者啊，于真理门前再会|2",
+    "3.2|学者啊，于真理门前再会|4",
+    "3.3|书卷啊，可曾令锋刃回眸|1",
+    "3.3|金丝啊，请喻救世者谶语|1",
+    "3.3|金丝啊，请喻救世者谶语|3",
+    "3.3|金丝啊，请喻救世者谶语|4",
+    "3.3|金丝啊，请喻救世者谶语|7",
+    "3.3|识院啊，悠扬间评定今昔|2",
+    "3.3|识院啊，悠扬间评定今昔|3",
+    "3.3|识院啊，悠扬间评定今昔|4",
+    "3.3|识院啊，悠扬间评定今昔|6",
+    "3.3|诗者啊，从我处诉说天空•上|2",
+    "3.3|诗者啊，从我处诉说天空•上|3",
+    "3.3|诗者啊，从我处诉说天空•上|4",
+    "3.3|诗者啊，从我处诉说天空•上|5",
+    "3.3|诗者啊，从我处诉说天空•上|6",
+    "3.3|诗者啊，从我处诉说天空•上|7",
+    "3.3|诗者啊，从我处诉说天空•上|12",
+    "3.3|诗者啊，从我处诉说天空•上|14",
+    "3.3|诗者啊，从我处诉说天空•上|15",
+    "3.3|诗者啊，从我处诉说天空•上|17",
+    "3.3|诗者啊，从我处诉说天空•上|19",
+    "3.3|诗者啊，从我处诉说天空•上|22",
+    "3.3|诗者啊，从我处诉说天空•上|23",
+    "3.3|诗者啊，从我处诉说天空•上|24",
+    "3.3|诗者啊，从我处诉说天空•上|25",
+    "3.3|诗者啊，从我处诉说天空•上|26",
+    "3.3|诗者啊，从我处诉说天空•上|27",
+    "3.3|诗者啊，从我处诉说天空•上|28",
+    "3.3|诗者啊，从我处诉说天空•上|30",
+    "3.3|诗者啊，从我处诉说天空•下|2",
+    "3.3|诗者啊，从我处诉说天空•下|3",
+    "3.3|诗者啊，从我处诉说天空•下|4",
+    "3.3|诗者啊，从我处诉说天空•下|5",
+    "3.3|诗者啊，从我处诉说天空•下|6",
+    "3.3|诗者啊，从我处诉说天空•下|8",
+    "3.3|诗者啊，从我处诉说天空•下|9",
+    "3.3|黎明啊，执耀于全世之终|1",
+    "3.3|黎明啊，执耀于全世之终|2",
+    "3.3|黎明啊，执耀于全世之终|3",
+    "3.3|黎明啊，执耀于全世之终|4",
+    "3.3|黎明啊，执耀于全世之终|6",
+    "3.3|黎明啊，执耀于全世之终|7",
+    "3.3|黎明啊，执耀于全世之终|8",
+    "3.3|黎明啊，执耀于全世之终|9",
+    "3.3|黎明啊，执耀于全世之终|10",
+    "3.3|黎明啊，执耀于全世之终|11",
+    "3.4|英雄啊，兑现那染血的冀望|2",
+    "3.4|英雄啊，兑现那染血的冀望|3",
+    "3.4|母亲啊，暌离于冬去春来|6",
+    "3.4|母亲啊，暌离于冬去春来|7",
+    "3.5|囚人啊，踏过日影见沧溟|15",
+    "3.6|归途啊，近在咫尺难抵达|2",
+    "3.6|归途啊，近在咫尺难抵达|3",
+    "3.6|归途啊，近在咫尺难抵达|4",
+    "3.6|归途啊，近在咫尺难抵达|5",
+    "3.6|归途啊，近在咫尺难抵达|6",
+    "3.6|归途啊，近在咫尺难抵达|7",
+    "3.6|旅者啊，徘徊中忘却失真|4",
+    "3.6|旅者啊，徘徊中忘却失真|8",
+    "3.6|烈阳啊，为迷途照明前路|1",
+    "3.6|烈阳啊，为迷途照明前路|2",
+    "3.6|烈阳啊，为迷途照明前路|3",
+    "3.6|烈阳啊，为迷途照明前路|4",
+    "3.6|烈阳啊，为迷途照明前路|5",
+    "3.6|大地啊，承载万物的苦难|2",
+    "3.6|大地啊，承载万物的苦难|3",
+    "3.6|大地啊，承载万物的苦难|4",
+    "3.6|大地啊，承载万物的苦难|8",
+    "3.6|大地啊，承载万物的苦难|9",
+    "3.6|大地啊，承载万物的苦难|10",
+    "3.6|大地啊，承载万物的苦难|11",
+    "3.6|大地啊，承载万物的苦难|12",
+    "3.6|大墓啊，深藏轮回的秘密|2",
+    "3.6|大墓啊，深藏轮回的秘密|3",
+    "3.6|大墓啊，深藏轮回的秘密|4",
+    "3.6|大墓啊，深藏轮回的秘密|5",
+    "3.6|大墓啊，深藏轮回的秘密|6",
+    "3.6|大墓啊，深藏轮回的秘密|7",
+    "3.6|大墓啊，深藏轮回的秘密|9",
+    "3.6|大墓啊，深藏轮回的秘密|10",
+    "3.6|大墓啊，深藏轮回的秘密|11",
+    "3.6|大墓啊，深藏轮回的秘密|12",
+    "3.6|大墓啊，深藏轮回的秘密|13",
+    "3.6|大墓啊，深藏轮回的秘密|16",
+    "3.6|大墓啊，深藏轮回的秘密|17",
+    "3.6|大墓啊，深藏轮回的秘密|18",
+    "3.6|大墓啊，深藏轮回的秘密|19",
+    "3.6|大墓啊，深藏轮回的秘密|20",
+    "3.6|大墓啊，深藏轮回的秘密|21",
+    "3.6|大墓啊，深藏轮回的秘密|22",
+    "3.6|大墓啊，深藏轮回的秘密|23",
+    "3.6|大墓啊，深藏轮回的秘密|24",
+    "3.6|大墓啊，深藏轮回的秘密|25",
+    "3.6|重逢啊，笑泪相拥的约定|1",
+    "3.6|重逢啊，笑泪相拥的约定|2",
+    "3.6|重逢啊，笑泪相拥的约定|3",
+    "3.6|诸神啊，奏响创世的凯歌|4",
+    "3.7|晨曦啊，再抚映遥远地平|2",
+    "3.7|英雄啊，归以凡身向侵晨|2",
+    "3.7|英雄啊，归以凡身向侵晨|3",
+    "3.7|英雄啊，归以凡身向侵晨|5",
+    "3.7|英雄啊，归以凡身向侵晨|7",
+    "3.7|英雄啊，归以凡身向侵晨|8",
+    "3.7|英雄啊，归以凡身向侵晨|10",
+    "3.7|英雄啊，归以凡身向侵晨|13",
+    "3.7|英雄啊，归以凡身向侵晨|14",
+    "3.7|英雄啊，归以凡身向侵晨|15",
+    "3.7|英雄啊，归以凡身向侵晨|17",
+    "3.7|英雄啊，归以凡身向侵晨|22",
+    "3.7|英雄啊，归以凡身向侵晨|23",
+    "3.7|英雄啊，归以凡身向侵晨|25",
+    "3.7|纸页啊，镌留记忆的涟漪|12",
+    "3.7|银辇啊，挽别那人间史诗|11",
+    "3.7|银辇啊，挽别那人间史诗|12",
+    "3.7|落英啊，残芳纷飞留归躅|3",
+    "3.7|落英啊，残芳纷飞留归躅|11",
+    "3.7|落英啊，残芳纷飞留归躅|13"
+   ],
+   "group": "B",
+   "pair_with": "荒笛（大地承接：荒笛 → 丹恒）",
+   "note": null,
+   "coverage_detail": {
+    "steps": 210,
+    "covered": 13,
+    "per_version": {
+     "3.0": {
+      "steps": 70,
+      "covered": 1
+     },
+     "3.1": {
+      "steps": 11,
+      "covered": 1
+     },
+     "3.2": {
+      "steps": 13,
+      "covered": 2
+     },
+     "3.3": {
+      "steps": 45,
+      "covered": 3
+     },
+     "3.4": {
+      "steps": 4,
+      "covered": 0
+     },
+     "3.5": {
+      "steps": 1,
+      "covered": 1
+     },
+     "3.6": {
+      "steps": 46,
+      "covered": 2
+     },
+     "3.7": {
+      "steps": 20,
+      "covered": 3
+     }
+    },
+    "per_task": {
+     "远客啊，请聆听此世祈祷": {
+      "steps": 22,
+      "covered": 0
+     },
+     "大墓啊，深藏轮回的秘密": {
+      "steps": 21,
+      "covered": 0
+     },
+     "银辇啊，迅赴那黑色大地": {
+      "steps": 20,
+      "covered": 0
+     },
+     "诗者啊，从我处诉说天空•上": {
+      "steps": 19,
+      "covered": 0
+     },
+     "夜帷啊，轻遮那静默过往": {
+      "steps": 15,
+      "covered": 0
+     },
+     "英雄啊，归以凡身向侵晨": {
+      "steps": 13,
+      "covered": 1
+     },
+     "黎明啊，执耀于全世之终": {
+      "steps": 10,
+      "covered": 2
+     },
+     "晚星啊，莫让我长夜独卧": {
+      "steps": 9,
+      "covered": 0
+     },
+     "大地啊，承载万物的苦难": {
+      "steps": 8,
+      "covered": 1
+     },
+     "莎草啊，抽绎渎神者所想": {
+      "steps": 7,
+      "covered": 0
+     },
+     "诗者啊，从我处诉说天空•下": {
+      "steps": 7,
+      "covered": 0
+     },
+     "归途啊，近在咫尺难抵达": {
+      "steps": 6,
+      "covered": 0
+     },
+     "烈阳啊，为迷途照明前路": {
+      "steps": 5,
+      "covered": 0
+     },
+     "纷争啊，伐清湮途的悼惧": {
+      "steps": 4,
+      "covered": 0
+     },
+     "纺锤啊，难纴岁月的经纬": {
+      "steps": 4,
+      "covered": 0
+     },
+     "金丝啊，请喻救世者谶语": {
+      "steps": 4,
+      "covered": 1
+     },
+     "识院啊，悠扬间评定今昔": {
+      "steps": 4,
+      "covered": 0
+     },
+     "重逢啊，笑泪相拥的约定": {
+      "steps": 3,
+      "covered": 1
+     },
+     "落英啊，残芳纷飞留归躅": {
+      "steps": 3,
+      "covered": 0
+     },
+     "英雄啊，且握住那枚火种": {
+      "steps": 2,
+      "covered": 0
+     },
+     "王座啊，终了那数载索寞": {
+      "steps": 2,
+      "covered": 0
+     },
+     "学者啊，于真理门前再会": {
+      "steps": 2,
+      "covered": 2
+     },
+     "英雄啊，兑现那染血的冀望": {
+      "steps": 2,
+      "covered": 0
+     },
+     "母亲啊，暌离于冬去春来": {
+      "steps": 2,
+      "covered": 0
+     },
+     "旅者啊，徘徊中忘却失真": {
+      "steps": 2,
+      "covered": 0
+     },
+     "银辇啊，挽别那人间史诗": {
+      "steps": 2,
+      "covered": 1
+     },
+     "悬锋啊，请涤去你的血锈•上": {
+      "steps": 1,
+      "covered": 0
+     },
+     "悬锋啊，请涤去你的血锈•下": {
+      "steps": 1,
+      "covered": 1
+     },
+     "谧林啊，寤思者缘何失语": {
+      "steps": 1,
+      "covered": 0
+     },
+     "悲音啊，莫让生者空垂涕": {
+      "steps": 1,
+      "covered": 0
+     },
+     "门扉啊，叩声仍激荡梦中": {
+      "steps": 1,
+      "covered": 0
+     },
+     "仇寇啊，且领受金血烧灼": {
+      "steps": 1,
+      "covered": 0
+     },
+     "来路啊，请再度显映往履": {
+      "steps": 1,
+      "covered": 1
+     },
+     "书卷啊，可曾令锋刃回眸": {
+      "steps": 1,
+      "covered": 0
+     },
+     "囚人啊，踏过日影见沧溟": {
+      "steps": 1,
+      "covered": 1
+     },
+     "诸神啊，奏响创世的凯歌": {
+      "steps": 1,
+      "covered": 0
+     },
+     "晨曦啊，再抚映遥远地平": {
+      "steps": 1,
+      "covered": 0
+     },
+     "纸页啊，镌留记忆的涟漪": {
+      "steps": 1,
+      "covered": 1
+     }
+    },
+    "unread_versions": [
+     "3.4"
+    ],
+    "unread_tasks": [
+     {
+      "task": "远客啊，请聆听此世祈祷",
+      "steps": 22,
+      "covered": 0
+     },
+     {
+      "task": "大墓啊，深藏轮回的秘密",
+      "steps": 21,
+      "covered": 0
+     },
+     {
+      "task": "银辇啊，迅赴那黑色大地",
+      "steps": 20,
+      "covered": 0
+     },
+     {
+      "task": "诗者啊，从我处诉说天空•上",
+      "steps": 19,
+      "covered": 0
+     },
+     {
+      "task": "夜帷啊，轻遮那静默过往",
+      "steps": 15,
+      "covered": 0
+     },
+     {
+      "task": "晚星啊，莫让我长夜独卧",
+      "steps": 9,
+      "covered": 0
+     },
+     {
+      "task": "莎草啊，抽绎渎神者所想",
+      "steps": 7,
+      "covered": 0
+     },
+     {
+      "task": "诗者啊，从我处诉说天空•下",
+      "steps": 7,
+      "covered": 0
+     }
+    ],
+    "unread_task_count": 27
+   }
+  },
+  "荒笛": {
+   "name": "荒笛",
+   "summary": {
+    "n_records": 70,
+    "n_steps": 4,
+    "n_steps_in_pool": 4,
+    "n_tasks": 2,
+    "n_versions_present": 1,
+    "versions_present": [
+     "3.6"
+    ],
+    "versions_absent": [
+     "3.0",
+     "3.1",
+     "3.2",
+     "3.3",
+     "3.4",
+     "3.5",
+     "3.7"
+    ],
+    "mean_text_len": 23.54,
+    "mean_score_a": 0.1833,
+    "mean_score_b1": 0.8171,
+    "top100_a": 0.25,
+    "top100_b1": 0.5,
+    "median_rank_a": 228.0,
+    "median_rank_b1": 108.0
+   },
+   "per_version": {
+    "3.0": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.1": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.2": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.3": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.4": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.5": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.6": {
+     "n_records": 70,
+     "share_of_records": 1.0,
+     "n_steps": 4,
+     "n_steps_in_pool": 4,
+     "n_tasks": 2,
+     "forms": {
+      "null": 70
+     },
+     "address_own": {
+      "半神": 2
+     },
+     "address_other_same_steps": {
+      "半神": 12,
+      "开拓者": 4,
+      "英雄": 4,
+      "阁下": 3,
+      "伙伴": 2,
+      "救世主": 2,
+      "黄金裔": 1,
+      "小灰": 1
+     },
+     "motif_own": {
+      "记忆": 5,
+      "火种": 1,
+      "逐火": 1
+     },
+     "motif_other_same_steps": {
+      "记忆": 13,
+      "逐火": 12,
+      "火种": 7,
+      "黎明": 3,
+      "无名": 2,
+      "逐火是不断失却的旅途": 2,
+      "明天见": 1,
+      "烈阳": 1
+     },
+     "mean_score_a": 0.1833,
+     "mean_score_b1": 0.8171,
+     "top100_a": 0.25,
+     "top100_b1": 0.5,
+     "median_rank_a": 228.0,
+     "median_rank_b1": 108.0,
+     "mean_text_len": 23.54
+    },
+    "3.7": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    }
+   },
+   "forms_overall": {
+    "null": 70
+   },
+   "per_task": [
+    {
+     "task": "诸神啊，奏响创世的凯歌",
+     "n_records": 13,
+     "n_steps": 1,
+     "versions": [
+      "3.6"
+     ]
+    },
+    {
+     "task": "大地啊，承载万物的苦难",
+     "n_records": 57,
+     "n_steps": 3,
+     "versions": [
+      "3.6"
+     ]
+    }
+   ],
+   "low_presence": {
+    "versions": [
+     "3.0",
+     "3.1",
+     "3.2",
+     "3.3",
+     "3.4",
+     "3.5",
+     "3.7"
+    ],
+    "tasks": [
+     {
+      "task": "诸神啊，奏响创世的凯歌",
+      "n_records": 13,
+      "n_steps": 1,
+      "versions": [
        "3.6"
       ]
      },
      {
-      "task": "母亲啊，暌离于冬去春来",
-      "n_records": 29,
-      "n_steps": 1,
-      "versions": [
-       "3.4"
-      ]
-     },
-     {
-      "task": "英雄啊，点燃那最初的骄阳",
-      "n_records": 62,
-      "n_steps": 1,
-      "versions": [
-       "3.4"
-      ]
-     },
-     {
-      "task": "旅者啊，徘徊中忘却失真",
-      "n_records": 20,
-      "n_steps": 2,
+      "task": "大地啊，承载万物的苦难",
+      "n_records": 57,
+      "n_steps": 3,
       "versions": [
        "3.6"
       ]
@@ -14286,623 +17257,444 @@
    },
    "oracle_quotes": [
     {
-     "oracle_id": "O09",
-     "stage": "改写反转",
-     "version": "3.7",
-     "record_id": 26045,
-     "segment_id": "3.7|落英啊，残芳纷飞留归躅|7",
-     "citation_form": "完整引用"
-    },
-    {
-     "oracle_id": "O13",
+     "oracle_id": "O12",
      "stage": "结局宣告",
-     "version": "3.7",
-     "record_id": 23958,
-     "segment_id": "3.7|魔女的孤诣课题|21",
+     "version": "3.6",
+     "record_id": 21694,
+     "segment_id": "3.6|大地啊，承载万物的苦难|10",
      "citation_form": "完整引用"
     }
    ],
    "coverage": {
-    "n_steps": 222,
-    "n_steps_in_pool": 221,
+    "n_steps": 4,
+    "n_steps_in_pool": 4,
     "knife": {
-     "n": 15,
+     "n": 1,
      "n_total": 36,
-     "rate": 0.0676
+     "rate": 0.25
     },
     "key_events": {
-     "n": 16,
+     "n": 1,
      "n_total": 30,
-     "rate": 0.0721
+     "rate": 0.25
     },
     "annotation": {
-     "n": 22,
+     "n": 0,
      "n_total": 74,
-     "rate": 0.0991
+     "rate": 0.0
     },
     "union_knife_key_events": {
-     "n": 18,
-     "rate": 0.0811
+     "n": 1,
+     "rate": 0.25
     },
     "union_all_close_reads": {
-     "n": 31,
-     "rate": 0.1396
+     "n": 1,
+     "rate": 0.25
     },
-    "n_uncovered_knife_key": 204,
+    "n_uncovered_knife_key": 3,
     "uncovered_by_version": {
-     "3.7": 42,
-     "3.5": 37,
-     "3.3": 29,
-     "3.2": 26,
-     "3.1": 23,
-     "3.6": 20,
-     "3.4": 18,
-     "3.0": 9
+     "3.6": 3
     }
    },
-   "timeline_form_changes": [
-    {
-     "order": 5,
-     "version": "3.0",
-     "task": "夜帷啊，轻遮那静默过往",
-     "step_idx": 23,
-     "form": "迷迷",
-     "text": "名字？我的？不记得。"
-    },
-    {
-     "order": 44,
-     "version": "3.4",
-     "task": "英雄啊，将创世的凯歌奏响",
-     "step_idx": 2,
-     "form": "往昔的涟漪",
-     "text": "其实你早就猜到答案了呢？"
-    },
-    {
-     "order": 48,
-     "version": "3.5",
-     "task": "归风啊，席卷旧尘登云天",
-     "step_idx": 11,
-     "form": "记忆形态",
-     "text": "多久都没有关系哦？毕竟，等待是人家最擅长的事情嘛。"
-    },
-    {
-     "order": 58,
-     "version": "3.6",
-     "task": "大墓啊，深藏轮回的秘密",
-     "step_idx": 6,
-     "form": "往昔的涟漪",
-     "text": "……"
-    },
-    {
-     "order": 63,
-     "version": "3.7",
-     "task": "魔女的孤诣课题",
-     "step_idx": 21,
-     "form": "记忆形态",
-     "text": ">>>……"
-    },
-    {
-     "order": 63,
-     "version": "3.7",
-     "task": "魔女的孤诣课题",
-     "step_idx": 21,
-     "form": "往昔的涟漪",
-     "text": "……"
-    },
-    {
-     "order": 63,
-     "version": "3.7",
-     "task": "魔女的孤诣课题",
-     "step_idx": 21,
-     "form": "迷迷",
-     "text": "你是？我是…是谁？"
-    },
-    {
-     "order": 65,
-     "version": "3.7",
-     "task": "纸页啊，镌留记忆的涟漪",
-     "step_idx": 3,
-     "form": "记忆形态",
-     "text": "世界前所未有地安静，真好呀，仿佛能听见心跳的声音。"
-    },
-    {
-     "order": 65,
-     "version": "3.7",
-     "task": "纸页啊，镌留记忆的涟漪",
-     "step_idx": 11,
-     "form": "往昔的涟漪",
-     "text": "真是一段感伤，却又温暖的旅途呀。"
-    },
-    {
-     "order": 67,
-     "version": "3.7",
-     "task": "落英啊，残芳纷飞留归躅",
-     "step_idx": 3,
-     "form": "迷迷",
-     "text": "迷…迷？"
-    },
-    {
-     "order": 67,
-     "version": "3.7",
-     "task": "落英啊，残芳纷飞留归躅",
-     "step_idx": 3,
-     "form": "往昔的涟漪",
-     "text": "…记忆中的旋律，我收到啦。"
-    },
-    {
-     "order": 67,
-     "version": "3.7",
-     "task": "落英啊，残芳纷飞留归躅",
-     "step_idx": 6,
-     "form": "记忆形态",
-     "text": "你要握紧这柄仪式剑。在我离去后，它会把你送回时间的起点，一段新故事的开篇。"
-    },
-    {
-     "order": 67,
-     "version": "3.7",
-     "task": "落英啊，残芳纷飞留归躅",
-     "step_idx": 11,
-     "form": "另一位作者",
-     "text": "然后，要再加上「一」——不同以往的「一」，向前开拓的「一」♪"
-    }
-   ],
+   "timeline_form_changes": [],
    "all_steps": [
-    "3.0|夜帷啊，轻遮那静默过往|23",
-    "3.0|夜帷啊，轻遮那静默过往|25",
-    "3.0|悬锋啊，请涤去你的血锈•上|1",
-    "3.0|悬锋啊，请涤去你的血锈•上|2",
-    "3.0|悬锋啊，请涤去你的血锈•上|3",
-    "3.0|悬锋啊，请涤去你的血锈•上|4",
-    "3.0|悬锋啊，请涤去你的血锈•下|2",
-    "3.0|悬锋啊，请涤去你的血锈•下|3",
-    "3.0|悬锋啊，请涤去你的血锈•下|21",
-    "3.0|悬锋啊，请涤去你的血锈•下|22",
-    "3.0|英雄啊，且握住那枚火种|1",
-    "3.1|谧林啊，寤思者缘何失语|8",
-    "3.1|谧林啊，寤思者缘何失语|9",
-    "3.1|谧林啊，寤思者缘何失语|12",
-    "3.1|谧林啊，寤思者缘何失语|13",
-    "3.1|谧林啊，寤思者缘何失语|14",
-    "3.1|谧林啊，寤思者缘何失语|15",
-    "3.1|谧林啊，寤思者缘何失语|16",
-    "3.1|谧林啊，寤思者缘何失语|17",
-    "3.1|谧林啊，寤思者缘何失语|18",
-    "3.1|谧林啊，寤思者缘何失语|19",
-    "3.1|谧林啊，寤思者缘何失语|20",
-    "3.1|谧林啊，寤思者缘何失语|21",
-    "3.1|谧林啊，寤思者缘何失语|22",
-    "3.1|谧林啊，寤思者缘何失语|23",
-    "3.1|谧林啊，寤思者缘何失语|24",
-    "3.1|谧林啊，寤思者缘何失语|25",
-    "3.1|谧林啊，寤思者缘何失语|26",
-    "3.1|谧林啊，寤思者缘何失语|28",
-    "3.1|谧林啊，寤思者缘何失语|29",
-    "3.1|谧林啊，寤思者缘何失语|30",
-    "3.1|仇寇啊，且领受金血烧灼|2",
-    "3.1|仇寇啊，且领受金血烧灼|4",
-    "3.1|仇寇啊，且领受金血烧灼|5",
-    "3.2|纺锤啊，难纴岁月的经纬|2",
-    "3.2|纺锤啊，难纴岁月的经纬|3",
-    "3.2|纺锤啊，难纴岁月的经纬|4",
-    "3.2|纺锤啊，难纴岁月的经纬|5",
-    "3.2|纺锤啊，难纴岁月的经纬|6",
-    "3.2|纺锤啊，难纴岁月的经纬|7",
-    "3.2|纺锤啊，难纴岁月的经纬|8",
-    "3.2|纺锤啊，难纴岁月的经纬|9",
-    "3.2|行者啊，向冥河解缆起航|2",
-    "3.2|摇船啊，请载我横渡冥流|1",
-    "3.2|摇船啊，请载我横渡冥流|2",
-    "3.2|摇船啊，请载我横渡冥流|3",
-    "3.2|摇船啊，请载我横渡冥流|4",
-    "3.2|摇船啊，请载我横渡冥流|5",
-    "3.2|摇船啊，请载我横渡冥流|6",
-    "3.2|摇船啊，请载我横渡冥流|7",
-    "3.2|摇船啊，请载我横渡冥流|8",
-    "3.2|摇船啊，请载我横渡冥流|9",
-    "3.2|摇船啊，请载我横渡冥流|10",
-    "3.2|摇船啊，请载我横渡冥流|11",
-    "3.2|摇船啊，请载我横渡冥流|12",
-    "3.2|摇船啊，请载我横渡冥流|13",
-    "3.2|摇船啊，请载我横渡冥流|14",
-    "3.2|摇船啊，请载我横渡冥流|15",
-    "3.2|摇船啊，请载我横渡冥流|16",
-    "3.2|摇船啊，请载我横渡冥流|17",
-    "3.2|学者啊，于真理门前再会|2",
-    "3.3|星空啊，为纷乱千念濯洗|3",
-    "3.3|星空啊，为纷乱千念濯洗|4",
-    "3.3|书卷啊，可曾令锋刃回眸|1",
-    "3.3|书卷啊，可曾令锋刃回眸|2",
-    "3.3|书卷啊，可曾令锋刃回眸|5",
-    "3.3|书卷啊，可曾令锋刃回眸|6",
-    "3.3|书卷啊，可曾令锋刃回眸|7",
-    "3.3|金丝啊，请喻救世者谶语|1",
-    "3.3|金丝啊，请喻救世者谶语|3",
-    "3.3|金丝啊，请喻救世者谶语|7",
-    "3.3|诗者啊，从我处诉说天空•上|1",
-    "3.3|诗者啊，从我处诉说天空•上|2",
-    "3.3|诗者啊，从我处诉说天空•上|4",
-    "3.3|诗者啊，从我处诉说天空•上|5",
-    "3.3|诗者啊，从我处诉说天空•上|8",
-    "3.3|诗者啊，从我处诉说天空•上|10",
-    "3.3|诗者啊，从我处诉说天空•上|11",
-    "3.3|诗者啊，从我处诉说天空•上|12",
-    "3.3|诗者啊，从我处诉说天空•上|15",
-    "3.3|诗者啊，从我处诉说天空•上|19",
-    "3.3|诗者啊，从我处诉说天空•上|25",
-    "3.3|诗者啊，从我处诉说天空•上|30",
-    "3.3|诗者啊，从我处诉说天空•下|2",
-    "3.3|诗者啊，从我处诉说天空•下|4",
-    "3.3|诗者啊，从我处诉说天空•下|5",
-    "3.3|诗者啊，从我处诉说天空•下|6",
-    "3.3|黎明啊，执耀于全世之终|1",
-    "3.3|黎明啊，执耀于全世之终|6",
-    "3.3|黎明啊，执耀于全世之终|7",
-    "3.3|黎明啊，执耀于全世之终|8",
-    "3.3|黎明啊，执耀于全世之终|10",
-    "3.3|黎明啊，执耀于全世之终|11",
-    "3.4|英雄啊，兑现那染血的冀望|5",
-    "3.4|英雄啊，兑现那染血的冀望|6",
-    "3.4|英雄啊，兑现那染血的冀望|7",
-    "3.4|母亲啊，暌离于冬去春来|8",
-    "3.4|英雄啊，回返那安宁的家乡|3",
-    "3.4|英雄啊，回返那安宁的家乡|4",
-    "3.4|英雄啊，回返那安宁的家乡|5",
-    "3.4|英雄啊，回返那安宁的家乡|6",
-    "3.4|英雄啊，回返那安宁的家乡|7",
-    "3.4|英雄啊，回返那安宁的家乡|8",
-    "3.4|英雄啊，回返那安宁的家乡|9",
-    "3.4|英雄啊，回返那安宁的家乡|10",
-    "3.4|英雄啊，回返那安宁的家乡|11",
-    "3.4|英雄啊，回返那安宁的家乡|13",
-    "3.4|英雄啊，回返那安宁的家乡|17",
-    "3.4|英雄啊，回返那安宁的家乡|18",
-    "3.4|英雄啊，回返那安宁的家乡|19",
-    "3.4|英雄啊，回返那安宁的家乡|20",
-    "3.4|英雄啊，点燃那最初的骄阳|2",
-    "3.4|英雄啊，将创世的凯歌奏响|2",
-    "3.5|流年啊，渡我漂游千百载|2",
-    "3.5|流年啊，渡我漂游千百载|3",
-    "3.5|流年啊，渡我漂游千百载|5",
-    "3.5|初日啊，逐退群星与残月|3",
-    "3.5|初日啊，逐退群星与残月|4",
-    "3.5|初日啊，逐退群星与残月|5",
-    "3.5|初日啊，逐退群星与残月|6",
-    "3.5|初日啊，逐退群星与残月|7",
-    "3.5|初日啊，逐退群星与残月|8",
-    "3.5|初日啊，逐退群星与残月|9",
-    "3.5|初日啊，逐退群星与残月|10",
-    "3.5|初日啊，逐退群星与残月|11",
-    "3.5|初日啊，逐退群星与残月|12",
-    "3.5|初日啊，逐退群星与残月|13",
-    "3.5|初日啊，逐退群星与残月|14",
-    "3.5|初日啊，逐退群星与残月|15",
-    "3.5|初日啊，逐退群星与残月|16",
-    "3.5|初日啊，逐退群星与残月|17",
-    "3.5|初日啊，逐退群星与残月|18",
-    "3.5|初日啊，逐退群星与残月|19",
-    "3.5|初日啊，逐退群星与残月|20",
-    "3.5|初日啊，逐退群星与残月|21",
-    "3.5|归风啊，席卷旧尘登云天|4",
-    "3.5|归风啊，席卷旧尘登云天|5",
-    "3.5|归风啊，席卷旧尘登云天|6",
-    "3.5|归风啊，席卷旧尘登云天|10",
-    "3.5|归风啊，席卷旧尘登云天|11",
-    "3.5|囚人啊，踏过日影见沧溟|3",
-    "3.5|囚人啊，踏过日影见沧溟|4",
-    "3.5|囚人啊，踏过日影见沧溟|6",
-    "3.5|囚人啊，踏过日影见沧溟|7",
-    "3.5|囚人啊，踏过日影见沧溟|8",
-    "3.5|囚人啊，踏过日影见沧溟|9",
-    "3.5|囚人啊，踏过日影见沧溟|10",
-    "3.5|囚人啊，踏过日影见沧溟|11",
-    "3.5|囚人啊，踏过日影见沧溟|12",
-    "3.5|囚人啊，踏过日影见沧溟|13",
-    "3.5|囚人啊，踏过日影见沧溟|14",
-    "3.5|囚人啊，踏过日影见沧溟|15",
-    "3.6|长夜啊，先于黎明前到来|2",
-    "3.6|旅者啊，徘徊中忘却失真|8",
-    "3.6|旅者啊，徘徊中忘却失真|9",
-    "3.6|忆者啊，命途长河上溯洄|3",
-    "3.6|大墓啊，深藏轮回的秘密|6",
-    "3.6|大墓啊，深藏轮回的秘密|7",
-    "3.6|大墓啊，深藏轮回的秘密|9",
-    "3.6|大墓啊，深藏轮回的秘密|10",
-    "3.6|大墓啊，深藏轮回的秘密|11",
-    "3.6|大墓啊，深藏轮回的秘密|13",
-    "3.6|大墓啊，深藏轮回的秘密|14",
-    "3.6|大墓啊，深藏轮回的秘密|16",
-    "3.6|大墓啊，深藏轮回的秘密|17",
-    "3.6|大墓啊，深藏轮回的秘密|19",
-    "3.6|大墓啊，深藏轮回的秘密|21",
-    "3.6|大墓啊，深藏轮回的秘密|22",
-    "3.6|大墓啊，深藏轮回的秘密|24",
-    "3.6|大墓啊，深藏轮回的秘密|25",
-    "3.6|重逢啊，笑泪相拥的约定|1",
-    "3.6|重逢啊，笑泪相拥的约定|2",
-    "3.6|诸神啊，奏响创世的凯歌|4",
-    "3.7|晨曦啊，再抚映遥远地平|2",
-    "3.7|晨曦啊，再抚映遥远地平|3",
-    "3.7|晨曦啊，再抚映遥远地平|4",
-    "3.7|魔女的孤诣课题|21",
-    "3.7|魔女的孤诣课题|24",
-    "3.7|英雄啊，归以凡身向侵晨|2",
-    "3.7|英雄啊，归以凡身向侵晨|3",
-    "3.7|英雄啊，归以凡身向侵晨|5",
-    "3.7|英雄啊，归以凡身向侵晨|8",
-    "3.7|英雄啊，归以凡身向侵晨|10",
-    "3.7|英雄啊，归以凡身向侵晨|11",
-    "3.7|英雄啊，归以凡身向侵晨|12",
-    "3.7|英雄啊，归以凡身向侵晨|13",
-    "3.7|英雄啊，归以凡身向侵晨|14",
-    "3.7|英雄啊，归以凡身向侵晨|15",
-    "3.7|英雄啊，归以凡身向侵晨|16",
-    "3.7|英雄啊，归以凡身向侵晨|17",
-    "3.7|英雄啊，归以凡身向侵晨|18",
-    "3.7|英雄啊，归以凡身向侵晨|19",
-    "3.7|英雄啊，归以凡身向侵晨|20",
-    "3.7|英雄啊，归以凡身向侵晨|21",
-    "3.7|英雄啊，归以凡身向侵晨|22",
-    "3.7|英雄啊，归以凡身向侵晨|23",
-    "3.7|英雄啊，归以凡身向侵晨|25",
-    "3.7|纸页啊，镌留记忆的涟漪|1",
-    "3.7|纸页啊，镌留记忆的涟漪|3",
-    "3.7|纸页啊，镌留记忆的涟漪|4",
-    "3.7|纸页啊，镌留记忆的涟漪|5",
-    "3.7|纸页啊，镌留记忆的涟漪|6",
-    "3.7|纸页啊，镌留记忆的涟漪|8",
-    "3.7|纸页啊，镌留记忆的涟漪|9",
-    "3.7|纸页啊，镌留记忆的涟漪|10",
-    "3.7|纸页啊，镌留记忆的涟漪|11",
-    "3.7|纸页啊，镌留记忆的涟漪|12",
-    "3.7|银辇啊，挽别那人间史诗|11",
-    "3.7|银辇啊，挽别那人间史诗|12",
-    "3.7|银辇啊，挽别那人间史诗|13",
-    "3.7|落英啊，残芳纷飞留归躅|2",
-    "3.7|落英啊，残芳纷飞留归躅|3",
-    "3.7|落英啊，残芳纷飞留归躅|4",
-    "3.7|落英啊，残芳纷飞留归躅|5",
-    "3.7|落英啊，残芳纷飞留归躅|6",
-    "3.7|落英啊，残芳纷飞留归躅|7",
-    "3.7|落英啊，残芳纷飞留归躅|8",
-    "3.7|落英啊，残芳纷飞留归躅|9",
-    "3.7|落英啊，残芳纷飞留归躅|10",
-    "3.7|落英啊，残芳纷飞留归躅|11",
-    "3.7|落英啊，残芳纷飞留归躅|12",
-    "3.7|落英啊，残芳纷飞留归躅|13"
+    "3.6|大地啊，承载万物的苦难|3",
+    "3.6|大地啊，承载万物的苦难|8",
+    "3.6|大地啊，承载万物的苦难|10",
+    "3.6|诸神啊，奏响创世的凯歌|4"
    ],
+   "group": "NPC",
+   "pair_with": "丹恒（大地承接：荒笛 → 丹恒）",
+   "note": "NPC：荒笛 70 条/4 步，样本量小；大地承接：荒笛 → 丹恒（丹恒在 B 组）",
    "coverage_detail": {
-    "steps": 222,
-    "covered": 18,
+    "steps": 4,
+    "covered": 1,
     "per_version": {
-     "3.0": {
-      "steps": 11,
-      "covered": 2
-     },
-     "3.1": {
-      "steps": 23,
-      "covered": 0
-     },
-     "3.2": {
-      "steps": 27,
-      "covered": 1
-     },
-     "3.3": {
-      "steps": 32,
-      "covered": 3
-     },
-     "3.4": {
-      "steps": 20,
-      "covered": 2
-     },
-     "3.5": {
-      "steps": 39,
-      "covered": 2
-     },
      "3.6": {
-      "steps": 21,
+      "steps": 4,
       "covered": 1
-     },
-     "3.7": {
-      "steps": 49,
-      "covered": 7
      }
     },
     "per_task": {
-     "谧林啊，寤思者缘何失语": {
-      "steps": 20,
-      "covered": 0
-     },
-     "初日啊，逐退群星与残月": {
-      "steps": 19,
-      "covered": 0
-     },
-     "英雄啊，归以凡身向侵晨": {
-      "steps": 19,
-      "covered": 1
-     },
-     "摇船啊，请载我横渡冥流": {
-      "steps": 17,
-      "covered": 0
-     },
-     "英雄啊，回返那安宁的家乡": {
-      "steps": 14,
-      "covered": 1
-     },
-     "大墓啊，深藏轮回的秘密": {
-      "steps": 14,
-      "covered": 0
-     },
-     "诗者啊，从我处诉说天空•上": {
-      "steps": 12,
-      "covered": 0
-     },
-     "囚人啊，踏过日影见沧溟": {
-      "steps": 12,
-      "covered": 1
-     },
-     "落英啊，残芳纷飞留归躅": {
-      "steps": 12,
-      "covered": 0
-     },
-     "纸页啊，镌留记忆的涟漪": {
-      "steps": 10,
-      "covered": 2
-     },
-     "纺锤啊，难纴岁月的经纬": {
-      "steps": 8,
-      "covered": 0
-     },
-     "黎明啊，执耀于全世之终": {
-      "steps": 6,
-      "covered": 2
-     },
-     "书卷啊，可曾令锋刃回眸": {
-      "steps": 5,
-      "covered": 0
-     },
-     "归风啊，席卷旧尘登云天": {
-      "steps": 5,
-      "covered": 1
-     },
-     "悬锋啊，请涤去你的血锈•上": {
-      "steps": 4,
-      "covered": 0
-     },
-     "悬锋啊，请涤去你的血锈•下": {
-      "steps": 4,
-      "covered": 1
-     },
-     "诗者啊，从我处诉说天空•下": {
-      "steps": 4,
-      "covered": 0
-     },
-     "仇寇啊，且领受金血烧灼": {
-      "steps": 3,
-      "covered": 0
-     },
-     "金丝啊，请喻救世者谶语": {
+     "大地啊，承载万物的苦难": {
       "steps": 3,
       "covered": 1
-     },
-     "英雄啊，兑现那染血的冀望": {
-      "steps": 3,
-      "covered": 0
-     },
-     "流年啊，渡我漂游千百载": {
-      "steps": 3,
-      "covered": 0
-     },
-     "晨曦啊，再抚映遥远地平": {
-      "steps": 3,
-      "covered": 1
-     },
-     "银辇啊，挽别那人间史诗": {
-      "steps": 3,
-      "covered": 2
-     },
-     "夜帷啊，轻遮那静默过往": {
-      "steps": 2,
-      "covered": 1
-     },
-     "星空啊，为纷乱千念濯洗": {
-      "steps": 2,
-      "covered": 0
-     },
-     "旅者啊，徘徊中忘却失真": {
-      "steps": 2,
-      "covered": 0
-     },
-     "重逢啊，笑泪相拥的约定": {
-      "steps": 2,
-      "covered": 1
-     },
-     "魔女的孤诣课题": {
-      "steps": 2,
-      "covered": 1
-     },
-     "英雄啊，且握住那枚火种": {
-      "steps": 1,
-      "covered": 0
-     },
-     "行者啊，向冥河解缆起航": {
-      "steps": 1,
-      "covered": 0
-     },
-     "学者啊，于真理门前再会": {
-      "steps": 1,
-      "covered": 1
-     },
-     "母亲啊，暌离于冬去春来": {
-      "steps": 1,
-      "covered": 0
-     },
-     "英雄啊，点燃那最初的骄阳": {
-      "steps": 1,
-      "covered": 1
-     },
-     "英雄啊，将创世的凯歌奏响": {
-      "steps": 1,
-      "covered": 0
-     },
-     "长夜啊，先于黎明前到来": {
-      "steps": 1,
-      "covered": 0
-     },
-     "忆者啊，命途长河上溯洄": {
-      "steps": 1,
-      "covered": 0
      },
      "诸神啊，奏响创世的凯歌": {
       "steps": 1,
       "covered": 0
      }
     },
-    "unread_versions": [
-     "3.1"
-    ],
+    "unread_versions": [],
     "unread_tasks": [
      {
-      "task": "谧林啊，寤思者缘何失语",
-      "steps": 20,
-      "covered": 0
-     },
-     {
-      "task": "初日啊，逐退群星与残月",
-      "steps": 19,
-      "covered": 0
-     },
-     {
-      "task": "摇船啊，请载我横渡冥流",
-      "steps": 17,
-      "covered": 0
-     },
-     {
-      "task": "大墓啊，深藏轮回的秘密",
-      "steps": 14,
-      "covered": 0
-     },
-     {
-      "task": "诗者啊，从我处诉说天空•上",
-      "steps": 12,
-      "covered": 0
-     },
-     {
-      "task": "落英啊，残芳纷飞留归躅",
-      "steps": 12,
-      "covered": 0
-     },
-     {
-      "task": "纺锤啊，难纴岁月的经纬",
-      "steps": 8,
-      "covered": 0
-     },
-     {
-      "task": "书卷啊，可曾令锋刃回眸",
-      "steps": 5,
+      "task": "诸神啊，奏响创世的凯歌",
+      "steps": 1,
       "covered": 0
      }
     ],
-    "unread_task_count": 22
+    "unread_task_count": 1
+   }
+  },
+  "玻吕茜亚": {
+   "name": "玻吕茜亚",
+   "summary": {
+    "n_records": 72,
+    "n_steps": 5,
+    "n_steps_in_pool": 5,
+    "n_tasks": 3,
+    "n_versions_present": 1,
+    "versions_present": [
+     "3.2"
+    ],
+    "versions_absent": [
+     "3.0",
+     "3.1",
+     "3.3",
+     "3.4",
+     "3.5",
+     "3.6",
+     "3.7"
+    ],
+    "mean_text_len": 19.92,
+    "mean_score_a": 0.6033,
+    "mean_score_b1": 0.9428,
+    "top100_a": 0.8,
+    "top100_b1": 0.8,
+    "median_rank_a": 62.0,
+    "median_rank_b1": 59.0
+   },
+   "per_version": {
+    "3.0": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.1": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.2": {
+     "n_records": 72,
+     "share_of_records": 1.0,
+     "n_steps": 5,
+     "n_steps_in_pool": 5,
+     "n_tasks": 3,
+     "forms": {
+      "null": 65,
+      "死龙": 7
+     },
+     "address_own": {
+      "阁下": 3
+     },
+     "address_other_same_steps": {
+      "阁下": 13,
+      "英雄": 2,
+      "伙伴": 2,
+      "救世主": 1,
+      "半神": 1,
+      "开拓者": 1,
+      "老师": 1
+     },
+     "motif_own": {
+      "太阳": 1
+     },
+     "motif_other_same_steps": {
+      "火种": 3,
+      "逐火": 2,
+      "记忆": 1,
+      "迷迷": 1
+     },
+     "mean_score_a": 0.6033,
+     "mean_score_b1": 0.9428,
+     "top100_a": 0.8,
+     "top100_b1": 0.8,
+     "median_rank_a": 62.0,
+     "median_rank_b1": 59.0,
+     "mean_text_len": 19.92
+    },
+    "3.3": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.4": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.5": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.6": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    },
+    "3.7": {
+     "n_records": 0,
+     "share_of_records": 0.0,
+     "n_steps": 0,
+     "n_steps_in_pool": 0,
+     "n_tasks": 0,
+     "forms": {},
+     "address_own": {},
+     "address_other_same_steps": {},
+     "motif_own": {},
+     "motif_other_same_steps": {},
+     "mean_score_a": null,
+     "mean_score_b1": null,
+     "top100_a": null,
+     "top100_b1": null,
+     "median_rank_a": null,
+     "median_rank_b1": null,
+     "mean_text_len": null
+    }
+   },
+   "forms_overall": {
+    "null": 65,
+    "死龙": 7
+   },
+   "per_task": [
+    {
+     "task": "橄榄啊，请掷向议厅之主",
+     "n_records": 1,
+     "n_steps": 1,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "摇船啊，请载我横渡冥流",
+     "n_records": 7,
+     "n_steps": 2,
+     "versions": [
+      "3.2"
+     ]
+    },
+    {
+     "task": "断梦啊，从夙世捎来启迪",
+     "n_records": 64,
+     "n_steps": 2,
+     "versions": [
+      "3.2"
+     ]
+    }
+   ],
+   "low_presence": {
+    "versions": [
+     "3.0",
+     "3.1",
+     "3.3",
+     "3.4",
+     "3.5",
+     "3.6",
+     "3.7"
+    ],
+    "tasks": [
+     {
+      "task": "橄榄啊，请掷向议厅之主",
+      "n_records": 1,
+      "n_steps": 1,
+      "versions": [
+       "3.2"
+      ]
+     },
+     {
+      "task": "摇船啊，请载我横渡冥流",
+      "n_records": 7,
+      "n_steps": 2,
+      "versions": [
+       "3.2"
+      ]
+     },
+     {
+      "task": "断梦啊，从夙世捎来启迪",
+      "n_records": 64,
+      "n_steps": 2,
+      "versions": [
+       "3.2"
+      ]
+     }
+    ],
+    "note": "版本按台词占比<5%或为 0 判定；任务按步骤数≤3 判定（低存在感、可能被精读遗漏）"
+   },
+   "oracle_quotes": [],
+   "coverage": {
+    "n_steps": 5,
+    "n_steps_in_pool": 5,
+    "knife": {
+     "n": 1,
+     "n_total": 36,
+     "rate": 0.2
+    },
+    "key_events": {
+     "n": 1,
+     "n_total": 30,
+     "rate": 0.2
+    },
+    "annotation": {
+     "n": 0,
+     "n_total": 74,
+     "rate": 0.0
+    },
+    "union_knife_key_events": {
+     "n": 1,
+     "rate": 0.2
+    },
+    "union_all_close_reads": {
+     "n": 1,
+     "rate": 0.2
+    },
+    "n_uncovered_knife_key": 4,
+    "uncovered_by_version": {
+     "3.2": 4
+    }
+   },
+   "timeline_form_changes": [
+    {
+     "order": 26,
+     "version": "3.2",
+     "task": "摇船啊，请载我横渡冥流",
+     "step_idx": 16,
+     "form": "死龙",
+     "text": "*悲伤的低鸣*"
+    }
+   ],
+   "all_steps": [
+    "3.2|橄榄啊，请掷向议厅之主|14",
+    "3.2|断梦啊，从夙世捎来启迪|1",
+    "3.2|断梦啊，从夙世捎来启迪|2",
+    "3.2|摇船啊，请载我横渡冥流|16",
+    "3.2|摇船啊，请载我横渡冥流|17"
+   ],
+   "group": "NPC",
+   "pair_with": null,
+   "note": "NPC：遐蝶之妹；O05 双子共有神谕 holder=玻吕茜亚，不归遐蝶",
+   "coverage_detail": {
+    "steps": 5,
+    "covered": 1,
+    "per_version": {
+     "3.2": {
+      "steps": 5,
+      "covered": 1
+     }
+    },
+    "per_task": {
+     "断梦啊，从夙世捎来启迪": {
+      "steps": 2,
+      "covered": 1
+     },
+     "摇船啊，请载我横渡冥流": {
+      "steps": 2,
+      "covered": 0
+     },
+     "橄榄啊，请掷向议厅之主": {
+      "steps": 1,
+      "covered": 0
+     }
+    },
+    "unread_versions": [],
+    "unread_tasks": [
+     {
+      "task": "摇船啊，请载我横渡冥流",
+      "steps": 2,
+      "covered": 0
+     },
+     {
+      "task": "橄榄啊，请掷向议厅之主",
+      "steps": 1,
+      "covered": 0
+     }
+    ],
+    "unread_task_count": 2
    }
   }
  },
@@ -15021,16 +17813,16 @@
     "context_record_ratio": 5.49,
     "char_ratio": 4.69
    },
-   "荒笛": {
-    "file": "data/context/荒笛.jsonl",
-    "n_blocks": 5,
-    "n_records_in_context": 151,
-    "n_context_chars": 3206,
-    "n_appearance_records": 70,
-    "n_appearance_steps": 4,
-    "n_blocks_sparse": 0,
-    "context_record_ratio": 2.16,
-    "char_ratio": 1.95
+   "昔涟": {
+    "file": "data/context/昔涟.jsonl",
+    "n_blocks": 393,
+    "n_records_in_context": 6728,
+    "n_context_chars": 137900,
+    "n_appearance_records": 2393,
+    "n_appearance_steps": 222,
+    "n_blocks_sparse": 58,
+    "context_record_ratio": 2.81,
+    "char_ratio": 2.76
    },
    "开拓者": {
     "file": "data/context/开拓者.jsonl",
@@ -15043,23 +17835,45 @@
     "context_record_ratio": 3.49,
     "char_ratio": 6.47
    },
-   "昔涟": {
-    "file": "data/context/昔涟.jsonl",
-    "n_blocks": 393,
-    "n_records_in_context": 6728,
-    "n_context_chars": 137900,
-    "n_appearance_records": 2393,
-    "n_appearance_steps": 222,
-    "n_blocks_sparse": 58,
-    "context_record_ratio": 2.81,
-    "char_ratio": 2.76
+   "三月七": {
+    "file": "data/context/三月七.jsonl",
+    "n_blocks": 72,
+    "n_records_in_context": 2151,
+    "n_context_chars": 42598,
+    "n_appearance_records": 664,
+    "n_appearance_steps": 53,
+    "n_blocks_sparse": 20,
+    "context_record_ratio": 3.24,
+    "char_ratio": 2.78
+   },
+   "丹恒": {
+    "file": "data/context/丹恒.jsonl",
+    "n_blocks": 336,
+    "n_records_in_context": 6327,
+    "n_context_chars": 131663,
+    "n_appearance_records": 1541,
+    "n_appearance_steps": 210,
+    "n_blocks_sparse": 75,
+    "context_record_ratio": 4.11,
+    "char_ratio": 4.38
+   },
+   "荒笛": {
+    "file": "data/context/荒笛.jsonl",
+    "n_blocks": 5,
+    "n_records_in_context": 151,
+    "n_context_chars": 3206,
+    "n_appearance_records": 70,
+    "n_appearance_steps": 4,
+    "n_blocks_sparse": 0,
+    "context_record_ratio": 2.16,
+    "char_ratio": 1.95
    }
   },
   "totals": {
-   "n_characters": 13,
-   "n_blocks": 2583,
-   "n_records_in_context": 52858,
-   "n_context_chars": 1087258
+   "n_characters": 15,
+   "n_blocks": 2991,
+   "n_records_in_context": 61336,
+   "n_context_chars": 1261519
   }
  }
 }

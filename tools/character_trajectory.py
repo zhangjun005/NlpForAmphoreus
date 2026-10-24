@@ -774,7 +774,7 @@ def main():
         print("\n校验%s" % ("通过" if ok else "失败"))
         sys.exit(0 if ok else 1)
     if args.all:
-        build_all(ALL_CHARS, export_ctx=not args.no_context)
+        build_all(ALL_STATS, export_ctx=not args.no_context)
     else:
         chars = [c.strip() for c in args.characters.split(",") if c.strip()]
         build(chars)
@@ -786,8 +786,18 @@ def main():
 # ===========================================================================
 # task-22：13 角色 L1 全量轨迹 + L2 逐条上下文表
 # ===========================================================================
-ALL_CHARS = ["白厄", "万敌", "阿格莱雅", "缇宝", "遐蝶", "那刻夏", "风堇",
-             "赛飞儿", "海瑟音", "刻律德菈", "荒笛", "开拓者", "昔涟"]
+GROUP_A = ["白厄", "万敌", "阿格莱雅", "缇宝", "遐蝶", "那刻夏", "风堇",
+           "赛飞儿", "海瑟音", "刻律德菈", "昔涟"]              # A 组：黄金裔 11 位
+GROUP_B = ["开拓者", "三月七", "丹恒"]                        # B 组：单列（非黄金裔）
+NPC_CHARS = ["荒笛", "玻吕茜亚"]                              # NPC 类（不进 A/B 主表）
+ALL_CHARS = GROUP_A + GROUP_B                                # 14 个主角色（A+B）
+ALL_STATS = ALL_CHARS + NPC_CHARS                            # L1 统计 16 个角色
+CONTEXT_CHARS = ALL_CHARS + ["荒笛"]                          # L2 上下文 15 个角色（荒笛保留）
+PAIR_WITH = {"丹恒": "荒笛（大地承接：荒笛 → 丹恒）",
+             "荒笛": "丹恒（大地承接：荒笛 → 丹恒）",
+             "三月七": "长夜月（同一人形态：长夜月/永夜之帷/幻象/记忆形态）",
+             "遐蝶": "玻吕茜亚（NPC，遐蝶之妹；O05 双子共有神谕 holder=玻吕茜亚，不进任何组）"}
+GROUP_LABEL = {"A": "A 组：黄金裔 11 位", "B": "B 组：单列（非黄金裔）", "NPC": "NPC 类"}
 P_ALL_JSON = os.path.join(ROOT, "data", "config", "character-trajectory-all.json")
 P_ALL_MD = os.path.join(ROOT, "data", "reports", "character-trajectory-all.md")
 CTX_DIR = os.path.join(ROOT, "data", "context")
@@ -948,23 +958,37 @@ def export_context(chars_stats, recs, seg_by_key, recs_by_step, out_dir=CTX_DIR)
 # ---------------------------------------------------------------------------
 def make_f9(chars_stats, out):
     names = [c["name"] for c in chars_stats]
+    groups = [c.get("group") for c in chars_stats]
     mat = np.array([[c["per_version"][v]["n_records"] for v in VERSIONS] for c in chars_stats],
                    dtype=float)
-    fig, ax = plt.subplots(figsize=(9.6, 7.2))
+    fig, ax = plt.subplots(figsize=(10.2, 7.8))
     disp = np.log1p(mat)
     im = ax.imshow(disp, aspect="auto", cmap="YlOrRd")
     for i in range(len(names)):
         for j in range(len(VERSIONS)):
             val = int(mat[i, j])
-            ax.text(j, i, str(val), ha="center", va="center", fontsize=7,
+            ax.text(j, i, str(val), ha="center", va="center", fontsize=6.5,
                     color="white" if disp[i, j] > 0.6 * disp.max() else "black")
+    # 分组分隔线
+    for cut in (len(GROUP_A), len(GROUP_A) + len(GROUP_B)):
+        ax.axhline(cut - 0.5, color="black", lw=1.2, ls="--")
+    colors = {"A": "#1f4e79", "B": "#b9530f", "NPC": "#7f8c8d"}
+    for lab, g in zip(ax.get_yticklabels(), groups):
+        lab.set_color(colors.get(g, "black"))
     ax.set_xticks(range(len(VERSIONS)))
     ax.set_xticklabels(VERSIONS)
     ax.set_yticks(range(len(names)))
     ax.set_yticklabels(names)
     ax.set_xlabel(L("版本", "version"))
-    ax.set_title(L("图9  13 位角色分版本台词量（热力图；格内为台词条数，颜色=log 值）",
-                   "Fig9  Records per character per version"), fontsize=11)
+    ax.text(-0.08, len(GROUP_A) / 2.0 / len(names), L("A 组 11 黄金裔", "A: 11"),
+            transform=ax.transAxes, rotation=90, va="center", ha="right", fontsize=9, color="#1f4e79")
+    ax.text(-0.08, (len(GROUP_A) + len(GROUP_B) / 2.0) / len(names), L("B 组 3 单列", "B: 3"),
+            transform=ax.transAxes, rotation=90, va="center", ha="right", fontsize=9, color="#b9530f")
+    ax.text(-0.08, (len(GROUP_A) + len(GROUP_B) + len(NPC_CHARS) / 2.0) / len(names),
+            L("NPC 2", "NPC: 2"), transform=ax.transAxes, rotation=90, va="center",
+            ha="right", fontsize=9, color="#7f8c8d")
+    ax.set_title(L("图9  16 个角色分版本台词量（A 组 11 黄金裔 / B 组 3 单列 / NPC 2；格内为台词条数，颜色=log 值）",
+                   "Fig9  Records per character per version (A/B/NPC)"), fontsize=10)
     cb = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
     cb.set_label(L("log(1+台词条数)", "log(1+records)"), fontsize=8)
     fig.tight_layout()
@@ -973,31 +997,39 @@ def make_f9(chars_stats, out):
 
 
 def make_f10(chars_stats, out):
-    rows = sorted(chars_stats, key=lambda c: -c["summary"]["n_steps"])
+    def order_stats(gs):
+        return sorted(gs, key=lambda c: -c["summary"]["n_steps"])
+    a = order_stats([c for c in chars_stats if c.get("group") == "A"])
+    b = order_stats([c for c in chars_stats if c.get("group") == "B"])
+    npc = order_stats([c for c in chars_stats if c.get("group") == "NPC"])
+    rows = a + b + npc
     names = [c["name"] for c in rows]
     steps = [c["summary"]["n_steps"] for c in rows]
     covered = [c["coverage"]["union_knife_key_events"]["n"] for c in rows]
     with_ann = [c["coverage"]["union_all_close_reads"]["n"] for c in rows]
     y = np.arange(len(names))
-    fig, ax = plt.subplots(figsize=(10.4, 6.8))
+    fig, ax = plt.subplots(figsize=(10.6, 8.2))
     ax.barh(y - 0.24, steps, 0.24, color="#9fb3c8", label=L("出场步骤", "appearance steps"))
     ax.barh(y, covered, 0.24, color="#2e5c8a", label=L("深读覆盖（K36∪关键事件）", "deep-read covered"))
     ax.barh(y + 0.24, with_ann, 0.24, color="#d98c3f", label=L("+74 标注", "+ annotation"))
-    for i, (s, c) in enumerate(zip(steps, covered)):
-        ax.text(s + 3, i - 0.24, "%d" % s, va="center", fontsize=7, color="0.3")
-        ax.text(c + 3, i, "%d (%.1f%%)" % (c, 100 * c / s), va="center", fontsize=7, color="#2e5c8a")
+    for i, (s_, c_) in enumerate(zip(steps, covered)):
+        ax.text(s_ + 3, i - 0.24, "%d" % s_, va="center", fontsize=6.5, color="0.3")
+        ax.text(c_ + 3, i, "%d (%.1f%%)" % (c_, 100 * c_ / s_), va="center", fontsize=6.5, color="#2e5c8a")
+    for cut in (len(a), len(a) + len(b)):
+        ax.axhline(cut - 0.5, color="black", lw=1.1, ls="--")
     ax.set_yticks(y)
     ax.set_yticklabels(names)
+    for lab, c in zip(ax.get_yticklabels(), rows):
+        lab.set_color({"A": "#1f4e79", "B": "#b9530f", "NPC": "#7f8c8d"}.get(c.get("group"), "black"))
     ax.invert_yaxis()
     ax.set_xlabel(L("步骤数", "steps"))
-    ax.set_title(L("图10  13 位角色：出场步骤 vs 精读覆盖", "Fig10  Steps vs close-read coverage"),
-                 fontsize=11)
+    ax.set_title(L("图10  16 个角色：出场步骤 vs 精读覆盖（A 组 11 / B 组 3 / NPC 2）",
+                   "Fig10  Steps vs close-read coverage"), fontsize=10)
     ax.legend(frameon=False, fontsize=8, loc="lower right")
     ax.grid(axis="x", alpha=0.25)
     fig.tight_layout()
     fig.savefig(out, dpi=200, bbox_inches="tight")
     plt.close(fig)
-
 
 
 # ---------------------------------------------------------------------------
@@ -1006,27 +1038,27 @@ def make_f10(chars_stats, out):
 def build_summary_table(stats):
     rows = []
     for ch in stats:
-        s = ch["summary"]
+        ss = ch["summary"]
         cov = ch["coverage"]
         det = ch["coverage_detail"]
         forms = ch["forms_overall"]
         top_form = next(("%s（%d）" % (k or "无形态", n) for k, n in forms.items()), "—")
-        addr = sorted(ch["per_version"].items(), key=lambda kv: -sum(kv[1]["address_own"].values()))
         addr_terms = Counter()
-        for v in VERSIONS:
-            addr_terms.update(ch["per_version"][v]["address_own"])
         motif_terms = Counter()
         for v in VERSIONS:
+            addr_terms.update(ch["per_version"][v]["address_own"])
             motif_terms.update(ch["per_version"][v]["motif_own"])
-        top_addr = "、".join("%s%d" % (k, n) for k, n in addr_terms.most_common(3)) or "—"
-        top_motif = "、".join("%s%d" % (k, n) for k, n in motif_terms.most_common(3)) or "—"
         rows.append({
-            "name": ch["name"], "n_records": s["n_records"], "n_steps": s["n_steps"],
-            "n_tasks": s["n_tasks"], "n_versions_present": s["n_versions_present"],
-            "versions_present": s["versions_present"], "versions_absent": s["versions_absent"],
-            "top_form": top_form, "top_address": top_addr, "top_motif": top_motif,
-            "mean_score_a": s["mean_score_a"], "mean_score_b1": s["mean_score_b1"],
-            "top100_b1": s["top100_b1"],
+            "name": ch["name"], "group": ch.get("group"),
+            "pair_with": ch.get("pair_with"), "group_note": ch.get("note"),
+            "n_records": ss["n_records"], "n_steps": ss["n_steps"], "n_tasks": ss["n_tasks"],
+            "n_versions_present": ss["n_versions_present"],
+            "versions_present": ss["versions_present"], "versions_absent": ss["versions_absent"],
+            "top_form": top_form,
+            "top_address": "、".join("%s%d" % (k, n) for k, n in addr_terms.most_common(3)) or "—",
+            "top_motif": "、".join("%s%d" % (k, n) for k, n in motif_terms.most_common(3)) or "—",
+            "mean_score_a": ss["mean_score_a"], "mean_score_b1": ss["mean_score_b1"],
+            "top100_b1": ss["top100_b1"],
             "knife_n": cov["knife"]["n"], "key_n": cov["key_events"]["n"],
             "annotation_n": cov["annotation"]["n"],
             "deep_n": cov["union_knife_key_events"]["n"],
@@ -1044,150 +1076,152 @@ def render_all_report(data, manifest):
     meta = data["meta"]
     st = data["summary_table"]
     chars = data["characters"]
+    groups = {g: [x for x in st if x["group"] == g] for g in ("A", "B", "NPC")}
     Lr = []
     A = Lr.append
-    A("# 13 位角色全量轨迹 + 逐条上下文表（L1/L2，供 L3 全量精读）")
+    A("# 16 个角色全量轨迹 + 逐条上下文表（A 组 11 黄金裔 / B 组 3 单列 / NPC 2）")
     A("")
     A("> 生成脚本：`tools/character_trajectory.py --all` ｜ 重跑命令：`%s --all`" % RUN_CMD)
-    A("> 数据（只读）：`amphoreus.final.jsonl`、`segments.jsonl`、`oracle-citation-coding.json`、"
-      "`knife-scenes.json`、`key-events.json`、`annotation-labels.json`、`baseline-a/b-scores.json`")
-    A("> 产出：`data/config/character-trajectory-all.json`、`data/reports/character-trajectory-all.md`、"
-      "`data/context/<角色>.jsonl`（派生数据，已 .gitignore）、`docs/report/figures/f9_all_trajectories.png`、`f10_coverage.png`")
+    A("> 产出：`data/config/character-trajectory-all.json`、本报告、`data/context/<角色>.jsonl`（派生数据，已 .gitignore）、"
+      "`docs/report/figures/f9_all_trajectories.png`、`f10_coverage.png`")
     A("")
-    A("> 口径：全量出场 = `canonical_speaker` 等于该角色的全部记录（含 dialogue/sms）；"
-      "步骤 = 记录所在 (version, task, step_idx) 映射到 723 个 segment（686 池为可排序子集）；"
-      "深读覆盖 = 出场步骤中被 K36 刀子场景 ∪ 30 关键事件覆盖；加标注覆盖 = 再并上 74 条人工标注。")
+    A("> **角色分层（报告口径，用户最终拍板）**：")
+    A("> - **A 组 = 黄金裔 11 位**：%s。" % "、".join(GROUP_A))
+    A(">   脚注：游戏虽称「十二黄金裔」，但「岁月」这一席位历史上多次更换（欧洛尼斯一线 / 德谬歌与昔涟的演化），"
+      "所以实际固定的黄金裔是 **11 位**；本报告一律按 11 位口径。")
+    A("> - **B 组 = 单列 3 人**（非黄金裔，主线塑造在翁法罗斯之外）：%s。" % "、".join(GROUP_B))
+    A("> - **NPC 类 = 2 人**（不进 A/B 主表）：荒笛（70 条 / 4 步；**大地承接：荒笛 → 丹恒**，标样本量）、"
+      "玻吕茜亚（72 条 / 5 步；遐蝶之妹；**O05 双子共有神谕 holder=玻吕茜亚**，不归遐蝶）。")
+    A("> - 统计口径：全量出场 = `canonical_speaker` 全部记录；步骤映射到 723 个 segment；"
+      "深读覆盖 = 出场步骤中被 K36 刀子场景 ∪ 30 关键事件覆盖（另算 74 条标注覆盖）。")
     A("")
     total_steps = sum(x["n_steps"] for x in st)
     total_deep = sum(x["deep_n"] for x in st)
     total_rec = sum(x["n_records"] for x in st)
-    A("## 1. 结论（先回答核心问题）")
+    A("## 1. 结论")
     A("")
-    A("1. **全量数据 vs 精读覆盖**：13 位角色合计（各角色分别计数后相加；同一段剧情若多角色同场会重复计数）"
-      "**%d 条台词 / %d 个出场步骤**，"
-      "深读只覆盖 **%d 步 = %.1f%%**（加 74 条标注为 %d 步 = %.1f%%）。"
-      "「只分析了集中位置」在全体角色上同样成立，白厄（10.9%%）不是特例。" % (
+    A("1. **16 个角色合计（各角色分别计数相加）%d 条台词 / %d 个出场步骤**；深读覆盖 **%d 步 = %.1f%%**"
+      "（加 74 条标注 %d 步 = %.1f%%）。" % (
           total_rec, total_steps, total_deep, 100 * total_deep / total_steps,
           sum(x["all_read_n"] for x in st), 100 * sum(x["all_read_n"] for x in st) / total_steps))
-    worst = sorted([x for x in st if x["n_steps"] >= 10], key=lambda x: x["deep_rate"])[:3]
-    A("2. **覆盖率最差的 3 个角色**：%s——这些角色的出场大多在「非刀子/非关键事件」的日常或支线步骤里，"
-      "现有精读几乎没有覆盖到。" % "；".join(
-          "%s（%d 步，深读 %d 步 = %.1f%%）" % (x["name"], x["n_steps"], x["deep_n"], 100 * x["deep_rate"])
-          for x in worst))
-    A("3. **L2 上下文表已覆盖全部出场记录**：13 个 jsonl 共 **%d 个上下文块 / %d 条上下文记录 / %d 字**；"
-      "每个角色的每一条出场台词都至少出现在一个块里（trigger），并带前后各 %d 条同步骤记录。"
-      "因此 L3 只需按块顺序读，无需回原始 corpora 检索。" % (
+    A("2. **A 组 11 黄金裔**：%d 条台词 / %d 步，深读 %d 步 = %.1f%%。" % (
+        sum(x["n_records"] for x in groups["A"]), sum(x["n_steps"] for x in groups["A"]),
+        sum(x["deep_n"] for x in groups["A"]),
+        100 * sum(x["deep_n"] for x in groups["A"]) / sum(x["n_steps"] for x in groups["A"])))
+    A("3. **B 组 3 人**：%d 条 / %d 步，深读 %d 步 = %.1f%%；**不与黄金裔横向比较**。" % (
+        sum(x["n_records"] for x in groups["B"]), sum(x["n_steps"] for x in groups["B"]),
+        sum(x["deep_n"] for x in groups["B"]),
+        100 * sum(x["deep_n"] for x in groups["B"]) / sum(x["n_steps"] for x in groups["B"])))
+    A("4. **NPC 2 人**：%d 条 / %d 步，深读 %d 步；荒笛仅 70 条 / 4 步，结论需谨慎，大地线请与丹恒合看（B 组）。" % (
+        sum(x["n_records"] for x in groups["NPC"]), sum(x["n_steps"] for x in groups["NPC"]),
+        sum(x["deep_n"] for x in groups["NPC"])))
+    A("5. **L2 上下文表覆盖全部出场记录**：15 个 jsonl 共 **%d 块 / %d 条上下文记录 / %d 字**；"
+      "每个角色的每条出场台词都至少出现一次（trigger），并带前 %d + 后 %d 条同步骤记录。" % (
           manifest["totals"]["n_blocks"], manifest["totals"]["n_records_in_context"],
-          manifest["totals"]["n_context_chars"], WINDOW))
-    A("4. **上下文表是否足够支撑全量精读**：**足够回答「角色在每一处出现时说了什么、周围发生了什么」**；"
-      "但块窗口限定在同一步骤内（不跨步拼接），步骤之间的剧情因果需要 L3 按 `order` 顺序自行串联。"
-      "对稀疏步骤（该步总记录<6 或该角色记录<3）已整步放入，不会漏上下文。")
-    A("5. **建议的 L3 用法**：每个角色读一个 jsonl（大角色如白厄/开拓者按 `order` 分 2–3 段读），"
-      "读完后对照本报告的「未读版本/任务」清单，优先补覆盖率为 0 的版本与任务。")
+          manifest["totals"]["n_context_chars"], WINDOW, WINDOW))
+    A("6. **上下文表是否足够支撑全量精读**：足够回答「角色在每一处出现时说了什么、周围发生了什么」；"
+      "窗口限定在同一步骤内（不跨步），步骤间因果需 L3 按 `order` 串联；稀疏步骤（总记录<6 或该角色<3）已整步放入。")
     A("")
 
-    # ---------------- 汇总表 ----------------
-    A("## 2. 13 角色汇总表")
+    def table(rows, title):
+        A(title)
+        A("")
+        A("| 角色 | 台词 | 步骤 | 任务 | 版本 | 主要形态 | 称呼 top3 | 母题 top3 | A/B1 均分 | B1 Top100 | 深读覆盖 | 加标注 |")
+        A("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+        for x in rows:
+            A("| %s | %d | %d | %d | %d | %s | %s | %s | %.3f / %.3f | %.1f%% | %d/%d = %.1f%% | %d/%d = %.1f%% |" % (
+                x["name"], x["n_records"], x["n_steps"], x["n_tasks"], x["n_versions_present"],
+                x["top_form"], x["top_address"], x["top_motif"],
+                x["mean_score_a"] or 0, x["mean_score_b1"] or 0, 100 * (x["top100_b1"] or 0),
+                x["deep_n"], x["n_steps"], 100 * x["deep_rate"],
+                x["all_read_n"], x["n_steps"], 100 * x["all_read_rate"]))
+        A("")
+    A("## 2. A 组：黄金裔 11 位（汇总）")
     A("")
-    A("| 角色 | 台词 | 步骤 | 任务 | 版本 | 主要形态 | 称呼 top3 | 母题 top3 | A/B1 均分 | B1 Top100 | 深读覆盖 | 加标注 |")
-    A("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
-    for x in st:
-        A("| %s | %d | %d | %d | %d | %s | %s | %s | %.3f / %.3f | %.1f%% | %d/%d = %.1f%% | %d/%d = %.1f%% |" % (
-            x["name"], x["n_records"], x["n_steps"], x["n_tasks"], x["n_versions_present"],
-            x["top_form"], x["top_address"], x["top_motif"],
-            x["mean_score_a"] or 0, x["mean_score_b1"] or 0, 100 * (x["top100_b1"] or 0),
-            x["deep_n"], x["n_steps"], 100 * x["deep_rate"],
-            x["all_read_n"], x["n_steps"], 100 * x["all_read_rate"]))
+    table(groups["A"], "")
+    A("## 3. B 组：单列 3 人（汇总；不与黄金裔比较）")
     A("")
-    A("> 备注：表中「深读覆盖 / 加标注」的分母是该角色自己的出场步骤数（角色间会重叠）；"
-      "A/B1 均分与 Top100 只统计出场步骤中落在 686 池内的部分；"
-      "形态/称呼/母题为各版本合计（称呼/母题只统计角色自己台词里的命中）。")
+    table(groups["B"], "")
+    A("## 4. NPC 类（不进 A/B 主表）")
     A("")
-
-    # ---------------- 分版本矩阵 ----------------
-    A("## 3. 分版本台词量矩阵（每人分版本小表）")
+    table(groups["NPC"], "")
+    A("> 说明：荒笛 70 条 / 4 步，样本量小；**大地承接：荒笛 → 丹恒**（丹恒在 B 组）。"
+      "玻吕茜亚 72 条 / 5 步，遐蝶之妹；O05「汝将凋零…」为双子共有神谕、holder=玻吕茜亚，不归遐蝶。")
+    A("")
+    A("## 5. 分版本台词量矩阵（每人分版本小表）")
     A("")
     A("| 角色 | " + " | ".join(VERSIONS) + " | 合计 |")
     A("| --- | " + " | ".join("---" for _ in VERSIONS) + " | --- |")
-    for ch in chars.values():
-        pv = ch["per_version"]
-        A("| %s | %s | %d |" % (
-            ch["name"], " | ".join(str(pv[v]["n_records"]) for v in VERSIONS),
-            ch["summary"]["n_records"]))
+    for g in ("A", "B", "NPC"):
+        for name in [x["name"] for x in groups[g]]:
+            pv = chars[name]["per_version"]
+            A("| %s（%s） | %s | %d |" % (
+                name, g, " | ".join(str(pv[v]["n_records"]) for v in VERSIONS),
+                chars[name]["summary"]["n_records"]))
     A("")
     A("分版本**出场步骤数**：")
     A("")
     A("| 角色 | " + " | ".join(VERSIONS) + " | 合计 |")
     A("| --- | " + " | ".join("---" for _ in VERSIONS) + " | --- |")
-    for ch in chars.values():
-        pv = ch["per_version"]
-        A("| %s | %s | %d |" % (
-            ch["name"], " | ".join(str(pv[v]["n_steps"]) for v in VERSIONS),
-            ch["summary"]["n_steps"]))
+    for g in ("A", "B", "NPC"):
+        for name in [x["name"] for x in groups[g]]:
+            pv = chars[name]["per_version"]
+            A("| %s（%s） | %s | %d |" % (
+                name, g, " | ".join(str(pv[v]["n_steps"]) for v in VERSIONS),
+                chars[name]["summary"]["n_steps"]))
     A("")
-
-    # ---------------- 覆盖与未读 ----------------
-    A("## 4. 各角色覆盖与「没读到的版本/任务」")
+    A("## 6. 覆盖与「没读到的版本/任务」")
     A("")
-    A("| 角色 | 出场步 | 深读覆盖 | 未读版本 | 未读任务数 | 未读任务（步骤数最多的前 3） |")
-    A("| --- | --- | --- | --- | --- | --- |")
+    A("| 角色 | 组 | 出场步 | 深读覆盖 | 未读版本 | 未读任务数 | 未读任务（步骤数最多的前 3） |")
+    A("| --- | --- | --- | --- | --- | --- | --- |")
     for x in st:
-        ch = chars[x["name"]]
-        det = ch["coverage_detail"]
-        A("| %s | %d | %d (%.1f%%) | %s | %d | %s |" % (
-            x["name"], det["steps"], det["covered"], 100 * det["covered"] / det["steps"],
-            "、".join(det["unread_versions"]) or "无",
-            det["unread_task_count"],
+        det = chars[x["name"]]["coverage_detail"]
+        A("| %s | %s | %d | %d (%.1f%%) | %s | %d | %s |" % (
+            x["name"], x["group"], det["steps"], det["covered"],
+            100 * det["covered"] / det["steps"],
+            "、".join(det["unread_versions"]) or "无", det["unread_task_count"],
             "；".join("%s（%d 步）" % (t["task"][:14], t["steps"]) for t in det["unread_tasks"][:3]) or "无"))
     A("")
-    A("> 「未读版本」= 该版本有出场步骤、但深读覆盖为 0；「未读任务」= 该任务有出场步骤、但覆盖为 0。")
+    A("## 7. L2 上下文表统计（`data/context/`）")
     A("")
-
-    # ---------------- L2 上下文表 ----------------
-    A("## 5. L2 上下文表统计（`data/context/`）")
-    A("")
-    A("| 角色 | 块数 | 上下文记录 | 上下文字数 | 出场记录 | 记录覆盖比 | 稀疏整步块 | 文件 |")
+    A("| 角色 | 组 | 块数 | 上下文记录 | 上下文字数 | 出场记录 | 记录覆盖比 | 稀疏整步块 |")
     A("| --- | --- | --- | --- | --- | --- | --- | --- |")
     for name, m in manifest["characters"].items():
-        A("| %s | %d | %d | %d | %d | %.2f× | %d | `%s` |" % (
-            name, m["n_blocks"], m["n_records_in_context"], m["n_context_chars"],
-            m["n_appearance_records"], m["context_record_ratio"], m["n_blocks_sparse"], m["file"]))
+        A("| %s | %s | %d | %d | %d | %d | %.2f× | %d |" % (
+            name, chars[name].get("group"), m["n_blocks"], m["n_records_in_context"],
+            m["n_context_chars"], m["n_appearance_records"], m["context_record_ratio"],
+            m["n_blocks_sparse"]))
     A("")
-    A("| 合计 | %d | %d | %d | %d | — | %d | 13 个文件 |" % (
+    A("| 合计 | — | %d | %d | %d | %d | — | %d |" % (
         manifest["totals"]["n_blocks"], manifest["totals"]["n_records_in_context"],
         manifest["totals"]["n_context_chars"],
         sum(m["n_appearance_records"] for m in manifest["characters"].values()),
         sum(m["n_blocks_sparse"] for m in manifest["characters"].values())))
     A("")
     A("**上下文块字段**：`char, version, task, step_idx, step_title, order, record_id, record_span, "
-      "n_records, n_char_records, sparse_step, trigger_record_ids, context[]`；"
-      "`context[]` 内每条为 `{id, kind, speaker, text}`，按 id 升序。")
+      "n_records, n_char_records, sparse_step, trigger_record_ids, context[]`；`context[]` 每条为 `{id, kind, speaker, text}`。")
     A("")
-    A("## 6. 局限")
+    A("## 8. 局限")
     A("")
-    A("1. 上下文窗口限定在**同一 (version, task, step_idx) 步骤内**，不跨步拼接；步骤之间的因果需要 L3 按 order 串联。")
+    A("1. 上下文窗口限定在**同一 (version, task, step_idx) 步骤内**，不跨步拼接；步骤之间的因果需 L3 按 order 串联。")
     A("2. 称呼/母题命中是字面统计；「称呼」取角色自己台词（他称只用同步骤他人台词做代理，未展开）。")
     A("3. 形态（form）字段有 null，null 不等于「无形态」；A/B1 均分只覆盖 686 池内的出场步骤。")
-    A("4. 深读覆盖以 K36/30/74 三个文件的实际内容为准；文件更新后重跑 `--all` 即可同步。")
-    A("5. 上下文表是**记录级**的，不含章节/场景摘要；L3 若要剧情级摘要需另外生成。")
+    A("4. NPC 样本量小（荒笛 4 步、玻吕茜亚 5 步），只做记录与覆盖统计，不单独下结论。")
+    A("5. 深读覆盖以 K36/30/74 文件的实际内容为准；文件更新后重跑 `--all` 即可同步。")
     A("")
-    A("## 7. 复现")
+    A("## 9. 复现")
     A("")
     A("```bash")
     A(RUN_CMD + " --all")
     A("conda run -n nlpLesson python tools/character_trajectory.py --verify")
     A("```")
     A("")
-    A("- 无随机；全部数字/上下文由 JSONL/JSON 现场生成。")
-    A("- `--all` 会重写 `data/config/character-trajectory-all.json`、本报告、`data/context/*.jsonl`、`_manifest.json` 与两张图。")
+    A("- 无随机；全部数字/上下文由 JSONL/JSON 现场生成；`--verify` 会重算 16 角色统计、15 个上下文文件与 manifest，并抽查报告数字。")
     A("")
     return "\n".join(Lr)
 
 
-# ---------------------------------------------------------------------------
-# 构建 / 校验（13 角色）
-# ---------------------------------------------------------------------------
-def build_all(chars=ALL_CHARS, export_ctx=True):
+def build_all(chars=ALL_STATS, export_ctx=True):
     recs, segs, seg_by_key, pool, A, B, knife, events, annot, cite, recs_by_step = load_all()
     kseg = knife_segments(knife)
     eseg = key_event_segments(events)
@@ -1196,6 +1230,11 @@ def build_all(chars=ALL_CHARS, export_ctx=True):
         print("L1 统计 %s …" % name)
         ch = character_stats(name, recs, seg_by_key, pool, A, B, knife, events, annot, cite,
                              listen=True, recs_by_step=recs_by_step)
+        ch["group"] = "A" if name in GROUP_A else ("B" if name in GROUP_B else "NPC")
+        ch["pair_with"] = PAIR_WITH.get(name)
+        ch["note"] = ("NPC：荒笛 70 条/4 步，样本量小；大地承接：荒笛 → 丹恒（丹恒在 B 组）"
+                      if name == "荒笛" else
+                      ("NPC：遐蝶之妹；O05 双子共有神谕 holder=玻吕茜亚，不归遐蝶" if name == "玻吕茜亚" else None))
         ch["coverage_detail"] = coverage_detail(ch, kseg, eseg)
         stats.append(ch)
     summary_table = build_summary_table(stats)
@@ -1203,23 +1242,25 @@ def build_all(chars=ALL_CHARS, export_ctx=True):
         "meta": {
             "script": "tools/character_trajectory.py --all",
             "run_command": RUN_CMD + " --all",
-            "characters": chars,
+            "groups": {"A_黄金裔11": GROUP_A, "B_单列3": GROUP_B, "NPC_2": NPC_CHARS},
+            "note": "按用户最终口径：黄金裔=11 位（岁月席位历史多次更换，欧洛尼斯一线 / 德谬歌与昔涟演化）；"
+                    "荒笛、玻吕茜亚为 NPC，不进 A/B 主表；玻吕茜亚仅在遐蝶/O05 注记中出现。",
             "n_records_total": len(recs), "n_segments_total": len(segs), "n_pool": len(pool),
             "n_knife": len(knife["scenes"]), "n_events": len(events["events"]), "n_annot": len(annot),
-            "window": "前 %d + 本条 + 后 %d（同一步骤内按 id 升序）" % (WINDOW, WINDOW),
+            "window": "前 %d + 本条 + 后 %d（同一步骤内，按 id 升序）" % (WINDOW, WINDOW),
             "sparse_rule": "该步总记录<%d 或该角色记录<%d → 整步放入" % (
                 SPARSE_STEP_RECORDS, SPARSE_CHAR_RECORDS),
             "sources": ["amphoreus.final.jsonl", "segments.jsonl", "oracle-citation-coding.json",
                         "knife-scenes.json", "key-events.json", "annotation-labels.json",
                         "baseline-a-scores.json", "baseline-b-scores.json"],
-            "note": "全量出场来自 canonical_speaker；精读覆盖以 K36/30/74 文件实际内容为准。",
         },
         "summary_table": summary_table,
         "characters": {ch["name"]: ch for ch in stats},
     }
     manifest = None
     if export_ctx:
-        manifest = export_context(stats, recs, seg_by_key, recs_by_step)
+        ctx_stats = [c for c in stats if c["name"] in CONTEXT_CHARS]
+        manifest = export_context(ctx_stats, recs, seg_by_key, recs_by_step)
         data["context_manifest"] = manifest
     os.makedirs(FIG_DIR, exist_ok=True)
     make_f9(stats, F9)
@@ -1238,7 +1279,7 @@ def build_all(chars=ALL_CHARS, export_ctx=True):
     if not verify_all(data, verbose=True):
         print("!! 校验失败", file=sys.stderr)
         sys.exit(1)
-    print("\n校验通过：13 角色、上下文表、manifest、两图均与 JSON 一致。")
+    print("\n校验通过：16 角色（A11/B3/NPC2）、15 个上下文文件、两图均与 JSON 一致。")
 
 
 def verify_all(data=None, verbose=False):
@@ -1250,8 +1291,11 @@ def verify_all(data=None, verbose=False):
             return False
         data = read_json(P_ALL_JSON)
     chars = data["characters"]
-    if len(chars) != 13:
-        problems.append("角色数 %d != 13" % len(chars))
+    grp = Counter(ch.get("group") for ch in chars.values())
+    if len(chars) != 16:
+        problems.append("角色数 %d != 16" % len(chars))
+    if grp.get("A") != 11 or grp.get("B") != 3 or grp.get("NPC") != 2:
+        problems.append("分组数异常：%s" % dict(grp))
     kseg = knife_segments(knife)
     eseg = key_event_segments(events)
     aseg = annotation_segments(annot)
@@ -1266,14 +1310,15 @@ def verify_all(data=None, verbose=False):
         for key, sset in (("knife", kseg), ("key_events", eseg), ("annotation", aseg)):
             if len(segids & sset) != ch["coverage"][key]["n"]:
                 problems.append("%s %s 覆盖不一致" % (name, key))
-        u = segids & (kseg | eseg)
-        if len(u) != ch["coverage"]["union_knife_key_events"]["n"]:
+        if len(segids & (kseg | eseg)) != ch["coverage"]["union_knife_key_events"]["n"]:
             problems.append("%s 深读并集不一致" % name)
-    # 上下文表与 manifest
+    # 上下文表：15 个文件（A11+B3+荒笛），NPC 玻吕茜亚不要求
     manifest = data.get("context_manifest") or (read_json(P_CTX_MANIFEST) if os.path.exists(P_CTX_MANIFEST) else None)
     if not manifest:
         problems.append("缺少上下文 manifest")
     else:
+        if len(manifest["characters"]) != 15:
+            problems.append("上下文角色数 %d != 15" % len(manifest["characters"]))
         if not os.path.exists(os.path.join(CTX_DIR, ".gitignore")):
             problems.append("缺少 data/context/.gitignore")
         for name, m in manifest["characters"].items():
@@ -1283,7 +1328,7 @@ def verify_all(data=None, verbose=False):
                 continue
             rows = [r for r in recs if r.get("canonical_speaker") == name]
             char_ids = {r["id"] for r in rows}
-            rec_step = {(r["id"]): (r["version"], r["task"], r["step_idx"]) for r in recs}
+            rec_step = {r["id"]: (r["version"], r["task"], r["step_idx"]) for r in recs}
             blocks = []
             with open(path, "r", encoding="utf-8") as f:
                 for line in f:
@@ -1291,53 +1336,41 @@ def verify_all(data=None, verbose=False):
                     if line:
                         blocks.append(json.loads(line))
             if len(blocks) != m["n_blocks"]:
-                problems.append("%s 块数不一致（manifest %d，实际 %d）" % (name, m["n_blocks"], len(blocks)))
-            seen = set()
-            trig_union = set()
-            n_rec = 0
-            n_char = 0
-            dup = 0
+                problems.append("%s 块数不一致" % name)
+            seen, trig_union, n_rec, n_char = set(), set(), 0, 0
             for b in blocks:
                 ids = [x["id"] for x in b["context"]]
-                if len(ids) != len(set(ids)):
-                    dup += 1
                 if ids != sorted(ids):
                     problems.append("%s 块内记录未按 id 升序" % name)
                 for x in b["context"]:
                     if x["id"] in seen:
                         problems.append("%s 块间记录重复：%d" % (name, x["id"]))
                     seen.add(x["id"])
-                    rec_step.get(x["id"], None)
+                    st = rec_step.get(x["id"])
+                    if st is not None and st != (b["version"], b["task"], b["step_idx"]):
+                        problems.append("%s 块内记录跨步骤" % name)
                 trig_union.update(b["trigger_record_ids"])
                 n_rec += len(ids)
                 n_char += sum(len(x["text"]) for x in b["context"])
-                # 块内记录应全在块声明的同一步骤
-                for x in b["context"]:
-                    st = rec_step.get(x["id"])
-                    if st is not None and st != (b["version"], b["task"], b["step_idx"]):
-                        problems.append("%s 块内记录跨步骤：%d" % (name, x["id"]))
             if trig_union != char_ids:
-                problems.append("%s 出场记录未被上下文块完整覆盖（%d/%d）" % (
-                    name, len(trig_union & char_ids), len(char_ids)))
-            if n_rec != m["n_records_in_context"]:
-                problems.append("%s manifest 记录数不一致" % name)
-            if n_char != m["n_context_chars"]:
-                problems.append("%s manifest 字符数不一致" % name)
+                problems.append("%s 出场记录未完整覆盖（%d/%d）" % (name, len(trig_union & char_ids), len(char_ids)))
+            if n_rec != m["n_records_in_context"] or n_char != m["n_context_chars"]:
+                problems.append("%s manifest 统计不一致" % name)
     for path in (F9, F10):
         if not os.path.exists(path) or os.path.getsize(path) < 5000:
             problems.append("图不存在或过小：%s" % path)
     md = open(P_ALL_MD, "r", encoding="utf-8").read() if os.path.exists(P_ALL_MD) else ""
-    for name in ALL_CHARS:
-        if name not in md:
-            problems.append("报告缺少角色 %s" % name)
+    for kw in ("A 组", "B 组", "NPC", "荒笛", "玻吕茜亚", "三月七", "丹恒", "11 位", "大地承接"):
+        if kw not in md:
+            problems.append("报告缺少口径关键词：%s" % kw)
     if verbose:
-        print("\n13 角色 L1：")
+        print("\n16 角色 L1（A11/B3/NPC2）：")
         for name, ch in chars.items():
-            s = ch["summary"]
+            ss = ch["summary"]
             cov = ch["coverage"]["union_knife_key_events"]
-            print("  %-5s %5d 条 / %3d 步 / %2d 任务；深读 %3d (%4.1f%%)；未读版本 %s" % (
-                name, s["n_records"], s["n_steps"], s["n_tasks"], cov["n"],
-                100 * cov["rate"], "、".join(ch["coverage_detail"]["unread_versions"]) or "无"))
+            print("  %-5s[%s] %5d 条 / %3d 步 / %2d 任务；深读 %3d (%4.1f%%)" % (
+                name, ch.get("group"), ss["n_records"], ss["n_steps"], ss["n_tasks"],
+                cov["n"], 100 * cov["rate"]))
         if manifest:
             print("上下文：%d 角色 / %d 块 / %d 条 / %d 字" % (
                 len(manifest["characters"]), manifest["totals"]["n_blocks"],
