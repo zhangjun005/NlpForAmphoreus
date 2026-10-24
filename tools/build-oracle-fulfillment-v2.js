@@ -14,6 +14,24 @@ const FILLED = JSON.parse(rd('data/config/oracle-fulfillment.filled.json'));
 const KNIFE = JSON.parse(rd('data/config/knife-scenes.json'));
 const filledById = Object.fromEntries((FILLED.oracles || []).map((o) => [o.oracle_id, o]));
 
+
+// ===== 人工修正（2026-10-24，依据用户裁定）=====
+// event_segments 支持多段：{segment_id, role: '兑现'|'意义转折', note}
+const EVENT_SEGMENTS_EXTRA = {
+  O05: [
+    { segment_id: '3.2|断梦啊，从夙世捎来启迪|1', role: '意义转折', note: '双子抉择：我和姐姐必须有一人牺牲' },
+    { segment_id: '3.2|摇船啊，请载我横渡冥流|19', role: '兑现', note: '塞纳托斯形态宣言：命中注定的时刻再次到来' },
+  ],
+  O13: [
+    { segment_id: '3.4|英雄啊，点燃那最初的骄阳|7', role: '意义转折', note: '「为这个我们深爱的世界，写下不同以往的结局」——收梢的预演/写作行为' },
+    { segment_id: '3.7|魔女的孤诣课题|21', role: '兑现', note: '收梢于花开时；德谬歌诞生（含水晶花寓言的改写）' },
+  ],
+};
+// O05 双子共有：候选人工指定
+const EVENT_CANDIDATE_EXTRA = {
+  O05: ['3.2|断梦啊，从夙世捎来启迪|1', '3.2|断梦啊，从夙世捎来启迪|2', '3.2|摇船啊，请载我横渡冥流|19'],
+};
+
 const segOf = (occ) => `${occ.version}|${occ.task}|${occ.step_idx}`;
 const out = [];
 const rows = [];
@@ -37,6 +55,11 @@ for (const o of ORACLES) {
     }))
     .filter((c) => c.segment_ids.length && c.segment_ids.some((id) => !recitation.includes(id)));
   const proposed = candidates.length ? candidates[0].segment_ids.find((id) => !recitation.includes(id)) : null;
+  const extraSegments = EVENT_SEGMENTS_EXTRA[o.oracle_id] || [];
+  const extraCandidates = EVENT_CANDIDATE_EXTRA[o.oracle_id] || [];
+  const eventSegments = extraSegments.length
+    ? extraSegments
+    : (proposed ? [{ segment_id: proposed, role: '兑现', note: '' }] : []);
 
   out.push({
     oracle_id: o.oracle_id,
@@ -48,6 +71,8 @@ for (const o of ORACLES) {
     current_filled_type: f.fulfillment_type || '',
     event_candidates: candidates,
     proposed_event_segment: proposed || '',
+    event_segments: eventSegments,
+    manual_event_candidate_segments: extraCandidates,
     proposed_event_scene: candidates.length ? candidates[0].scene_id : '',
     confirm_event_segment: '',   // 人工确认后填写
     confirm_type: '',            // 字面/反转/错位（人工确认）
