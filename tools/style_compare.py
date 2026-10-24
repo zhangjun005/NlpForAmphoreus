@@ -733,26 +733,29 @@ def render_report(result, by_group, matched):
     A("1. **引用以照搬为主**：%d 处 occurrences 中，**%d 处是完整引用**（A，神谕原句整体出现）、**%d 处是片段引用**"
       "（B，只截取神谕的一部分），**%d 处是改写/复述**（C，含替换、增删、复述或错引到另一条神谕）。" % (
           occ_n, a_cnt, b_cnt, ccnt))
-    A("2. **G3 在神谕标记特征上显著高于普通对白、与神谕原文无显著差异**：")
-    if aligned:
-        A("   - 这些特征是：%s（G1–G3 校正后 p≥0.05，G2–G3 校正后 p<0.05）。" % "、".join(
-            FEATURE_LABELS[f] for f in aligned))
-    else:
-        A("   - （本数据上没有特征同时满足这个条件，见下方数值表。）")
+    A("2. **G3 整体接近 G1、远离 G2**：G1–G3 只在 %s 上显著（其余 %d 个特征无显著差异），"
+      "而 G2–G3 在 %s 上显著；全量比较下 G3 在%s上显著高于普通对白、且与神谕原文无显著差异。" % (
+          "、".join(FEATURE_LABELS[f] for f in c["g1_vs_g3_sig"]) or "无",
+          len(FEATURES) - len(c["g1_vs_g3_sig"]),
+          "、".join(FEATURE_LABELS[f] for f in c["g2_vs_g3_sig"]) or "无",
+          "、".join(FEATURE_LABELS[f] for f in aligned) or "（无）"))
     if shifted:
         A("   - 同时有 %d 个特征上 G3 与 G2 无显著差异、却显著偏离 G1：%s —— 说明引用语体并非处处等于神谕体。" % (
             len(shifted), "、".join(FEATURE_LABELS[f] for f in shifted)))
     cstats = g3s["feature_stats"].get("C_改写/复述", {})
     c_n_units = sum(1 for u in result["units"] if u["group"] == "G3" and u["subtype"] == "C_改写/复述")
-    A("3. **改写（C 型）向对白偏移，但样本很少**：C 型只有 %d 处 / %d 个句子，只能做个案观察。"
-      "其第二人称「汝」%s、第一人称「我」%s（G1 为 %.2f / %.2f 次/百字）——%s。"
-      "典型个案：O01 第三次引用把「汝将」改成「我将」，O10 的两处引用是复述/同词异序（实为 O11 的句子）。" % (
+    ac = g3s["feature_stats"].get("A_完整引用", {})
+    A("3. **改写（C 型）明显脱离神谕体，但样本很少**：C 型只有 %d 处引用 / %d 个句子（MWU 只能作描述性参考）。"
+      "它的文言虚词 %.2f、情态词 %.2f、第二人称 %.2f（A 完整引用型为 %.2f / %.2f / %.2f，G1 为 %.2f / %.2f / %.2f 次/百字）——"
+      "改写时把「汝将…」的文言与情态都换掉、也不再保留「汝」；句长 %.1f 反而更长（15.6→19.8），因为改写常包在叙述框架里。"
+      "个案：O01 第三次引用写成「我将最后一次沐浴…——现在，是时候将其兑现了」；O10 的两处引用是复述/同词异序（实为 O11 的句子）。" % (
           ccnt, c_n_units,
-          "下降" if cstats.get("person2_rate", {}).get("mean", 0) < mean("G1", "person2_rate") else "未下降",
-          "上升" if cstats.get("person1_rate", {}).get("mean", 0) > mean("G1", "person1_rate") else "未上升",
-          mean("G1", "person2_rate"), mean("G1", "person1_rate"),
-          "改写时人称发生了替换（汝→我/叙述者）" if cstats.get("person2_rate", {}).get("mean", 0) < mean("G1", "person2_rate")
-          else "改写时仍保留了「汝」的称谓"))
+          cstats.get("literary_rate", {}).get("mean", 0), cstats.get("modal_rate", {}).get("mean", 0),
+          cstats.get("person2_rate", {}).get("mean", 0),
+          ac.get("literary_rate", {}).get("mean", 0), ac.get("modal_rate", {}).get("mean", 0),
+          ac.get("person2_rate", {}).get("mean", 0),
+          mean("G1", "literary_rate"), mean("G1", "modal_rate"), mean("G1", "person2_rate"),
+          cstats.get("char_len", {}).get("mean", 0)))
     A("4. **综合距离**：在 %d/%d 个特征上，G3 的分布更接近 G1 而不是 G2（平均 |Cliff's δ|：G3–G1 = %.3f，G3–G2 = %.3f）；"
       "PCA 质心距离 G1–G3 = %s、G2–G3 = %s。→ 引用语体**居于神谕体与对白之间、明显偏神谕一侧**。" % (
           close["n_closer_to_G1"], len(FEATURES), close["mean_abs_delta_G3_G1"], close["mean_abs_delta_G3_G2"],
@@ -888,7 +891,7 @@ def render_report(result, by_group, matched):
       "若匹配后仍显著，才支持「语体差异」结论。")
     A("")
     # ---------------- 6 G3 分型 ----------------
-    A("## 6. G3 分型：原句引用 / 近原文引用 / 改写复述")
+    A("## 6. G3 分型：完整引用 / 片段引用 / 改写·复述")
     A("")
     A("| 特征 | %s |" % " | ".join("%s（n=%d单元）" % (k, sum(1 for u in result["units"] if u["group"] == "G3" and u["subtype"] == k)) for k in g3s["order"] if k in g3s["counts"]))
     A("| --- | " + " | ".join("---" for k in g3s["order"] if k in g3s["counts"]) + " |")
@@ -937,11 +940,19 @@ def render_report(result, by_group, matched):
     A("")
     A("**回答：以「靠拢」为主，但只发生在照搬/近原文引用上；改写复述会「偏离」。** 证据链：")
     A("")
-    A("1. 34 处引用里，原句引用 %d 处、近原文 %d 处、改写复述 %d 处（§2 分型表）。" % (a_cnt, b_cnt, ccnt))
-    A("2. 全量 + 话题匹配后，G3 在文言虚词/情态词/第二人称等神谕标记特征上与 G1 无显著差异、而显著高于 G2（§4、§5）；"
-      "在句长/分句长等「框架叙述」特征上 G3 向 G2 偏移（引用句常被「XX 说：『…』」的叙述包装）。")
-    A("3. C 型（改写复述）与 G1 的差异最大（§6）：第二人称下降、第一人称上升、句长与感叹/祈使等口语标记增加——"
-      "这正是「引用者用自己的话转述」时的语体迁移。")
+    A("1. 34 处引用里，完整引用 %d 处、片段引用 %d 处、改写/复述 %d 处（§2 分型表）。" % (a_cnt, b_cnt, ccnt))
+    A("2. **靠拢的证据**：全量比较下，G3 与 G1 只在「第二人称」上显著不同（G1 更高：%.2f vs %.2f 次/百字，"
+      "因为引用常被叙述框架稀释、且少数改写不再用「汝」），其余 %d 个特征均无显著差异；"
+      "而 G3 在%s上显著高于 G2。话题匹配后再看：G1–G2 的文言/情态/第二人称差异仍显著（不是题材造成的），G1–G3 则全部不显著。" % (
+          mean("G1", "person2_rate"), mean("G3", "person2_rate"),
+          len(FEATURES) - len(c["g1_vs_g3_sig"]),
+          "、".join(FEATURE_LABELS[f] for f in c["g2_vs_g3_sig"]) or "（无）"))
+    A("3. **偏离/改写的证据**：C 型（%d 处 / %d 句）的文言虚词、情态词、第二人称分别只有 %.2f / %.2f / %.2f（G1 为 %.2f / %.2f / %.2f），"
+      "即改写时神谕体标记被抹掉；句长反而变长（叙述框架），感叹/疑问仍为 0（引用语体始终是陈述句）。" % (
+          ccnt, c_n_units,
+          cstats.get("literary_rate", {}).get("mean", 0), cstats.get("modal_rate", {}).get("mean", 0),
+          cstats.get("person2_rate", {}).get("mean", 0),
+          mean("G1", "literary_rate"), mean("G1", "modal_rate"), mean("G1", "person2_rate")))
     A("4. 综合：%d/%d 个特征上 G3 更接近 G1 而不是 G2；PCA 质心距离 G1–G3 = %.2f，小于 G2–G3 = %.2f。"
       % (close["n_closer_to_G1"], len(FEATURES),
          pca["centroid_distance"]["G1_G3"] or 0, pca["centroid_distance"]["G2_G3"] or 0))
@@ -949,12 +960,14 @@ def render_report(result, by_group, matched):
     # ---------------- 9 局限 ----------------
     A("## 9. 局限（结论强度）")
     A("")
-    A("1. **样本极小且不平衡**：G1 只有 %d 个句子、G3 只有 %d 个句子（来自 34 处引用），G2 是 %d 个句子的抽样；"
-      "Mann–Whitney 在 n=13 时对单个句子的措辞很敏感。" % (
-          meta["group_unit_counts"]["G1"], meta["group_unit_counts"]["G3"], meta["group_unit_counts"]["G2"]))
+    A("1. **样本极小且不平衡**：G1 只有 %d 个句子（13 条神谕）、G3 只有 %d 个句子（34 处引用），G2 是 %d 个句子的抽样；"
+      "Mann–Whitney 在 n=%d 时对单个句子的措辞很敏感。" % (
+          meta["group_unit_counts"]["G1"], meta["group_unit_counts"]["G3"], meta["group_unit_counts"]["G2"],
+          meta["group_unit_counts"]["G1"]))
     A("2. **「靠拢」部分是构造性的**：34 处 occurrences 里 %d 处本身就把神谕原文（或其片段）包在「」里，"
       "所以 G3 与 G1 在字面特征上接近是**预期**的；真正有信息量的是 C 型（改写）与「框架叙述」部分。" % (a_cnt + b_cnt))
-    A("3. **多重比较**：12 个特征 × 3 对比较 × 2 种模式；已用 Bonferroni（12 个测试/比较）校正，但没有做更严格的族系控制。")
+    A("3. **多重比较**：%d 个特征 × 3 对比较 × 2 种模式；已用 Bonferroni（%d 个测试/比较）校正，但没有做更严格的族系控制。" % (
+        len(FEATURES), len(FEATURES)))
     A("4. **特征词表是人工规则**：抽象名词比例依赖自建词表（%d 个词）；文言虚词按单字统计，会把「者」「也」的现代用法也算进去。" % len(meta["lexicons"]["abstract_terms"]))
     A("5. **单元粒度**：G1/G3 按句切分，G3 的叙述框架句（如「白厄在麦田中醒来…」）被算作引用句的一部分，会拉低其「神谕化」程度；"
       "报告已把 G3 分型来缓解这个问题。")
