@@ -15,6 +15,18 @@ const OUT = path.join(ROOT, 'data/corpus/segments.jsonl');
 
 const R = fs.readFileSync(IN, 'utf8').trim().split('\n').map(JSON.parse);
 
+// 词表（semantic_recall：字面不同但语义回收的线索）
+const loadTerms = (p) => {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8')).terms || []; }
+  catch { return []; }
+};
+const VOCABS = {
+  oracle: loadTerms('data/config/vocab-oracle.json'),
+  motif: loadTerms('data/config/vocab-motif.json'),
+  address: loadTerms('data/config/vocab-address.json'),
+  ballad: loadTerms('data/config/vocab-ballad.json'),
+};
+
 // 系统/操作类文本启发式（旁白的操作提示、战斗动作、地图指引等）
 const SYSTEM_LIKE = /^(击杀|击败|获得|收集|调查|前往|离开|开启|关闭|进入|返回|点击|选择|与.{1,10}(对话|交谈)|打开|使用|放置|护送|跟随|解救|阻止|击败|清除|回到|走到|靠近|查看|阅读|拾取|完成)/;
 
@@ -72,6 +84,15 @@ for (const s of segMap.values()) {
   const shortForWindow = nRecWindow < 20;
   const nWindows = shortForWindow ? 1 : Math.floor((nRecWindow - 20) / 10) + 1;
 
+  // semantic_recall：词表匹配（与 surface_repetition 分开）
+  const segText = textAll;
+  const hit = (arr, minLen) => arr.filter((t) => t.length >= minLen && segText.includes(t));
+  const srOracle = hit(VOCABS.oracle, 3);
+  const srMotif = hit(VOCABS.motif, 3);
+  const srAddress = hit(VOCABS.address, 2);
+  const srBallad = hit(VOCABS.ballad, 3);
+  const srAll = [...new Set([...srOracle, ...srMotif, ...srAddress, ...srBallad])];
+
   segs.push({
     segment_id: s.segment_id,
     version: s.version,
@@ -104,9 +125,14 @@ for (const s of segMap.values()) {
     ritual_count: cntKind('ritual'),
     structure_count: cntKind('structure'),
     translation_count: cntKind('translation'),
-    // 重复功能分两层：surface_repetition 已有；semantic_recall 待实现（词表匹配）
+    // 重复功能分两层：surface_repetition（repeat_kind）+ semantic_recall（词表匹配）
     surface_repetition_count: main.filter((r) => ['motif', 'catchphrase', 'structure', 'ritual', 'translation'].includes(r.repeat_kind)).length,
-    semantic_recall_count: 0, // TODO: 神谕/歌谣/称呼/母题词表匹配
+    semantic_recall_oracle_count: srOracle.length,
+    semantic_recall_motif_count: srMotif.length,
+    semantic_recall_address_count: srAddress.length,
+    semantic_recall_ballad_count: srBallad.length,
+    semantic_recall_count: srAll.length,
+    semantic_recall_terms: srAll.slice(0, 20),
     // 滑窗结构（语义突变特征待实现，这里先给出窗口信息）
     main_records: mainRecords,
     n_records_window: nRecWindow,
