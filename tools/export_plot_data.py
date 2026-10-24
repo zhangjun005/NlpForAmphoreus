@@ -43,6 +43,7 @@ P_KNIFE_RES = os.path.join(ROOT, "data", "config", "knife-scene-scores.json")
 P_TRAJ = os.path.join(ROOT, "data", "config", "character-trajectory.json")
 P_TRAJ_ALL = os.path.join(ROOT, "data", "config", "character-trajectory-all.json")
 P_CURVES = os.path.join(ROOT, "data", "config", "oracle-similarity-curves.json")
+P_RET3 = os.path.join(ROOT, "data", "config", "retrieval-v3-results.json")
 P_TYPESIG = os.path.join(ROOT, "data", "config", "type-and-oracle-significance.json")
 P_KNIFE = os.path.join(ROOT, "data", "config", "knife-scenes.json")
 P_FILLED = os.path.join(ROOT, "data", "config", "oracle-fulfillment.filled.json")
@@ -408,6 +409,35 @@ def _sim_char(char):
                 filters="步骤均值向量 vs own oracle；滚动均值窗口 5；标注=首现/吟诵/兑现/意义转折/关键事件/刀子")
 
 
+# ---- 神谕检索 v3 图（f15）----
+def data_f15():
+    d = read_json(P_RET3)
+    rows = []
+    # panel a：各方法 MRR（v1/v2 来自旧结果，v3_control/v3 为本次计算；v1/v2 无 SBERT）
+    for variant, metrics, n_eval in (
+            ("v1_old", d["v1_old"]["metrics"], d["v1_old"]["n_eval"]),
+            ("v2_mask", d["v2_old"]["v2_mask_metrics"], d["v2_old"]["v2_mask_n_eval"]),
+            ("v3_control", d["v3_control"]["metrics"], d["v3_control"]["n_eval"]),
+            ("v3", d["v3"]["metrics"], d["v3"]["n_eval"])):
+        for m, met in metrics.items():
+            if met is None:
+                continue
+            rows.append({"panel": "mrr", "variant": variant, "method": m,
+                         "k": "", "value": met["mrr"], "n_eval": n_eval})
+    # panel b：v3 各方法 Recall@k
+    for m, met in d["v3"]["metrics"].items():
+        for k in (1, 5, 10, 20):
+            rows.append({"panel": "recall", "variant": "v3", "method": m,
+                         "k": k, "value": met.get("recall@%d" % k, ""),
+                         "n_eval": d["v3"]["n_eval"]})
+    return dict(columns=["panel", "variant", "method", "k", "value", "n_eval"], rows=rows,
+                title="图15 神谕检索 v3：方法 × MRR / Recall@k（v1/v2 对照）",
+                axes={"x": "方法（a）/ Recall@k（b）", "y": "MRR / Recall"},
+                sources=[P_RET3],
+                filters="gold=event_segments（多段任一命中）；v3=排除吟诵步；v3_control=不排除；"
+                        "v1/v2 指标取自旧结果，v1/v2 无 SBERT")
+
+
 # ---- 新增 3 张报告图 ----
 def data_f12():
     rows_all = []
@@ -433,53 +463,66 @@ def data_f12():
 
 
 def data_f13():
-    knife = read_json(P_KNIFE)
-    k36 = next((s for s in knife["scenes"] if s["id"] == "K36"), None)
-    ref = (k36["title"] + " " + (k36.get("why") or "")) if k36 else "水晶花寓言"
+    """f13 v2（修正口径）：参考文本=K36 原文（#23885–#23913，29 条）；
+    leave-one-out（排除 3.7|魔女的孤诣课题|21 自身）；x 轴=686 池内全局步序 1–686。"""
     ids = read_json(P_IDS)
     segs = read_jsonl(P_SEGS)
     seg_by_id = {s["segment_id"]: s for s in segs}
+    recs = {r["id"]: r for r in read_jsonl(P_CORPUS)}
+    k36_ref = "".join(recs[i]["text_clean"] for i in range(23885, 23914) if i in recs)
+    excl = "3.7|魔女的孤诣课题|21"
+    step_index = {sid: i + 1 for i, sid in enumerate(ids["segments"])}
+    idx_map = {sid: i for i, sid in enumerate(ids["segments"])}
+    cand = [sid for sid in ids["segments"] if sid != excl]
+    idx = [i for i, sid in enumerate(ids["segments"]) if sid != excl]
     import joblib
     import scipy.sparse as sp
     from sklearn.preprocessing import normalize
     vec_word = joblib.load(os.path.join(MODELS, "vec_word.joblib"))
     X_word = sp.load_npz(os.path.join(MODELS, "X_word.npz"))
-    q_tf = normalize(vec_word.transform([ref]))
-    tf = np.asarray(q_tf.dot(normalize(X_word).T).todense()).ravel()
+    q_tf = normalize(vec_word.transform([k36_ref]))
+    tf_all = np.asarray(normalize(X_word).dot(q_tf.T).todense()).ravel()
     Z_seg = np.load(os.path.join(MODELS, "Z_sbert_seg.npy"))
     os.environ.setdefault("HF_HUB_OFFLINE", "1")
     os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
     from sentence_transformers import SentenceTransformer
     import torch
     torch.set_num_threads(1)
-    model = SentenceTransformer("BAAI/bge-small-zh-v1.5", device="cpu")
-    q_s = model.encode([ref], normalize_embeddings=True)[0]
-    sb = np.asarray(Z_seg.dot(q_s)).ravel()
-    order = {sid: i for i, sid in enumerate(ids["segments"])}
+    model = SentenceTransformer(os.path.join(MODELS, "sbert_model"), device="cpu")
+    q_s = model.encode([k36_ref], normalize_embeddings=True)[0]
+    sb_all = np.asarray(Z_seg.dot(q_s)).ravel()
     rows = []
-    for sid in ids["segments"]:
+    for sid in cand:
         seg = seg_by_id.get(sid) or {}
-        i = order[sid]
-        rows.append({"segment_id": sid, "order": seg.get("order"), "version": seg.get("version"),
-                     "tfidf_sim": round(float(tf[i]), 6), "sbert_sim": round(float(sb[i]), 6)})
+        i = idx_map[sid]
+        rows.append({"step_index": step_index[sid], "segment_id": sid,
+                     "order": seg.get("order"), "version": seg.get("version"),
+                     "tfidf_sim": round(float(tf_all[i]), 6),
+                     "sbert_sim": round(float(sb_all[i]), 6)})
     def roll(vals, w=25):
         a = np.asarray(vals, dtype=float)
         half = w // 2
         return [float(a[max(0, i - half):min(len(a), i + half + 1)].mean()) for i in range(len(a))]
     rt, rs = roll([r["tfidf_sim"] for r in rows]), roll([r["sbert_sim"] for r in rows])
-    for r, a, b in zip(rows, rt, rs):
-        r["tfidf_roll25"] = round(a, 6)
-        r["sbert_roll25"] = round(b, 6)
-    return dict(columns=["segment_id", "order", "version", "tfidf_sim", "sbert_sim",
-                         "tfidf_roll25", "sbert_roll25"], rows=rows,
-                title="图13「水晶花寓言」语义曲线：686 个步骤 vs K36 参考文本（TF-IDF + SBERT）",
-                axes={"x": "order（3.0→3.7）", "y": "与参考文本的余弦相似度（细线=原始，粗线=滚动均值 25）"},
-                sources=[P_KNIFE, P_SEGS, "data/models/vec_word.joblib", "data/models/X_word.npz",
-                         "data/models/Z_sbert_seg.npy", "data/models/ids.json"],
-                filters="参考文本=K36「水晶花寓言」title+why；步骤文本=segments.jsonl 的 686 个候选步骤")
+    for r, x1, x2 in zip(rows, rt, rs):
+        r["tfidf_roll25"] = round(x1, 6)
+        r["sbert_roll25"] = round(x2, 6)
+    return dict(columns=["step_index", "segment_id", "order", "version",
+                         "tfidf_sim", "sbert_sim", "tfidf_roll25", "sbert_roll25"], rows=rows,
+                title="图13 K36 原文与 686 步的相似度（leave-one-out，横轴=全局步序）",
+                axes={"x": "全局步序（686 池内 1–686，已排除 3.7|魔女|21 自身）",
+                      "y": "与 K36 原文的余弦相似度（左 TF-IDF / 右 SBERT；细线原始、粗线滚动25）"},
+                sources=[P_CORPUS, P_SEGS, "data/models/vec_word.joblib", "data/models/X_word.npz",
+                         "data/models/Z_sbert_seg.npy", "data/models/ids.json",
+                         "data/models/sbert_model/"],
+                filters="参考文本=K36 原文 record #23885–#23913（29 条）拼接；leave-one-out：排除 "
+                        "3.7|魔女的孤诣课题|21 自身步骤；x 轴=686 池内全局步序（唯一可排序）；"
+                        "TF-IDF 复用 vec_word/X_word，SBERT 用本地模型编码参考句")
 
 
 def data_f14():
+    """f14 v2（修正口径）：TF-IDF 两条曲线 686/686 完全相等（同词袋、只换语序）；
+    SBERT 仅微小差异；x 轴=全局步序；CSV 存两空间与差值。"""
     ids = read_json(P_IDS)
     segs = read_jsonl(P_SEGS)
     seg_by_id = {s["segment_id"]: s for s in segs}
@@ -490,18 +533,26 @@ def data_f14():
     rows = []
     for j, sid in enumerate(ids["segments"]):
         seg = seg_by_id.get(sid) or {}
-        rows.append({"segment_id": sid, "order": seg.get("order"), "version": seg.get("version"),
-                     "tfidf_O10": round(float(S_tf[i10, j]), 6),
-                     "tfidf_O11": round(float(S_tf[i11, j]), 6),
-                     "sbert_O10": round(float(S_sb[i10, j]), 6),
-                     "sbert_O11": round(float(S_sb[i11, j]), 6)})
-    return dict(columns=["segment_id", "order", "version", "tfidf_O10", "tfidf_O11",
-                         "sbert_O10", "sbert_O11"], rows=rows,
-                title="图14 O10/O11 镜像对对照：686 步分别与两条神谕的相似度（TF-IDF + SBERT）",
-                axes={"x": "order（3.0→3.7）", "y": "余弦相似度（O10 实线 / O11 虚线）"},
+        t10, t11 = float(S_tf[i10, j]), float(S_tf[i11, j])
+        s10, s11 = float(S_sb[i10, j]), float(S_sb[i11, j])
+        rows.append({"step_index": j + 1, "segment_id": sid,
+                     "order": seg.get("order"), "version": seg.get("version"),
+                     "tfidf_O10": round(t10, 6), "tfidf_O11": round(t11, 6),
+                     "tfidf_diff": round(t10 - t11, 6),
+                     "sbert_O10": round(s10, 6), "sbert_O11": round(s11, 6),
+                     "sbert_diff": round(s10 - s11, 6)})
+    n_eq = sum(1 for r in rows if abs(r["tfidf_diff"]) < 1e-9)
+    return dict(columns=["step_index", "segment_id", "order", "version",
+                         "tfidf_O10", "tfidf_O11", "tfidf_diff",
+                         "sbert_O10", "sbert_O11", "sbert_diff"], rows=rows,
+                title="图14 O10/O11 镜像对：TF-IDF 完全重合（%d/686）、SBERT 仅微小差异" % n_eq,
+                axes={"x": "全局步序（686 池内 1–686）",
+                      "y": "余弦相似度（左 TF-IDF：两线重合；右 SBERT：两条线 + 差值）"},
                 sources=["data/models/S_oracle_seg.npy", "data/models/S_sbert_oracle_seg.npy",
                          "data/models/ids.json", P_SEGS],
-                filters="13×686 相似度矩阵中取 O10/O11 两行；686 个候选步骤")
+                filters="O10/O11 词袋相同、仅语序互换 → TF-IDF 686/686 逐点相等；"
+                        "SBERT 平均|Δ|≈0.005、最大≈0.018；标注步骤：#19814（大海|14，O10 兑现）、"
+                        "#20228/#20229（囚人|15，O11 引用=O10 改写）、#20339（囚人|15，O11 兑现，与引用同段不可分离）")
 
 
 # ===========================================================================
@@ -520,6 +571,7 @@ def specs():
         "f9_all_trajectories.png": ("tools/character_trajectory.py", data_f9),
         "f10_coverage.png": ("tools/character_trajectory.py", data_f10),
         "f11_oracle_similarity_heatmap.png": ("tools/oracle_similarity_curves.py", data_f11),
+        "f15_retrieval_v3.png": ("tools/retrieval_v3.py", data_f15),
         "f12_mingtian_timeline.png": ("tools/export_plot_data.py", data_f12),
         "f13_crystal_flower_semantic.png": ("tools/export_plot_data.py", data_f13),
         "f14_mirror_pair_O10_O11.png": ("tools/export_plot_data.py", data_f14),
@@ -596,23 +648,32 @@ def make_new_figures():
     fig.savefig(os.path.join(FIG_DIR, "f12_mingtian_timeline.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)
 
-    # f13
+    # f13（修正口径：K36 原文参考 + leave-one-out + 全局步序）
     d = data_f13()
-    rows = [r for r in d["rows"] if r["order"] is not None]
-    fig, ax = plt.subplots(figsize=(10.6, 4.8))
-    ax.plot([r["order"] for r in rows], [r["tfidf_sim"] for r in rows],
-            color="#a9c0d8", lw=0.6, alpha=0.6)
-    ax.plot([r["order"] for r in rows], [r["tfidf_roll25"] for r in rows],
-            color="#1f4e79", lw=2.0, label="TF-IDF 相似度（滚动25）")
+    rows = d["rows"]
+    xs = [r["step_index"] for r in rows]
+    fig, ax = plt.subplots(figsize=(11.2, 4.9))
+    ax.plot(xs, [r["tfidf_sim"] for r in rows], color="#a9c0d8", lw=0.6, alpha=0.6)
+    ax.plot(xs, [r["tfidf_roll25"] for r in rows], color="#1f4e79", lw=2.0,
+            label="TF-IDF（滚动25）")
     ax2 = ax.twinx()
-    ax2.plot([r["order"] for r in rows], [r["sbert_sim"] for r in rows],
-             color="#f0b27a", lw=0.6, alpha=0.6)
-    ax2.plot([r["order"] for r in rows], [r["sbert_roll25"] for r in rows],
-             color="#b9530f", lw=2.0, label="SBERT 相似度（滚动25）")
-    ax.set_xlabel("order（3.0→3.7）")
-    ax.set_ylabel("与参考文本的相似度（TF-IDF）", color="#1f4e79")
-    ax2.set_ylabel("与参考文本的相似度（SBERT）", color="#b9530f")
-    ax.set_title("图13「水晶花寓言」语义曲线：686 步 vs K36 参考文本（纵轴=相似度，不是含义强度）", fontsize=10)
+    ax2.plot(xs, [r["sbert_sim"] for r in rows], color="#f0b27a", lw=0.6, alpha=0.6)
+    ax2.plot(xs, [r["sbert_roll25"] for r in rows], color="#b9530f", lw=2.0,
+             label="SBERT（滚动25）")
+    ax.axvspan(457, 541, color="#f1c40f", alpha=0.10)
+    ax.text(458, ax.get_ylim()[1] * 0.94, "3.5 闪回区", fontsize=8, color="#8a6d00")
+    ax.axvline(628, color="#7f8c8d", lw=1.2, ls="--")
+    ax.text(629, ax.get_ylim()[1] * 0.80, "K36 步（已排除）", fontsize=8, color="#555")
+    # 滚动峰（3.7 结尾）
+    jmax = max(range(len(rows)), key=lambda i: rows[i]["sbert_roll25"])
+    ax.annotate("滚动峰（3.7 结尾）", xy=(rows[jmax]["step_index"], rows[jmax]["tfidf_roll25"]),
+                xytext=(rows[jmax]["step_index"] - 120, rows[jmax]["tfidf_roll25"] * 1.05),
+                fontsize=8, color="#1f4e79",
+                arrowprops=dict(arrowstyle="->", color="#1f4e79", lw=0.8))
+    ax.set_xlabel("全局步序（686 池内 1–686；已排除 3.7|魔女|21 自身）")
+    ax.set_ylabel("与 K36 原文相似度（TF-IDF）", color="#1f4e79")
+    ax2.set_ylabel("与 K36 原文相似度（SBERT）", color="#b9530f")
+    ax.set_title("图13 K36 原文与 686 步的相似度（leave-one-out；横轴=全局步序）", fontsize=10)
     h1, l1 = ax.get_legend_handles_labels()
     h2, l2 = ax2.get_legend_handles_labels()
     ax.legend(h1 + h2, l1 + l2, fontsize=8, frameon=False, loc="upper left")
@@ -621,23 +682,48 @@ def make_new_figures():
     fig.savefig(os.path.join(FIG_DIR, "f13_crystal_flower_semantic.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)
 
-    # f14
+    # f14（修正口径：TF-IDF 单线=完全重合；SBERT 两线+编号标注；全局步序）
     d = data_f14()
-    rows = [r for r in d["rows"] if r["order"] is not None]
-    rows.sort(key=lambda r: r["order"])
-    fig, axes = plt.subplots(1, 2, figsize=(13.0, 4.6), sharex=True)
-    for ax, space in ((axes[0], "tfidf"), (axes[1], "sbert")):
-        ax.plot([r["order"] for r in rows], [r[space + "_O10"] for r in rows],
-                color="#c0392b", lw=1.5, label="O10（海瑟音词序）")
-        ax.plot([r["order"] for r in rows], [r[space + "_O11"] for r in rows],
-                color="#2e5c8a", lw=1.5, ls="--", label="O11（刻律德菈词序）")
-        ax.set_title("(%s) O10 vs O11" % space.upper(), fontsize=9)
-        ax.set_xlabel("order（3.0→3.7）")
-        ax.grid(alpha=0.22)
-        ax.legend(fontsize=8, frameon=False)
-    axes[0].set_ylabel("余弦相似度")
-    fig.suptitle("图14 O10/O11 镜像对对照：686 步分别与两条神谕的相似度", fontsize=11)
-    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    rows = d["rows"]
+    xs = [r["step_index"] for r in rows]
+    tfidf_diff = [r["tfidf_diff"] for r in rows]
+    sbert_diff = [r["sbert_diff"] for r in rows]
+    mean_abs = sum(abs(x) for x in sbert_diff) / len(sbert_diff)
+    max_abs = max(abs(x) for x in sbert_diff)
+    fig, axes = plt.subplots(1, 2, figsize=(13.6, 4.9), sharex=True)
+    # (a) TF-IDF：两线完全重合 → 画一条，标注 max|Δ| 与重合事实
+    ax = axes[0]
+    ax.plot(xs, [r["tfidf_O10"] for r in rows], color="#c0392b", lw=1.4,
+            label="O10 = O11（逐点重合）")
+    ax.set_title("(a) TF-IDF：两线完全重合（同词袋、仅语序互换）", fontsize=9)
+    ax.set_xlabel("全局步序（1–686）")
+    ax.set_ylabel("TF-IDF 余弦相似度")
+    ax.text(0.02, 0.92, "686/686 行逐点相等；max|Δ| = %.1e" % max(abs(x) for x in tfidf_diff),
+            transform=ax.transAxes, fontsize=8, color="#333")
+    ax.legend(fontsize=8, frameon=False, loc="upper right")
+    # (b) SBERT：两条线 + 编号标注（不画 Δ 副轴，避免遮挡）
+    ax = axes[1]
+    ax.plot(xs, [r["sbert_O10"] for r in rows], color="#c0392b", lw=1.1, label="O10")
+    ax.plot(xs, [r["sbert_O11"] for r in rows], color="#2e5c8a", lw=1.1, ls="--", label="O11")
+    ax.set_title("(b) SBERT：两线接近（均|Δ|=%.4f、最大|Δ|=%.4f）" % (mean_abs, max_abs), fontsize=9)
+    ax.set_xlabel("全局步序（1–686）")
+    ax.set_ylabel("SBERT 余弦相似度")
+    ax.legend(fontsize=8, frameon=False, loc="upper right")
+    marks = [(523, "①", "#1f4e79", 0.74), (531, "②", "#7f8c8d", 0.67), (541, "③", "#7d3c98", 0.60)]
+    for xpos, num, col, ypos in marks:
+        for a_ in axes:
+            a_.axvline(xpos, color=col, lw=1.0, ls=":")
+        ax.text(xpos, ypos, num, ha="center", va="center", fontsize=9, color=col,
+                bbox=dict(boxstyle="round,pad=0.12", fc="white", ec="none", alpha=0.85))
+    ax.text(0.02, 0.03, "① #19814 O10 兑现（大海|14）\n"
+                        "② #20145 旁白（囚人|5，同 order）\n"
+                        "③ #20228/#20229/#20339（囚人|15；O11 引用与兑现同段）",
+            transform=ax.transAxes, fontsize=7, va="bottom", ha="left",
+            bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="#cccccc", alpha=0.85))
+    ax.set_ylim(0.27, 0.78)
+    axes[0].set_xlim(1, 686)
+    fig.suptitle("图14 O10/O11 镜像对：TF-IDF 完全重合、SBERT 仅微小差异（横轴=全局步序）", fontsize=11)
+    fig.tight_layout(rect=(0, 0, 1, 0.93))
     fig.savefig(os.path.join(FIG_DIR, "f14_mirror_pair_O10_O11.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)
 
