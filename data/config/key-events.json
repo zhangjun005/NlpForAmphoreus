@@ -15,12 +15,12 @@
     "knife_scene_ids": "对应 data/config/knife-scenes.json 的场景 id（可为空）"
   },
   "summary": {
-    "n_events": 29,
+    "n_events": 30,
     "per_phase": {
       "前段": 5,
       "中段": 8,
       "后段": 8,
-      "终段": 8
+      "终段": 9
     },
     "per_version": {
       "3.0": 1,
@@ -30,7 +30,7 @@
       "3.4": 4,
       "3.5": 4,
       "3.6": 2,
-      "3.7": 6
+      "3.7": 7
     },
     "oracles_covered": [
       "O01",
@@ -76,9 +76,10 @@
       "K29",
       "K30",
       "K32",
-      "K33"
+      "K33",
+      "K36"
     ],
-    "n_knife_scenes_referenced": 28
+    "n_knife_scenes_referenced": 29
   },
   "events": [
     {
@@ -764,6 +765,39 @@
       "evidence_verified": true,
       "evidence_record_id": 23982,
       "evidence_speaker": "昔涟(往昔的涟漪)"
+    },
+    {
+      "id": "E30",
+      "id_authored": "E30",
+      "phase": "终段",
+      "version": "3.7",
+      "segment_id": "3.7|魔女的孤诣课题|21",
+      "event_name": "「水晶花寓言」：无瑕即无爱，破碎才生出「心」与「爱」",
+      "meaning_before": "「无瑕」的水晶花＝纯粹的理想之美；小妖精日复一日守着它，想弄清它的「心」该有多美。",
+      "meaning_after": "昔涟改写结局：无瑕的水晶花因封闭自己而既没有「心」也不懂「爱」；跌落碎裂不是意外，而是「向命运发起抗争，以破碎书写故事的结局」——破碎之后，它才终于有了「心」、学会了「爱」；昔涟的「收梢」由此被解释为生命与爱的开始。",
+      "related_oracles": [
+        "O13"
+      ],
+      "related_motifs": [
+        "水晶花",
+        "无瑕",
+        "心",
+        "爱",
+        "破碎",
+        "故事/讲述者",
+        "桃子（最初的种子）",
+        "凋零与花开"
+      ],
+      "knife_scene_ids": [
+        "K36"
+      ],
+      "confidence": "high",
+      "evidence_quote": "而在它眼里，不再「无瑕」的水晶花，终于有了「心」，也学会了「爱」。",
+      "evidence_note": "说话人为「记忆的花」（桃子/德谬歌的记忆形态，正在学习「会讲故事才是昔涟」）；同段 #23911 昔涟：「跌落也不是意外，是它向命运发起抗争，以破碎书写故事的结局。」",
+      "segment_step_title": "揭露隐秘的记忆，了解德谬歌的过往",
+      "evidence_verified": true,
+      "evidence_record_id": 23913,
+      "evidence_speaker": "昔涟"
     },
     {
       "id": "E26",
