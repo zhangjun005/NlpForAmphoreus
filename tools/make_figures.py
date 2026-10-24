@@ -890,6 +890,11 @@ def build():
             print("   " + x)
     else:
         print("人工评估指标与 JSON human_eval 一致（A/B1/B2 的 Spearman、显著中位排名、Top100 命中）")
+    try:
+        from export_plot_data import export_for
+        export_for("tools/make_figures.py")
+    except Exception as _e:
+        print("  [plot_data] 跳过：%s" % _e, file=sys.stderr)
     if not verify(verbose=True):
         print("!! 图表/数据表校验失败", file=sys.stderr)
         sys.exit(1)

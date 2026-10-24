@@ -792,6 +792,11 @@ def build():
     print("已写 %s（%.1f KB）" % (os.path.relpath(OUT_MD, ROOT), os.path.getsize(OUT_MD) / 1024.0))
     if HAS_CJK:
         print("中文字体：%s" % CJK_FONT)
+    try:
+        from export_plot_data import export_for
+        export_for("tools/oracle_similarity_curves.py")
+    except Exception as _e:
+        print("  [plot_data] 跳过：%s" % _e, file=sys.stderr)
     if not verify(data, verbose=True):
         print("!! 校验失败", file=sys.stderr)
         sys.exit(1)

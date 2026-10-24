@@ -1,0 +1,44 @@
+# 图表索引（图 ↔ 配对数据 ↔ 生成脚本）
+
+> 规范：`docs/交付物规格.md` §2。每张图在 `data/plot_data/<图名>.csv` 有「它实际画的数据」，并在 `<图名>.meta.json` 记录 axes/sources/filters/generator/sha256。
+> 本文件由 `tools/export_plot_data.py` 自动生成；行数 = 图数。
+
+| # | 图文件 | 配对 CSV | 配对 meta | 生成脚本 | 数据来源 | 说明 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | `docs/report/figures/f10_coverage.png` | `data/plot_data/f10_coverage.csv` | `data/plot_data/f10_coverage.meta.json` | `tools/character_trajectory.py` | character-trajectory-all.json | 图10 14 个角色：出场步骤 vs 精读覆盖 |
+| 2 | `docs/report/figures/f11_oracle_similarity_heatmap.png` | `data/plot_data/f11_oracle_similarity_heatmap.csv` | `data/plot_data/f11_oracle_similarity_heatmap.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json | 图11 14 角色 × 8 版本的「与神谕文本相似度」总览 |
+| 3 | `docs/report/figures/f12_mingtian_timeline.png` | `data/plot_data/f12_mingtian_timeline.csv` | `data/plot_data/f12_mingtian_timeline.meta.json` | `tools/export_plot_data.py` | amphoreus.final.jsonl | 图12「明天见」时间线：按版本×说话人的出现次数 |
+| 4 | `docs/report/figures/f13_crystal_flower_semantic.png` | `data/plot_data/f13_crystal_flower_semantic.csv` | `data/plot_data/f13_crystal_flower_semantic.meta.json` | `tools/export_plot_data.py` | knife-scenes.json、segments.jsonl、vec_word.joblib、X_word.npz、Z_sbert_seg.npy、ids.json | 图13「水晶花寓言」语义曲线：686 个步骤 vs K36 参考文本（TF-IDF + SBERT） |
+| 5 | `docs/report/figures/f14_mirror_pair_O10_O11.png` | `data/plot_data/f14_mirror_pair_O10_O11.csv` | `data/plot_data/f14_mirror_pair_O10_O11.meta.json` | `tools/export_plot_data.py` | S_oracle_seg.npy、S_sbert_oracle_seg.npy、ids.json、segments.jsonl | 图14 O10/O11 镜像对对照：686 步分别与两条神谕的相似度（TF-IDF + SBERT） |
+| 6 | `docs/report/figures/f1_level_scores.png` | `data/plot_data/f1_level_scores.csv` | `data/plot_data/f1_level_scores.meta.json` | `tools/make_figures.py` | annotation-labels.json、baseline-a-scores.json、baseline-b-scores.json | 图1 A 与 B1 在人工等级 0/1/2/3 上的分数分布（箱线图） |
+| 7 | `docs/report/figures/f2_rank_shift.png` | `data/plot_data/f2_rank_shift.csv` | `data/plot_data/f2_rank_shift.meta.json` | `tools/make_figures.py` | baseline-a-scores.json、baseline-b-scores.json | 图2 686 步 A→B1 排名散点（标注 5 个最大提升/下降） |
+| 8 | `docs/report/figures/f3_style_features.png` | `data/plot_data/f3_style_features.csv` | `data/plot_data/f3_style_features.meta.json` | `tools/make_figures.py` | style-compare-results.json | 图3 神谕 / 普通对白 / 角色引用的语体特征均值 |
+| 9 | `docs/report/figures/f4_citation_stage.png` | `data/plot_data/f4_citation_stage.csv` | `data/plot_data/f4_citation_stage.meta.json` | `tools/make_figures.py` | oracle-citation-coding.json | 图4 34 处神谕引用的 版本×阶段 堆叠分布 |
+| 10 | `docs/report/figures/f5_oracle_vs_rest.png` | `data/plot_data/f5_oracle_vs_rest.csv` | `data/plot_data/f5_oracle_vs_rest.meta.json` | `tools/make_figures.py` | baseline-a-scores.json、baseline-b-scores.json、type-and-oracle-significance.json、oracle-fulfillment.filled.json | 图5 神谕兑现段 vs 其余步骤的 A/B1 分数分布 |
+| 11 | `docs/report/figures/f6_knife_ranks.png` | `data/plot_data/f6_knife_ranks.csv` | `data/plot_data/f6_knife_ranks.meta.json` | `tools/knife_scene_eval.py` | knife-scene-scores.json | 图6 刀子/高光场景在 A / B1 下的排名分布 |
+| 12 | `docs/report/figures/f7_bai_trajectory.png` | `data/plot_data/f7_bai_trajectory.csv` | `data/plot_data/f7_bai_trajectory.meta.json` | `tools/character_trajectory.py` | character-trajectory.json | 图7 白厄全程轨迹（台词量/形态/称呼/母题/A-B 分数） |
+| 13 | `docs/report/figures/f8_xi_trajectory.png` | `data/plot_data/f8_xi_trajectory.csv` | `data/plot_data/f8_xi_trajectory.meta.json` | `tools/character_trajectory.py` | character-trajectory.json | 图8 昔涟全程轨迹（台词量/形态/称呼/母题/A-B 分数） |
+| 14 | `docs/report/figures/f9_all_trajectories.png` | `data/plot_data/f9_all_trajectories.csv` | `data/plot_data/f9_all_trajectories.meta.json` | `tools/character_trajectory.py` | character-trajectory-all.json | 图9 14 个角色分版本台词量（A 组 11 + B 组 3） |
+| 15 | `docs/report/figures/oracle_sim/万敌.png` | `data/plot_data/oracle_sim__万敌.csv` | `data/plot_data/oracle_sim__万敌.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：万敌（own oracle=O03） |
+| 16 | `docs/report/figures/oracle_sim/三月七.png` | `data/plot_data/oracle_sim__三月七.csv` | `data/plot_data/oracle_sim__三月七.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：三月七（own oracle=无自有（取 13 条最高）） |
+| 17 | `docs/report/figures/oracle_sim/丹恒.png` | `data/plot_data/oracle_sim__丹恒.csv` | `data/plot_data/oracle_sim__丹恒.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：丹恒（own oracle=O12） |
+| 18 | `docs/report/figures/oracle_sim/刻律德菈.png` | `data/plot_data/oracle_sim__刻律德菈.csv` | `data/plot_data/oracle_sim__刻律德菈.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：刻律德菈（own oracle=O11） |
+| 19 | `docs/report/figures/oracle_sim/开拓者.png` | `data/plot_data/oracle_sim__开拓者.csv` | `data/plot_data/oracle_sim__开拓者.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：开拓者（own oracle=无自有（取 13 条最高）） |
+| 20 | `docs/report/figures/oracle_sim/昔涟.png` | `data/plot_data/oracle_sim__昔涟.csv` | `data/plot_data/oracle_sim__昔涟.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：昔涟（own oracle=O13） |
+| 21 | `docs/report/figures/oracle_sim/海瑟音.png` | `data/plot_data/oracle_sim__海瑟音.csv` | `data/plot_data/oracle_sim__海瑟音.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：海瑟音（own oracle=O10） |
+| 22 | `docs/report/figures/oracle_sim/白厄.png` | `data/plot_data/oracle_sim__白厄.csv` | `data/plot_data/oracle_sim__白厄.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：白厄（own oracle=O09） |
+| 23 | `docs/report/figures/oracle_sim/缇宝.png` | `data/plot_data/oracle_sim__缇宝.csv` | `data/plot_data/oracle_sim__缇宝.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：缇宝（own oracle=O02） |
+| 24 | `docs/report/figures/oracle_sim/赛飞儿.png` | `data/plot_data/oracle_sim__赛飞儿.csv` | `data/plot_data/oracle_sim__赛飞儿.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：赛飞儿（own oracle=O08） |
+| 25 | `docs/report/figures/oracle_sim/遐蝶.png` | `data/plot_data/oracle_sim__遐蝶.csv` | `data/plot_data/oracle_sim__遐蝶.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：遐蝶（own oracle=O04） |
+| 26 | `docs/report/figures/oracle_sim/那刻夏.png` | `data/plot_data/oracle_sim__那刻夏.csv` | `data/plot_data/oracle_sim__那刻夏.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：那刻夏（own oracle=O06） |
+| 27 | `docs/report/figures/oracle_sim/阿格莱雅.png` | `data/plot_data/oracle_sim__阿格莱雅.csv` | `data/plot_data/oracle_sim__阿格莱雅.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：阿格莱雅（own oracle=O01） |
+| 28 | `docs/report/figures/oracle_sim/风堇.png` | `data/plot_data/oracle_sim__风堇.csv` | `data/plot_data/oracle_sim__风堇.meta.json` | `tools/oracle_similarity_curves.py` | oracle-similarity-curves.json、oracle-citation-coding.json、oracle-fulfillment.filled.json、knife-scenes.json | 神谕相似度全程曲线：风堇（own oracle=O07） |
+
+## 换样式流程（改样式不改数据）
+
+1. 只改绘图脚本的样式（颜色/字号/布局），**不要改 `data/plot_data/<图名>.csv` 的数值**；
+2. 重新运行该图的生成脚本（脚本会自动调用 `export_for` 同步配对数据）；
+3. 比对 `data/plot_data/<图名>.meta.json` 的 `data_sha256_16`：与改样式前一致 = 数据未变；
+4. 若 sha256 变了，说明数据重算结果变化，需在提交说明里解释原因。
+
+校验：`conda run -n nlpLesson python tools/export_plot_data.py --verify`

@@ -664,6 +664,11 @@ def build():
         print("中文字体：%s" % CJK_FONT)
     else:
         print("!! 未找到中文字体，图已退回英文标签")
+    try:
+        from export_plot_data import export_for
+        export_for("tools/knife_scene_eval.py")
+    except Exception as _e:
+        print("  [plot_data] 跳过：%s" % _e, file=sys.stderr)
     if not verify(verbose=True):
         print("!! 校验失败", file=sys.stderr)
         sys.exit(1)
