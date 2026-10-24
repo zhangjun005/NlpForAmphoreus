@@ -17,6 +17,10 @@ const filledById = Object.fromEntries((FILLED.oracles || []).map((o) => [o.oracl
 
 // ===== 人工修正（2026-10-24，依据用户裁定）=====
 // event_segments 支持多段：{segment_id, role: '兑现'|'意义转折', note}
+const SEQUENCE_NOTES = {
+  O06: '追认型：v2 把 3.2|争辩|2（segment_index 269）标为兑现，但神谕原句出现在 3.2|学者|4（segment_index 315）——兑现事件在文本顺序上早于神谕被说出；「至纯粹」在瑟希斯说出原句前已出现两次（丹恒概括、那刻夏自述），O06 是被追认的神谕，不是被预告的神谕（那刻夏 L3 发现）。',
+};
+
 const EVENT_SEGMENTS_EXTRA = {
   O05: [
     { segment_id: '3.2|断梦啊，从夙世捎来启迪|1', role: '意义转折', note: '双子抉择：我和姐姐必须有一人牺牲' },
@@ -72,6 +76,7 @@ for (const o of ORACLES) {
     event_candidates: candidates,
     proposed_event_segment: proposed || '',
     event_segments: eventSegments,
+    sequence_note: SEQUENCE_NOTES[o.oracle_id] || '',
     manual_event_candidate_segments: extraCandidates,
     proposed_event_scene: candidates.length ? candidates[0].scene_id : '',
     confirm_event_segment: '',   // 人工确认后填写
