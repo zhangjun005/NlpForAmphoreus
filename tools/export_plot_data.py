@@ -276,7 +276,7 @@ FORM_TERMS = ["卡厄斯兰那", "心中的英雄", "盗火行者", "空白的�
               "幼年形态", "记忆形态", "往昔的涟漪", "迷迷"]
 TRAJ_COLS = ["char", "version", "n_records", "n_steps", "n_tasks", "mean_text_len",
              "mean_score_a", "mean_score_b1", "top100_b1"] + \
-            ["form_" + t for t in FORM_TERMS] + ["addr_" + t for t in ADDR_TERMS] + \
+            ["form_base"] + ["form_" + t for t in FORM_TERMS] + ["addr_" + t for t in ADDR_TERMS] + \
             ["motif_" + t for t in MOTIF_TERMS]
 
 
@@ -292,6 +292,7 @@ def _traj_data(path, key=None):
                    "mean_text_len": pv["mean_text_len"],
                    "mean_score_a": pv["mean_score_a"], "mean_score_b1": pv["mean_score_b1"],
                    "top100_b1": pv["top100_b1"]}
+            row["form_base"] = pv["forms"].get("null", 0)  # null=角色本人常态
             for t in FORM_TERMS:
                 row["form_" + t] = pv["forms"].get(t, 0)
             for t in ADDR_TERMS:

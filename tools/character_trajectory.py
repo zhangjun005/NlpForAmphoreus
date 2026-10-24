@@ -365,11 +365,12 @@ def make_figure(ch, out):
     for v in vers:
         form_tot.update(pv[v]["forms"])
     top_forms = [f for f, _ in form_tot.most_common(5)]
+    _nm = ch.get("name") or ch.get("char") or "本体"
     bottom = np.zeros(len(vers))
     cmap = plt.get_cmap("tab20")
     for i, f in enumerate(top_forms):
         vals = np.array([pv[v]["forms"].get(f, 0) for v in vers], dtype=float)
-        ax.bar(xs, vals, bottom=bottom, label=L(f, f) if f else L("无形态", "none"),
+        ax.bar(xs, vals, bottom=bottom, label=L(f, f) if f else L(_nm + "（本体）", _nm + " (base)"),
                color=cmap(i % 20), edgecolor="white", linewidth=0.5)
         bottom += vals
     other = np.array([sum(n for f, n in pv[v]["forms"].items() if f not in top_forms) for v in vers], dtype=float)
@@ -461,8 +462,8 @@ def render_report(data):
           xi["summary"]["n_steps"], xc["union_knife_key_events"]["n"],
           100 * xc["union_knife_key_events"]["rate"], xc["union_all_close_reads"]["n"],
           100 * xc["union_all_close_reads"]["rate"]))
-    A("2. **白厄的称呼/形态/母题在 3.0→3.7 有明显阶段变化**：3.0 是「幼年/无形态 + 老师（%d 次）+ 火种（%d）」；"
-      "3.1–3.3 以无形态为主、出现「盗火行者」；**3.4 是转折点**：形态大量切到「卡厄斯兰那」（%d 条）与「心中的英雄」（%d 条），"
+    A("2. **白厄的称呼/形态/母题在 3.0→3.7 有明显阶段变化**：3.0 是「幼年/白厄（本体）+ 老师（%d 次）+ 火种（%d）」；"
+      "3.1–3.3 以白厄（本体）为主、出现「盗火行者」；**3.4 是转折点**：形态大量切到「卡厄斯兰那」（%d 条）与「心中的英雄」（%d 条），"
       "自称语境里「伙伴」%d 次、「救世主」%d 次、「火种」%d 次、「逐火」%d 次达到峰值；"
       "3.5 **完全缺席**（0 条）；3.7 出现「空白的愿望」（%d）/「毁灭的容器」（%d）/「记忆形态」，句长从 3.0 的 %.1f 字降到 %.1f 字。" % (
           bai["per_version"]["3.0"]["address_own"].get("老师", 0),
@@ -542,7 +543,8 @@ def render_report(data):
             if pv["n_records"] == 0 and pv["n_steps"] == 0:
                 A("| %s | 0 | 0%% | 0 | 0 | — | — | — | — | — |" % v)
                 continue
-            forms = "、".join("%s %d" % (k or "无形态", n) for k, n in list(pv["forms"].items())[:3])
+            _nm2 = ch.get("name") or ch.get("char") or "本体"
+            forms = "、".join("%s %d" % (k or (_nm2 + "（本体）"), n) for k, n in list(pv["forms"].items())[:3])
             addr = "、".join("%s%d" % (k, n) for k, n in list(pv["address_own"].items())[:3])
             motif = "、".join("%s%d" % (k, n) for k, n in list(pv["motif_own"].items())[:3])
             A("| %s | %d | %.1f%% | %d | %d | %s | %s | %s | %.3f / %.3f | %.1f%% |" % (
@@ -1041,7 +1043,8 @@ def build_summary_table(stats):
         cov = ch["coverage"]
         det = ch["coverage_detail"]
         forms = ch["forms_overall"]
-        top_form = next(("%s（%d）" % (k or "无形态", n) for k, n in forms.items()), "—")
+        _nm3 = ch.get("name") or ch.get("char") or ch.get("summary", {}).get("name") or "本体"
+        top_form = next(("%s（%d）" % (k or (_nm3 + "（本体）"), n) for k, n in forms.items()), "—")
         addr_terms = Counter()
         motif_terms = Counter()
         for v in VERSIONS:
@@ -1199,7 +1202,7 @@ def render_all_report(data, manifest):
     A("")
     A("1. 上下文窗口限定在**同一 (version, task, step_idx) 步骤内**，不跨步拼接；步骤之间的因果需 L3 按 order 串联。")
     A("2. 称呼/母题命中是字面统计；「称呼」取角色自己台词（他称只用同步骤他人台词做代理，未展开）。")
-    A("3. 形态（form）字段有 null，null 不等于「无形态」；A/B1 均分只覆盖 686 池内的出场步骤。")
+    A("3. 形态（form）字段的 null 表示角色本人常态（图上按「角色名（本体）」标注，不再写「无形态」）；A/B1 均分只覆盖 686 池内的出场步骤。")
     A("4. 荒笛、玻吕茜亚按 NPC 处理，只在相关角色条目内注记，不单列分析；其数据保留在 JSON 的 characters 里（group='注记'）。")
     A("5. 深读覆盖以 K36/30/74 文件的实际内容为准；文件更新后重跑 `--all` 即可同步。")
     A("")
