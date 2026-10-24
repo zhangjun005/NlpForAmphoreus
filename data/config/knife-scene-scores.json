@@ -1,0 +1,3427 @@
+{
+ "meta": {
+  "script": "tools/knife_scene_eval.py",
+  "run_command": "conda run -n nlpLesson python tools/knife_scene_eval.py",
+  "sources": [
+   "data/config/knife-scenes.json",
+   "data/config/baseline-a-scores.json",
+   "data/config/baseline-b-scores.json",
+   "data/config/annotation-labels.json",
+   "data/config/oracle-fulfillment.filled.json",
+   "data/corpus/segments.jsonl",
+   "data/corpus/amphoreus.final.jsonl"
+  ],
+  "n_scenes": 35,
+  "n_pool": 686,
+  "note": "场景级=场景映射到的步骤中取最好名次；segment 级=去重后的 knife segment；随机期望=超几何/组合解析值（单步 K/686）。"
+ },
+ "mapping_summary": {
+  "n_scenes": 35,
+  "n_unique_segments": 36,
+  "scenes_with_multiple_segments": [
+   "K10",
+   "K12",
+   "K24"
+  ],
+  "scenes_with_missing": []
+ },
+ "scenes": [
+  {
+   "id": "K01",
+   "title": "「纳努克，你这傲慢的蠢货」——卡厄斯兰那的三千万世之怒",
+   "role": "白厄",
+   "group": "12裔",
+   "type": [
+    "自我否定",
+    "理想破灭",
+    "牺牲"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.4 第三幕：戏剧谢幕后，白厄与来古士在创世涡心的对峙",
+   "why": "白厄在知道自己是「毁灭」的骄阳/柴薪后，仍选择以自身怒火对抗纳努克；「区区阶下囚，有何资格直视我的怒火」把三千万世徒劳压成一句呐喊。",
+   "oracles": "O09（汝将肩负骄阳，直至灰白的黎明显著）的执念侧",
+   "motifs": "骄阳/灰白的黎明；「救世主」；金血；33550336（完全数）",
+   "segment_ids_raw": [
+    "3.4|英雄啊，粉碎那悲哀的造像|6"
+   ],
+   "ranges": [
+    "3.4|英雄啊，粉碎那悲哀的造像|6#16716-16762"
+   ],
+   "record_span": [
+    16716,
+    16762
+   ],
+   "n_records": 47,
+   "char_len": 1565,
+   "pool_segments": [
+    "3.4|英雄啊，粉碎那悲哀的造像|6"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "rank": 85,
+     "score": 0.4586
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，粉碎那悲哀的造像|6",
+     "rank": 53,
+     "score": 0.9518
+    }
+   ],
+   "best_a": 85,
+   "best_b1": 53,
+   "median_a": 85.0,
+   "median_b1": 53.0,
+   "delta_best": 32,
+   "is_gold": true,
+   "gold_oracles": [
+    "O09"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 16716,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "别了，开拓者。现在，我将兑现我最后的命运。"
+    },
+    {
+     "record_id": 16717,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "「救世主」的神谕，于我已无意义。它应当被交予更合适的人手中，也就是你。"
+    },
+    {
+     "record_id": 16718,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "卡厄斯兰那，背负混沌之人，此名非一人所有，它是神话中刻法勒的化身，亦是「英雄」的代名词。"
+    }
+   ]
+  },
+  {
+   "id": "K02",
+   "title": "「一人前往未来，一人留在过去」——白厄把「救世主」交给开拓者",
+   "role": "白厄",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "牺牲",
+    "身份揭示"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.4 英雄啊，点燃那最初的骄阳：第 33550336 次永劫回归的终局",
+   "why": "白厄把「全世」职责与「救世主」之名让渡给开拓者，自己成为这一世盗火行者；「我一直被封藏在心底的、英雄的形象，终于走进现实」是自我牺牲的完成。",
+   "oracles": "O09 的交接点（白厄→灰白的黎明=开拓者）",
+   "motifs": "天秤/比世界命运更沉重之物；盗火行者；仪式剑；「铭记过去，成为明天的英雄」",
+   "segment_ids_raw": [
+    "3.4|英雄啊，点燃那最初的骄阳|15"
+   ],
+   "ranges": [
+    "3.4|英雄啊，点燃那最初的骄阳|15#17500-17573"
+   ],
+   "record_span": [
+    17500,
+    17573
+   ],
+   "n_records": 66,
+   "char_len": 1976,
+   "pool_segments": [
+    "3.4|英雄啊，点燃那最初的骄阳|15"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，点燃那最初的骄阳|15",
+     "rank": 151,
+     "score": 0.2893
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，点燃那最初的骄阳|15",
+     "rank": 115,
+     "score": 0.6435
+    }
+   ],
+   "best_a": 151,
+   "best_b1": 115,
+   "median_a": 151.0,
+   "median_b1": 115.0,
+   "delta_best": 36,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 17500,
+     "kind": "narration",
+     "speaker": "",
+     "text": "你还记得吗，无缘黎明的卡厄斯兰那？在那酣醉的迷梦中，山高而陡峻，你看见了自己。相信我吧，后来的观众啊，他就在那山巅与众人欢歌。残缺的黄金裔，还有畸形的半神们，他们同他歌唱，旋飞舞，脚跺地。欧呵！恐惧令他的心震颤：神谕充满每一颗灵魂，狂喜而迷"
+    },
+    {
+     "record_id": 17501,
+     "kind": "narration",
+     "speaker": "",
+     "text": "时间开始流动…"
+    },
+    {
+     "record_id": 17502,
+     "kind": "narration",
+     "speaker": "",
+     "text": "距离世界毁灭还有1次永劫回归"
+    }
+   ]
+  },
+  {
+   "id": "K03",
+   "title": "「悬锋王朝，于此终结」——万敌告别阿格莱雅",
+   "role": "万敌",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "理想破灭"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.1 王座啊，终了那数载索寞：万敌登神后与阿格莱雅的道别",
+   "why": "万敌亲手终结悬锋王朝、卸下王号，把母亲的印戒交给克拉特鲁斯；两人互诵「最后一次沐浴在黄金中」「背后负创而死」——告别即预告死亡。",
+   "oracles": "O01（阿格莱雅）与 O03（万敌）首次同场出现",
+   "motifs": "母亲的印戒；悬锋的荣耀；两位半神互诵神谕",
+   "segment_ids_raw": [
+    "3.1|王座啊，终了那数载索寞|2"
+   ],
+   "ranges": [
+    "3.1|王座啊，终了那数载索寞|2#7435-7470"
+   ],
+   "record_span": [
+    7435,
+    7470
+   ],
+   "n_records": 36,
+   "char_len": 740,
+   "pool_segments": [
+    "3.1|王座啊，终了那数载索寞|2"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.1|王座啊，终了那数载索寞|2",
+     "rank": 225,
+     "score": 0.1312
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.1|王座啊，终了那数载索寞|2",
+     "rank": 308,
+     "score": 0.0614
+    }
+   ],
+   "best_a": 225,
+   "best_b1": 308,
+   "median_a": 225.0,
+   "median_b1": 308.0,
+   "delta_best": -83,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 7435,
+     "kind": "narration",
+     "speaker": "",
+     "text": "你决绝地否定了悬锋人千载的荣耀执念，决定独自还乡，接下尼卡多利抗击黑潮的使命。在迈上回乡之路之前，你还需与城中的友人们一一作别。"
+    },
+    {
+     "record_id": 7436,
+     "kind": "dialogue",
+     "speaker": "万敌",
+     "text": "出发前，还有些人要见。"
+    },
+    {
+     "record_id": 7438,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "你来了，迈德漠斯……"
+    }
+   ]
+  },
+  {
+   "id": "K04",
+   "title": "「她是我的母亲，我的守护者」——万敌的梦与图书馆",
+   "role": "万敌",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "情感错位"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.1 王座啊，终了那数载索寞：万敌与白厄同行最后一段路",
+   "why": "万敌一生从未见过母亲，只能在梦中与她相见；「梦总会结束于此」「这便是她想对我表达的全部」把一生的缺憾收束成沉默。",
+   "oracles": "—",
+   "motifs": "图书馆；母亲的梦；「来世若有机会，来我的图书馆多看看吧」",
+   "segment_ids_raw": [
+    "3.1|王座啊，终了那数载索寞|8"
+   ],
+   "ranges": [
+    "3.1|王座啊，终了那数载索寞|8#7624-7643"
+   ],
+   "record_span": [
+    7624,
+    7643
+   ],
+   "n_records": 20,
+   "char_len": 422,
+   "pool_segments": [
+    "3.1|王座啊，终了那数载索寞|8"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.1|王座啊，终了那数载索寞|8",
+     "rank": 185,
+     "score": 0.2303
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.1|王座啊，终了那数载索寞|8",
+     "rank": 135,
+     "score": 0.5782
+    }
+   ],
+   "best_a": 185,
+   "best_b1": 135,
+   "median_a": 185.0,
+   "median_b1": 135.0,
+   "delta_best": 50,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 7625,
+     "kind": "dialogue",
+     "speaker": "歌耳戈，万敌之母",
+     "text": "站起来，孩子！你打得很勇敢，今天的训练就到这里。"
+    },
+    {
+     "record_id": 7627,
+     "kind": "dialogue",
+     "speaker": "万敌",
+     "text": "母亲…我有一件事想问。"
+    },
+    {
+     "record_id": 7628,
+     "kind": "dialogue",
+     "speaker": "歌耳戈，万敌之母",
+     "text": "怎么了，迈德漠斯？"
+    }
+   ]
+  },
+  {
+   "id": "K05",
+   "title": "「汝将背后负创而死」——万敌之死",
+   "role": "万敌",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.4 英雄啊，点燃那最初的骄阳：第 108642 次永劫回归的「纷争」试炼",
+   "why": "万敌明知神谕仍选择以「纷争」半神之身迎战卡厄斯兰那，被「侵晨」从背后贯穿第十节胸椎；「在下一世，我必将再次拦住你的去路」把敌人写成挚友。",
+   "oracles": "O03（背后负创而死）的兑现段",
+   "motifs": "悬锋祭典；千万道伤疤；「求之不得」",
+   "segment_ids_raw": [
+    "3.4|英雄啊，点燃那最初的骄阳|11"
+   ],
+   "ranges": [
+    "3.4|英雄啊，点燃那最初的骄阳|11#17272-17327"
+   ],
+   "record_span": [
+    17272,
+    17327
+   ],
+   "n_records": 56,
+   "char_len": 1212,
+   "pool_segments": [
+    "3.4|英雄啊，点燃那最初的骄阳|11"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "rank": 219,
+     "score": 0.1428
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，点燃那最初的骄阳|11",
+     "rank": 147,
+     "score": 0.5496
+    }
+   ],
+   "best_a": 219,
+   "best_b1": 147,
+   "median_a": 219.0,
+   "median_b1": 147.0,
+   "delta_best": 72,
+   "is_gold": true,
+   "gold_oracles": [
+    "O03"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 17272,
+     "kind": "narration",
+     "speaker": "",
+     "text": "你还记得他吗，无缘黎明的卡厄斯兰那？礼赞迈德漠斯，最伟大的征服者，最伟大的守护者，最强者；垂死的雄狮，目光如炬，无邦之王。说啊，倘若刻法勒永志不忘：你已为他刻留多少伤疤，击碎多少骨节，自背后贯穿他的胸膛？歌耳巴尼帕耳图书馆如何在火海中瓦解，"
+    },
+    {
+     "record_id": 17273,
+     "kind": "narration",
+     "speaker": "",
+     "text": "时间开始流动…"
+    },
+    {
+     "record_id": 17274,
+     "kind": "narration",
+     "speaker": "",
+     "text": "距离世界毁灭还有33441694次永劫回归"
+    }
+   ]
+  },
+  {
+   "id": "K06",
+   "title": "「金线会做出裁断」——阿格莱雅的遗书",
+   "role": "阿格莱雅",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别",
+    "理想破灭"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.3 金丝啊，请喻救世者谶语：阿格莱雅死后留给白厄的信",
+   "why": "阿格莱雅早已预见自己的死亡：主动示弱引出元老院的毒蛇，再以最后的火焰焚尽蛇巢；「安享平静的死亡注定是我不可企及的奢侈」，遗书通篇在交代如何死。",
+   "oracles": "O01（最后一次沐浴在温热耀眼的黄金中）的自述预告",
+   "motifs": "金线；「希望这个世界永远都不需要救世主」；「更好的人」",
+   "segment_ids_raw": [
+    "3.3|金丝啊，请喻救世者谶语|7"
+   ],
+   "ranges": [
+    "3.3|金丝啊，请喻救世者谶语|7#12683-12703"
+   ],
+   "record_span": [
+    12683,
+    12703
+   ],
+   "n_records": 21,
+   "char_len": 1007,
+   "pool_segments": [
+    "3.3|金丝啊，请喻救世者谶语|7"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.3|金丝啊，请喻救世者谶语|7",
+     "rank": 156,
+     "score": 0.2847
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.3|金丝啊，请喻救世者谶语|7",
+     "rank": 32,
+     "score": 1.1165
+    }
+   ],
+   "best_a": 156,
+   "best_b1": 32,
+   "median_a": 156.0,
+   "median_b1": 32.0,
+   "delta_best": 124,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 12683,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "白厄，我谦逊的学生，信赖的同僚——"
+    },
+    {
+     "record_id": 12684,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "在我写下这些文字时，你正与元老院的辩论家唇齿交锋，在硝烟无形的战场上争取逐火之旅的存续。"
+    },
+    {
+     "record_id": 12685,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "对于将你与开拓者仓促推上辩论台的决定，我深感惶恐与愧疚。但请你原谅，彼时，我断然不能在你们面前显露出怯懦——因为那定会打击你们的士气。"
+    }
+   ]
+  },
+  {
+   "id": "K07",
+   "title": "「更好的人」——白厄替阿格莱雅完成的公民演讲",
+   "role": "阿格莱雅",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "理想破灭",
+    "其他"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.3 金丝啊，请喻救世者谶语：阿格莱雅葬礼上的公民集会",
+   "why": "白厄当众承认半神已死，却拒绝把仇恨变成新的分裂；「她是奥赫玛的改衣师…而她这一生最大的壮举，是成为一个无私的人」——悼词同时也是对阿格莱雅政治遗产的回收。",
+   "oracles": "—",
+   "motifs": "「更好的人」；金线/缝补；公民大会",
+   "segment_ids_raw": [
+    "3.3|金丝啊，请喻救世者谶语|7"
+   ],
+   "ranges": [
+    "3.3|金丝啊，请喻救世者谶语|7#12743-12781"
+   ],
+   "record_span": [
+    12743,
+    12781
+   ],
+   "n_records": 36,
+   "char_len": 1117,
+   "pool_segments": [
+    "3.3|金丝啊，请喻救世者谶语|7"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.3|金丝啊，请喻救世者谶语|7",
+     "rank": 156,
+     "score": 0.2847
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.3|金丝啊，请喻救世者谶语|7",
+     "rank": 32,
+     "score": 1.1165
+    }
+   ],
+   "best_a": 156,
+   "best_b1": 32,
+   "median_a": 156.0,
+   "median_b1": 32.0,
+   "delta_best": 124,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 12743,
+     "kind": "dialogue",
+     "speaker": "消极的公民",
+     "text": "没有「金织」女士，圣城该如何延续……"
+    },
+    {
+     "record_id": 12744,
+     "kind": "dialogue",
+     "speaker": "不安的公民",
+     "text": "…看，白厄阁下来了。"
+    },
+    {
+     "record_id": 12745,
+     "kind": "dialogue",
+     "speaker": "犹疑的公民",
+     "text": "他会站出来引领奥赫玛么？"
+    }
+   ]
+  },
+  {
+   "id": "K08",
+   "title": "「是时候将其兑现了」——阿格莱雅沐浴黄金",
+   "role": "阿格莱雅",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.4 英雄啊，回返那安宁的家乡：永劫回归#33550334 的记忆片段",
+   "why": "阿格莱雅在记忆中亲口宣告兑现神谕：将最后的人性结成丝网抵御黑潮，自己沐浴在温热耀眼的黄金中赴死。",
+   "oracles": "O01 的兑现宣告",
+   "motifs": "沐浴/黄金；金丝成网；「再创世」的收针",
+   "segment_ids_raw": [
+    "3.4|英雄啊，回返那安宁的家乡|21"
+   ],
+   "ranges": [
+    "3.4|英雄啊，回返那安宁的家乡|21#16610-16617"
+   ],
+   "record_span": [
+    16610,
+    16617
+   ],
+   "n_records": 8,
+   "char_len": 243,
+   "pool_segments": [
+    "3.4|英雄啊，回返那安宁的家乡|21"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+     "rank": 113,
+     "score": 0.3624
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，回返那安宁的家乡|21",
+     "rank": 33,
+     "score": 1.1094
+    }
+   ],
+   "best_a": 113,
+   "best_b1": 33,
+   "median_a": 113.0,
+   "median_b1": 33.0,
+   "delta_best": 80,
+   "is_gold": true,
+   "gold_oracles": [
+    "O01"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 16610,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "「众人将与一人离别，惟其人将觐见奇迹，此乃命运使然……」"
+    },
+    {
+     "record_id": 16611,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "看来，泰坦揭示的未来也未必会实现。"
+    },
+    {
+     "record_id": 16612,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "「再创世」…这件至美的作品，能够交由我最信任的学徒收针，我已没有遗憾。"
+    }
+   ]
+  },
+  {
+   "id": "K09",
+   "title": "「明天见，是世上最伟大的预言」——缇宝的分裂与告别",
+   "role": "缇宝",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别",
+    "理想破灭"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.1 来路啊，请再度显映往履：缇里西庇俄丝记忆的尽头",
+   "why": "缇宝（缇里西庇俄丝）在记忆尽头回答「明知预言会带来浩劫与牺牲，还会启程吗」——会；随后旁白交代她分裂为千名信使，并以「明天见」作别缇安。",
+   "oracles": "O02（汝将碎作千片，凋零在他乡的土壤）",
+   "motifs": "「明天见」；万径之门/千名信使；「逐火是不断失却的旅途」",
+   "segment_ids_raw": [
+    "3.1|来路啊，请再度显映往履|21"
+   ],
+   "ranges": [
+    "3.1|来路啊，请再度显映往履|21#8040-8099"
+   ],
+   "record_span": [
+    8040,
+    8099
+   ],
+   "n_records": 60,
+   "char_len": 1434,
+   "pool_segments": [
+    "3.1|来路啊，请再度显映往履|21"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.1|来路啊，请再度显映往履|21",
+     "rank": 104,
+     "score": 0.3823
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.1|来路啊，请再度显映往履|21",
+     "rank": 58,
+     "score": 0.9245
+    }
+   ],
+   "best_a": 104,
+   "best_b1": 58,
+   "median_a": 104.0,
+   "median_b1": 58.0,
+   "delta_best": 46,
+   "is_gold": true,
+   "gold_oracles": [
+    "O02"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 8040,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "你…能听见我们说话？"
+    },
+    {
+     "record_id": 8042,
+     "kind": "dialogue",
+     "speaker": "缇宁",
+     "text": "她听不见，也看不见我们。"
+    },
+    {
+     "record_id": 8043,
+     "kind": "dialogue",
+     "speaker": "缇宁",
+     "text": "但她知道，肯定会有一天，会有人回到这里，翻开尘封的记忆。"
+    }
+   ]
+  },
+  {
+   "id": "K10",
+   "title": "「明天见，我亲爱的缇里西庇俄丝」——妈妈与缇安的魂息",
+   "role": "缇宝",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "牺牲",
+    "情感错位"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.1 门扉啊，叩声仍激荡梦中：缇宝的梦境与醒后",
+   "why": "梦中母亲的歌谣崩坏成「快逃」，妈妈留下「明天见」；醒来后缇宝与阿格莱雅谈论缇安的魂息正在飘离——「我们分成了许许多多个自己…决定枝叶以何种形式腐朽」。",
+   "oracles": "O02 的伏笔",
+   "motifs": "八音盒/妈妈的歌谣；「明天见」；三相殿/分裂",
+   "segment_ids_raw": [
+    "3.1|门扉啊，叩声仍激荡梦中|4",
+    "3.1|门扉啊，叩声仍激荡梦中|5"
+   ],
+   "ranges": [
+    "3.1|门扉啊，叩声仍激荡梦中|4#6840-6859",
+    "3.1|门扉啊，叩声仍激荡梦中|5#6861-6905"
+   ],
+   "record_span": [
+    6840,
+    6905
+   ],
+   "n_records": 65,
+   "char_len": 1441,
+   "pool_segments": [
+    "3.1|门扉啊，叩声仍激荡梦中|4",
+    "3.1|门扉啊，叩声仍激荡梦中|5"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 2,
+   "a_ranks": [
+    {
+     "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+     "rank": 444,
+     "score": -0.2113
+    },
+    {
+     "segment_id": "3.1|门扉啊，叩声仍激荡梦中|5",
+     "rank": 116,
+     "score": 0.3546
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.1|门扉啊，叩声仍激荡梦中|4",
+     "rank": 414,
+     "score": -0.2374
+    },
+    {
+     "segment_id": "3.1|门扉啊，叩声仍激荡梦中|5",
+     "rank": 81,
+     "score": 0.8009
+    }
+   ],
+   "best_a": 116,
+   "best_b1": 81,
+   "median_a": 280.0,
+   "median_b1": 247.5,
+   "delta_best": 35,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 2,
+   "text_excerpt": [
+    {
+     "record_id": 6840,
+     "kind": "dialogue",
+     "speaker": "温柔的母亲",
+     "text": "「神明眷顾沃土，遍地欣欣如火。十二星宿如目，巨人举杯对酌。」"
+    },
+    {
+     "record_id": 6841,
+     "kind": "dialogue",
+     "speaker": "温柔的母亲",
+     "text": "「三者开辟天地，三者编织命运。三者捏塑生命，三者引渡灾祸。」"
+    },
+    {
+     "record_id": 6842,
+     "kind": "dialogue",
+     "speaker": "温柔的母亲",
+     "text": "「它们说：世界太过沉寂。只愿见，生灵欢笑不息。」"
+    }
+   ]
+  },
+  {
+   "id": "K11",
+   "title": "「花海尽头…相拥之后便是永恒的离别」——遐蝶与玻吕茜亚",
+   "role": "遐蝶",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "身份揭示",
+    "牺牲"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.2 摇船啊，请载我横渡冥流：冥界花海中与塞纳托斯（玻吕茜亚）重逢",
+   "why": "遐蝶终于见到自己宿命的半身、失散的双子妹妹玻吕茜亚；对方请她「赐我以死亡的拥抱，点燃生命的火苗」——重逢即永别，且要由姐姐亲手完成。",
+   "oracles": "O04（花海尽头…永恒的离别）与 O05（凋零→发芽）",
+   "motifs": "花海；「请…不要忘记我」；蝴蝶/枝头；双生子",
+   "segment_ids_raw": [
+    "3.2|摇船啊，请载我横渡冥流|19"
+   ],
+   "ranges": [
+    "3.2|摇船啊，请载我横渡冥流|19#11049-11112"
+   ],
+   "record_span": [
+    11049,
+    11112
+   ],
+   "n_records": 64,
+   "char_len": 1453,
+   "pool_segments": [
+    "3.2|摇船啊，请载我横渡冥流|19"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+     "rank": 11,
+     "score": 1.2945
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.2|摇船啊，请载我横渡冥流|19",
+     "rank": 9,
+     "score": 1.6379
+    }
+   ],
+   "best_a": 11,
+   "best_b1": 9,
+   "median_a": 11.0,
+   "median_b1": 9.0,
+   "delta_best": 2,
+   "is_gold": true,
+   "gold_oracles": [
+    "O05"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 11049,
+     "kind": "narration",
+     "speaker": "",
+     "text": "冥界…果真如传说那样，是一片花海。世人皆知灰黯之手，却鲜有人知晓塞纳托斯的另一只手——如今，你们终于相遇了。跟随着塞纳托斯前进，顺道一观她看顾的这片花海吧。"
+    },
+    {
+     "record_id": 11050,
+     "kind": "dialogue",
+     "speaker": "塞纳托斯",
+     "text": "然后，我，玻吕茜亚残存的理智，徒留在冥界……"
+    },
+    {
+     "record_id": 11051,
+     "kind": "dialogue",
+     "speaker": "塞纳托斯",
+     "text": "日复一日地照料鲜花，看它长成花海……"
+    }
+   ]
+  },
+  {
+   "id": "K12",
+   "title": "「别了，阁下」——遐蝶独自留在冥界",
+   "role": "遐蝶",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "牺牲"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.2 学者啊，于真理门前再会：开拓者重返人间",
+   "why": "遐蝶以「死亡」半神之身洞开冥府送开拓者回人间，自己永居花海；她把预言改写为祝福——「每一次拥抱，将再也不会是冰冷的剥夺」。",
+   "oracles": "O04 的改写（反转）",
+   "motifs": "花海/细雨；触碰；「写下另一种诠释」",
+   "segment_ids_raw": [
+    "3.2|学者啊，于真理门前再会|1",
+    "3.2|学者啊，于真理门前再会|2"
+   ],
+   "ranges": [
+    "3.2|学者啊，于真理门前再会|1#11377-11405",
+    "3.2|学者啊，于真理门前再会|2#11406-11488"
+   ],
+   "record_span": [
+    11377,
+    11488
+   ],
+   "n_records": 97,
+   "char_len": 1876,
+   "pool_segments": [
+    "3.2|学者啊，于真理门前再会|1",
+    "3.2|学者啊，于真理门前再会|2"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 2,
+   "a_ranks": [
+    {
+     "segment_id": "3.2|学者啊，于真理门前再会|1",
+     "rank": 41,
+     "score": 0.8101
+    },
+    {
+     "segment_id": "3.2|学者啊，于真理门前再会|2",
+     "rank": 168,
+     "score": 0.2588
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.2|学者啊，于真理门前再会|1",
+     "rank": 165,
+     "score": 0.506
+    },
+    {
+     "segment_id": "3.2|学者啊，于真理门前再会|2",
+     "rank": 93,
+     "score": 0.7529
+    }
+   ],
+   "best_a": 41,
+   "best_b1": 93,
+   "median_a": 104.5,
+   "median_b1": 129.0,
+   "delta_best": -52,
+   "is_gold": true,
+   "gold_oracles": [
+    "O04"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 11377,
+     "kind": "dialogue",
+     "speaker": "开拓者",
+     "text": "（花海…？）"
+    },
+    {
+     "record_id": 11378,
+     "kind": "dialogue",
+     "speaker": "开拓者",
+     "text": "（这是…什么地方？）"
+    },
+    {
+     "record_id": 11379,
+     "kind": "dialogue",
+     "speaker": "遐蝶",
+     "text": "阁下，来重新认识一下吧：我在人间的名字叫作遐蝶，如今是「死亡」之半神，塞纳托斯的生之侧面……"
+    }
+   ]
+  },
+  {
+   "id": "K13",
+   "title": "「取走我的心脏，点燃死亡的火苗」——玻吕茜亚与姐姐的双子牺牲",
+   "role": "玻吕茜亚（塞纳托斯前身）",
+   "group": "non",
+   "type": [
+    "牺牲",
+    "离别",
+    "身份揭示"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.2 断梦啊，从夙世捎来启迪：那刻夏展示的「记忆」",
+   "why": "黄金世前的双子：姐姐自愿取出心脏点燃「死亡」火苗，让妹妹活到新世界；「我们…究竟为何物」的问答把牺牲写成存在论。",
+   "oracles": "O05（汝将凋零…一同死去的火新生）的原始语境",
+   "motifs": "贤者之石/炼金；双子；花蕾与花海；「等价交换」",
+   "segment_ids_raw": [
+    "3.2|断梦啊，从夙世捎来启迪|2"
+   ],
+   "ranges": [
+    "3.2|断梦啊，从夙世捎来启迪|2#9660-9703"
+   ],
+   "record_span": [
+    9660,
+    9703
+   ],
+   "n_records": 44,
+   "char_len": 836,
+   "pool_segments": [
+    "3.2|断梦啊，从夙世捎来启迪|2"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+     "rank": 43,
+     "score": 0.7793
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.2|断梦啊，从夙世捎来启迪|2",
+     "rank": 20,
+     "score": 1.2796
+    }
+   ],
+   "best_a": 43,
+   "best_b1": 20,
+   "median_a": 43.0,
+   "median_b1": 20.0,
+   "delta_best": 23,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 9660,
+     "kind": "dialogue",
+     "speaker": "？？？",
+     "text": "嗯。玻吕茜亚……"
+    },
+    {
+     "record_id": 9662,
+     "kind": "dialogue",
+     "speaker": "遐蝶",
+     "text": "什么，这……"
+    },
+    {
+     "record_id": 9663,
+     "kind": "dialogue",
+     "speaker": "瑟希斯",
+     "text": "呵，这可真是…耐人寻味呀。"
+    }
+   ]
+  },
+  {
+   "id": "K14",
+   "title": "「诸位，选择吧」——那刻夏把公民大会变成实验场",
+   "role": "那刻夏",
+   "group": "12裔",
+   "type": [
+    "理想破灭",
+    "其他"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.2 争辩啊，代长矛分庭抗礼：公民大会辩论",
+   "why": "那刻夏带着遐蝶站到元老院一侧，用「黄金世」与「消除死亡」煽动民意，把逐火之旅推入两难；「那就在公民大会上见分晓吧」是他对自己理论的豪赌。",
+   "oracles": "—",
+   "motifs": "大表演家；公民大会；黄金世/暂停逐火",
+   "segment_ids_raw": [
+    "3.2|争辩啊，代长矛分庭抗礼|2"
+   ],
+   "ranges": [
+    "3.2|争辩啊，代长矛分庭抗礼|2#9446-9510"
+   ],
+   "record_span": [
+    9446,
+    9510
+   ],
+   "n_records": 61,
+   "char_len": 1706,
+   "pool_segments": [
+    "3.2|争辩啊，代长矛分庭抗礼|2"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.2|争辩啊，代长矛分庭抗礼|2",
+     "rank": 164,
+     "score": 0.2654
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.2|争辩啊，代长矛分庭抗礼|2",
+     "rank": 99,
+     "score": 0.7287
+    }
+   ],
+   "best_a": 164,
+   "best_b1": 99,
+   "median_a": 164.0,
+   "median_b1": 99.0,
+   "delta_best": 65,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 9446,
+     "kind": "dialogue",
+     "speaker": "来古士",
+     "text": "刻法勒与塔兰顿在上，以神礼观众之名，我见到——"
+    },
+    {
+     "record_id": 9447,
+     "kind": "dialogue",
+     "speaker": "来古士",
+     "text": "奥赫玛正直的公民，哀丽秘榭的白厄，与异乡人开拓者，正在向我们走来！"
+    },
+    {
+     "record_id": 9448,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "阿格莱雅！这是怎么了？"
+    }
+   ]
+  },
+  {
+   "id": "K15",
+   "title": "「别了，各位，来世再会」——那刻夏的自我处刑",
+   "role": "那刻夏",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "理想破灭",
+    "自我否定"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.2 学者啊，于真理门前再会：提交「理性」火种",
+   "why": "那刻夏用心脏炼成贤者之石，主动走上处刑台完成「理性」试炼；「别让我的理论蒙羞」是他对世界最后的遗言，而神谕只是复述他的一生。",
+   "oracles": "O06（汝将超越至纯粹之终极，回归腐败苦黑）",
+   "motifs": "贤者之石；智种/世界的本质；「真理」；来世再会",
+   "segment_ids_raw": [
+    "3.2|学者啊，于真理门前再会|4"
+   ],
+   "ranges": [
+    "3.2|学者啊，于真理门前再会|4#11556-11600"
+   ],
+   "record_span": [
+    11556,
+    11600
+   ],
+   "n_records": 44,
+   "char_len": 1005,
+   "pool_segments": [
+    "3.2|学者啊，于真理门前再会|4"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.2|学者啊，于真理门前再会|4",
+     "rank": 107,
+     "score": 0.3721
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.2|学者啊，于真理门前再会|4",
+     "rank": 79,
+     "score": 0.8046
+    }
+   ],
+   "best_a": 107,
+   "best_b1": 79,
+   "median_a": 107.0,
+   "median_b1": 79.0,
+   "delta_best": 28,
+   "is_gold": true,
+   "gold_oracles": [
+    "O06"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 11556,
+     "kind": "dialogue",
+     "speaker": "那刻夏",
+     "text": "呵，最后还把场面搞成这样…接下来轮到我了。"
+    },
+    {
+     "record_id": 11557,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "…我不会阻止你。"
+    },
+    {
+     "record_id": 11558,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "老师，你……"
+    }
+   ]
+  },
+  {
+   "id": "K16",
+   "title": "「这是剧目的最高潮」——那刻夏与赛飞儿以性命布局",
+   "role": "那刻夏 + 赛飞儿",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "其他"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.5 归风啊，席卷旧尘登云天：千年后回看的最后一战记忆",
+   "why": "两名不善争斗的半神以生命为代价将来古士封入涡心；「以生命为代价，将来古士封印于创世涡心，直至今日」是他们留给开拓者的最后铺垫。",
+   "oracles": "O06 的余响",
+   "motifs": "理性与诡计；贤者之石；剧目/观众；「救世主」的接棒",
+   "segment_ids_raw": [
+    "3.5|归风啊，席卷旧尘登云天|9"
+   ],
+   "ranges": [
+    "3.5|归风啊，席卷旧尘登云天|9#19240-19274"
+   ],
+   "record_span": [
+    19240,
+    19274
+   ],
+   "n_records": 35,
+   "char_len": 906,
+   "pool_segments": [
+    "3.5|归风啊，席卷旧尘登云天|9"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.5|归风啊，席卷旧尘登云天|9",
+     "rank": 287,
+     "score": 0.0132
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.5|归风啊，席卷旧尘登云天|9",
+     "rank": 131,
+     "score": 0.5923
+    }
+   ],
+   "best_a": 287,
+   "best_b1": 131,
+   "median_a": 287.0,
+   "median_b1": 131.0,
+   "delta_best": 156,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 2,
+   "text_excerpt": [
+    {
+     "record_id": 19240,
+     "kind": "dialogue",
+     "speaker": "万敌",
+     "text": "前进吧，以我血为你铸就前路。"
+    },
+    {
+     "record_id": 19241,
+     "kind": "dialogue",
+     "speaker": "缇安",
+     "text": "前进吧，小小灰——我们明天见！"
+    },
+    {
+     "record_id": 19242,
+     "kind": "dialogue",
+     "speaker": "记忆中的赛飞儿",
+     "text": "一个谎言要用更多谎言维系，裁缝女这话果然不假哪……"
+    }
+   ]
+  },
+  {
+   "id": "K17",
+   "title": "「我会留在天空，为人们降下庇护」——风堇的飞升",
+   "role": "风堇",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.3 黎明啊，执耀于全世之终：黎明机器熄灭、风堇接过天空神权",
+   "why": "风堇把生的机会让给众人，自己留在天空成为新的「天空」；「请你们一定要成为救世的英雄呀。至于史诗最后的空白页…我会将其呵护，直到最后一刻」——医者以自己为药。",
+   "oracles": "O07（在彩虹桥的尽头，天空之子将缝补晨昏）的兑现",
+   "motifs": "彩虹桥/天空之子；「缝补晨昏」；小伊卡；空白页",
+   "segment_ids_raw": [
+    "3.3|黎明啊，执耀于全世之终|1"
+   ],
+   "ranges": [
+    "3.3|黎明啊，执耀于全世之终|1#14607-14674"
+   ],
+   "record_span": [
+    14607,
+    14674
+   ],
+   "n_records": 59,
+   "char_len": 1169,
+   "pool_segments": [
+    "3.3|黎明啊，执耀于全世之终|1"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+     "rank": 106,
+     "score": 0.3725
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.3|黎明啊，执耀于全世之终|1",
+     "rank": 57,
+     "score": 0.9286
+    }
+   ],
+   "best_a": 106,
+   "best_b1": 57,
+   "median_a": 106.0,
+   "median_b1": 57.0,
+   "delta_best": 49,
+   "is_gold": true,
+   "gold_oracles": [
+    "O07"
+   ],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 14607,
+     "kind": "narration",
+     "speaker": "",
+     "text": "与此同时，晨昏之眼内……"
+    },
+    {
+     "record_id": 14609,
+     "kind": "dialogue",
+     "speaker": "丹恒",
+     "text": "风堇…？发生什么了？"
+    },
+    {
+     "record_id": 14610,
+     "kind": "dialogue",
+     "speaker": "风堇",
+     "text": "掌心里的火种…在颤动。它在向我发出警告……"
+    }
+   ]
+  },
+  {
+   "id": "K18",
+   "title": "「我早就不再为逃亡而奔跑了」——赛飞儿与阿格莱雅的金靴",
+   "role": "赛飞儿",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "情感错位"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.3 石板啊，为何罔闻那灯影：赛飞儿赴黎明云崖前的道别",
+   "why": "阿格莱雅注意到赛飞儿仍穿着自己送的金靴，祝她「下次奔跑不再是为了逃脱追捕」；赛飞儿答「没人能追得上我」——两人的亲密全藏在鞋子和嘴上。",
+   "oracles": "—",
+   "motifs": "金靴；裁缝女/猫耳小贼；逃亡与奔跑",
+   "segment_ids_raw": [
+    "3.3|石板啊，为何罔闻那灯影|8"
+   ],
+   "ranges": [
+    "3.3|石板啊，为何罔闻那灯影|8#14509-14518"
+   ],
+   "record_span": [
+    14509,
+    14518
+   ],
+   "n_records": 10,
+   "char_len": 154,
+   "pool_segments": [
+    "3.3|石板啊，为何罔闻那灯影|8"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.3|石板啊，为何罔闻那灯影|8",
+     "rank": 88,
+     "score": 0.4463
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.3|石板啊，为何罔闻那灯影|8",
+     "rank": 242,
+     "score": 0.2659
+    }
+   ],
+   "best_a": 88,
+   "best_b1": 242,
+   "median_a": 88.0,
+   "median_b1": 242.0,
+   "delta_best": -154,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 1,
+   "text_excerpt": [
+    {
+     "record_id": 14509,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "你还是打算前往黎明云崖吗…赛法利娅？"
+    },
+    {
+     "record_id": 14510,
+     "kind": "dialogue",
+     "speaker": "赛法利娅",
+     "text": "嗯，我决定好了。可别想着阻止我啊，裁缝女。"
+    },
+    {
+     "record_id": 14511,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "是为了「全世宝石」…？"
+    }
+   ]
+  },
+  {
+   "id": "K19",
+   "title": "「亡于分文」——赛飞儿之死",
+   "role": "赛飞儿",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别",
+    "理想破灭"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.3 石板啊，为何罔闻那灯影：黎明云崖与盗火行者决战",
+   "why": "赛飞儿用「诡计」的谎言维系奥赫玛千年永昼，死前还在确认火种安全；「那预言里的『分文』…原来就是字面意思啊」，笑着承认自己被命运说中。",
+   "oracles": "O08（汝将与贪婪同行，亦将亡于分文）的兑现",
+   "motifs": "谎言/诡计；火种；「明天见」的反面；金靴",
+   "segment_ids_raw": [
+    "3.3|石板啊，为何罔闻那灯影|10"
+   ],
+   "ranges": [
+    "3.3|石板啊，为何罔闻那灯影|10#14521-14600"
+   ],
+   "record_span": [
+    14521,
+    14600
+   ],
+   "n_records": 80,
+   "char_len": 1577,
+   "pool_segments": [
+    "3.3|石板啊，为何罔闻那灯影|10"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+     "rank": 299,
+     "score": 0.0006
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.3|石板啊，为何罔闻那灯影|10",
+     "rank": 151,
+     "score": 0.5445
+    }
+   ],
+   "best_a": 299,
+   "best_b1": 151,
+   "median_a": 299.0,
+   "median_b1": 151.0,
+   "delta_best": 148,
+   "is_gold": true,
+   "gold_oracles": [
+    "O08"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 14522,
+     "kind": "dialogue",
+     "speaker": "赛飞儿",
+     "text": "阴魂不散，形容的就是你这家伙吧？"
+    },
+    {
+     "record_id": 14523,
+     "kind": "dialogue",
+     "speaker": "盗火行者",
+     "text": "无法逃离……"
+    },
+    {
+     "record_id": 14524,
+     "kind": "dialogue",
+     "speaker": "盗火行者",
+     "text": "这是…宿命……"
+    }
+   ]
+  },
+  {
+   "id": "K20",
+   "title": "「为征服献身，或用剑刺入暴君的胸膛」——刻律德菈的遗言",
+   "role": "刻律德菈",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "理想破灭",
+    "自我否定"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.5 囚人啊，踏过日影见沧溟：光历3960年，刻律德菈以性命改写「律法」",
+   "why": "凯撒把「杀我」与「为我征服」并列为最后一道命令，用一位半神的性命改写一条律令，只为让翁法罗斯不成为银河对垒的牺牲品；「能杀死凯撒的人无穷无尽，但真正能毁灭她的，只有刻律德菈」。",
+   "oracles": "O11（汝将于天地境界之海完成征服，长眠于涛声中，错位兑现）",
+   "motifs": "律法；凯撒/剑旗爵；「我宁愿被遗忘，也不愿被定义」；棋盘",
+   "segment_ids_raw": [
+    "3.5|囚人啊，踏过日影见沧溟|15"
+   ],
+   "ranges": [
+    "3.5|囚人啊，踏过日影见沧溟|15#20227-20308",
+    "3.5|囚人啊，踏过日影见沧溟|15#20319-20366"
+   ],
+   "record_span": [
+    20227,
+    20366
+   ],
+   "n_records": 130,
+   "char_len": 3566,
+   "pool_segments": [
+    "3.5|囚人啊，踏过日影见沧溟|15"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+     "rank": 79,
+     "score": 0.5084
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.5|囚人啊，踏过日影见沧溟|15",
+     "rank": 17,
+     "score": 1.3153
+    }
+   ],
+   "best_a": 79,
+   "best_b1": 17,
+   "median_a": 79.0,
+   "median_b1": 17.0,
+   "delta_best": 62,
+   "is_gold": true,
+   "gold_oracles": [
+    "O11"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 20227,
+     "kind": "dialogue",
+     "speaker": "海瑟音",
+     "text": "大海啊。我的摇篮，我的故乡。"
+    },
+    {
+     "record_id": 20228,
+     "kind": "dialogue",
+     "speaker": "海瑟音",
+     "text": "「汝将于天地境界之海完成征服，长眠于涛声中——」"
+    },
+    {
+     "record_id": 20229,
+     "kind": "dialogue",
+     "speaker": "海瑟音",
+     "text": "「汝将长眠于涛声中，于天地境界之海完成征服——」"
+    }
+   ]
+  },
+  {
+   "id": "K21",
+   "title": "「让我踏入一场无休无止的幻梦吧」——海瑟音的守墓",
+   "role": "海瑟音",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别",
+    "情感错位"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.5 大海啊，埋葬暗酒色的梦：海瑟音与来古士在墓碑前的记忆",
+   "why": "海瑟音把余生的清醒与自由献给海洋，沉入醉梦看守来古士的封印；「我将履行这场接力的职责，捍卫封印神礼观众的枷锁」，爱人已死，她选择用漫长的孤独偿还。",
+   "oracles": "O10（汝将长眠于涛声中…）的反转兑现",
+   "motifs": "海洋/涛声；墓碑/蜜酿；海妖的歌声；「天地境界之海」",
+   "segment_ids_raw": [
+    "3.5|大海啊，埋葬暗酒色的梦|14"
+   ],
+   "ranges": [
+    "3.5|大海啊，埋葬暗酒色的梦|14#19787-19824"
+   ],
+   "record_span": [
+    19787,
+    19824
+   ],
+   "n_records": 37,
+   "char_len": 1104,
+   "pool_segments": [
+    "3.5|大海啊，埋葬暗酒色的梦|14"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "rank": 47,
+     "score": 0.7259
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.5|大海啊，埋葬暗酒色的梦|14",
+     "rank": 34,
+     "score": 1.1067
+    }
+   ],
+   "best_a": 47,
+   "best_b1": 34,
+   "median_a": 47.0,
+   "median_b1": 34.0,
+   "delta_best": 13,
+   "is_gold": true,
+   "gold_oracles": [
+    "O10"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 19787,
+     "kind": "dialogue",
+     "speaker": "来古士的记忆",
+     "text": "剑旗爵…过去的百年里，我已数不清你在此地驻足过几回了。"
+    },
+    {
+     "record_id": 19789,
+     "kind": "dialogue",
+     "speaker": "海瑟音的记忆",
+     "text": "你是个聒噪的囚徒，吕枯耳戈斯。"
+    },
+    {
+     "record_id": 19790,
+     "kind": "dialogue",
+     "speaker": "来古士的记忆",
+     "text": "两位篡改了「律法」的天才，还有这一世牺牲的所有黄金裔，他们——你们——合力削弱了我的力量，但无法剥夺我的意志。"
+    }
+   ]
+  },
+  {
+   "id": "K22",
+   "title": "「汝将自掘坟墓，焚毁于叛逆的熔炉」——荒笛的最后一课",
+   "role": "荒笛",
+   "group": "12裔",
+   "type": [
+    "牺牲",
+    "离别",
+    "身份揭示"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.6 大地啊，承载万物的苦难：荒笛把「大地」火种交给丹恒",
+   "why": "荒笛背着「背叛挚友」的罪名独自守望大地千年，垂暮时把火种与权柄托付给丹恒；「只要不曾忘记，他们就还活着」——守护的尽头是承认自己也是被守护的。",
+   "oracles": "O12（汝将自掘坟墓，焚毁于叛逆的熔炉）的兑现",
+   "motifs": "大地/熔炉；「开山者」与巨龙；记忆；「为捍卫世间生灵，我从未后悔」",
+   "segment_ids_raw": [
+    "3.6|大地啊，承载万物的苦难|10"
+   ],
+   "ranges": [
+    "3.6|大地啊，承载万物的苦难|10#21623-21697"
+   ],
+   "record_span": [
+    21623,
+    21697
+   ],
+   "n_records": 75,
+   "char_len": 1541,
+   "pool_segments": [
+    "3.6|大地啊，承载万物的苦难|10"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.6|大地啊，承载万物的苦难|10",
+     "rank": 77,
+     "score": 0.5182
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.6|大地啊，承载万物的苦难|10",
+     "rank": 15,
+     "score": 1.3307
+    }
+   ],
+   "best_a": 77,
+   "best_b1": 15,
+   "median_a": 77.0,
+   "median_b1": 15.0,
+   "delta_best": 62,
+   "is_gold": true,
+   "gold_oracles": [
+    "O12"
+   ],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 21623,
+     "kind": "dialogue",
+     "speaker": "荒笛",
+     "text": "交给我吧。阐述「大地」至沉的过去……"
+    },
+    {
+     "record_id": 21624,
+     "kind": "dialogue",
+     "speaker": "荒笛",
+     "text": "…断绝它至深的妄念。"
+    },
+    {
+     "record_id": 21625,
+     "kind": "dialogue",
+     "speaker": "「海瑟音」",
+     "text": "荒笛…是你？"
+    }
+   ]
+  },
+  {
+   "id": "K23",
+   "title": "「无名的英雄，卡厄斯兰那」——开拓者与十二黄金裔的决战",
+   "role": "开拓者",
+   "group": "12裔",
+   "type": [
+    "其他",
+    "牺牲",
+    "离别"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.7 英雄啊，归以凡身向侵晨：铁墓降临，最后的泰坦集结",
+   "why": "开拓者当众宣布「无名的英雄，卡厄斯兰那」，让白厄的名字被世界铭记；随后以「救世主」之名与铁墓决战——这是开拓者从「天外来客」变成「翁法罗斯的负世」的完成。",
+   "oracles": "O09 的最终回响",
+   "motifs": "逐火/黎明；「救世主」；群星；「为来世破晓」",
+   "segment_ids_raw": [
+    "3.7|英雄啊，归以凡身向侵晨|25"
+   ],
+   "ranges": [
+    "3.7|英雄啊，归以凡身向侵晨|25#24816-24938"
+   ],
+   "record_span": [
+    24816,
+    24938
+   ],
+   "n_records": 114,
+   "char_len": 1852,
+   "pool_segments": [
+    "3.7|英雄啊，归以凡身向侵晨|25"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.7|英雄啊，归以凡身向侵晨|25",
+     "rank": 425,
+     "score": -0.1923
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.7|英雄啊，归以凡身向侵晨|25",
+     "rank": 148,
+     "score": 0.5495
+    }
+   ],
+   "best_a": 425,
+   "best_b1": 148,
+   "median_a": 425.0,
+   "median_b1": 148.0,
+   "delta_best": 277,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 24816,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "终于。旅途的尽头。"
+    },
+    {
+     "record_id": 24817,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "我们所有人。在辽阔的星空下。重逢。"
+    },
+    {
+     "record_id": 24819,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "嗯，是我……"
+    }
+   ]
+  },
+  {
+   "id": "K24",
+   "title": "十二黄金裔的「创世之诗」与「黄金裔们：明天见」",
+   "role": "众黄金裔（12裔群像）",
+   "group": "12裔",
+   "type": [
+    "其他",
+    "离别"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.7 纸页啊，镌留记忆的涟漪：再创世与重返战场",
+   "why": "十位已逝/在场的黄金裔各念一句创世之诗，随后集体说「明天见」——这是全篇唯一一次「黄金裔们」作为集体说话人出现，把十二人的牺牲并成一句台词。",
+   "oracles": "—",
+   "motifs": "十三声心跳/光创造天地；「明天见」；月份-命途；「如我所书」",
+   "segment_ids_raw": [
+    "3.7|纸页啊，镌留记忆的涟漪|11",
+    "3.7|纸页啊，镌留记忆的涟漪|12"
+   ],
+   "ranges": [
+    "3.7|纸页啊，镌留记忆的涟漪|11#25204-25244",
+    "3.7|纸页啊，镌留记忆的涟漪|12#25258-25316"
+   ],
+   "record_span": [
+    25204,
+    25316
+   ],
+   "n_records": 98,
+   "char_len": 1750,
+   "pool_segments": [
+    "3.7|纸页啊，镌留记忆的涟漪|11",
+    "3.7|纸页啊，镌留记忆的涟漪|12"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 2,
+   "a_ranks": [
+    {
+     "segment_id": "3.7|纸页啊，镌留记忆的涟漪|11",
+     "rank": 177,
+     "score": 0.2424
+    },
+    {
+     "segment_id": "3.7|纸页啊，镌留记忆的涟漪|12",
+     "rank": 246,
+     "score": 0.1016
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.7|纸页啊，镌留记忆的涟漪|11",
+     "rank": 160,
+     "score": 0.5251
+    },
+    {
+     "segment_id": "3.7|纸页啊，镌留记忆的涟漪|12",
+     "rank": 163,
+     "score": 0.5095
+    }
+   ],
+   "best_a": 177,
+   "best_b1": 160,
+   "median_a": 211.5,
+   "median_b1": 161.5,
+   "delta_best": 17,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 25204,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "从新生啼哭的黎明，到万物沉寂的黑夜……"
+    },
+    {
+     "record_id": 25205,
+     "kind": "dialogue",
+     "speaker": "缇宝",
+     "text": "我们，是新世界的信使……"
+    },
+    {
+     "record_id": 25206,
+     "kind": "dialogue",
+     "speaker": "海瑟音",
+     "text": "听潮声响起，让天地重生。"
+    }
+   ]
+  },
+  {
+   "id": "K25",
+   "title": "「就为他留下『神谕』吧」——昔涟写下白厄的预言，抹除「岁月」",
+   "role": "昔涟",
+   "group": "extra",
+   "type": [
+    "牺牲",
+    "离别",
+    "身份揭示"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.4 英雄啊，点燃那最初的骄阳：昔涟揭示反制铁墓的计划",
+   "why": "昔涟决定把自己的灵魂注入仪式剑、以「抹除岁月」引来星神瞥视，只为给白厄和翁法罗斯留下一个「明天」；「在那『记忆』中，你一定会再次遇见我」——她亲手把自己写成传说。",
+   "oracles": "O13（汝将收梢于花开时…）的自述起点",
+   "motifs": "仪式剑；《如我所书》；「明天见」；水晶花与小妖精（伏笔）",
+   "segment_ids_raw": [
+    "3.4|英雄啊，点燃那最初的骄阳|2"
+   ],
+   "ranges": [
+    "3.4|英雄啊，点燃那最初的骄阳|2#16912-16961"
+   ],
+   "record_span": [
+    16912,
+    16961
+   ],
+   "n_records": 50,
+   "char_len": 1269,
+   "pool_segments": [
+    "3.4|英雄啊，点燃那最初的骄阳|2"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，点燃那最初的骄阳|2",
+     "rank": 78,
+     "score": 0.5126
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.4|英雄啊，点燃那最初的骄阳|2",
+     "rank": 52,
+     "score": 0.9552
+    }
+   ],
+   "best_a": 78,
+   "best_b1": 52,
+   "median_a": 78.0,
+   "median_b1": 52.0,
+   "delta_best": 26,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 16912,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "…或者，我们还有一个选择。"
+    },
+    {
+     "record_id": 16913,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "就像你说的，翁法罗斯只是一场实验，我们是局中人，只能沿着既定的轨迹，走向被星星注视的结局……"
+    },
+    {
+     "record_id": 16914,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "但那也意味着，会向翁法罗斯投来瞥视的「星神」，肯定不止一位吧？"
+    }
+   ]
+  },
+  {
+   "id": "K26",
+   "title": "「昔日秘语，埋葬于此」——昔涟的诞生与无名泰坦大墓",
+   "role": "昔涟",
+   "group": "extra",
+   "type": [
+    "身份揭示",
+    "其他"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.7 魔女的孤诣课题：无名泰坦大墓——「昔涟」的诞生之地",
+   "why": "大墓的铭文揭示：那个讲故事的人一直是最专心的听众；「一座诞生自『智识』的囚笼，一片消陨于『毁灭』的坟茔…最初的智种，德谬歌…它就在这里」。",
+   "oracles": "O13 的出生场景",
+   "motifs": "无名泰坦大墓；歌声「哆、徕、咪、发、嗦、啦、嘻」；书/故事；德谬歌",
+   "segment_ids_raw": [
+    "3.7|魔女的孤诣课题|21"
+   ],
+   "ranges": [
+    "3.7|魔女的孤诣课题|21#23576-23595"
+   ],
+   "record_span": [
+    23576,
+    23595
+   ],
+   "n_records": 18,
+   "char_len": 480,
+   "pool_segments": [
+    "3.7|魔女的孤诣课题|21"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.7|魔女的孤诣课题|21",
+     "rank": 273,
+     "score": 0.036
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.7|魔女的孤诣课题|21",
+     "rank": 26,
+     "score": 1.2186
+    }
+   ],
+   "best_a": 273,
+   "best_b1": 26,
+   "median_a": 273.0,
+   "median_b1": 26.0,
+   "delta_best": 247,
+   "is_gold": true,
+   "gold_oracles": [
+    "O13"
+   ],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 23576,
+     "kind": "narration",
+     "speaker": "",
+     "text": "我来为你讲述「迷路迷境」的故事吧：哀丽秘榭的树林里，住着一群可爱的小朋友，它们的名字能连成一首歌谣——一、二、三、四、五、六、七♪哆、徕、咪、发、嗦、啦、嘻♪生命微种萌蘖于无瑕忆中。心灵最柔软处，由哀怜触动的真挚颤抖，就是「生命的因」。"
+    },
+    {
+     "record_id": 23577,
+     "kind": "dialogue",
+     "speaker": "少女的声音",
+     "text": "可「我」的故事，该从哪里说起呢？"
+    },
+    {
+     "record_id": 23578,
+     "kind": "dialogue",
+     "speaker": "少女的声音",
+     "text": "从宇宙的起点？"
+    }
+   ]
+  },
+  {
+   "id": "K27",
+   "title": "「我迎来自己的收梢，成为下一朵花绽放的养料」——昔涟的终章",
+   "role": "昔涟",
+   "group": "extra",
+   "type": [
+    "牺牲",
+    "身份揭示",
+    "离别"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.7 魔女的孤诣课题：三千万世讲述的真相与告别",
+   "why": "昔涟解释「哀怜/爱」如何浇灌出「心」，并宣告自己将收梢、让下一朵花绽放；「我们的故事会静静地躺在花丛中，一如『记忆』的每一道涟漪」。",
+   "oracles": "O13（汝将收梢于花开时，一如终结诞下起始）的兑现宣告",
+   "motifs": "无瑕水晶花；桃子；「如我所书」；「爱」；收梢/花开",
+   "segment_ids_raw": [
+    "3.7|魔女的孤诣课题|21"
+   ],
+   "ranges": [
+    "3.7|魔女的孤诣课题|21#23928-23984"
+   ],
+   "record_span": [
+    23928,
+    23984
+   ],
+   "n_records": 57,
+   "char_len": 1441,
+   "pool_segments": [
+    "3.7|魔女的孤诣课题|21"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.7|魔女的孤诣课题|21",
+     "rank": 273,
+     "score": 0.036
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.7|魔女的孤诣课题|21",
+     "rank": 26,
+     "score": 1.2186
+    }
+   ],
+   "best_a": 273,
+   "best_b1": 26,
+   "median_a": 273.0,
+   "median_b1": 26.0,
+   "delta_best": 247,
+   "is_gold": true,
+   "gold_oracles": [
+    "O13"
+   ],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 23928,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "哀丽秘榭的女儿，真是名副其实呀。"
+    },
+    {
+     "record_id": 23929,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "我的「哀怜」…是一种弱小的，无力的，对自己的伤害。"
+    },
+    {
+     "record_id": 23930,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "但现在，好朋友，我想告诉你，它也是世上最浪漫的力量。"
+    }
+   ]
+  },
+  {
+   "id": "K28",
+   "title": "「一人留在过去，一人走向未来」——昔涟的最后抉择",
+   "role": "昔涟",
+   "group": "extra",
+   "type": [
+    "牺牲",
+    "离别",
+    "理想破灭"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.7 银辇啊，挽别那人间史诗：铁墓陨落后，黑塔给出两条路",
+   "why": "黑塔告诉昔涟：走向群星 or 以自我为代价「收梢」、成为贯穿翁法罗斯的记忆；昔涟很快选后者，「来克服心底的哀伤」「一人留在过去，一人走向未来」——最难割舍的私心是开拓者。",
+   "oracles": "O13 的抉择面",
+   "motifs": "记忆/无漏净子/浮黎；因果；「明天」；「往昔的涟漪」",
+   "segment_ids_raw": [
+    "3.7|银辇啊，挽别那人间史诗|13"
+   ],
+   "ranges": [
+    "3.7|银辇啊，挽别那人间史诗|13#25877-25928"
+   ],
+   "record_span": [
+    25877,
+    25928
+   ],
+   "n_records": 52,
+   "char_len": 940,
+   "pool_segments": [
+    "3.7|银辇啊，挽别那人间史诗|13"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.7|银辇啊，挽别那人间史诗|13",
+     "rank": 348,
+     "score": -0.0724
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.7|银辇啊，挽别那人间史诗|13",
+     "rank": 258,
+     "score": 0.2194
+    }
+   ],
+   "best_a": 348,
+   "best_b1": 258,
+   "median_a": 348.0,
+   "median_b1": 258.0,
+   "delta_best": 90,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 25877,
+     "kind": "dialogue",
+     "speaker": "黑塔",
+     "text": "博识尊…为我揭示了两条路。"
+    },
+    {
+     "record_id": 25878,
+     "kind": "dialogue",
+     "speaker": "黑塔",
+     "text": "那两条路上都站着你。"
+    },
+    {
+     "record_id": 25879,
+     "kind": "dialogue",
+     "speaker": "黑塔",
+     "text": "一、沿着这条你踏出的「记忆」之路，挣脱这个世界，走向群星。"
+    }
+   ]
+  },
+  {
+   "id": "K29",
+   "title": "「明天见」——最后黄金裔们的告别",
+   "role": "众黄金裔（12裔群像）",
+   "group": "12裔",
+   "type": [
+    "离别",
+    "其他"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.7 银辇啊，挽别那人间史诗：《如我所书》最后一页，黄金裔们依次留下告别词",
+   "why": "十位黄金裔（刻律德菈/海瑟音/万敌/遐蝶/那刻夏/阿格莱雅/风堇/赛飞儿/缇宝/白厄）各留一句告别词，最后缇宝说「明天见」、白厄说「明天见，乘以一千」——全篇「明天见」母题的最终回收。",
+   "oracles": "O09 的终点、O13 的下一次重逢",
+   "motifs": "「明天见」×1000；《如我所书》最后一页；月亮/命途；「下个灰白色的黎明再会」",
+   "segment_ids_raw": [
+    "3.7|银辇啊，挽别那人间史诗|12"
+   ],
+   "ranges": [
+    "3.7|银辇啊，挽别那人间史诗|12#25680-25829"
+   ],
+   "record_span": [
+    25680,
+    25829
+   ],
+   "n_records": 146,
+   "char_len": 3147,
+   "pool_segments": [
+    "3.7|银辇啊，挽别那人间史诗|12"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.7|银辇啊，挽别那人间史诗|12",
+     "rank": 98,
+     "score": 0.4161
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.7|银辇啊，挽别那人间史诗|12",
+     "rank": 50,
+     "score": 0.977
+    }
+   ],
+   "best_a": 98,
+   "best_b1": 50,
+   "median_a": 98.0,
+   "median_b1": 50.0,
+   "delta_best": 48,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 25680,
+     "kind": "dialogue",
+     "speaker": "丹恒",
+     "text": "离开这里，也意味着《如我所书》将就此搁笔。"
+    },
+    {
+     "record_id": 25681,
+     "kind": "dialogue",
+     "speaker": "丹恒",
+     "text": "无人再有机会修订，也没人再能续写。"
+    },
+    {
+     "record_id": 25682,
+     "kind": "dialogue",
+     "speaker": "三月七",
+     "text": "千万别留下遗憾啊，开拓者。"
+    }
+   ]
+  },
+  {
+   "id": "K30",
+   "title": "「我是天谴之矛，尼卡多利」——格奈乌斯之死",
+   "role": "格奈乌斯（尼卡多利的理智）",
+   "group": "non",
+   "type": [
+    "牺牲",
+    "身份揭示",
+    "离别"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.0 悬锋啊，请涤去你的血锈•下：铸魂与弑神",
+   "why": "格奈乌斯把自己融入腐坏的泰坦神魂、让尼卡多利重归完整，再请众人杀死它；「不要嫌恶你的天赋，不要憎恨死亡」「我是这世间必要的伤痕」把敌人写成殉道者。",
+   "oracles": "—",
+   "motifs": "分裂的理智；铸魂；「宁战死，毋荣归」；开满花朵的温柔乡",
+   "segment_ids_raw": [
+    "3.0|悬锋啊，请涤去你的血锈•下|21"
+   ],
+   "ranges": [
+    "3.0|悬锋啊，请涤去你的血锈•下|21#4069-4109",
+    "3.0|悬锋啊，请涤去你的血锈•下|21#4170-4190"
+   ],
+   "record_span": [
+    4069,
+    4190
+   ],
+   "n_records": 52,
+   "char_len": 1338,
+   "pool_segments": [
+    "3.0|悬锋啊，请涤去你的血锈•下|21"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|21",
+     "rank": 155,
+     "score": 0.2872
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.0|悬锋啊，请涤去你的血锈•下|21",
+     "rank": 51,
+     "score": 0.9661
+    }
+   ],
+   "best_a": 155,
+   "best_b1": 51,
+   "median_a": 155.0,
+   "median_b1": 51.0,
+   "delta_best": 104,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 4069,
+     "kind": "narration",
+     "speaker": "",
+     "text": "格奈乌斯竟是尼卡多利的一部分。如今得知后世苦难，他坦然将自己融入尼卡多利早已腐坏的神魂之中，让尼卡多利重归完整，破解不死身的同时，也意味着一尊鼎盛的泰坦将伫立在我们面前。"
+    },
+    {
+     "record_id": 4070,
+     "kind": "dialogue",
+     "speaker": "遐蝶",
+     "text": "快要成功了吗，格奈乌斯阁下？"
+    },
+    {
+     "record_id": 4071,
+     "kind": "dialogue",
+     "speaker": "格奈乌斯",
+     "text": "嗯…只剩下这最后一步了。"
+    }
+   ]
+  },
+  {
+   "id": "K31",
+   "title": "「明天见，缇安」——缇安与万敌/那刻夏/遐蝶的告别蒙太奇",
+   "role": "缇安（缇宝的分身）",
+   "group": "non",
+   "type": [
+    "离别",
+    "牺牲"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.3 星空啊，为纷乱千念濯洗：前往创世涡心途中对逝者的追述",
+   "why": "旁白以一段蒙太奇追述已逝者：缇安「明天见」、万敌「愿你战无不胜」、那刻夏「在存在的尽头，你是否寻见了答案」、遐蝶「在西风尽头再会」——把散落的告别串成一组。",
+   "oracles": "O04/O06 的余响",
+   "motifs": "「明天见」；「逐火是不断失却的旅途」；西风尽头",
+   "segment_ids_raw": [
+    "3.3|星空啊，为纷乱千念濯洗|2"
+   ],
+   "ranges": [
+    "3.3|星空啊，为纷乱千念濯洗|2#11778-11790"
+   ],
+   "record_span": [
+    11778,
+    11790
+   ],
+   "n_records": 13,
+   "char_len": 430,
+   "pool_segments": [
+    "3.3|星空啊，为纷乱千念濯洗|2"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.3|星空啊，为纷乱千念濯洗|2",
+     "rank": 66,
+     "score": 0.5967
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.3|星空啊，为纷乱千念濯洗|2",
+     "rank": 45,
+     "score": 1.012
+    }
+   ],
+   "best_a": 66,
+   "best_b1": 45,
+   "median_a": 66.0,
+   "median_b1": 45.0,
+   "delta_best": 21,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 11778,
+     "kind": "narration",
+     "speaker": "",
+     "text": "天谴之矛曾一度化作狂王，为全世带去无尽的纷争，而后，于你们的奋勇下终结。"
+    },
+    {
+     "record_id": 11779,
+     "kind": "narration",
+     "speaker": "",
+     "text": "而继承其位的半神——不死的迈德漠斯，选择独自背负悬锋之名，还乡代冠，将其身化作圣城的最后一道防线。"
+    },
+    {
+     "record_id": 11780,
+     "kind": "narration",
+     "speaker": "",
+     "text": "万敌，愿你战无不胜。"
+    }
+   ]
+  },
+  {
+   "id": "K32",
+   "title": "「让我成为新世界的第一缕风吧」——扎格列斯/巴特鲁斯的消散",
+   "role": "扎格列斯 / 巴特鲁斯（诡计泰坦）",
+   "group": "non",
+   "type": [
+    "牺牲",
+    "离别",
+    "身份揭示"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.3 黎明啊，执耀于全世之终：创世涡心，最后火种的交接",
+   "why": "扎格列斯用「胃囊里的火种」养着自己，却把火种交给白厄后化作尘土消散；「拯救了翁法罗斯的…是本大爷遭世人唾弃的神力，还有一个猫耳小贼维系了千年的谎言」。",
+   "oracles": "O08 的余响（赛飞儿的谎言）",
+   "motifs": "谎言/诡计；胃囊里的火种；「最伟大的诡计」；巴特鲁斯的怂与忠",
+   "segment_ids_raw": [
+    "3.3|黎明啊，执耀于全世之终|11"
+   ],
+   "ranges": [
+    "3.3|黎明啊，执耀于全世之终|11#15134-15154"
+   ],
+   "record_span": [
+    15134,
+    15154
+   ],
+   "n_records": 21,
+   "char_len": 628,
+   "pool_segments": [
+    "3.3|黎明啊，执耀于全世之终|11"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.3|黎明啊，执耀于全世之终|11",
+     "rank": 97,
+     "score": 0.4227
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.3|黎明啊，执耀于全世之终|11",
+     "rank": 18,
+     "score": 1.297
+    }
+   ],
+   "best_a": 97,
+   "best_b1": 18,
+   "median_a": 97.0,
+   "median_b1": 18.0,
+   "delta_best": 79,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 15134,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "所以，千年以来…维系奥赫玛永昼的并非刻法勒的神迹，而是赛飞儿以「诡计」的神权编织的谎言……"
+    },
+    {
+     "record_id": 15135,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "但现在，谎言破碎了。那就代表……"
+    },
+    {
+     "record_id": 15136,
+     "kind": "dialogue",
+     "speaker": "扎格列斯，诡计的余烬",
+     "text": "你没猜错…赛法利娅已经逝去了。她所有的谎言，如今也都灰飞云散了啊。"
+    }
+   ]
+  },
+  {
+   "id": "K33",
+   "title": "「我最后一次行使忘却」——三月七与长夜月",
+   "role": "三月七 / 长夜月",
+   "group": "non",
+   "type": [
+    "离别",
+    "身份揭示",
+    "自我否定"
+   ],
+   "intensity": 5,
+   "confidence": "high",
+   "position": "3.6 重逢啊，笑泪相拥的约定：忆域中与长夜月对质",
+   "why": "长夜月是为保护三月七而生的「忘却」执念，最终交还力量并抹去「无漏净子」这个名字；「我只是拥有『你』的记忆…来日若有需要，就随时唤醒『我』的力量」。",
+   "oracles": "—",
+   "motifs": "相机；手账/记忆；「无漏净子」；镜子的表里；「新生命萌芽须是死去的种子」",
+   "segment_ids_raw": [
+    "3.6|重逢啊，笑泪相拥的约定|2"
+   ],
+   "ranges": [
+    "3.6|重逢啊，笑泪相拥的约定|2#22546-22681"
+   ],
+   "record_span": [
+    22546,
+    22681
+   ],
+   "n_records": 136,
+   "char_len": 3291,
+   "pool_segments": [
+    "3.6|重逢啊，笑泪相拥的约定|2"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.6|重逢啊，笑泪相拥的约定|2",
+     "rank": 142,
+     "score": 0.31
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.6|重逢啊，笑泪相拥的约定|2",
+     "rank": 96,
+     "score": 0.7352
+    }
+   ],
+   "best_a": 142,
+   "best_b1": 96,
+   "median_a": 142.0,
+   "median_b1": 96.0,
+   "delta_best": 46,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 22546,
+     "kind": "dialogue",
+     "speaker": "「三月七」",
+     "text": "理由什么的，不是再简单不过了吗？"
+    },
+    {
+     "record_id": 22547,
+     "kind": "dialogue",
+     "speaker": "「三月七」",
+     "text": "哪怕只是透过镜头，我也知道，发生在翁法罗斯的爱、恨、挣扎，跟活生生的人没有区别。"
+    },
+    {
+     "record_id": 22548,
+     "kind": "dialogue",
+     "speaker": "「长夜月」",
+     "text": "话题又绕回了原点呢，我已经让开拓者做过一次选择了。"
+    }
+   ]
+  },
+  {
+   "id": "K34",
+   "title": "「不存在的回忆」——星核猎手与迷迷的诞生",
+   "role": "开拓者 / 迷迷（昔涟）",
+   "group": "non",
+   "type": [
+    "身份揭示",
+    "离别",
+    "情感错位"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.0 夜帷啊，轻遮那静默过往：命运重渊中欧洛尼斯展现的「不存在的回忆」",
+   "why": "开拓者看见「不存在的回忆」里的星核猎手——流萤、银狼、卡芙卡、刃逐一结霜、不再回应；随后欧洛尼斯把迷迷托付给开拓者：「与开拓者同行吧，迷迷」。",
+   "oracles": "—",
+   "motifs": "不存在的回忆；窗外/记忆；「母亲」；迷迷的诞生",
+   "segment_ids_raw": [
+    "3.0|夜帷啊，轻遮那静默过往|23"
+   ],
+   "ranges": [
+    "3.0|夜帷啊，轻遮那静默过往|23#3004-3054",
+    "3.0|夜帷啊，轻遮那静默过往|23#3055-3097"
+   ],
+   "record_span": [
+    3004,
+    3097
+   ],
+   "n_records": 65,
+   "char_len": 971,
+   "pool_segments": [
+    "3.0|夜帷啊，轻遮那静默过往|23"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.0|夜帷啊，轻遮那静默过往|23",
+     "rank": 197,
+     "score": 0.1971
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.0|夜帷啊，轻遮那静默过往|23",
+     "rank": 43,
+     "score": 1.0294
+    }
+   ],
+   "best_a": 197,
+   "best_b1": 43,
+   "median_a": 197.0,
+   "median_b1": 43.0,
+   "delta_best": 154,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 3004,
+     "kind": "dialogue",
+     "speaker": "开拓者",
+     "text": "到底是怎么回事……"
+    },
+    {
+     "record_id": 3005,
+     "kind": "dialogue",
+     "speaker": "开拓者",
+     "text": "这些记忆，明明不存在于我的脑海中…却又如此真实，无可辩驳。"
+    },
+    {
+     "record_id": 3007,
+     "kind": "narration",
+     "speaker": "",
+     "text": "流萤转头看向你，流露出的表情与你印象中的那位少女有些许不同——更加忧郁，更加幽深。"
+    }
+   ]
+  },
+  {
+   "id": "K35",
+   "title": "「请将你的天赋用在活着的人身上」——阿蒙内特的托死",
+   "role": "阿蒙内特（哀地里亚长老/行刑人）",
+   "group": "non",
+   "type": [
+    "离别",
+    "牺牲",
+    "情感错位"
+   ],
+   "intensity": 4,
+   "confidence": "high",
+   "position": "3.2 行者啊，向冥河解缆起航：遐蝶的记忆闪回",
+   "why": "把遐蝶从冰原带回、养成行刑官的阿蒙内特，请她亲手处决自己以证明「不畏死」；「我一直把你当成女儿」——至亲之人请求被自己杀死。",
+   "oracles": "O05/O04 的背景",
+   "motifs": "行刑官/圣女；哀地里亚；死亡的重量；「请赐我解脱」",
+   "segment_ids_raw": [
+    "3.2|行者啊，向冥河解缆起航|9"
+   ],
+   "ranges": [
+    "3.2|行者啊，向冥河解缆起航|9#9947-9975"
+   ],
+   "record_span": [
+    9947,
+    9975
+   ],
+   "n_records": 29,
+   "char_len": 726,
+   "pool_segments": [
+    "3.2|行者啊，向冥河解缆起航|9"
+   ],
+   "missing_segments": [],
+   "missing_in_all_segments": [],
+   "n_pool_segments": 1,
+   "a_ranks": [
+    {
+     "segment_id": "3.2|行者啊，向冥河解缆起航|9",
+     "rank": 26,
+     "score": 0.9779
+    }
+   ],
+   "b1_ranks": [
+    {
+     "segment_id": "3.2|行者啊，向冥河解缆起航|9",
+     "rank": 85,
+     "score": 0.7832
+    }
+   ],
+   "best_a": 26,
+   "best_b1": 85,
+   "median_a": 26.0,
+   "median_b1": 85.0,
+   "delta_best": -59,
+   "is_gold": false,
+   "gold_oracles": [],
+   "annotation_level": 2,
+   "text_excerpt": [
+    {
+     "record_id": 9947,
+     "kind": "narration",
+     "speaker": "",
+     "text": "你记得「长老」阿蒙内特，也记得这座信仰塞纳托斯的城邦哀地里亚，这是你回忆开始的地方。「长老」并非希望你成为一名「杀人不眨眼的刽子手」，而是希望你能充分理解生与死的重量后，再饱含敬意地完成你那与生俱来的使命。"
+    },
+    {
+     "record_id": 9948,
+     "kind": "dialogue",
+     "speaker": "遐蝶",
+     "text": "这一切…还要持续到什么时候…？"
+    },
+    {
+     "record_id": 9949,
+     "kind": "dialogue",
+     "speaker": "「长老」阿蒙内特",
+     "text": "来吧，完成你的使命。"
+    }
+   ]
+  }
+ ],
+ "metrics": {
+  "scene_level": {
+   "n_scenes": 35,
+   "median_best_a": 116.0,
+   "median_best_b1": 57.0,
+   "mean_best_a": 148.97,
+   "mean_best_b1": 85.69,
+   "top20": {
+    "A": {
+     "hit": 1,
+     "rate": 0.0286
+    },
+    "B1": {
+     "hit": 5,
+     "rate": 0.1429
+    }
+   },
+   "top50": {
+    "A": {
+     "hit": 5,
+     "rate": 0.1429
+    },
+    "B1": {
+     "hit": 14,
+     "rate": 0.4
+    }
+   },
+   "top100": {
+    "A": {
+     "hit": 13,
+     "rate": 0.3714
+    },
+    "B1": {
+     "hit": 25,
+     "rate": 0.7143
+    }
+   }
+  },
+  "segment_level": {
+   "n_segments": 36,
+   "median_a": 129.0,
+   "median_b1": 80.0,
+   "top20": {
+    "A": {
+     "hit": 1,
+     "rate": 0.0278
+    },
+    "B1": {
+     "hit": 5,
+     "rate": 0.1389
+    }
+   },
+   "top50": {
+    "A": {
+     "hit": 5,
+     "rate": 0.1389
+    },
+    "B1": {
+     "hit": 12,
+     "rate": 0.3333
+    }
+   },
+   "top100": {
+    "A": {
+     "hit": 13,
+     "rate": 0.3611
+    },
+    "B1": {
+     "hit": 23,
+     "rate": 0.6389
+    }
+   }
+  },
+  "annotated_significant": {
+   "n": 28,
+   "median_a": 159.5,
+   "median_b1": 123.0,
+   "top20": {
+    "A": {
+     "hit": 2,
+     "rate": 0.0714
+    },
+    "B1": {
+     "hit": 2,
+     "rate": 0.0714
+    }
+   },
+   "top50": {
+    "A": {
+     "hit": 4,
+     "rate": 0.1429
+    },
+    "B1": {
+     "hit": 4,
+     "rate": 0.1429
+    }
+   },
+   "top100": {
+    "A": {
+     "hit": 7,
+     "rate": 0.25
+    },
+    "B1": {
+     "hit": 13,
+     "rate": 0.4643
+    }
+   }
+  },
+  "random_expectation": {
+   "20": {
+    "expected_count": 1.105,
+    "expected_rate": 0.0316,
+    "single_step_rate": 0.0292
+   },
+   "50": {
+    "expected_count": 2.754,
+    "expected_rate": 0.0787,
+    "single_step_rate": 0.0729
+   },
+   "100": {
+    "expected_count": 5.476,
+    "expected_rate": 0.1565,
+    "single_step_rate": 0.1458
+   }
+  }
+ },
+ "improvements": {
+  "top5": [
+   {
+    "id": "K23",
+    "title": "「无名的英雄，卡厄斯兰那」——开拓者与十二黄金裔的决战",
+    "role": "开拓者",
+    "best_a": 425,
+    "best_b1": 148,
+    "delta": 277,
+    "segments": [
+     "3.7|英雄啊，归以凡身向侵晨|25"
+    ],
+    "why": "开拓者当众宣布「无名的英雄，卡厄斯兰那」，让白厄的名字被世界铭记；随后以「救世主」之名与铁墓决战——这是开拓者从「天外来客」变成「翁法罗斯的负世」的完成。"
+   },
+   {
+    "id": "K26",
+    "title": "「昔日秘语，埋葬于此」——昔涟的诞生与无名泰坦大墓",
+    "role": "昔涟",
+    "best_a": 273,
+    "best_b1": 26,
+    "delta": 247,
+    "segments": [
+     "3.7|魔女的孤诣课题|21"
+    ],
+    "why": "大墓的铭文揭示：那个讲故事的人一直是最专心的听众；「一座诞生自『智识』的囚笼，一片消陨于『毁灭』的坟茔…最初的智种，德谬歌…它就在这里」。"
+   },
+   {
+    "id": "K27",
+    "title": "「我迎来自己的收梢，成为下一朵花绽放的养料」——昔涟的终章",
+    "role": "昔涟",
+    "best_a": 273,
+    "best_b1": 26,
+    "delta": 247,
+    "segments": [
+     "3.7|魔女的孤诣课题|21"
+    ],
+    "why": "昔涟解释「哀怜/爱」如何浇灌出「心」，并宣告自己将收梢、让下一朵花绽放；「我们的故事会静静地躺在花丛中，一如『记忆』的每一道涟漪」。"
+   },
+   {
+    "id": "K16",
+    "title": "「这是剧目的最高潮」——那刻夏与赛飞儿以性命布局",
+    "role": "那刻夏 + 赛飞儿",
+    "best_a": 287,
+    "best_b1": 131,
+    "delta": 156,
+    "segments": [
+     "3.5|归风啊，席卷旧尘登云天|9"
+    ],
+    "why": "两名不善争斗的半神以生命为代价将来古士封入涡心；「以生命为代价，将来古士封印于创世涡心，直至今日」是他们留给开拓者的最后铺垫。"
+   },
+   {
+    "id": "K34",
+    "title": "「不存在的回忆」——星核猎手与迷迷的诞生",
+    "role": "开拓者 / 迷迷（昔涟）",
+    "best_a": 197,
+    "best_b1": 43,
+    "delta": 154,
+    "segments": [
+     "3.0|夜帷啊，轻遮那静默过往|23"
+    ],
+    "why": "开拓者看见「不存在的回忆」里的星核猎手——流萤、银狼、卡芙卡、刃逐一结霜、不再回应；随后欧洛尼斯把迷迷托付给开拓者：「与开拓者同行吧，迷迷」。"
+   }
+  ],
+  "bottom5": [
+   {
+    "id": "K18",
+    "title": "「我早就不再为逃亡而奔跑了」——赛飞儿与阿格莱雅的金靴",
+    "role": "赛飞儿",
+    "best_a": 88,
+    "best_b1": 242,
+    "delta": -154,
+    "segments": [
+     "3.3|石板啊，为何罔闻那灯影|8"
+    ],
+    "why": "阿格莱雅注意到赛飞儿仍穿着自己送的金靴，祝她「下次奔跑不再是为了逃脱追捕」；赛飞儿答「没人能追得上我」——两人的亲密全藏在鞋子和嘴上。"
+   },
+   {
+    "id": "K03",
+    "title": "「悬锋王朝，于此终结」——万敌告别阿格莱雅",
+    "role": "万敌",
+    "best_a": 225,
+    "best_b1": 308,
+    "delta": -83,
+    "segments": [
+     "3.1|王座啊，终了那数载索寞|2"
+    ],
+    "why": "万敌亲手终结悬锋王朝、卸下王号，把母亲的印戒交给克拉特鲁斯；两人互诵「最后一次沐浴在黄金中」「背后负创而死」——告别即预告死亡。"
+   },
+   {
+    "id": "K35",
+    "title": "「请将你的天赋用在活着的人身上」——阿蒙内特的托死",
+    "role": "阿蒙内特（哀地里亚长老/行刑人）",
+    "best_a": 26,
+    "best_b1": 85,
+    "delta": -59,
+    "segments": [
+     "3.2|行者啊，向冥河解缆起航|9"
+    ],
+    "why": "把遐蝶从冰原带回、养成行刑官的阿蒙内特，请她亲手处决自己以证明「不畏死」；「我一直把你当成女儿」——至亲之人请求被自己杀死。"
+   },
+   {
+    "id": "K12",
+    "title": "「别了，阁下」——遐蝶独自留在冥界",
+    "role": "遐蝶",
+    "best_a": 41,
+    "best_b1": 93,
+    "delta": -52,
+    "segments": [
+     "3.2|学者啊，于真理门前再会|1",
+     "3.2|学者啊，于真理门前再会|2"
+    ],
+    "why": "遐蝶以「死亡」半神之身洞开冥府送开拓者回人间，自己永居花海；她把预言改写为祝福——「每一次拥抱，将再也不会是冰冷的剥夺」。"
+   },
+   {
+    "id": "K11",
+    "title": "「花海尽头…相拥之后便是永恒的离别」——遐蝶与玻吕茜亚",
+    "role": "遐蝶",
+    "best_a": 11,
+    "best_b1": 9,
+    "delta": 2,
+    "segments": [
+     "3.2|摇船啊，请载我横渡冥流|19"
+    ],
+    "why": "遐蝶终于见到自己宿命的半身、失散的双子妹妹玻吕茜亚；对方请她「赐我以死亡的拥抱，点燃生命的火苗」——重逢即永别，且要由姐姐亲手完成。"
+   }
+  ]
+ },
+ "double_miss": [
+  {
+   "id": "K03",
+   "title": "「悬锋王朝，于此终结」——万敌告别阿格莱雅",
+   "role": "万敌",
+   "intensity": 5,
+   "segments": [
+    "3.1|王座啊，终了那数载索寞|2"
+   ],
+   "best_a": 225,
+   "best_b1": 308,
+   "delta": -83,
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 7435,
+     "kind": "narration",
+     "speaker": "",
+     "text": "你决绝地否定了悬锋人千载的荣耀执念，决定独自还乡，接下尼卡多利抗击黑潮的使命。在迈上回乡之路之前，你还需与城中的友人们一一作别。"
+    },
+    {
+     "record_id": 7436,
+     "kind": "dialogue",
+     "speaker": "万敌",
+     "text": "出发前，还有些人要见。"
+    },
+    {
+     "record_id": 7438,
+     "kind": "dialogue",
+     "speaker": "阿格莱雅",
+     "text": "你来了，迈德漠斯……"
+    }
+   ],
+   "explanation": "「悬锋王朝，于此终结」——万敌与阿格莱雅的告别：两人用礼貌、克制的中文对白互相托付，最重的一句是「再见了，万敌」。全段只有「背后负创而死」一句是强词面，却被大段日常对白稀释；B1 的结构项还把它从 225 推到 308（越结构化越像「普通对话」）。"
+  },
+  {
+   "id": "K28",
+   "title": "「一人留在过去，一人走向未来」——昔涟的最后抉择",
+   "role": "昔涟",
+   "intensity": 5,
+   "segments": [
+    "3.7|银辇啊，挽别那人间史诗|13"
+   ],
+   "best_a": 348,
+   "best_b1": 258,
+   "delta": 90,
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 25877,
+     "kind": "dialogue",
+     "speaker": "黑塔",
+     "text": "博识尊…为我揭示了两条路。"
+    },
+    {
+     "record_id": 25878,
+     "kind": "dialogue",
+     "speaker": "黑塔",
+     "text": "那两条路上都站着你。"
+    },
+    {
+     "record_id": 25879,
+     "kind": "dialogue",
+     "speaker": "黑塔",
+     "text": "一、沿着这条你踏出的「记忆」之路，挣脱这个世界，走向群星。"
+    }
+   ],
+   "explanation": "「一人留在过去，一人走向未来」——昔涟的最后抉择：全是哲学性对白（两条路、因果、记忆、收梢），情绪在「最难割舍的私心」里而没有词面锚点（A 348 / B1 258）。"
+  },
+  {
+   "id": "K24",
+   "title": "十二黄金裔的「创世之诗」与「黄金裔们：明天见」",
+   "role": "众黄金裔（12裔群像）",
+   "intensity": 5,
+   "segments": [
+    "3.7|纸页啊，镌留记忆的涟漪|11",
+    "3.7|纸页啊，镌留记忆的涟漪|12"
+   ],
+   "best_a": 177,
+   "best_b1": 160,
+   "delta": 17,
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 25204,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "从新生啼哭的黎明，到万物沉寂的黑夜……"
+    },
+    {
+     "record_id": 25205,
+     "kind": "dialogue",
+     "speaker": "缇宝",
+     "text": "我们，是新世界的信使……"
+    },
+    {
+     "record_id": 25206,
+     "kind": "dialogue",
+     "speaker": "海瑟音",
+     "text": "听潮声响起，让天地重生。"
+    }
+   ],
+   "explanation": "十二黄金裔的「创世之诗」与「明天见」——群像诗朗诵：十位黄金裔各念一句短诗，句短、意象抽象（黎明/黑夜/花海/星光），没有情绪词与死亡词，检测器无词可抓（A 177 / B1 160）。"
+  },
+  {
+   "id": "K19",
+   "title": "「亡于分文」——赛飞儿之死",
+   "role": "赛飞儿",
+   "intensity": 5,
+   "segments": [
+    "3.3|石板啊，为何罔闻那灯影|10"
+   ],
+   "best_a": 299,
+   "best_b1": 151,
+   "delta": 148,
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 14522,
+     "kind": "dialogue",
+     "speaker": "赛飞儿",
+     "text": "阴魂不散，形容的就是你这家伙吧？"
+    },
+    {
+     "record_id": 14523,
+     "kind": "dialogue",
+     "speaker": "盗火行者",
+     "text": "无法逃离……"
+    },
+    {
+     "record_id": 14524,
+     "kind": "dialogue",
+     "speaker": "盗火行者",
+     "text": "这是…宿命……"
+    }
+   ],
+   "explanation": "「亡于分文」——赛飞儿之死：大量篇幅是她与「宿命/轮回」的辩论和回忆，预言兑现句「那预言里的『分文』…原来就是字面意思」只占一两句，被稀释；A 299 / B1 151。注意 B1 把它提升了 148 名，但仍不够。"
+  },
+  {
+   "id": "K23",
+   "title": "「无名的英雄，卡厄斯兰那」——开拓者与十二黄金裔的决战",
+   "role": "开拓者",
+   "intensity": 5,
+   "segments": [
+    "3.7|英雄啊，归以凡身向侵晨|25"
+   ],
+   "best_a": 425,
+   "best_b1": 148,
+   "delta": 277,
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 24816,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "终于。旅途的尽头。"
+    },
+    {
+     "record_id": 24817,
+     "kind": "dialogue",
+     "speaker": "白厄",
+     "text": "我们所有人。在辽阔的星空下。重逢。"
+    },
+    {
+     "record_id": 24819,
+     "kind": "dialogue",
+     "speaker": "昔涟",
+     "text": "嗯，是我……"
+    }
+   ],
+   "explanation": "「无名的英雄，卡厄斯兰那」——开拓者与十二黄金裔的决战：B1 已把它的最好名次从 425 提到 148（本验证集最大提升），但场景是群像对话 + 名字宣告，情绪分散在很短的分句里，仍进不了 Top100。"
+  },
+  {
+   "id": "K05",
+   "title": "「汝将背后负创而死」——万敌之死",
+   "role": "万敌",
+   "intensity": 5,
+   "segments": [
+    "3.4|英雄啊，点燃那最初的骄阳|11"
+   ],
+   "best_a": 219,
+   "best_b1": 147,
+   "delta": 72,
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 17272,
+     "kind": "narration",
+     "speaker": "",
+     "text": "你还记得他吗，无缘黎明的卡厄斯兰那？礼赞迈德漠斯，最伟大的征服者，最伟大的守护者，最强者；垂死的雄狮，目光如炬，无邦之王。说啊，倘若刻法勒永志不忘：你已为他刻留多少伤疤，击碎多少骨节，自背后贯穿他的胸膛？歌耳巴尼帕耳图书馆如何在火海中瓦解，"
+    },
+    {
+     "record_id": 17273,
+     "kind": "narration",
+     "speaker": "",
+     "text": "时间开始流动…"
+    },
+    {
+     "record_id": 17274,
+     "kind": "narration",
+     "speaker": "",
+     "text": "距离世界毁灭还有33441694次永劫回归"
+    }
+   ],
+   "explanation": "「汝将背后负创而死」——万敌之死：全篇战斗高潮，但原文里大量是技能名、血量提示、「第 108642 次永劫回归」等机制文本，把仅有的情绪句冲淡；A 219 / B1 147，双漏。"
+  },
+  {
+   "id": "K04",
+   "title": "「她是我的母亲，我的守护者」——万敌的梦与图书馆",
+   "role": "万敌",
+   "intensity": 4,
+   "segments": [
+    "3.1|王座啊，终了那数载索寞|8"
+   ],
+   "best_a": 185,
+   "best_b1": 135,
+   "delta": 50,
+   "annotation_level": null,
+   "text_excerpt": [
+    {
+     "record_id": 7625,
+     "kind": "dialogue",
+     "speaker": "歌耳戈，万敌之母",
+     "text": "站起来，孩子！你打得很勇敢，今天的训练就到这里。"
+    },
+    {
+     "record_id": 7627,
+     "kind": "dialogue",
+     "speaker": "万敌",
+     "text": "母亲…我有一件事想问。"
+    },
+    {
+     "record_id": 7628,
+     "kind": "dialogue",
+     "speaker": "歌耳戈，万敌之母",
+     "text": "怎么了，迈德漠斯？"
+    }
+   ],
+   "explanation": "「她是我的母亲，我的守护者」——万敌的梦：全靠「母亲/守护者/冥海/毒计」的回忆对白，没有事件、没有死亡词，情感在「我与她素未谋面」这句里，词面与结构都无处落脚（A 185 / B1 135）。"
+  },
+  {
+   "id": "K16",
+   "title": "「这是剧目的最高潮」——那刻夏与赛飞儿以性命布局",
+   "role": "那刻夏 + 赛飞儿",
+   "intensity": 4,
+   "segments": [
+    "3.5|归风啊，席卷旧尘登云天|9"
+   ],
+   "best_a": 287,
+   "best_b1": 131,
+   "delta": 156,
+   "annotation_level": 2,
+   "text_excerpt": [
+    {
+     "record_id": 19240,
+     "kind": "dialogue",
+     "speaker": "万敌",
+     "text": "前进吧，以我血为你铸就前路。"
+    },
+    {
+     "record_id": 19241,
+     "kind": "dialogue",
+     "speaker": "缇安",
+     "text": "前进吧，小小灰——我们明天见！"
+    },
+    {
+     "record_id": 19242,
+     "kind": "dialogue",
+     "speaker": "记忆中的赛飞儿",
+     "text": "一个谎言要用更多谎言维系，裁缝女这话果然不假哪……"
+    }
+   ],
+   "explanation": "「这是剧目的最高潮」——那刻夏与赛飞儿用性命布局：场景几乎全是战术讨论与互相打趣，「最后一战」「把计划告诉海瑟音」把悲壮藏在计划书里；没有情绪词，A 287 / B1 131，仍双漏。"
+  },
+  {
+   "id": "K02",
+   "title": "「一人前往未来，一人留在过去」——白厄把「救世主」交给开拓者",
+   "role": "白厄",
+   "intensity": 5,
+   "segments": [
+    "3.4|英雄啊，点燃那最初的骄阳|15"
+   ],
+   "best_a": 151,
+   "best_b1": 115,
+   "delta": 36,
+   "annotation_level": 3,
+   "text_excerpt": [
+    {
+     "record_id": 17500,
+     "kind": "narration",
+     "speaker": "",
+     "text": "你还记得吗，无缘黎明的卡厄斯兰那？在那酣醉的迷梦中，山高而陡峻，你看见了自己。相信我吧，后来的观众啊，他就在那山巅与众人欢歌。残缺的黄金裔，还有畸形的半神们，他们同他歌唱，旋飞舞，脚跺地。欧呵！恐惧令他的心震颤：神谕充满每一颗灵魂，狂喜而迷"
+    },
+    {
+     "record_id": 17501,
+     "kind": "narration",
+     "speaker": "",
+     "text": "时间开始流动…"
+    },
+    {
+     "record_id": 17502,
+     "kind": "narration",
+     "speaker": "",
+     "text": "距离世界毁灭还有1次永劫回归"
+    }
+   ],
+   "explanation": "「一人前往未来，一人留在过去」——长达 73 条记录的告别：白厄与「心中的英雄」逐句托付、回顾三千万世。情绪靠整段对话累积，单句几乎没有死亡/负面词（词面特征抓不到）；结构上它是连续对话而非事件转折，A/B 都把它排在 100 名之后（A 151 / B1 115）。"
+  }
+ ],
+ "cross_table": {
+  "level_order": [
+   "等级3",
+   "等级2",
+   "等级1",
+   "等级0",
+   "未标注"
+  ],
+  "table": [
+   {
+    "row": "神谕兑现",
+    "cells": {
+     "等级3": 3,
+     "等级2": 0,
+     "等级1": 0,
+     "等级0": 0,
+     "未标注": 11
+    }
+   },
+   {
+    "row": "非兑现",
+    "cells": {
+     "等级3": 6,
+     "等级2": 3,
+     "等级1": 1,
+     "等级0": 0,
+     "未标注": 11
+    }
+   }
+  ],
+  "n_gold": 14,
+  "n_level3": 9,
+  "n_both": 3,
+  "n_gold_or_lv3": 20,
+  "n_gold_distinct_oracles": 13,
+  "gold_oracles_covered": [
+   "O01",
+   "O02",
+   "O03",
+   "O04",
+   "O05",
+   "O06",
+   "O07",
+   "O08",
+   "O09",
+   "O10",
+   "O11",
+   "O12",
+   "O13"
+  ],
+  "gold_scenes": [
+   "K01",
+   "K05",
+   "K08",
+   "K09",
+   "K11",
+   "K12",
+   "K15",
+   "K17",
+   "K19",
+   "K20",
+   "K21",
+   "K22",
+   "K26",
+   "K27"
+  ],
+  "level3_scenes": [
+   "K02",
+   "K14",
+   "K17",
+   "K25",
+   "K26",
+   "K27",
+   "K30",
+   "K32",
+   "K33"
+  ],
+  "both_scenes": [
+   "K17",
+   "K26",
+   "K27"
+  ]
+ }
+}

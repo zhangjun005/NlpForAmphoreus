@@ -1,0 +1,554 @@
+{
+  "note": "A1 修订：recitation_segments=出现原文/吟诵的步骤；event_candidates=刀子系统给出的兑现事件段候选；confirm_* 待人工确认",
+  "generated_by": "tools/build-oracle-fulfillment-v2.js",
+  "oracles": [
+    {
+      "oracle_id": "O01",
+      "text": "汝将最后一次沐浴，在温热耀眼的黄金中。",
+      "holder": "阿格莱雅",
+      "titan": "墨涅塔（浪漫）",
+      "recitation_segments": [
+        "3.1|王座啊，终了那数载索寞|2",
+        "3.3|诗者啊，从我处诉说天空•下|4",
+        "3.4|英雄啊，回返那安宁的家乡|21"
+      ],
+      "current_filled_fulfillment": "3.4|英雄啊，回返那安宁的家乡|21",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K06",
+          "title": "「金线会做出裁断」——阿格莱雅的遗书",
+          "segment_ids": [
+            "3.3|金丝啊，请喻救世者谶语|7"
+          ],
+          "intensity": 5,
+          "types": [
+            "牺牲",
+            "离别",
+            "理想破灭"
+          ],
+          "why": "阿格莱雅早已预见自己的死亡：主动示弱引出元老院的毒蛇，再以最后的火焰焚尽蛇巢；「安享平静的死亡注定是我不可企及的奢侈」，遗书通篇在交代如何死。"
+        },
+        {
+          "scene_id": "K07",
+          "title": "「更好的人」——白厄替阿格莱雅完成的公民演讲",
+          "segment_ids": [
+            "3.3|金丝啊，请喻救世者谶语|7"
+          ],
+          "intensity": 4,
+          "types": [
+            "牺牲",
+            "理想破灭",
+            "其他"
+          ],
+          "why": "白厄当众承认半神已死，却拒绝把仇恨变成新的分裂；「她是奥赫玛的改衣师…而她这一生最大的壮举，是成为一个无私的人」——悼词同时也是对阿格莱雅政治遗产的回收。"
+        }
+      ],
+      "proposed_event_segment": "3.3|金丝啊，请喻救世者谶语|7",
+      "proposed_event_scene": "K06",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O02",
+      "text": "汝将碎作千片，凋零在他乡的土壤。",
+      "holder": "缇宝",
+      "titan": "雅努斯（门径）",
+      "recitation_segments": [
+        "3.1|来路啊，请再度显映往履|21",
+        "3.4|英雄啊，点燃那最初的骄阳|6"
+      ],
+      "current_filled_fulfillment": "3.1|来路啊，请再度显映往履|21",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K10",
+          "title": "「明天见，我亲爱的缇里西庇俄丝」——妈妈与缇安的魂息",
+          "segment_ids": [
+            "3.1|门扉啊，叩声仍激荡梦中|4",
+            "3.1|门扉啊，叩声仍激荡梦中|5"
+          ],
+          "intensity": 5,
+          "types": [
+            "离别",
+            "牺牲",
+            "情感错位"
+          ],
+          "why": "梦中母亲的歌谣崩坏成「快逃」，妈妈留下「明天见」；醒来后缇宝与阿格莱雅谈论缇安的魂息正在飘离——「我们分成了许许多多个自己…决定枝叶以何种形式腐朽」。"
+        }
+      ],
+      "proposed_event_segment": "3.1|门扉啊，叩声仍激荡梦中|4",
+      "proposed_event_scene": "K10",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O03",
+      "text": "终有一日，汝将背后负创而死。",
+      "holder": "万敌",
+      "titan": "尼卡多利（纷争）",
+      "recitation_segments": [
+        "3.1|王座啊，终了那数载索寞|2",
+        "3.4|英雄啊，点燃那最初的骄阳|11"
+      ],
+      "current_filled_fulfillment": "3.4|英雄啊，点燃那最初的骄阳|11",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K04",
+          "title": "「她是我的母亲，我的守护者」——万敌的梦与图书馆",
+          "segment_ids": [
+            "3.1|王座啊，终了那数载索寞|8"
+          ],
+          "intensity": 4,
+          "types": [
+            "离别",
+            "情感错位"
+          ],
+          "why": "万敌一生从未见过母亲，只能在梦中与她相见；「梦总会结束于此」「这便是她想对我表达的全部」把一生的缺憾收束成沉默。"
+        }
+      ],
+      "proposed_event_segment": "3.1|王座啊，终了那数载索寞|8",
+      "proposed_event_scene": "K04",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O04",
+      "text": "花海尽头，生者的魂灵将温暖汝之指尖；相拥之后，便是永恒的离别。",
+      "holder": "遐蝶",
+      "titan": "塞纳托斯（死亡）",
+      "recitation_segments": [
+        "3.1|来路啊，请再度显映往履|21",
+        "3.2|行者啊，向冥河解缆起航|11",
+        "3.2|学者啊，于真理门前再会|2",
+        "3.6|大墓啊，深藏轮回的秘密|3"
+      ],
+      "current_filled_fulfillment": "3.2|学者啊，于真理门前再会|2",
+      "current_filled_type": "反转",
+      "event_candidates": [
+        {
+          "scene_id": "K11",
+          "title": "「花海尽头…相拥之后便是永恒的离别」——遐蝶与玻吕茜亚",
+          "segment_ids": [
+            "3.2|摇船啊，请载我横渡冥流|19"
+          ],
+          "intensity": 5,
+          "types": [
+            "离别",
+            "身份揭示",
+            "牺牲"
+          ],
+          "why": "遐蝶终于见到自己宿命的半身、失散的双子妹妹玻吕茜亚；对方请她「赐我以死亡的拥抱，点燃生命的火苗」——重逢即永别，且要由姐姐亲手完成。"
+        },
+        {
+          "scene_id": "K12",
+          "title": "「别了，阁下」——遐蝶独自留在冥界",
+          "segment_ids": [
+            "3.2|学者啊，于真理门前再会|1",
+            "3.2|学者啊，于真理门前再会|2"
+          ],
+          "intensity": 5,
+          "types": [
+            "离别",
+            "牺牲"
+          ],
+          "why": "遐蝶以「死亡」半神之身洞开冥府送开拓者回人间，自己永居花海；她把预言改写为祝福——「每一次拥抱，将再也不会是冰冷的剥夺」。"
+        },
+        {
+          "scene_id": "K31",
+          "title": "「明天见，缇安」——缇安与万敌/那刻夏/遐蝶的告别蒙太奇",
+          "segment_ids": [
+            "3.3|星空啊，为纷乱千念濯洗|2"
+          ],
+          "intensity": 4,
+          "types": [
+            "离别",
+            "牺牲"
+          ],
+          "why": "旁白以一段蒙太奇追述已逝者：缇安「明天见」、万敌「愿你战无不胜」、那刻夏「在存在的尽头，你是否寻见了答案」、遐蝶「在西风尽头再会」——把散落的告别串成一组。"
+        },
+        {
+          "scene_id": "K35",
+          "title": "「请将你的天赋用在活着的人身上」——阿蒙内特的托死",
+          "segment_ids": [
+            "3.2|行者啊，向冥河解缆起航|9"
+          ],
+          "intensity": 4,
+          "types": [
+            "离别",
+            "牺牲",
+            "情感错位"
+          ],
+          "why": "把遐蝶从冰原带回、养成行刑官的阿蒙内特，请她亲手处决自己以证明「不畏死」；「我一直把你当成女儿」——至亲之人请求被自己杀死。"
+        }
+      ],
+      "proposed_event_segment": "3.2|摇船啊，请载我横渡冥流|19",
+      "proposed_event_scene": "K11",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O05",
+      "text": "汝将凋零，令逝者自残余中发芽，一同死去的火新生。",
+      "holder": "遐蝶",
+      "titan": "塞纳托斯（死亡）",
+      "recitation_segments": [
+        "3.2|断梦啊，从夙世捎来启迪|1",
+        "3.2|断梦啊，从夙世捎来启迪|2",
+        "3.2|摇船啊，请载我横渡冥流|19"
+      ],
+      "current_filled_fulfillment": "3.2|摇船啊，请载我横渡冥流|19",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K12",
+          "title": "「别了，阁下」——遐蝶独自留在冥界",
+          "segment_ids": [
+            "3.2|学者啊，于真理门前再会|1",
+            "3.2|学者啊，于真理门前再会|2"
+          ],
+          "intensity": 5,
+          "types": [
+            "离别",
+            "牺牲"
+          ],
+          "why": "遐蝶以「死亡」半神之身洞开冥府送开拓者回人间，自己永居花海；她把预言改写为祝福——「每一次拥抱，将再也不会是冰冷的剥夺」。"
+        },
+        {
+          "scene_id": "K35",
+          "title": "「请将你的天赋用在活着的人身上」——阿蒙内特的托死",
+          "segment_ids": [
+            "3.2|行者啊，向冥河解缆起航|9"
+          ],
+          "intensity": 4,
+          "types": [
+            "离别",
+            "牺牲",
+            "情感错位"
+          ],
+          "why": "把遐蝶从冰原带回、养成行刑官的阿蒙内特，请她亲手处决自己以证明「不畏死」；「我一直把你当成女儿」——至亲之人请求被自己杀死。"
+        }
+      ],
+      "proposed_event_segment": "3.2|学者啊，于真理门前再会|1",
+      "proposed_event_scene": "K12",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O06",
+      "text": "汝将超越至纯粹之终极，回归腐败苦黑。",
+      "holder": "那刻夏",
+      "titan": "瑟希斯（理性）",
+      "recitation_segments": [
+        "3.2|学者啊，于真理门前再会|4"
+      ],
+      "current_filled_fulfillment": "3.2|学者啊，于真理门前再会|4",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K14",
+          "title": "「诸位，选择吧」——那刻夏把公民大会变成实验场",
+          "segment_ids": [
+            "3.2|争辩啊，代长矛分庭抗礼|2"
+          ],
+          "intensity": 4,
+          "types": [
+            "理想破灭",
+            "其他"
+          ],
+          "why": "那刻夏带着遐蝶站到元老院一侧，用「黄金世」与「消除死亡」煽动民意，把逐火之旅推入两难；「那就在公民大会上见分晓吧」是他对自己理论的豪赌。"
+        },
+        {
+          "scene_id": "K16",
+          "title": "「这是剧目的最高潮」——那刻夏与赛飞儿以性命布局",
+          "segment_ids": [
+            "3.5|归风啊，席卷旧尘登云天|9"
+          ],
+          "intensity": 4,
+          "types": [
+            "牺牲",
+            "其他"
+          ],
+          "why": "两名不善争斗的半神以生命为代价将来古士封入涡心；「以生命为代价，将来古士封印于创世涡心，直至今日」是他们留给开拓者的最后铺垫。"
+        },
+        {
+          "scene_id": "K31",
+          "title": "「明天见，缇安」——缇安与万敌/那刻夏/遐蝶的告别蒙太奇",
+          "segment_ids": [
+            "3.3|星空啊，为纷乱千念濯洗|2"
+          ],
+          "intensity": 4,
+          "types": [
+            "离别",
+            "牺牲"
+          ],
+          "why": "旁白以一段蒙太奇追述已逝者：缇安「明天见」、万敌「愿你战无不胜」、那刻夏「在存在的尽头，你是否寻见了答案」、遐蝶「在西风尽头再会」——把散落的告别串成一组。"
+        }
+      ],
+      "proposed_event_segment": "3.2|争辩啊，代长矛分庭抗礼|2",
+      "proposed_event_scene": "K14",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O07",
+      "text": "在彩虹桥的尽头，天空之子将缝补晨昏。",
+      "holder": "风堇",
+      "titan": "艾格勒（天空）",
+      "recitation_segments": [
+        "3.3|识院啊，悠扬间评定今昔|5",
+        "3.3|识院啊，悠扬间评定今昔|6",
+        "3.3|黎明啊，执耀于全世之终|1"
+      ],
+      "current_filled_fulfillment": "3.3|黎明啊，执耀于全世之终|1",
+      "current_filled_type": "字面",
+      "event_candidates": [],
+      "proposed_event_segment": "",
+      "proposed_event_scene": "",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": "刀子系统未找到对应 event 候选，需人工指定"
+    },
+    {
+      "oracle_id": "O08",
+      "text": "汝将与贪婪同行，亦将亡于分文。",
+      "holder": "赛飞儿",
+      "titan": "扎格列斯（诡计）",
+      "recitation_segments": [
+        "3.2|行者啊，向冥河解缆起航|14",
+        "3.3|星空啊，为纷乱千念濯洗|4",
+        "3.3|石板啊，为何罔闻那灯影|10"
+      ],
+      "current_filled_fulfillment": "3.3|石板啊，为何罔闻那灯影|10",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K18",
+          "title": "「我早就不再为逃亡而奔跑了」——赛飞儿与阿格莱雅的金靴",
+          "segment_ids": [
+            "3.3|石板啊，为何罔闻那灯影|8"
+          ],
+          "intensity": 4,
+          "types": [
+            "离别",
+            "情感错位"
+          ],
+          "why": "阿格莱雅注意到赛飞儿仍穿着自己送的金靴，祝她「下次奔跑不再是为了逃脱追捕」；赛飞儿答「没人能追得上我」——两人的亲密全藏在鞋子和嘴上。"
+        },
+        {
+          "scene_id": "K32",
+          "title": "「让我成为新世界的第一缕风吧」——扎格列斯/巴特鲁斯的消散",
+          "segment_ids": [
+            "3.3|黎明啊，执耀于全世之终|11"
+          ],
+          "intensity": 4,
+          "types": [
+            "牺牲",
+            "离别",
+            "身份揭示"
+          ],
+          "why": "扎格列斯用「胃囊里的火种」养着自己，却把火种交给白厄后化作尘土消散；「拯救了翁法罗斯的…是本大爷遭世人唾弃的神力，还有一个猫耳小贼维系了千年的谎言」。"
+        }
+      ],
+      "proposed_event_segment": "3.3|石板啊，为何罔闻那灯影|8",
+      "proposed_event_scene": "K18",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O09",
+      "text": "汝将肩负骄阳，直至灰白的黎明显著。",
+      "holder": "白厄",
+      "titan": "刻法勒（负世）",
+      "recitation_segments": [
+        "3.4|英雄啊，回返那安宁的家乡|2",
+        "3.4|英雄啊，粉碎那悲哀的造像|6",
+        "3.7|落英啊，残芳纷飞留归躅|7"
+      ],
+      "current_filled_fulfillment": "3.4|英雄啊，粉碎那悲哀的造像|6",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K02",
+          "title": "「一人前往未来，一人留在过去」——白厄把「救世主」交给开拓者",
+          "segment_ids": [
+            "3.4|英雄啊，点燃那最初的骄阳|15"
+          ],
+          "intensity": 5,
+          "types": [
+            "离别",
+            "牺牲",
+            "身份揭示"
+          ],
+          "why": "白厄把「全世」职责与「救世主」之名让渡给开拓者，自己成为这一世盗火行者；「我一直被封藏在心底的、英雄的形象，终于走进现实」是自我牺牲的完成。"
+        },
+        {
+          "scene_id": "K23",
+          "title": "「无名的英雄，卡厄斯兰那」——开拓者与十二黄金裔的决战",
+          "segment_ids": [
+            "3.7|英雄啊，归以凡身向侵晨|25"
+          ],
+          "intensity": 5,
+          "types": [
+            "其他",
+            "牺牲",
+            "离别"
+          ],
+          "why": "开拓者当众宣布「无名的英雄，卡厄斯兰那」，让白厄的名字被世界铭记；随后以「救世主」之名与铁墓决战——这是开拓者从「天外来客」变成「翁法罗斯的负世」的完成。"
+        },
+        {
+          "scene_id": "K29",
+          "title": "「明天见」——最后黄金裔们的告别",
+          "segment_ids": [
+            "3.7|银辇啊，挽别那人间史诗|12"
+          ],
+          "intensity": 5,
+          "types": [
+            "离别",
+            "其他"
+          ],
+          "why": "十位黄金裔（刻律德菈/海瑟音/万敌/遐蝶/那刻夏/阿格莱雅/风堇/赛飞儿/缇宝/白厄）各留一句告别词，最后缇宝说「明天见」、白厄说「明天见，乘以一千」——全篇「明天见」母题的最终回收。"
+        }
+      ],
+      "proposed_event_segment": "3.4|英雄啊，点燃那最初的骄阳|15",
+      "proposed_event_scene": "K02",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O10",
+      "text": "汝将长眠于涛声中，于天地境界之海完成征服。",
+      "holder": "海瑟音",
+      "titan": "法吉娜（海洋）",
+      "recitation_segments": [
+        "3.5|囚人啊，踏过日影见沧溟|5",
+        "3.5|囚人啊，踏过日影见沧溟|15"
+      ],
+      "current_filled_fulfillment": "3.5|大海啊，埋葬暗酒色的梦|14",
+      "current_filled_type": "反转",
+      "event_candidates": [
+        {
+          "scene_id": "K21",
+          "title": "「让我踏入一场无休无止的幻梦吧」——海瑟音的守墓",
+          "segment_ids": [
+            "3.5|大海啊，埋葬暗酒色的梦|14"
+          ],
+          "intensity": 5,
+          "types": [
+            "牺牲",
+            "离别",
+            "情感错位"
+          ],
+          "why": "海瑟音把余生的清醒与自由献给海洋，沉入醉梦看守来古士的封印；「我将履行这场接力的职责，捍卫封印神礼观众的枷锁」，爱人已死，她选择用漫长的孤独偿还。"
+        }
+      ],
+      "proposed_event_segment": "3.5|大海啊，埋葬暗酒色的梦|14",
+      "proposed_event_scene": "K21",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    },
+    {
+      "oracle_id": "O11",
+      "text": "汝将于天地境界之海完成征服，长眠于涛声中。",
+      "holder": "刻律德菈",
+      "titan": "塔兰顿（律法）",
+      "recitation_segments": [
+        "3.5|囚人啊，踏过日影见沧溟|15"
+      ],
+      "current_filled_fulfillment": "3.5|囚人啊，踏过日影见沧溟|15",
+      "current_filled_type": "错位",
+      "event_candidates": [],
+      "proposed_event_segment": "",
+      "proposed_event_scene": "",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": "刀子系统未找到对应 event 候选，需人工指定"
+    },
+    {
+      "oracle_id": "O12",
+      "text": "汝将自掘坟墓，焚毁于叛逆的熔炉。",
+      "holder": "荒笛",
+      "titan": "吉奥里亚（大地）",
+      "recitation_segments": [
+        "3.6|大地啊，承载万物的苦难|10"
+      ],
+      "current_filled_fulfillment": "3.6|大地啊，承载万物的苦难|10",
+      "current_filled_type": "字面",
+      "event_candidates": [],
+      "proposed_event_segment": "",
+      "proposed_event_scene": "",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": "刀子系统未找到对应 event 候选，需人工指定"
+    },
+    {
+      "oracle_id": "O13",
+      "text": "汝将收梢于花开时，一如终结诞下起始。",
+      "holder": "昔涟",
+      "titan": "德谬歌（创世）",
+      "recitation_segments": [
+        "3.7|魔女的孤诣课题|21"
+      ],
+      "current_filled_fulfillment": "3.7|魔女的孤诣课题|21",
+      "current_filled_type": "字面",
+      "event_candidates": [
+        {
+          "scene_id": "K25",
+          "title": "「就为他留下『神谕』吧」——昔涟写下白厄的预言，抹除「岁月」",
+          "segment_ids": [
+            "3.4|英雄啊，点燃那最初的骄阳|2"
+          ],
+          "intensity": 5,
+          "types": [
+            "牺牲",
+            "离别",
+            "身份揭示"
+          ],
+          "why": "昔涟决定把自己的灵魂注入仪式剑、以「抹除岁月」引来星神瞥视，只为给白厄和翁法罗斯留下一个「明天」；「在那『记忆』中，你一定会再次遇见我」——她亲手把自己写成传说。"
+        },
+        {
+          "scene_id": "K28",
+          "title": "「一人留在过去，一人走向未来」——昔涟的最后抉择",
+          "segment_ids": [
+            "3.7|银辇啊，挽别那人间史诗|13"
+          ],
+          "intensity": 5,
+          "types": [
+            "牺牲",
+            "离别",
+            "理想破灭"
+          ],
+          "why": "黑塔告诉昔涟：走向群星 or 以自我为代价「收梢」、成为贯穿翁法罗斯的记忆；昔涟很快选后者，「来克服心底的哀伤」「一人留在过去，一人走向未来」——最难割舍的私心是开拓者。"
+        },
+        {
+          "scene_id": "K29",
+          "title": "「明天见」——最后黄金裔们的告别",
+          "segment_ids": [
+            "3.7|银辇啊，挽别那人间史诗|12"
+          ],
+          "intensity": 5,
+          "types": [
+            "离别",
+            "其他"
+          ],
+          "why": "十位黄金裔（刻律德菈/海瑟音/万敌/遐蝶/那刻夏/阿格莱雅/风堇/赛飞儿/缇宝/白厄）各留一句告别词，最后缇宝说「明天见」、白厄说「明天见，乘以一千」——全篇「明天见」母题的最终回收。"
+        }
+      ],
+      "proposed_event_segment": "3.4|英雄啊，点燃那最初的骄阳|2",
+      "proposed_event_scene": "K25",
+      "confirm_event_segment": "",
+      "confirm_type": "",
+      "note": ""
+    }
+  ]
+}
