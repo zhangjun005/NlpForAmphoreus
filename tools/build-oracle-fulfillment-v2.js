@@ -22,6 +22,9 @@ const SEQUENCE_NOTES = {
 };
 
 const EVENT_SEGMENTS_EXTRA = {
+  O08: [
+    { segment_id: '3.3|石板啊，为何罔闻那灯影|10', role: '兑现', note: 'K19 死亡：#14576–#14578「分文…原来就是字面意思」；石板|8（K18 金靴）为情感前奏，不作兑现段（赛飞儿 L3）' },
+  ],
   O06: [
     { segment_id: '3.2|争辩啊，代长矛分庭抗礼|2', role: '兑现', note: '自我处刑/交出理性火种；文本顺序早于神谕原句出现（见 sequence_note）' },
   ],

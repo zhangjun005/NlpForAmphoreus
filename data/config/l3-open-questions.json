@@ -1,0 +1,75 @@
+{
+  "note": "L3 全量精读过程中发现、需要人工/剧情口径确认的问题汇总（不修改既有数据，仅记录）",
+  "items": [
+    {
+      "id": "L3-OQ01",
+      "char": "赛飞儿",
+      "issue": "O08 兑现段四处配置不一致：v2 proposed_event_segment=3.3|石板|8，current_filled_fulfillment/citation-coding/summary=3.3|石板|10",
+      "decision": "以 |10（#14576 死亡）为兑现段，|8（K18 金靴）为情感前奏；已在 event_segments 锁定",
+      "status": "resolved"
+    },
+    {
+      "id": "L3-OQ02",
+      "char": "赛飞儿",
+      "issue": "K32 标题句「让我成为新世界的第一缕风吧」出自 3.4 #16581（赛飞儿），场景 records 是 3.3 扎格列斯段",
+      "decision": "K32 加 quotation_note，引用时注明说话人/版本",
+      "status": "resolved"
+    },
+    {
+      "id": "L3-OQ03",
+      "char": "赛飞儿",
+      "issue": "年龄自述「活了一千多年」(#14541) 与 3.5 碑文光历纪年 (#19859，差 592 年) 不符",
+      "decision": "记为文本内部不一致，报告引用时并列两说，不取一",
+      "status": "open"
+    },
+    {
+      "id": "L3-OQ04",
+      "char": "昔涟",
+      "issue": "「另一位作者♪」20 条（#26180–#26196、#26275–#26277）语料归到昔涟但文本未点名",
+      "decision": "保留 open：未来昔涟/无漏净子/超叙事叙述者三说并存",
+      "status": "open"
+    },
+    {
+      "id": "L3-OQ05",
+      "char": "昔涟",
+      "issue": "#26045 她亲手写 O09，citation coding 为「改写反转/他人」；按上下文应为「书写者」",
+      "decision": "citer_category 仍「他人」（非 O09 holder），加 stage_note 注明实际是书写者",
+      "status": "resolved"
+    },
+    {
+      "id": "L3-OQ06",
+      "char": "那刻夏",
+      "issue": "O06 兑现事件段（K14，segment 269）早于神谕原句（3.2|学者|4，segment 315）",
+      "decision": "保留 K14 为兑现段，加 sequence_note 说明「追认型」；报告写成时间方向倒置案例",
+      "status": "resolved"
+    },
+    {
+      "id": "L3-OQ07",
+      "char": "阿格莱雅",
+      "issue": "O01 两次兑现：3.3 主线死法（引蛇出洞）vs 3.4 回返|21 永劫回归 #33550334 的「沐浴黄金」解释",
+      "decision": "报告并列两说，主兑现取 3.4|回返|21",
+      "status": "open"
+    },
+    {
+      "id": "L3-OQ08",
+      "char": "阿格莱雅",
+      "issue": "3.5 是「过去」还是「另一条时间线」——她 3.5 死于守城战、遗言「团结」，与主线 3.3 焚蛇巢是两种死法",
+      "decision": "按「另一条时间线/上一轮」处理，报告注明",
+      "status": "open"
+    },
+    {
+      "id": "L3-OQ09",
+      "char": "缇宝",
+      "issue": "O02 原文是从雅努斯 #7939/欧洛尼斯 #7744 的散文宣判提炼成的箴言；oracles.jsonl 已补 source_lines",
+      "decision": "保留提炼关系，报告写「神谕原文本身是被提炼出来的」",
+      "status": "resolved"
+    },
+    {
+      "id": "L3-OQ10",
+      "char": "全角色",
+      "issue": "「明天见」全库唯一记录 23 条（按 context 块统计会得 25，重复计数）；首现是白厄 #4211，不是 #6876",
+      "decision": "outline 已修正，报告用 23 条唯一记录",
+      "status": "resolved"
+    }
+  ]
+}
