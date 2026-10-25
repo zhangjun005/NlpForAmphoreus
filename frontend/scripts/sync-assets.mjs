@@ -1,5 +1,5 @@
 // sync-assets.mjs — 把仓库里的图与章节数据复制进前端 public（构建前自动跑）
-import { copyFileSync, mkdirSync, existsSync } from 'node:fs';
+import { copyFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -25,9 +25,19 @@ for (const f of figures) {
   if (existsSync(src)) copyFileSync(src, join(figDir, f));
 }
 
+// 角色迷你图（每章多角色展示）
+const charsDir = join(repo, 'docs', 'report', 'figures', 'chars');
+const charsOut = join(frontend, 'public', 'figures', 'chars');
+mkdirSync(charsOut, { recursive: true });
+if (existsSync(charsDir)) {
+  for (const f of readdirSync(charsDir)) {
+    if (f.endsWith('.png')) copyFileSync(join(charsDir, f), join(charsOut, f));
+  }
+}
+
 const dataDir = join(frontend, 'public', 'data');
 mkdirSync(dataDir, { recursive: true });
 const screens = join(frontend, 'data', 'screens.json');
 if (existsSync(screens)) copyFileSync(screens, join(dataDir, 'screens.json'));
 
-console.log('[sync-assets] figures + screens.json 已同步');
+console.log('[sync-assets] figures + chars + screens.json 已同步');

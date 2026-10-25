@@ -186,20 +186,31 @@ function FigureCard({ fig }) {
   );
 }
 
+const CHARACTER_FIGS = {
+  ch02: [
+    { name: '白厄', img: '/figures/chars/白厄_mini.png', note: '沉默：几乎不引用自己的命定；3.4 身份分裂峰值' },
+    { name: '万敌', img: '/figures/chars/万敌_mini.png', note: '递刀：3.1 交出弱点，两次兑现各一次' },
+    { name: '那刻夏', img: '/figures/chars/那刻夏_mini.png', note: '追认：兑现比神谕原句早 46 步' },
+  ],
+  ch03: [
+    { name: '昔涟', img: '/figures/chars/昔涟_mini.png', note: '讲述/写书：水晶花被改写两次，3.7 峰值' },
+    { name: '遐蝶', img: '/figures/chars/遐蝶_mini.png', note: '读反：O04 从「永恒离别」改成「拥抱=爱」' },
+    { name: '缇宝', img: '/figures/chars/缇宝_mini.png', note: '提炼：O02 是她从雅努斯的散文里提炼的箴言' },
+  ],
+  ch04: [
+    { name: '海瑟音', img: '/figures/chars/海瑟音_mini.png', note: '镜像对：代念 O11，自己放弃征服、长眠守墓' },
+    { name: '刻律德菈', img: '/figures/chars/刻律德菈_mini.png', note: '镜像对：0 次引用神谕，把「完成」换到律法上' },
+    { name: '阿格莱雅', img: '/figures/chars/阿格莱雅_mini.png', note: '全链：汝→我→结局宣告，沐浴母题仅 7 次' },
+    { name: '赛飞儿', img: '/figures/chars/赛飞儿_mini.png', note: '道具链：千年永昼是短语删改，O08=硬币' },
+    { name: '开拓者', img: '/figures/chars/开拓者_mini.png', note: '旁观者：3,058 条里 79.5% 是选项' },
+    { name: '三月七', img: '/figures/chars/三月七_mini.png', note: '旁观者：3.1/3.3 零台词（幽灵期）' },
+    { name: '丹恒', img: '/figures/chars/丹恒_mini.png', note: '旁观者：1,541 条含 89 条「丹枫」' },
+  ],
+};
+
 function Section({ ch, data }) {
   const c = CONTENT[ch.id] || {};
-  const figureFirst = c.left === 'figure';
-  const text = (
-    <div className="col text-col">
-      {c.pieces?.map((p, i) => <p key={i}>{p}</p>)}
-      <KeyNumbers data={data} />
-    </div>
-  );
-  const figs = (
-    <div className="col fig-col">
-      {(c.figures || []).map((f) => <FigureCard fig={f} key={f.src + f.title} />)}
-    </div>
-  );
+  const chars = CHARACTER_FIGS[ch.id] || [];
   return (
     <section id={ch.id} className="chapter">
       <header className="chapter-head">
@@ -207,7 +218,34 @@ function Section({ ch, data }) {
         <h2>{ch.title}</h2>
         <p className="kicker">{ch.kicker}</p>
       </header>
-      <div className="two-col">{figureFirst ? <>{figs}{text}</> : <>{text}{figs}</>}</div>
+      <div className="prose">
+        {c.pieces?.map((p, i) => <p key={i}>{p}</p>)}
+      </div>
+      {chars.length > 0 && (
+        <div className="char-block">
+          <h3 className="block-title">角色数据卡（每人一张，轴与结论写在图下）</h3>
+          <div className="char-grid">
+            {chars.map((x) => (
+              <figure className="char-card" key={x.name}>
+                <img src={x.img} alt={`${x.name} 迷你图`} loading="lazy" />
+                <figcaption>
+                  <strong>{x.name}</strong>
+                  <p>{x.note}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )}
+      {(c.figures || []).length > 0 && (
+        <div className="figure-block">
+          <h3 className="block-title">关键图（轴 / 怎么判好坏 / 本图结论）</h3>
+          <div className="figure-grid">
+            {(c.figures || []).map((f) => <FigureCard fig={f} key={f.src + f.title} />)}
+          </div>
+        </div>
+      )}
+      <KeyNumbers data={data} />
     </section>
   );
 }
