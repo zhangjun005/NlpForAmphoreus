@@ -1,0 +1,326 @@
+{
+  "note": "水晶花寓言的向量分析：三版本两两相似 + 每版最像的角色/神谕 + 整段故事的最近邻",
+  "versions": {
+    "v0_original": {
+      "chars": 310,
+      "preview": "从前，有一朵「无瑕」的水晶花，闪闪发光。像桃子的每一篇故事。\n如此绚丽的花朵，它的「心」该有多美？一只小妖精好奇，想知道答案。\n可它看呀看，却发现水晶花天衣无缝"
+    },
+    "v1_xi_rewrite": {
+      "chars": 352,
+      "preview": "好呀。那以我的审美，应该会小小地修改一笔吧。\n我想，花朵碎裂的那天，小妖精会看见，空荡荡的地面什么也没有。\n然后它就会明白，原来「无瑕」的水晶花，既没有「心」，"
+    },
+    "v2_final_rewrite": {
+      "chars": 129,
+      "preview": "那你一定还记得，水晶花和小妖精，我为你写下的第一首诗。\n所以现在，我想为这个故事，还有你我，再添一笔。\n花朵碎裂的那天，对着空荡荡的地面，我想…小妖精最终还是看"
+    }
+  },
+  "pairwise": {
+    "v0_original vs v1_xi_rewrite": {
+      "sbert": 0.8715,
+      "tfidf": 0.3331
+    },
+    "v0_original vs v2_final_rewrite": {
+      "sbert": 0.808,
+      "tfidf": 0.2841
+    },
+    "v1_xi_rewrite vs v2_final_rewrite": {
+      "sbert": 0.79,
+      "tfidf": 0.4677
+    }
+  },
+  "per_version": {
+    "v0_original": {
+      "n_chars": 310,
+      "top_char_centroids": [
+        {
+          "char": "昔涟",
+          "sbert": 0.598
+        },
+        {
+          "char": "三月七",
+          "sbert": 0.5805
+        },
+        {
+          "char": "赛飞儿",
+          "sbert": 0.5671
+        },
+        {
+          "char": "海瑟音",
+          "sbert": 0.5605
+        },
+        {
+          "char": "风堇",
+          "sbert": 0.5576
+        }
+      ],
+      "top_oracles": [
+        {
+          "oracle_id": "O04",
+          "holder": "遐蝶",
+          "sbert": 0.5249
+        },
+        {
+          "oracle_id": "O13",
+          "holder": "昔涟",
+          "sbert": 0.4641
+        },
+        {
+          "oracle_id": "O02",
+          "holder": "缇宝",
+          "sbert": 0.4107
+        },
+        {
+          "oracle_id": "O07",
+          "holder": "风堇",
+          "sbert": 0.4064
+        },
+        {
+          "oracle_id": "O05",
+          "holder": "玻吕茜亚",
+          "sbert": 0.3991
+        }
+      ]
+    },
+    "v1_xi_rewrite": {
+      "n_chars": 352,
+      "top_char_centroids": [
+        {
+          "char": "昔涟",
+          "sbert": 0.5843
+        },
+        {
+          "char": "三月七",
+          "sbert": 0.5669
+        },
+        {
+          "char": "赛飞儿",
+          "sbert": 0.565
+        },
+        {
+          "char": "海瑟音",
+          "sbert": 0.5612
+        },
+        {
+          "char": "那刻夏",
+          "sbert": 0.5577
+        }
+      ],
+      "top_oracles": [
+        {
+          "oracle_id": "O04",
+          "holder": "遐蝶",
+          "sbert": 0.5327
+        },
+        {
+          "oracle_id": "O13",
+          "holder": "昔涟",
+          "sbert": 0.457
+        },
+        {
+          "oracle_id": "O05",
+          "holder": "玻吕茜亚",
+          "sbert": 0.4269
+        },
+        {
+          "oracle_id": "O02",
+          "holder": "缇宝",
+          "sbert": 0.4253
+        },
+        {
+          "oracle_id": "O08",
+          "holder": "赛飞儿",
+          "sbert": 0.4044
+        }
+      ]
+    },
+    "v2_final_rewrite": {
+      "n_chars": 129,
+      "top_char_centroids": [
+        {
+          "char": "昔涟",
+          "sbert": 0.6334
+        },
+        {
+          "char": "三月七",
+          "sbert": 0.6291
+        },
+        {
+          "char": "风堇",
+          "sbert": 0.6221
+        },
+        {
+          "char": "海瑟音",
+          "sbert": 0.6218
+        },
+        {
+          "char": "阿格莱雅",
+          "sbert": 0.6164
+        }
+      ],
+      "top_oracles": [
+        {
+          "oracle_id": "O04",
+          "holder": "遐蝶",
+          "sbert": 0.5442
+        },
+        {
+          "oracle_id": "O13",
+          "holder": "昔涟",
+          "sbert": 0.5059
+        },
+        {
+          "oracle_id": "O02",
+          "holder": "缇宝",
+          "sbert": 0.4765
+        },
+        {
+          "oracle_id": "O05",
+          "holder": "玻吕茜亚",
+          "sbert": 0.4693
+        },
+        {
+          "oracle_id": "O01",
+          "holder": "阿格莱雅",
+          "sbert": 0.4386
+        }
+      ]
+    }
+  },
+  "full_story": {
+    "top_char_centroids": [
+      {
+        "char": "昔涟",
+        "sbert": 0.6117
+      },
+      {
+        "char": "三月七",
+        "sbert": 0.5942
+      },
+      {
+        "char": "赛飞儿",
+        "sbert": 0.5856
+      },
+      {
+        "char": "海瑟音",
+        "sbert": 0.5756
+      },
+      {
+        "char": "那刻夏",
+        "sbert": 0.5754
+      }
+    ],
+    "top_oracles": [
+      {
+        "oracle_id": "O04",
+        "holder": "遐蝶",
+        "sbert": 0.5022
+      },
+      {
+        "oracle_id": "O13",
+        "holder": "昔涟",
+        "sbert": 0.4494
+      },
+      {
+        "oracle_id": "O02",
+        "holder": "缇宝",
+        "sbert": 0.4038
+      },
+      {
+        "oracle_id": "O05",
+        "holder": "玻吕茜亚",
+        "sbert": 0.4022
+      },
+      {
+        "oracle_id": "O08",
+        "holder": "赛飞儿",
+        "sbert": 0.3878
+      }
+    ],
+    "nearest_lines": [
+      {
+        "record_id": 26165,
+        "score": 0.7449,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": "「还记得我最喜欢的故事吗？水晶花之所以美丽，是因为它映出了小妖精的眼睛。」"
+      },
+      {
+        "record_id": 23833,
+        "score": 0.6496,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": "桃子。昔涟。小妖精。喜欢。"
+      },
+      {
+        "record_id": 23721,
+        "score": 0.6257,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": ">>>注释：小桃子。偷哭。小妖精。朋友。"
+      },
+      {
+        "record_id": 23755,
+        "score": 0.6257,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": ">>>注释：小桃子。偷哭。小妖精。朋友。"
+      },
+      {
+        "record_id": 23918,
+        "score": 0.6212,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": "怎么没想到呢？不用自己一个人，可以让桃子教我呀！什么是「爱」，什么是「爱恋」——"
+      },
+      {
+        "record_id": 23915,
+        "score": 0.6105,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": "桃子的话，不懂。是因为我，还没理解「爱」？"
+      },
+      {
+        "record_id": 25239,
+        "score": 0.6069,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": "我会写下：「爱」是一朵清白的花，它悄无声息地长大，让每一位过路的人都心生憧憬。"
+      },
+      {
+        "record_id": 24308,
+        "score": 0.6066,
+        "version": "3.7",
+        "speaker": "遐蝶",
+        "text": "请带上这朵安提灵花。我想，如果有什么能诉说「遐蝶」的故事……"
+      },
+      {
+        "record_id": 23984,
+        "score": 0.6011,
+        "version": "3.7",
+        "speaker": "昔涟",
+        "text": "而我们的故事，会静静地躺在花丛中，一如「记忆」的每一道涟漪……"
+      },
+      {
+        "record_id": 22349,
+        "score": 0.6011,
+        "version": "3.6",
+        "speaker": "昔涟",
+        "text": "而我们的故事，会静静地躺在花丛中，一如「记忆」的每一道涟漪……"
+      },
+      {
+        "record_id": 22904,
+        "score": 0.5993,
+        "version": "3.6",
+        "speaker": "昔涟",
+        "text": "这一定是个不同以往的浪漫故事"
+      },
+      {
+        "record_id": 14695,
+        "score": 0.597,
+        "version": "3.3",
+        "speaker": "缇宝",
+        "text": "因为小风堇想要的答案，其实很简单哦！只要稍微换位思考一下就能明白啦——"
+      }
+    ]
+  }
+}

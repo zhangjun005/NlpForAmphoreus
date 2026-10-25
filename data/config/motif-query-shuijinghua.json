@@ -1,0 +1,325 @@
+{
+  "query": "水晶花",
+  "n_occurrences": 11,
+  "by_version": {
+    "3.7": 11
+  },
+  "occurrences": [
+    {
+      "record_id": 23888,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "从前，有一朵「无瑕」的水晶花，闪闪发光。像桃子的每一篇故事。"
+    },
+    {
+      "record_id": 23890,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "可它看呀看，却发现水晶花天衣无缝，兜兜转转，只看见自己的倒影。"
+    },
+    {
+      "record_id": 23891,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "既然如此，就努力学习吧！于是小妖精每天过来，守在水晶花旁，思考答案。"
+    },
+    {
+      "record_id": 23892,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "直到有一天，它惊讶地发现——水晶花掉在地上，碎掉了！"
+    },
+    {
+      "record_id": 23903,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "然后它就会明白，原来「无瑕」的水晶花，既没有「心」，也不懂「爱」。"
+    },
+    {
+      "record_id": 23906,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "水晶花之所以纯粹，是因为它封闭了自己，孤独绽放。才会在有缺的世界中格外耀眼。"
+    },
+    {
+      "record_id": 23910,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "「水晶花掉在地上，碎掉了。」"
+    },
+    {
+      "record_id": 23913,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "而在它眼里，不再「无瑕」的水晶花，终于有了「心」，也学会了「爱」。"
+    },
+    {
+      "record_id": 23953,
+      "version": "3.7",
+      "task": "魔女的孤诣课题",
+      "speaker": "昔涟",
+      "text": "是呀。所以我相信，这一切都是真实的。就像水晶花跌落的瞬间……"
+    },
+    {
+      "record_id": 25226,
+      "version": "3.7",
+      "task": "纸页啊，镌留记忆的涟漪",
+      "speaker": "昔涟",
+      "text": "那你一定还记得，水晶花和小妖精，我为你写下的第一首诗。"
+    },
+    {
+      "record_id": 26165,
+      "version": "3.7",
+      "task": "落英啊，残芳纷飞留归躅",
+      "speaker": "昔涟",
+      "text": "「还记得我最喜欢的故事吗？水晶花之所以美丽，是因为它映出了小妖精的眼睛。」"
+    }
+  ],
+  "char_centroids": [
+    {
+      "char": "昔涟",
+      "sbert": 0.3753,
+      "tfidf": 0.0199
+    },
+    {
+      "char": "风堇",
+      "sbert": 0.3677,
+      "tfidf": 0.0
+    },
+    {
+      "char": "开拓者",
+      "sbert": 0.3658,
+      "tfidf": 0.0
+    },
+    {
+      "char": "海瑟音",
+      "sbert": 0.3587,
+      "tfidf": 0.0
+    },
+    {
+      "char": "遐蝶",
+      "sbert": 0.3575,
+      "tfidf": 0.0
+    },
+    {
+      "char": "缇宝",
+      "sbert": 0.3563,
+      "tfidf": 0.0
+    },
+    {
+      "char": "赛飞儿",
+      "sbert": 0.3554,
+      "tfidf": 0.0
+    },
+    {
+      "char": "三月七",
+      "sbert": 0.3544,
+      "tfidf": 0.0
+    },
+    {
+      "char": "白厄",
+      "sbert": 0.353,
+      "tfidf": 0.0
+    },
+    {
+      "char": "丹恒",
+      "sbert": 0.3524,
+      "tfidf": 0.0
+    },
+    {
+      "char": "阿格莱雅",
+      "sbert": 0.3482,
+      "tfidf": 0.0
+    },
+    {
+      "char": "那刻夏",
+      "sbert": 0.342,
+      "tfidf": 0.0
+    },
+    {
+      "char": "万敌",
+      "sbert": 0.327,
+      "tfidf": 0.0
+    },
+    {
+      "char": "刻律德菈",
+      "sbert": 0.3234,
+      "tfidf": 0.0
+    }
+  ],
+  "oracle_similarity": [
+    {
+      "oracle_id": "O13",
+      "holder": "昔涟",
+      "sbert": 0.4112,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O04",
+      "holder": "遐蝶",
+      "sbert": 0.3808,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O01",
+      "holder": "阿格莱雅",
+      "sbert": 0.3607,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O05",
+      "holder": "玻吕茜亚",
+      "sbert": 0.3153,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O07",
+      "holder": "风堇",
+      "sbert": 0.2749,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O02",
+      "holder": "缇宝",
+      "sbert": 0.27,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O06",
+      "holder": "那刻夏",
+      "sbert": 0.2541,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O11",
+      "holder": "刻律德菈",
+      "sbert": 0.25,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O10",
+      "holder": "海瑟音",
+      "sbert": 0.247,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O09",
+      "holder": "白厄",
+      "sbert": 0.2144,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O12",
+      "holder": "荒笛",
+      "sbert": 0.1666,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O03",
+      "holder": "万敌",
+      "sbert": 0.1619,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O08",
+      "holder": "赛飞儿",
+      "sbert": 0.1295,
+      "tfidf": 0.0
+    }
+  ],
+  "nearest_lines_without_phrase": [
+    {
+      "record_id": 26205,
+      "score": 0.672,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "花"
+    },
+    {
+      "record_id": 11051,
+      "score": 0.5237,
+      "version": "3.2",
+      "speaker": "塞纳托斯",
+      "text": "日复一日地照料鲜花，看它长成花海……"
+    },
+    {
+      "record_id": 6121,
+      "score": 0.5139,
+      "version": "3.1",
+      "speaker": "",
+      "text": "金色的睡莲甫一与琥珀相接，火光便自花瓣流溢而出。"
+    },
+    {
+      "record_id": 20141,
+      "score": 0.5074,
+      "version": "3.5",
+      "speaker": "昔涟",
+      "text": "据说，天外的人们会借助这种力量，将过去的风景存入名为「光锥」的水晶。"
+    },
+    {
+      "record_id": 25037,
+      "score": 0.499,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "「我相信奇迹的花，会在其中绽放。」"
+    },
+    {
+      "record_id": 23689,
+      "score": 0.4982,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": ">>>注释：都是花。"
+    },
+    {
+      "record_id": 23663,
+      "score": 0.4982,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": ">>>注释：都是花。"
+    },
+    {
+      "record_id": 1267,
+      "score": 0.4973,
+      "version": "3.0",
+      "speaker": "开拓者",
+      "text": "拿取干燥的红土结晶。"
+    },
+    {
+      "record_id": 12097,
+      "score": 0.4963,
+      "version": "3.3",
+      "speaker": "昔涟",
+      "text": "喔，经你这么一提醒，还真是！要是能换成其他材质，比如水晶…就更好啦！"
+    },
+    {
+      "record_id": 12302,
+      "score": 0.496,
+      "version": "3.3",
+      "speaker": "巴特鲁斯",
+      "text": "哎呀，瞧瞧这紫色水晶的透亮程度…正好跟我的肤色绝配！赛飞儿大姐头，你果真是全翁法罗斯审美最顶级的侠盗！"
+    },
+    {
+      "record_id": 25230,
+      "score": 0.4947,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "而是在每一片破碎的水晶，映照出的世界里。"
+    },
+    {
+      "record_id": 26163,
+      "score": 0.4795,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "「同一颗种子，在不同的土壤里，会开出相似而不同的花。但真正让她美丽的，是世界的每一颗心灵。」"
+    }
+  ],
+  "note": "短语被当作查询文本；角色质心=该角色全部台词向量平均；相似度不是含义强度"
+}

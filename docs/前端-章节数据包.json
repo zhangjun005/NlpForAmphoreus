@@ -240,7 +240,10 @@
         "data/config/oracle-fulfillment.v2.json",
         "data/reports/l3/",
         "data/config/motif-query-mingtianjian.json",
-        "data/config/motif-query-zaijianmian.json"
+        "data/config/motif-query-zaijianmian.json",
+        "data/config/crystal-flower-analysis.json",
+        "data/config/motif-query-mingtian.json",
+        "data/config/mingtian-counts.json"
       ],
       "key_numbers": {
         "fulfillment_types": {
@@ -276,12 +279,42 @@
             "top_char": "开拓者 0.627 / 三月七 0.620",
             "top_oracle": "O04 0.445"
           }
+        },
+        "crystal_flower": {
+          "versions": [
+            "原版 #23888–#23900",
+            "第一改 #23901–#23913",
+            "终局第二改 #25226–#25230"
+          ],
+          "pairwise": "句向量 0.79–0.87，词频加权 0.28–0.47（语义保留、字面偏离）",
+          "closest_char": "昔涟 0.58–0.63",
+          "closest_oracle": "O04 0.52–0.54（O13 仅 0.46–0.51）",
+          "word_count": 11,
+          "word_scope": "全部在 3.7、全部昔涟说"
+        },
+        "mingtian": {
+          "raw": 110,
+          "clean": 108,
+          "fp": 2,
+          "speakers": {
+            "缇宝": 32,
+            "昔涟": 17,
+            "白厄": 13
+          },
+          "by_version": {
+            "3.1": 30,
+            "3.7": 28
+          },
+          "contrast_with_mingtianjian": "昔涟 明天17次 / 明天见仅1次"
         }
       },
       "can": "命定从被写死到被改写/被收下的完整轨迹",
       "cannot": "不能把语言变化当读者感受；不能把检索排名当剧情重要性",
       "subsections": [
-        "「明天见」母题向量分析（对照「再见面」）"
+        "13 条兑现四型",
+        "明天见（23 条）",
+        "明天（108 条）与明天见的区别",
+        "水晶花三版本改写"
       ]
     }
   ]
