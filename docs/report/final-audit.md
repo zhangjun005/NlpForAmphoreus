@@ -16,7 +16,7 @@
 | 角色质心产物存在（14 角色） | ✅ | npz=true chars=14 |
 | L3 笔记 14 份 + 归档 14 份 | ✅ | runtime=14 archive=14 |
 | 上下文表 ≥14 个角色（含荒笛历史派生） | ✅ | files=15 |
-| 报告 7 章草稿 + 合并稿 | ✅ | drafts=7 merged=true |
-| git 工作区干净（派生数据除外） | ✅ | clean |
+| 报告 7 章草稿 + 术语表 + 合并稿 | ✅ | drafts=8 merged=true |
+| git 工作区干净（派生数据除外） | ❌ |  M docs/report/final-audit.md |
 
-**通过 14/14**
+**通过 13/14**
