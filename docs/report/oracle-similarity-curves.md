@@ -2,7 +2,7 @@
 
 > 生成脚本：`tools/oracle_similarity_curves.py` ｜ 重跑命令：`conda run -n nlpLesson python tools/oracle_similarity_curves.py`
 > 明细数据：`data/config/oracle-similarity-curves.json`（含神谕向量，可逐点复算）、`oracle-similarity-curves.csv`（长表）
-> 图：`docs/report/figures/oracle_sim/<角色>.png`（15 张）、`docs/report/figures/f11_oracle_similarity_heatmap.png`
+> 图：`docs/report/figures/oracle_sim/<角色>.png`（14 张）、`docs/report/figures/f11_oracle_similarity_heatmap.png`
 
 > **纵轴口径**：纵轴 = **与神谕文本的相似度（余弦）**，不是「含义强度」，也不是「角色是否在谈论神谕」。
 
@@ -47,7 +47,7 @@
 
 - SBERT 峰值（滚动 5 步）：**0.656** @ order 4（3.0「继续前进，深入悬锋城」）；TF-IDF 峰值：0.062 @ order 18（3.1）。
 - 曲线范围：TF-IDF 0.00–0.26，SBERT 0.33–0.70；均值 0.011 / 0.564（TF-IDF / SBERT）。
-- 峰值对齐：峰值附近 40 个 order 内有吟诵步 2 处；事件段 1 处。
+- 峰值对齐：峰值附近 40 个 order 内有吟诵步 2 处；事件段 2 处。
 - 与「最相似的其他神谕」：O08（相似度 0.704）；own oracle 在该点的领先幅度见 JSON 的 `best_other_*`。
 - 形态分布（按步的主形态）：天谴之矛 3 步、称号形态 2 步、记忆形态 2 步、万敌 1 步。
 
@@ -136,10 +136,10 @@
 - 与「最相似的其他神谕」：O08（相似度 0.699）；own oracle 在该点的领先幅度见 JSON 的 `best_other_*`。
 - 形态分布（按步的主形态）：开拓者&丹恒 1 步、开拓者&昔涟 1 步、记忆形态 1 步。
 
-### 三月七（无（取最高），664 条台词 / 53 步）
+### 三月七（无（取最高），677 条台词 / 53 步）
 
 - SBERT 峰值（滚动 5 步）：**0.662** @ order 59（3.6「与长夜月交谈」）；TF-IDF 峰值：0.047 @ order 47（3.5）。
-- 曲线范围：TF-IDF 0.00–0.14，SBERT 0.40–0.70；均值 0.013 / 0.550（TF-IDF / SBERT）。
+- 曲线范围：TF-IDF 0.00–0.14，SBERT 0.40–0.70；均值 0.013 / 0.551（TF-IDF / SBERT）。
 - 峰值对齐：峰值附近没有吟诵步；也没有事件段。
 - 与「最相似的其他神谕」：O08（相似度 0.696）；own oracle 在该点的领先幅度见 JSON 的 `best_other_*`。
 - 形态分布（按步的主形态）：永夜之帷 20 步、长夜月 12 步、幻象 3 步、记忆形态 1 步。

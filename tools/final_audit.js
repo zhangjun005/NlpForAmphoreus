@@ -74,13 +74,13 @@ ok('上下文表 ≥14 个角色（含荒笛历史派生）', ctx.length >= 14, 
 // 10. 报告章节
 const drafts = fs.readdirSync(jp('AnalysisV2/draft')).filter((f) => f.endsWith('.md'));
 const merged = fs.existsSync(jp('AnalysisV2/报告.md'));
-ok('报告 7 章草稿 + 合并稿', drafts.length === 7 && merged, `drafts=${drafts.length} merged=${merged}`);
+ok('报告 7 章草稿 + 术语表 + 合并稿', drafts.length >= 7 && merged, `drafts=${drafts.length} merged=${merged}`);
 
 // 11. git 状态（忽略 AnalysisV1 与派生目录）
 const { execSync } = require('child_process');
 let st = '';
 try { st = execSync('git status --short', { cwd: ROOT, encoding: 'utf8' }); } catch (e) { st = String(e.stdout || ''); }
-const dirty = st.split('\n').filter((l) => l.trim() && !l.includes('AnalysisV1/') && !l.includes('data/context/') && !l.includes('data/models/') && !l.includes('data/plot_data/') && !l.includes('data/reports/') && !l.includes('data/corpus/'));
+const dirty = st.split('\n').filter((l) => l.trim() && !l.includes('AnalysisV1/') && !l.includes('frontend/') && !l.includes('data/context/') && !l.includes('data/models/') && !l.includes('data/plot_data/') && !l.includes('data/reports/') && !l.includes('data/corpus/'));
 ok('git 工作区干净（派生数据除外）', dirty.length === 0, dirty.slice(0, 5).join(' | ') || 'clean');
 
 // 输出

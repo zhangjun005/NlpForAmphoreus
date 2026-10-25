@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-oracle_similarity_curves.py — 13 角色 × 神谕文本相似度的全程曲线（双空间）
+oracle_similarity_curves.py — 14 角色 × 神谕文本相似度的全程曲线（双空间）
 
 问题背景：之前只给「峰值点」，用户要求给出整条曲线/整个「山峰」，并记录每个点怎么来的。
 本脚本复用已有向量资产（不重新训练）：
@@ -19,7 +19,7 @@ oracle_similarity_curves.py — 13 角色 × 神谕文本相似度的全程曲�
 产出：
   data/config/oracle-similarity-curves.json   完整时间序列 + 13 神谕矩阵 + 神谕向量（可复算）
   data/config/oracle-similarity-curves.csv    长表（含 13 列 TF-IDF + 13 列 SBERT 相似度）
-  docs/report/figures/oracle_sim/<角色>.png   13 张单人曲线
+  docs/report/figures/oracle_sim/<角色>.png   14 张单人曲线
   docs/report/figures/f11_oracle_similarity_heatmap.png  总览热力图
   docs/report/oracle-similarity-curves.md     报告
 
@@ -581,7 +581,7 @@ def render_report(data, mat_t, mat_s, vbound):
     A("> 生成脚本：`tools/oracle_similarity_curves.py` ｜ 重跑命令：`%s`" % RUN_CMD)
     A("> 明细数据：`data/config/oracle-similarity-curves.json`（含神谕向量，可逐点复算）、"
       "`oracle-similarity-curves.csv`（长表）")
-    A("> 图：`docs/report/figures/oracle_sim/<角色>.png`（15 张）、"
+    A("> 图：`docs/report/figures/oracle_sim/<角色>.png`（14 张）、"
       "`docs/report/figures/f11_oracle_similarity_heatmap.png`")
     A("")
     A("> **纵轴口径**：纵轴 = **与神谕文本的相似度（余弦）**，不是「含义强度」，也不是「角色是否在谈论神谕」。")
@@ -880,7 +880,7 @@ def verify(data=None, verbose=False):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="13 角色 × 神谕相似度全程曲线")
+    ap = argparse.ArgumentParser(description="14 角色 × 神谕相似度全程曲线")
     ap.add_argument("--verify", action="store_true", help="只校验已有产物（抽查 5 点复算）")
     args = ap.parse_args()
     if args.verify:

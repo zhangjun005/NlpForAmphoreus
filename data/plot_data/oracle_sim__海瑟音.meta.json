@@ -1,0 +1,20 @@
+{
+ "figure": "oracle_sim/海瑟音.png",
+ "title": "神谕相似度全程曲线：海瑟音（own oracle=O10）",
+ "axes": {
+  "x": "order（3.0→3.7）；左轴 TF-IDF、右轴 SBERT",
+  "y": "与神谕文本的相似度（余弦，不是含义强度）"
+ },
+ "plot_data_csv": "data/plot_data/oracle_sim__海瑟音.csv",
+ "sources": [
+  "data/config/oracle-similarity-curves.json",
+  "data/config/oracle-citation-coding.json",
+  "data/config/oracle-fulfillment.filled.json",
+  "data/config/knife-scenes.json"
+ ],
+ "filters": "步骤均值向量 vs own oracle；滚动均值窗口 5；标注=首现/吟诵/兑现/意义转折/关键事件/刀子",
+ "generator": "tools/oracle_similarity_curves.py",
+ "run_command": "conda run -n nlpLesson python tools/oracle_similarity_curves.py",
+ "data_sha256_16": "8696d51694923e68",
+ "created_at": "2026-10-25T12:15:48"
+}
