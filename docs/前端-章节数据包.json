@@ -3,7 +3,7 @@
   "chapters": [
     {
       "id": "ch01",
-      "title": "两种表示：TF-IDF 与句向量",
+      "title": "两种表示：词频加权与语义向量",
       "layout": "left_text_right_figure",
       "figures": [
         "docs/report/figures/f14_mirror_pair_O10_O11.png"
