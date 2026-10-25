@@ -3,7 +3,7 @@
   "script": "tools/oracle_similarity_curves.py",
   "run_command": "conda run -n nlpLesson python tools/oracle_similarity_curves.py",
   "assets": {
-   "vec_rec": "data/models/vec_rec.joblib（记录级 TF-IDF，未重训）",
+   "vec_rec": "data/models/vec_rec.joblib（记录级 词频加权，未重训）",
    "ids": "data/models/ids.json（records 26332 / oracles 13）",
    "Z_sbert_rec": "data/models/Z_sbert_rec.npy（bge-small-zh-v1.5，26332×512，已归一）"
   },
@@ -34,7 +34,7 @@
    "note": "按用户最终口径：黄金裔=11 位（岁月席位历史更替）；玻吕茜亚仅注记、不画曲线。"
   },
   "rolling_window": 5,
-  "method_chain": "text_clean → vec_rec.transform（TF-IDF）/ Z_sbert_rec 行（SBERT）→ 按 (version,task,step_idx) 取均值向量 → 归一 → 与神谕向量余弦 → 居中滚动均值(5)",
+  "method_chain": "text_clean → vec_rec.transform（词频加权）/ Z_sbert_rec 行（语义向量）→ 按 (version,task,step_idx) 取均值向量 → 归一 → 与神谕向量余弦 → 居中滚动均值(5)",
   "crosscheck_max_abs_diff": 0.0,
   "version_boundaries": {
    "3.0": 1,
