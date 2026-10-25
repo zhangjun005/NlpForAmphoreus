@@ -49,7 +49,8 @@
 - 轨迹与覆盖率：`data/reports/character-trajectory-all.md`（14 角色，A11+B3 分区）；
 - 上下文表：`data/context/<角色>.jsonl`（每条台词 + 前3/后3）；
 - **L3 全量精读笔记**：`AnalysisV2/notes/l3/`（14 份 md + json，入 git）；原始在 `data/reports/l3/`；
-- 神谕相似度曲线报告：[`docs/report/oracle-similarity-curves.md`](docs/report/oracle-similarity-curves.md)。
+- 神谕相似度曲线报告：[`docs/report/oracle-similarity-curves.md`](docs/report/oracle-similarity-curves.md)；
+- 歌词《昔涟》向量分析（前端参考）：[`docs/歌词向量分析-前端参考.md`](docs/歌词向量分析-前端参考.md)（分析逻辑 + 数据契约；数据 `data/config/lyric-query-xi.json`；前端副本 `frontend/docs/10-歌词向量分析.md`）。
 
 ## 8. 专题报告（`data/reports/`，25 份，不入 git）
 
