@@ -1,0 +1,416 @@
+{
+  "query": "明天见",
+  "n_occurrences": 23,
+  "by_version": {
+    "3.0": 1,
+    "3.1": 9,
+    "3.2": 3,
+    "3.3": 1,
+    "3.4": 1,
+    "3.5": 2,
+    "3.6": 1,
+    "3.7": 5
+  },
+  "occurrences": [
+    {
+      "record_id": 4211,
+      "version": "3.0",
+      "task": "悬锋啊，请涤去你的血锈•下",
+      "speaker": "白厄",
+      "text": "我明白了。那么，明天见。"
+    },
+    {
+      "record_id": 5258,
+      "version": "3.1",
+      "task": "谧林啊，寤思者缘何失语",
+      "speaker": "generic_npc",
+      "text": "那…明天见？祝两位明天和好如初……"
+    },
+    {
+      "record_id": 5259,
+      "version": "3.1",
+      "task": "谧林啊，寤思者缘何失语",
+      "speaker": "缇宝",
+      "text": "嗯，明天见。也祝你生意兴隆。"
+    },
+    {
+      "record_id": 6876,
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "speaker": "莫忒丝",
+      "text": "明天见，我亲爱的缇里西庇俄丝。"
+    },
+    {
+      "record_id": 7083,
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "speaker": "缇宝",
+      "text": "明天见。"
+    },
+    {
+      "record_id": 7969,
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "speaker": "缇宝",
+      "text": "妈妈…明天见。"
+    },
+    {
+      "record_id": 8074,
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "speaker": "遐蝶",
+      "text": "缇宝大人，你分明知道…那句明天见只是一个善意的谎言。"
+    },
+    {
+      "record_id": 8077,
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "speaker": "缇宝",
+      "text": "明天见…是世上最伟大的预言。"
+    },
+    {
+      "record_id": 8098,
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "speaker": "缇宝",
+      "text": "明天见，缇安。"
+    },
+    {
+      "record_id": 8099,
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "speaker": "缇宝",
+      "text": "嗯，明天见！"
+    },
+    {
+      "record_id": 9823,
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "speaker": "遐蝶",
+      "text": "缇宝大人，你分明知道…那句明天见只是一个善意的谎言。"
+    },
+    {
+      "record_id": 9835,
+      "version": "3.2",
+      "task": "行者啊，向冥河解缆起航",
+      "speaker": "缇宝",
+      "text": "所以，等你从斯缇科西亚回来，我们再回来这里见面吧。一路平安——明天见！"
+    },
+    {
+      "record_id": 10823,
+      "version": "3.2",
+      "task": "摇船啊，请载我横渡冥流",
+      "speaker": "缇宝",
+      "text": "小小蝶，小小灰，还有大家——明天见！"
+    },
+    {
+      "record_id": 11783,
+      "version": "3.3",
+      "task": "星空啊，为纷乱千念濯洗",
+      "speaker": "",
+      "text": "明天见，缇安。"
+    },
+    {
+      "record_id": 16105,
+      "version": "3.4",
+      "task": "英雄啊，回返那安宁的家乡",
+      "speaker": "缇宝",
+      "text": "明天见！"
+    },
+    {
+      "record_id": 19219,
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "speaker": "缇宝",
+      "text": "前进吧——然后，明天见！"
+    },
+    {
+      "record_id": 19241,
+      "version": "3.5",
+      "task": "归风啊，席卷旧尘登云天",
+      "speaker": "缇宝",
+      "text": "前进吧，小小灰——我们明天见！"
+    },
+    {
+      "record_id": 22833,
+      "version": "3.6",
+      "task": "诸神啊，奏响创世的凯歌",
+      "speaker": "缇宝",
+      "text": "一同抵达鲜花芬芳的西风尽头——明天见！"
+    },
+    {
+      "record_id": 24548,
+      "version": "3.7",
+      "task": "英雄啊，归以凡身向侵晨",
+      "speaker": "开拓者",
+      "text": "明天见。"
+    },
+    {
+      "record_id": 24598,
+      "version": "3.7",
+      "task": "英雄啊，归以凡身向侵晨",
+      "speaker": "昔涟",
+      "text": "沉入温柔的「记忆」，明天见。"
+    },
+    {
+      "record_id": 25271,
+      "version": "3.7",
+      "task": "纸页啊，镌留记忆的涟漪",
+      "speaker": "generic_npc",
+      "text": "明天见。"
+    },
+    {
+      "record_id": 25778,
+      "version": "3.7",
+      "task": "银辇啊，挽别那人间史诗",
+      "speaker": "缇宝",
+      "text": "「不论晴天还是雨天，进入梦乡以前，记得和自己说一声：『明天见』！」"
+    },
+    {
+      "record_id": 25779,
+      "version": "3.7",
+      "task": "银辇啊，挽别那人间史诗",
+      "speaker": "白厄",
+      "text": "明天见，乘以一千。"
+    }
+  ],
+  "char_centroids": [
+    {
+      "char": "开拓者",
+      "sbert": 0.556,
+      "tfidf": 0.0199
+    },
+    {
+      "char": "昔涟",
+      "sbert": 0.5533,
+      "tfidf": 0.0347
+    },
+    {
+      "char": "三月七",
+      "sbert": 0.545,
+      "tfidf": 0.0247
+    },
+    {
+      "char": "缇宝",
+      "sbert": 0.5433,
+      "tfidf": 0.19
+    },
+    {
+      "char": "丹恒",
+      "sbert": 0.5393,
+      "tfidf": 0.0098
+    },
+    {
+      "char": "风堇",
+      "sbert": 0.537,
+      "tfidf": 0.0046
+    },
+    {
+      "char": "白厄",
+      "sbert": 0.5325,
+      "tfidf": 0.0331
+    },
+    {
+      "char": "海瑟音",
+      "sbert": 0.5299,
+      "tfidf": 0.0134
+    },
+    {
+      "char": "那刻夏",
+      "sbert": 0.5273,
+      "tfidf": 0.0045
+    },
+    {
+      "char": "刻律德菈",
+      "sbert": 0.5266,
+      "tfidf": 0.0
+    },
+    {
+      "char": "阿格莱雅",
+      "sbert": 0.5263,
+      "tfidf": 0.0126
+    },
+    {
+      "char": "遐蝶",
+      "sbert": 0.5228,
+      "tfidf": 0.0142
+    },
+    {
+      "char": "赛飞儿",
+      "sbert": 0.5193,
+      "tfidf": 0.0065
+    },
+    {
+      "char": "万敌",
+      "sbert": 0.516,
+      "tfidf": 0.0123
+    }
+  ],
+  "oracle_similarity": [
+    {
+      "oracle_id": "O09",
+      "holder": "白厄",
+      "sbert": 0.43,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O07",
+      "holder": "风堇",
+      "sbert": 0.4157,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O11",
+      "holder": "刻律德菈",
+      "sbert": 0.4093,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O10",
+      "holder": "海瑟音",
+      "sbert": 0.3985,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O13",
+      "holder": "昔涟",
+      "sbert": 0.3785,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O03",
+      "holder": "万敌",
+      "sbert": 0.3776,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O08",
+      "holder": "赛飞儿",
+      "sbert": 0.3681,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O01",
+      "holder": "阿格莱雅",
+      "sbert": 0.3572,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O04",
+      "holder": "遐蝶",
+      "sbert": 0.3458,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O05",
+      "holder": "玻吕茜亚",
+      "sbert": 0.3378,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O02",
+      "holder": "缇宝",
+      "sbert": 0.3352,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O06",
+      "holder": "那刻夏",
+      "sbert": 0.3101,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O12",
+      "holder": "荒笛",
+      "sbert": 0.2938,
+      "tfidf": 0.0
+    }
+  ],
+  "nearest_lines_without_phrase": [
+    {
+      "record_id": 22297,
+      "score": 0.7092,
+      "version": "3.6",
+      "speaker": "昔涟",
+      "text": "至于「明天」何时会到来……"
+    },
+    {
+      "record_id": 26215,
+      "score": 0.6948,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "关于「明天」的故事…"
+    },
+    {
+      "record_id": 21111,
+      "score": 0.6785,
+      "version": "3.6",
+      "speaker": "generic_npc",
+      "text": "「善见…天……」"
+    },
+    {
+      "record_id": 26237,
+      "score": 0.6663,
+      "version": "3.7",
+      "speaker": "",
+      "text": "我的明天叫做昨天 Hoo~"
+    },
+    {
+      "record_id": 25069,
+      "score": 0.6656,
+      "version": "3.7",
+      "speaker": "帕姆",
+      "text": "向着明天，出发吧！"
+    },
+    {
+      "record_id": 16816,
+      "score": 0.6561,
+      "version": "3.4",
+      "speaker": "白厄",
+      "text": "就把它们 送往明天"
+    },
+    {
+      "record_id": 23781,
+      "score": 0.6467,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "如此一来，我也能安心地留在过去。至于「明天」何时会到来……"
+    },
+    {
+      "record_id": 23814,
+      "score": 0.6467,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "如此一来，我也能安心地留在过去。至于「明天」何时会到来……"
+    },
+    {
+      "record_id": 25036,
+      "score": 0.6435,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "「一片…小小的『善见天』。」"
+    },
+    {
+      "record_id": 9828,
+      "score": 0.643,
+      "version": "3.2",
+      "speaker": "缇宝",
+      "text": "但你已经知道「明天」在哪里了，对吗？"
+    },
+    {
+      "record_id": 19509,
+      "score": 0.6361,
+      "version": "3.5",
+      "speaker": "",
+      "text": "很明亮"
+    },
+    {
+      "record_id": 26277,
+      "score": 0.6354,
+      "version": "3.7",
+      "speaker": "昔涟",
+      "text": "飞向粉色的明天♪"
+    }
+  ],
+  "note": "短语被当作查询文本；角色质心=该角色全部台词向量平均；相似度不是含义强度"
+}

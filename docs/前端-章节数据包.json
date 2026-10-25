@@ -132,7 +132,8 @@
         "data/plot_data/f8_xi_trajectory.csv",
         "data/plot_data/oracle_sim__昔涟.csv",
         "data/corpus/oracles.jsonl",
-        "data/config/oracle-citation-coding.json"
+        "data/config/oracle-citation-coding.json",
+        "data/config/lyric-query-xi.json"
       ],
       "key_numbers": {
         "xi": {
@@ -155,10 +156,14 @@
           "distilled": "#8049",
           "mingtianjian_series": "13/23",
           "first_occurrence": "#5259（客套）"
-        }
+        },
+        "lyrics": "歌词 vs 14 角色质心：昔涟 0.586（第1）；昔涟版本质心 3.7=0.615；神谕最高 O04=0.484（O13=0.416）"
       },
       "can": "命定可被讲述、读反、提炼；\"原文\"本身可加工",
-      "cannot": "相似度高点≠更懂命定；不能断定缇宝是作者"
+      "cannot": "相似度高点≠更懂命定；不能断定缇宝是作者",
+      "subsections": [
+        "角色曲《昔涟》篇外文本分析"
+      ]
     },
     {
       "id": "ch04",
@@ -233,7 +238,9 @@
       "data_files": [
         "data/config/key-events.json",
         "data/config/oracle-fulfillment.v2.json",
-        "data/reports/l3/"
+        "data/reports/l3/",
+        "data/config/motif-query-mingtianjian.json",
+        "data/config/motif-query-zaijianmian.json"
       ],
       "key_numbers": {
         "fulfillment_types": {
@@ -255,10 +262,27 @@
         "retrieval_v3": {
           "evaluable": "7/13",
           "best_mrr": 0.132
+        },
+        "mingtianjian_vector": {
+          "occurrences": 23,
+          "top_char_centroid": "开拓者 0.556（昔涟 0.553 / 三月七 0.545 / 缇宝 0.543）",
+          "nearest_lines": [
+            "#22297 昔涟 0.709",
+            "#26215 昔涟 0.695",
+            "#26237 0.666"
+          ],
+          "contrast_zaijianmian": {
+            "occurrences": 2,
+            "top_char": "开拓者 0.627 / 三月七 0.620",
+            "top_oracle": "O04 0.445"
+          }
         }
       },
       "can": "命定从被写死到被改写/被收下的完整轨迹",
-      "cannot": "不能把语言变化当读者感受；不能把检索排名当剧情重要性"
+      "cannot": "不能把语言变化当读者感受；不能把检索排名当剧情重要性",
+      "subsections": [
+        "「明天见」母题向量分析（对照「再见面」）"
+      ]
     }
   ]
 }

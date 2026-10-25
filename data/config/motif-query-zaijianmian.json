@@ -1,0 +1,263 @@
+{
+  "query": "再见面",
+  "n_occurrences": 2,
+  "by_version": {
+    "3.4": 1,
+    "3.7": 1
+  },
+  "occurrences": [
+    {
+      "record_id": 15672,
+      "version": "3.4",
+      "task": "母亲啊，暌离于冬去春来",
+      "speaker": "三月七",
+      "text": "我们以后…还有机会再见面吗？"
+    },
+    {
+      "record_id": 23060,
+      "version": "3.7",
+      "task": "晨曦啊，再抚映遥远地平",
+      "speaker": "三月七",
+      "text": "一定，要再见面啊。"
+    }
+  ],
+  "char_centroids": [
+    {
+      "char": "开拓者",
+      "sbert": 0.6273,
+      "tfidf": 0.0
+    },
+    {
+      "char": "三月七",
+      "sbert": 0.6196,
+      "tfidf": 0.0286
+    },
+    {
+      "char": "昔涟",
+      "sbert": 0.6135,
+      "tfidf": 0.0
+    },
+    {
+      "char": "丹恒",
+      "sbert": 0.6057,
+      "tfidf": 0.0
+    },
+    {
+      "char": "缇宝",
+      "sbert": 0.602,
+      "tfidf": 0.0
+    },
+    {
+      "char": "白厄",
+      "sbert": 0.5995,
+      "tfidf": 0.0
+    },
+    {
+      "char": "海瑟音",
+      "sbert": 0.5944,
+      "tfidf": 0.0
+    },
+    {
+      "char": "阿格莱雅",
+      "sbert": 0.5926,
+      "tfidf": 0.0
+    },
+    {
+      "char": "万敌",
+      "sbert": 0.59,
+      "tfidf": 0.0
+    },
+    {
+      "char": "遐蝶",
+      "sbert": 0.5868,
+      "tfidf": 0.0
+    },
+    {
+      "char": "那刻夏",
+      "sbert": 0.5834,
+      "tfidf": 0.0
+    },
+    {
+      "char": "赛飞儿",
+      "sbert": 0.5823,
+      "tfidf": 0.0
+    },
+    {
+      "char": "刻律德菈",
+      "sbert": 0.5809,
+      "tfidf": 0.0
+    },
+    {
+      "char": "风堇",
+      "sbert": 0.5747,
+      "tfidf": 0.0
+    }
+  ],
+  "oracle_similarity": [
+    {
+      "oracle_id": "O04",
+      "holder": "遐蝶",
+      "sbert": 0.4451,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O08",
+      "holder": "赛飞儿",
+      "sbert": 0.411,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O01",
+      "holder": "阿格莱雅",
+      "sbert": 0.3984,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O03",
+      "holder": "万敌",
+      "sbert": 0.3838,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O05",
+      "holder": "玻吕茜亚",
+      "sbert": 0.3793,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O13",
+      "holder": "昔涟",
+      "sbert": 0.3773,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O06",
+      "holder": "那刻夏",
+      "sbert": 0.3749,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O02",
+      "holder": "缇宝",
+      "sbert": 0.3703,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O07",
+      "holder": "风堇",
+      "sbert": 0.3475,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O11",
+      "holder": "刻律德菈",
+      "sbert": 0.3457,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O10",
+      "holder": "海瑟音",
+      "sbert": 0.3451,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O09",
+      "holder": "白厄",
+      "sbert": 0.3428,
+      "tfidf": 0.0
+    },
+    {
+      "oracle_id": "O12",
+      "holder": "荒笛",
+      "sbert": 0.2783,
+      "tfidf": 0.0
+    }
+  ],
+  "nearest_lines_without_phrase": [
+    {
+      "record_id": 9520,
+      "score": 0.7725,
+      "version": "3.2",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 1551,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 4700,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 356,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 208,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 196,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 4688,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 8420,
+      "score": 0.7725,
+      "version": "3.2",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 8943,
+      "score": 0.7725,
+      "version": "3.2",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 230,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 11183,
+      "score": 0.7725,
+      "version": "3.2",
+      "speaker": "",
+      "text": "再次对话"
+    },
+    {
+      "record_id": 187,
+      "score": 0.7725,
+      "version": "3.0",
+      "speaker": "",
+      "text": "再次对话"
+    }
+  ],
+  "note": "短语被当作查询文本；角色质心=该角色全部台词向量平均；相似度不是含义强度"
+}
