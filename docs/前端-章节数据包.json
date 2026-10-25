@@ -3,7 +3,7 @@
   "chapters": [
     {
       "id": "ch01",
-      "title": "两套语言测量，测的不是同一件事",
+      "title": "两种表示：TF-IDF 与句向量",
       "layout": "left_text_right_figure",
       "figures": ["docs/report/figures/f14_mirror_pair_O10_O11.png"],
       "data_files": ["data/plot_data/f14_mirror_pair_O10_O11.csv", "data/config/oracle-similarity-curves.json"],
@@ -13,7 +13,7 @@
         "sbert_max_abs_diff": 0.018,
         "kelevdela_best_other": "O08 @ 0.721（O10 只在词面层）"
       },
-      "can": "两套方法测的是不同层面；词面相似不足以判定命定归属",
+      "can": "TF-IDF 与句向量测的是不同层面；只看词或只看语义都不能判定命定归属",
       "cannot": "相似度高 ≠ 含义深，也不等于角色理解了神谕"
     },
     {
