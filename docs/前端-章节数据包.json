@@ -1,320 +1,234 @@
 {
-  "note": "前端章节数据包（12 章）。每项对应一屏：结论句标题、版面方向、要展示的真实数据文件、关键数字、能/不能说明。第 0 章见 frontend/docs/00-故事梗概.md。",
+  "note": "前端章节数据包（6 章：0 梗概 + 1 数据/表示/模型/读图 + 2 承受命定的人 + 3 改写命定的人 + 4 对偶与旁观 + 5 收束）。每项含：结论句标题、版面方向、数据文件、关键数字、能/不能说明。",
   "chapters": [
     {
       "id": "ch01",
-      "title": "两种表示：词频加权与语义向量",
+      "title": "从剧情到数据：表示、模型与读图",
       "layout": "left_text_right_figure",
+      "merged_from": [
+        "原第1章 两种表示",
+        "原第2章 我们建了什么",
+        "原第3章 图怎么读+A/B1/B2"
+      ],
       "figures": [
-        "docs/report/figures/f14_mirror_pair_O10_O11.png"
+        "f1_level_scores.png",
+        "f14_mirror_pair_O10_O11.png",
+        "f15_retrieval_v3.png"
       ],
       "data_files": [
-        "data/plot_data/f14_mirror_pair_O10_O11.csv",
-        "data/config/oracle-similarity-curves.json"
-      ],
-      "key_numbers": {
-        "tfidf_identical_points": "686/686（max|Δ|=0）",
-        "sbert_mean_abs_diff": 0.0053,
-        "sbert_max_abs_diff": 0.018,
-        "kelevdela_best_other": "O08 @ 0.721（O10 只在词面层）"
-      },
-      "can": "TF-IDF 与句向量测的是不同层面；只看词或只看语义都不能判定命定归属",
-      "cannot": "相似度高 ≠ 含义深，也不等于角色理解了神谕"
-    },
-    {
-      "id": "ch02",
-      "title": "我们建了什么：哪些是拟合的，哪些是拿来用的",
-      "layout": "left_figure_right_text",
-      "figures": [],
-      "data_files": [
+        "docs/report/figures-index.md",
         "data/models/manifest.json",
         "data/models/manifest_sbert.json",
-        "data/models/character_centroids.npz"
+        "data/plot_data/f1_level_scores.csv"
       ],
       "key_numbers": {
+        "representations": [
+          "词频加权（TF-IDF）",
+          "语义向量（句向量，bge-small-zh-v1.5，512 维）",
+          "余弦相似度（比较方式）"
+        ],
         "fitted": {
           "tfidf_vocab_dim": 11737,
           "lsa_dim": 100,
-          "similarity_matrices": "按需预先计算并保存"
+          "similarity_matrices": "预计算"
         },
-        "pretrained_not_trained": "bge-small-zh-v1.5（只推理，不微调）",
-        "derived": "14 个角色的质心向量（台词向量平均）",
-        "not_models": "检测器 A/B1/B2 是规则+特征打分；74 条标注只用于评测"
-      },
-      "can": "每条曲线都可按“词表→向量→余弦”复算",
-      "cannot": "这些统计结构不代表“理解了剧情”"
-    },
-    {
-      "id": "ch03",
-      "title": "图怎么读：坐标轴、分数与 A/B1/B2",
-      "layout": "left_text_right_figure",
-      "figures": [
-        "docs/report/figures/f1_level_scores.png",
-        "docs/report/figures/f15_retrieval_v3.png"
-      ],
-      "data_files": [
-        "data/plot_data/f1_level_scores.csv",
-        "data/plot_data/f15_retrieval_v3.csv",
-        "docs/report/figures-index.md"
-      ],
-      "key_numbers": {
-        "detector_A": "词面+局部情绪：关键词/情绪词密度 + 相邻步骤语义突变",
-        "detector_B1": "A + 叙事结构特征（转折/呼应/重复）",
-        "detector_B2": "短步骤修复版，已弃用（负结果）",
-        "score_scale": "标准化分数：0=平均水平，不是百分比",
+        "pretrained_not_trained": "bge-small-zh-v1.5（只推理）",
+        "not_models": "检测器 A/B1/B2 是规则+特征；74 条标注仅评测",
+        "detectors": {
+          "A": "词面+局部情绪",
+          "B1": "A+叙事结构特征",
+          "B2": "短步骤修复版（弃用）"
+        },
         "axes": {
-          "f1": "x=人工显著等级 0–3；y=检测器标准化分数",
-          "f2": "x=剧情顺序；y=686 步中的名次（越小越靠前）",
-          "f6": "x=36 个刀子场景；y=场景最好名次（A 13/35、B1 25/35）",
-          "f12": "x=版本 3.0–3.7；y=出现次数",
-          "f13": "x=全局步序；y=与 K36 原文的余弦相似度",
+          "f1": "x=人工等级 0–3；y=标准化分数（0=平均）",
+          "f6": "x=36 刀景；y=最好名次（A 13/35、B1 25/35）",
+          "f12": "x=版本；y=次数",
+          "f13": "x=全局步序；y=余弦相似度",
           "f14": "x=全局步序；y=余弦相似度",
-          "f15": "x=检索方法；y=MRR（越高越好）",
-          "f7_f8": "x=版本；y=台词量/形态数/称呼命中/检测器分数"
+          "f15": "x=方法；y=MRR（越高越好）",
+          "f7_f8": "x=版本；y=台词/形态/称呼/分数"
         }
       },
-      "can": "分数可排序、可比较，但只说明“语言变化强度”",
-      "cannot": "不能说明“哪一段最感人”；检测器没有剧情记忆"
+      "can": "每条曲线可按“词表→向量→余弦”复算；两种表示测不同层面",
+      "cannot": "相似度高 ≠ 含义深；检测器只测语言变化强度"
     },
     {
-      "id": "ch04",
-      "title": "白厄：被选中的人，几乎从不亲口说自己的命定",
+      "id": "ch02",
+      "title": "承受命定的人：沉默、递刀与追认",
       "layout": "left_figure_right_text",
+      "merged_from": [
+        "原第4章 白厄",
+        "原第8章 万敌",
+        "原第11章 那刻夏"
+      ],
+      "characters": [
+        "白厄",
+        "万敌",
+        "那刻夏"
+      ],
       "figures": [
-        "docs/report/figures/f7_bai_trajectory.png"
+        "f7_bai_trajectory.png"
       ],
       "data_files": [
         "data/plot_data/f7_bai_trajectory.csv",
         "data/config/character-trajectory-all.json",
-        "AnalysisV2/notes/l3/白厄.md"
+        "data/config/oracle-fulfillment.v2.json"
       ],
       "key_numbers": {
-        "lines": 2550,
-        "steps": 202,
-        "tasks": 38,
-        "jiyang_occurrences": 3,
-        "o09_own_citation": "#16719（交出）",
-        "v3_5_lines": 0,
-        "v3_4_form_split": {
-          "白厄": 425,
-          "卡厄斯兰那": 224,
-          "心中的英雄": 49,
-          "盗火行者": 8,
-          "幼年形态": 4
+        "bai": {
+          "lines": 2550,
+          "steps": 202,
+          "jiyang": 3,
+          "o09_own_citation": "#16719（交出）",
+          "v35_lines": 0,
+          "v34_split": {
+            "白厄": 425,
+            "卡厄斯兰那": 224,
+            "心中的英雄": 49,
+            "盗火行者": 8,
+            "幼年": 4
+          }
+        },
+        "wandi": {
+          "lines": 768,
+          "steps": 76,
+          "weakness": "#7211",
+          "deaths": [
+            "#15174 主线",
+            "#17283/#17294 记忆线"
+          ]
+        },
+        "nakesha": {
+          "lines": 696,
+          "steps": 65,
+          "fulfillment_seg": 269,
+          "oracle_seg": 315,
+          "gap": 46,
+          "retro_quote": "#11588"
         }
       },
-      "can": "白厄的沉默与身份分裂是可测的语言事实",
-      "cannot": "这张图不能说明他什么时候最痛"
+      "can": "命定可被主动交出，也可被事后追认",
+      "cannot": "不能证明命运不存在；O06 是单条个案"
     },
     {
-      "id": "ch05",
-      "title": "昔涟：从被讲述者到讲述者，再到写书的人",
+      "id": "ch03",
+      "title": "改写命定的人：讲述、读反与提炼",
       "layout": "left_text_right_figure",
+      "merged_from": [
+        "原第5章 昔涟",
+        "原第10章 阿格莱雅×赛飞儿中的遐蝶部分（新增）",
+        "原第9章 缇宝"
+      ],
+      "characters": [
+        "昔涟",
+        "遐蝶",
+        "缇宝"
+      ],
       "figures": [
-        "docs/report/figures/f8_xi_trajectory.png"
+        "f8_xi_trajectory.png",
+        "f13_crystal_flower_semantic.png"
       ],
       "data_files": [
         "data/plot_data/f8_xi_trajectory.csv",
         "data/plot_data/oracle_sim__昔涟.csv",
-        "AnalysisV2/notes/l3/昔涟.md"
+        "data/corpus/oracles.jsonl",
+        "data/config/oracle-citation-coding.json"
       ],
       "key_numbers": {
-        "lines": 2393,
-        "steps": 222,
-        "tasks": 37,
-        "forms": {
-          "迷迷": "3.0–3.3",
-          "记忆形态/往昔的涟漪": "3.4–3.7",
-          "另一位作者": "3.7（按设定=昔涟）"
+        "xi": {
+          "lines": 2393,
+          "steps": 222,
+          "crystal_rewrites": 2,
+          "mingtianjian": "1/23（#24598）",
+          "v37_centroid": 0.6151
         },
-        "mingtianjian_in_her_lines": "1/23（#24598）；「明天」17 次",
-        "xi_v3_7_centroid": 0.6151
-      },
-      "can": "她的语言/形态随剧情阶段变化，方向与成为写书人一致",
-      "cannot": "曲线高点只是与神谕文本更接近，不等于更懂命定"
-    },
-    {
-      "id": "ch06",
-      "title": "海瑟音与刻律德菈：两条命定，半句交换",
-      "layout": "left_figure_right_text",
-      "figures": [
-        "docs/report/figures/f14_mirror_pair_O10_O11.png"
-      ],
-      "data_files": [
-        "data/config/oracle-citation-coding.json",
-        "AnalysisV2/notes/l3/海瑟音.md",
-        "AnalysisV2/notes/l3/刻律德菈.md"
-      ],
-      "key_numbers": {
-        "seayin_lines": 376,
-        "kelevdela_lines": 296,
-        "kelevdela_own_citations": 0,
-        "o11_only_occurrence": "#20228（海瑟音代念）",
-        "o10_occurrence": "#20229",
-        "kelevdela_death": "#20339–#20340（死水）；#20353（征服落空）",
-        "seayin_offering": "#19814",
-        "inheritance_chain": "#20261 → #20322 → #20354"
-      },
-      "can": "归属由谁引用/谁兑现/把命定交给谁决定",
-      "cannot": "相似度不能证明交换，交换是从引用与兑现读出来的"
-    },
-    {
-      "id": "ch07",
-      "title": "列车组：数据多，不等于塑造多",
-      "layout": "left_text_right_figure",
-      "figures": [
-        "docs/report/figures/f10_coverage.png"
-      ],
-      "data_files": [
-        "data/config/character-trajectory-all.json",
-        "AnalysisV2/notes/l3/开拓者.md",
-        "AnalysisV2/notes/l3/三月七.md",
-        "AnalysisV2/notes/l3/丹恒.md"
-      ],
-      "key_numbers": {
-        "trailblazer": {
-          "records": 3058,
-          "option_records": 2432,
-          "option_ratio": "79.5%",
-          "dialogue_sms": 626
+        "xiadie": {
+          "o04_rewrite": "#10091–#10092 → #11467–#11469",
+          "confirmation": "#21860–#21861",
+          "media_shift": "#1323–#1337 → #10806 → #11486"
         },
-        "march7th": {
-          "records": 664,
-          "merged_changyeyue": 13,
-          "total": 677,
-          "zero_versions": [
-            "3.1",
-            "3.3"
-          ]
-        },
-        "danheng": {
-          "records": 1541,
-          "danfeng_form": 89,
-          "earth_arc_3_6": 588
+        "tiblio": {
+          "o02_sources": [
+            "#7939 雅努斯",
+            "#7744 欧洛尼斯"
+          ],
+          "distilled": "#8049",
+          "mingtianjian_series": "13/23",
+          "first_occurrence": "#5259（客套）"
         }
       },
-      "can": "数据量必须先扣掉选项、空窗与形态合并",
-      "cannot": "不能拿他们和黄金裔横向比谁更重要"
+      "can": "命定可被讲述、读反、提炼；\"原文\"本身可加工",
+      "cannot": "相似度高点≠更懂命定；不能断定缇宝是作者"
     },
     {
-      "id": "ch08",
-      "title": "万敌：密集、早收束，命定是他自己递出去的刀",
+      "id": "ch04",
+      "title": "对偶与旁观：交换、长线与外来者",
       "layout": "left_figure_right_text",
-      "figures": [],
-      "data_files": [
-        "data/config/character-trajectory-all.json",
-        "data/config/oracle-fulfillment.v2.json",
-        "AnalysisV2/notes/l3/万敌.md"
+      "merged_from": [
+        "原第6章 海瑟音×刻律德菈",
+        "原第10章 阿格莱雅×赛飞儿",
+        "原第7章 列车组"
       ],
-      "key_numbers": {
-        "lines": 768,
-        "steps": 76,
-        "weakness_handover": "#7211（第十节胸椎）",
-        "main_death": "#15174",
-        "memory_death": "#17283/#17294/#17319–#17323",
-        "glory_stages": [
-          "#2223–#2224",
-          "#7636",
-          "#7415",
-          "#22841",
-          "#25716"
-        ]
-      },
-      "can": "命定可以被角色主动交出，且跨轮回重复",
-      "cannot": "不能证明命运不存在，只能说文本把它写成角色的选择"
-    },
-    {
-      "id": "ch09",
-      "title": "缇宝：神谕原文，其实是她提炼出来的",
-      "layout": "left_text_right_figure",
+      "characters": [
+        "海瑟音",
+        "刻律德菈",
+        "阿格莱雅",
+        "赛飞儿",
+        "开拓者",
+        "三月七",
+        "丹恒"
+      ],
       "figures": [
-        "docs/report/figures/f12_mingtian_timeline.png"
+        "f14_mirror_pair_O10_O11.png",
+        "f10_coverage.png"
       ],
-      "data_files": [
-        "data/corpus/oracles.jsonl",
-        "data/plot_data/f12_mingtian_timeline.csv",
-        "AnalysisV2/notes/l3/缇宝.md"
-      ],
-      "key_numbers": {
-        "lines": 1129,
-        "steps": 123,
-        "o02_source_lines": [
-          "#7939 雅努斯",
-          "#7744 欧洛尼斯"
-        ],
-        "o02_distilled_line": "#8049",
-        "mingtianjian_series": "13/23",
-        "gatekeeper_handover": "预告 #3554/#6413，从未发生"
-      },
-      "can": "关键词匹配会漏掉提炼动作；神谕是语言实践的产物",
-      "cannot": "不能断定缇宝是作者，文本只说她把话提炼成箴言"
-    },
-    {
-      "id": "ch10",
-      "title": "阿格莱雅与赛飞儿：两条长线，混着插叙",
-      "layout": "left_figure_right_text",
-      "figures": [],
       "data_files": [
         "data/plot_data/oracle_sim__阿格莱雅.csv",
         "data/plot_data/oracle_sim__赛飞儿.csv",
-        "AnalysisV2/notes/l3/阿格莱雅.md",
-        "AnalysisV2/notes/l3/赛飞儿.md"
+        "data/config/oracle-citation-coding.json",
+        "data/config/character-trajectory-all.json"
       ],
       "key_numbers": {
-        "aglaea": {
-          "lines": 942,
-          "steps": 93,
-          "citation_chain": "#7458 → #14241–#14242 → #16615",
-          "alternate_death_3_5": "#19187"
+        "mirror": {
+          "kelevdela_citations": 0,
+          "o11_occurrence": "#20228（海瑟音代念）",
+          "o10_occurrence": "#20229",
+          "death": "#20339–#20340",
+          "conquest_fail": "#20353",
+          "inheritance": "#20261→#20322→#20354"
         },
-        "saifeier": {
-          "lines": 649,
-          "steps": 61,
-          "eternal_daylight_edit": "#14400 → #14570",
-          "coin_chain": "#10329–#10342 → #14558 → #14577–#14578",
-          "address_counts": {
-            "裁缝女": 23,
-            "阿雅": 2
-          }
+        "long_lines": {
+          "aglaea": 942,
+          "saifeier": 649,
+          "aglaea_chain": "#7458 → #14241–#14242 → #16615",
+          "eternal_daylight_edit": "#14400→#14570",
+          "coin_chain": "#10329–#10342→#14558→#14577"
+        },
+        "train_group": {
+          "trailblazer": 3058,
+          "option_ratio": "79.5%",
+          "real_dialogue": 626,
+          "march7th": 677,
+          "danheng": 1541,
+          "danfeng": 89,
+          "earth_3_6": 588
         }
       },
-      "can": "长线能看到引用→改写→兑现的完整过程；插叙会让曲线出现假峰",
-      "cannot": "不能把曲线峰当成剧情高潮（3.5 很多是回放）"
+      "can": "归属由谁引用/兑现/交出决定；数据量应扣选项与空窗",
+      "cannot": "插叙造成假峰，不可当剧情高潮；列车组不可与黄金裔横向比"
     },
     {
-      "id": "ch11",
-      "title": "那刻夏：神谕可以在事件之后被追认",
-      "layout": "left_text_right_figure",
-      "figures": [],
-      "data_files": [
-        "data/config/oracle-fulfillment.v2.json",
-        "data/config/knife-scenes.json",
-        "AnalysisV2/notes/l3/那刻夏.md"
-      ],
-      "key_numbers": {
-        "lines": 696,
-        "steps": 65,
-        "fulfillment_segment_index": 269,
-        "oracle_line_segment_index": 315,
-        "gap_steps": 46,
-        "retroactive_quote": "#11588",
-        "personal_history_only_in_3_2": [
-          "#8706–#8710",
-          "#8830",
-          "#8848"
-        ]
-      },
-      "can": "命定的时间方向可以被文本倒置",
-      "cannot": "这是单条个案，不能推广成所有神谕都是追认"
-    },
-    {
-      "id": "ch12",
+      "id": "ch05",
       "title": "收束：13 条兑现、明天见、水晶花",
       "layout": "left_figure_right_text",
+      "merged_from": [
+        "原第12章 收束"
+      ],
       "figures": [
-        "docs/report/figures/f12_mingtian_timeline.png",
-        "docs/report/figures/f13_crystal_flower_semantic.png",
-        "docs/report/figures/f15_retrieval_v3.png"
+        "f4_citation_stage.png",
+        "f12_mingtian_timeline.png",
+        "f13_crystal_flower_semantic.png",
+        "f15_retrieval_v3.png"
       ],
       "data_files": [
         "data/config/key-events.json",
@@ -331,14 +245,12 @@
           "two_segment": 1
         },
         "mingtianjian_unique": 23,
-        "mingtianjian_first": "#4211（白厄）",
-        "mingtianjian_closure_3_7": [
+        "closure_3_7": [
           "#25271",
           "#25778",
           "#25779",
           "#25781"
         ],
-        "crystal_flower_rewrites": 2,
         "thirteen_heroes": "11 黄金裔 + 三月七 + 丹恒（#26119–#26122 vs #26176）",
         "retrieval_v3": {
           "evaluable": "7/13",
@@ -346,7 +258,7 @@
         }
       },
       "can": "命定从被写死到被改写/被收下的完整轨迹",
-      "cannot": "不能把语言变化当成读者感受；不能把检索排名当成剧情重要性"
+      "cannot": "不能把语言变化当读者感受；不能把检索排名当剧情重要性"
     }
   ]
 }
