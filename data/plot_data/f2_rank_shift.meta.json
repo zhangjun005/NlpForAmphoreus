@@ -1,0 +1,18 @@
+{
+ "figure": "f2_rank_shift.png",
+ "title": "图2 686 步 A→B1 排名散点（标注 5 个最大提升/下降）",
+ "axes": {
+  "x": "A 检测器排名",
+  "y": "B1 检测器排名（已反转：1 在顶部）"
+ },
+ "plot_data_csv": "data/plot_data/f2_rank_shift.csv",
+ "sources": [
+  "data/config/baseline-a-scores.json",
+  "data/config/baseline-b-scores.json"
+ ],
+ "filters": "686 候选步骤；排名 1-based；标注位=按 delta=A_rank−B1_rank 取最大/最小各 5",
+ "generator": "tools/make_figures.py",
+ "run_command": "conda run -n nlpLesson python tools/make_figures.py",
+ "data_sha256_16": "e53d1aa039958ed7",
+ "created_at": "2026-10-24T16:45:55"
+}

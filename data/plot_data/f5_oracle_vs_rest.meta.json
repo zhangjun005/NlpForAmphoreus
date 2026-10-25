@@ -1,0 +1,20 @@
+{
+ "figure": "f5_oracle_vs_rest.png",
+ "title": "图5 神谕兑现段 vs 其余步骤的 A/B1 分数分布",
+ "axes": {
+  "x": "数据集（A/B1 × 兑现/其余）",
+  "y": "检测器分数"
+ },
+ "plot_data_csv": "data/plot_data/f5_oracle_vs_rest.csv",
+ "sources": [
+  "data/config/baseline-a-scores.json",
+  "data/config/baseline-b-scores.json",
+  "data/config/type-and-oracle-significance.json",
+  "data/config/oracle-fulfillment.filled.json"
+ ],
+ "filters": "13 个神谕兑现段（type-and-oracle-significance.gold_ids）vs 其余 673 步；箱线图含 fliers",
+ "generator": "tools/make_figures.py",
+ "run_command": "conda run -n nlpLesson python tools/make_figures.py",
+ "data_sha256_16": "ebf134dbab867751",
+ "created_at": "2026-10-24T17:10:38"
+}

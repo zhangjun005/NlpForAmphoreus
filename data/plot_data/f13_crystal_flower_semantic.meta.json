@@ -3,7 +3,7 @@
  "title": "图13 K36 原文与 686 步的相似度（leave-one-out，横轴=全局步序）",
  "axes": {
   "x": "全局步序（686 池内 1–686，已排除 3.7|魔女|21 自身）",
-  "y": "与 K36 原文的余弦相似度（左 TF-IDF / 右 SBERT；细线原始、粗线滚动25）"
+  "y": "与 K36 原文的余弦相似度（左 词频加权 / 右 语义向量；细线原始、粗线滚动25）"
  },
  "plot_data_csv": "data/plot_data/f13_crystal_flower_semantic.csv",
  "sources": [
@@ -15,9 +15,9 @@
   "data/models/ids.json",
   "data/models/sbert_model/"
  ],
- "filters": "参考文本=K36 原文 record #23885–#23913（29 条）拼接；leave-one-out：排除 3.7|魔女的孤诣课题|21 自身步骤；x 轴=686 池内全局步序（唯一可排序）；TF-IDF 复用 vec_word/X_word，SBERT 用本地模型编码参考句",
+ "filters": "参考文本=K36 原文 record #23885–#23913（29 条）拼接；leave-one-out：排除 3.7|魔女的孤诣课题|21 自身步骤；x 轴=686 池内全局步序（唯一可排序）；词频加权 复用 vec_word/X_word，语义向量 用本地模型编码参考句",
  "generator": "tools/export_plot_data.py",
  "run_command": "conda run -n nlpLesson python tools/export_plot_data.py --all",
  "data_sha256_16": "0a8f4fc783c9c1eb",
- "created_at": "2026-10-24T21:21:24"
+ "created_at": "2026-10-24T22:52:49"
 }

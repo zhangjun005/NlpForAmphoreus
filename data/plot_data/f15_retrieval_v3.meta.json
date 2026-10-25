@@ -9,7 +9,7 @@
  "sources": [
   "data/config/retrieval-v3-results.json"
  ],
- "filters": "gold=event_segments（多段任一命中）；v3=排除吟诵步；v3_control=不排除；v1/v2 指标取自旧结果，v1/v2 无 SBERT",
+ "filters": "gold=event_segments（多段任一命中）；v3=排除吟诵步；v3_control=不排除；v1/v2 指标取自旧结果，v1/v2 无 语义向量",
  "generator": "tools/retrieval_v3.py",
  "run_command": "",
  "data_sha256_16": "6634ca61f3ef6677",

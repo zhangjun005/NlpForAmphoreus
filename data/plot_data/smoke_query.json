@@ -1,0 +1,295 @@
+{
+  "char_target": {
+    "char": "昔涟",
+    "n_records": 2393,
+    "centroid_similarity": {
+      "tfidf": 0.041802,
+      "sbert": 0.648108
+    },
+    "own_oracle": {
+      "oracle_id": "O13",
+      "tfidf": 0.0,
+      "sbert": 0.604135
+    },
+    "char_topk_tfidf": [
+      {
+        "record_id": 26277,
+        "score": 0.300188,
+        "version": "3.7",
+        "task": "落英啊，残芳纷飞留归躅",
+        "step_idx": 13,
+        "text": "飞向粉色的明天♪"
+      },
+      {
+        "record_id": 26113,
+        "score": 0.290149,
+        "version": "3.7",
+        "task": "落英啊，残芳纷飞留归躅",
+        "step_idx": 10,
+        "text": "温暖的地方……"
+      },
+      {
+        "record_id": 25224,
+        "score": 0.282186,
+        "version": "3.7",
+        "task": "纸页啊，镌留记忆的涟漪",
+        "step_idx": 11,
+        "text": "我们约好了，重逢的时候，轮到我来为你讲一个故事。"
+      },
+      {
+        "record_id": 20412,
+        "score": 0.269166,
+        "version": "3.5",
+        "task": "囚人啊，踏过日影见沧溟",
+        "step_idx": 15,
+        "text": "「直到，我们再度重逢的那天♪」"
+      },
+      {
+        "record_id": 26215,
+        "score": 0.261638,
+        "version": "3.7",
+        "task": "落英啊，残芳纷飞留归躅",
+        "step_idx": 11,
+        "text": "关于「明天」的故事…"
+      }
+    ],
+    "char_topk_sbert": [
+      {
+        "record_id": 20412,
+        "score": 0.742704,
+        "version": "3.5",
+        "task": "囚人啊，踏过日影见沧溟",
+        "step_idx": 15,
+        "text": "「直到，我们再度重逢的那天♪」"
+      },
+      {
+        "record_id": 23965,
+        "score": 0.694284,
+        "version": "3.7",
+        "task": "魔女的孤诣课题",
+        "step_idx": 21,
+        "text": "故事到来、逝去、去而复返。让我们重逢，又让我们分别。"
+      },
+      {
+        "record_id": 23781,
+        "score": 0.675994,
+        "version": "3.7",
+        "task": "魔女的孤诣课题",
+        "step_idx": 21,
+        "text": "如此一来，我也能安心地留在过去。至于「明天」何时会到来……"
+      },
+      {
+        "record_id": 23814,
+        "score": 0.675994,
+        "version": "3.7",
+        "task": "魔女的孤诣课题",
+        "step_idx": 21,
+        "text": "如此一来，我也能安心地留在过去。至于「明天」何时会到来……"
+      },
+      {
+        "record_id": 22282,
+        "score": 0.674074,
+        "version": "3.6",
+        "task": "大墓啊，深藏轮回的秘密",
+        "step_idx": 21,
+        "text": "又是一轮新的开始，一次熟悉的相逢。"
+      }
+    ]
+  },
+  "input": {
+    "chars": 16,
+    "charset_sample": "我们终将重逢在花开的地方，明天见"
+  },
+  "spaces": {
+    "tfidf_dim": 11737,
+    "sbert_dim": 512
+  },
+  "tfidf_topk": [
+    {
+      "record_id": 24902,
+      "score": 0.566749,
+      "speaker": "generic_npc",
+      "version": "3.7",
+      "task": "英雄啊，归以凡身向侵晨",
+      "step_idx": 25,
+      "text": "——终将兑现的「明天」！"
+    },
+    {
+      "record_id": 25271,
+      "score": 0.457643,
+      "speaker": "generic_npc",
+      "version": "3.7",
+      "task": "纸页啊，镌留记忆的涟漪",
+      "step_idx": 12,
+      "text": "明天见。"
+    },
+    {
+      "record_id": 24548,
+      "score": 0.457643,
+      "speaker": "开拓者",
+      "version": "3.7",
+      "task": "英雄啊，归以凡身向侵晨",
+      "step_idx": 14,
+      "text": "明天见。"
+    },
+    {
+      "record_id": 5259,
+      "score": 0.457643,
+      "speaker": "缇宝",
+      "version": "3.1",
+      "task": "谧林啊，寤思者缘何失语",
+      "step_idx": 2,
+      "text": "嗯，明天见。也祝你生意兴隆。"
+    },
+    {
+      "record_id": 7083,
+      "score": 0.457643,
+      "speaker": "缇宝",
+      "version": "3.1",
+      "task": "门扉啊，叩声仍激荡梦中",
+      "step_idx": 11,
+      "text": "明天见。"
+    }
+  ],
+  "sbert_topk": [
+    {
+      "record_id": 3182,
+      "score": 0.786135,
+      "speaker": "开拓者",
+      "version": "3.0",
+      "task": "夜帷啊，轻遮那静默过往",
+      "step_idx": 24,
+      "text": "我们的确重逢了。"
+    },
+    {
+      "record_id": 22716,
+      "score": 0.785776,
+      "speaker": "开拓者",
+      "version": "3.6",
+      "task": "重逢啊，笑泪相拥的约定",
+      "step_idx": 3,
+      "text": "无论如何，我们都会重逢。"
+    },
+    {
+      "record_id": 8097,
+      "score": 0.756538,
+      "speaker": "缇宝",
+      "version": "3.1",
+      "task": "来路啊，请再度显映往履",
+      "step_idx": 21,
+      "text": "我们约好了，就在那鲜花芬芳的西风尽头重逢。"
+    },
+    {
+      "record_id": 20412,
+      "score": 0.742704,
+      "speaker": "昔涟",
+      "version": "3.5",
+      "task": "囚人啊，踏过日影见沧溟",
+      "step_idx": 15,
+      "text": "「直到，我们再度重逢的那天♪」"
+    },
+    {
+      "record_id": 3170,
+      "score": 0.728877,
+      "speaker": "开拓者",
+      "version": "3.0",
+      "task": "夜帷啊，轻遮那静默过往",
+      "step_idx": 24,
+      "text": "我们分别了…然后又重逢了。"
+    }
+  ],
+  "oracle_similarity": [
+    {
+      "oracle_id": "O01",
+      "holder": "阿格莱雅",
+      "text": "汝将最后一次沐浴，在温热耀眼的黄金中。",
+      "tfidf": 0.0,
+      "sbert": 0.485936
+    },
+    {
+      "oracle_id": "O02",
+      "holder": "缇宝",
+      "text": "汝将碎作千片，凋零在他乡的土壤。",
+      "tfidf": 0.0,
+      "sbert": 0.451877
+    },
+    {
+      "oracle_id": "O03",
+      "holder": "万敌",
+      "text": "终有一日，汝将背后负创而死。",
+      "tfidf": 0.0,
+      "sbert": 0.492972
+    },
+    {
+      "oracle_id": "O04",
+      "holder": "遐蝶",
+      "text": "花海尽头，生者的魂灵将温暖汝之指尖；相拥之后，便是永恒的离别。",
+      "tfidf": 0.0,
+      "sbert": 0.553811
+    },
+    {
+      "oracle_id": "O05",
+      "holder": "玻吕茜亚",
+      "text": "汝将凋零，令逝者自残余中发芽，一同死去的火新生。",
+      "tfidf": 0.0,
+      "sbert": 0.484368
+    },
+    {
+      "oracle_id": "O06",
+      "holder": "那刻夏",
+      "text": "汝将超越至纯粹之终极，回归腐败苦黑。",
+      "tfidf": 0.0,
+      "sbert": 0.458245
+    },
+    {
+      "oracle_id": "O07",
+      "holder": "风堇",
+      "text": "在彩虹桥的尽头，天空之子将缝补晨昏。",
+      "tfidf": 0.0,
+      "sbert": 0.483855
+    },
+    {
+      "oracle_id": "O08",
+      "holder": "赛飞儿",
+      "text": "汝将与贪婪同行，亦将亡于分文。",
+      "tfidf": 0.0,
+      "sbert": 0.434009
+    },
+    {
+      "oracle_id": "O09",
+      "holder": "白厄",
+      "text": "汝将肩负骄阳，直至灰白的黎明显著。",
+      "tfidf": 0.0,
+      "sbert": 0.503478
+    },
+    {
+      "oracle_id": "O10",
+      "holder": "海瑟音",
+      "text": "汝将长眠于涛声中，于天地境界之海完成征服。",
+      "tfidf": 0.0,
+      "sbert": 0.448198
+    },
+    {
+      "oracle_id": "O11",
+      "holder": "刻律德菈",
+      "text": "汝将于天地境界之海完成征服，长眠于涛声中。",
+      "tfidf": 0.0,
+      "sbert": 0.457387
+    },
+    {
+      "oracle_id": "O12",
+      "holder": "荒笛",
+      "text": "汝将自掘坟墓，焚毁于叛逆的熔炉。",
+      "tfidf": 0.0,
+      "sbert": 0.383733
+    },
+    {
+      "oracle_id": "O13",
+      "holder": "昔涟",
+      "text": "汝将收梢于花开时，一如终结诞下起始。",
+      "tfidf": 0.0,
+      "sbert": 0.604135
+    }
+  ],
+  "method_note": "TF-IDF=词面相似；SBERT=句子级语义相似；均非“含义证明”。篇外语料与游戏台词分布不同，仅作探索性对照。"
+}

@@ -403,16 +403,16 @@ def make_figure(ch, out):
     def _score(v, key):
         return float("nan") if pv[v][key] is None else float(pv[v][key])
     ax.plot(xs, [_score(v, "mean_score_a") for v in vers], marker="o", lw=1.6,
-            color="#2e5c8a", label="A mean score")
+            color="#2e5c8a", label="检测器 A 分数")
     ax.plot(xs, [_score(v, "mean_score_b1") for v in vers], marker="s", lw=1.6,
-            color="#d98c3f", label="B1 mean score")
+            color="#d98c3f", label="检测器 B1 分数")
     ax.set_xticks(xs)
     ax.set_xticklabels(labels)
     ax.set_ylabel(L("所在步骤平均分", "mean score of steps"))
     ax3 = ax.twinx()
     ax3.plot(xs, [(pv[v]["top100_b1"] or 0) * 100 for v in vers], ls="--", lw=1.2, color="#8e44ad",
-             label="B1 Top100 %")
-    ax3.set_ylabel(L("B1 Top100 命中率 (%)", "B1 Top100 %"), color="#8e44ad")
+             label="B1 前100命中率(%)")
+    ax3.set_ylabel(L("B1 Top100 命中率 (%)", "B1 前100命中率(%)"), color="#8e44ad")
     ax3.tick_params(axis="y", labelcolor="#8e44ad")
     ax.set_title(L("(d) 所在步骤 A/B1 分数与 B1 Top100 率", "(d) scores and Top100"), fontsize=9)
     h1, l1 = ax.get_legend_handles_labels()

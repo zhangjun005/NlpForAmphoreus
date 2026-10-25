@@ -1,9 +1,9 @@
 {
  "figure": "f14_mirror_pair_O10_O11.png",
- "title": "图14 O10/O11 镜像对：TF-IDF 完全重合（686/686）、SBERT 仅微小差异",
+ "title": "图14 O10/O11 镜像对：词频加权 完全重合（686/686）、语义向量 仅微小差异",
  "axes": {
   "x": "全局步序（686 池内 1–686）",
-  "y": "余弦相似度（左 TF-IDF：两线重合；右 SBERT：两条线 + 差值）"
+  "y": "余弦相似度（左 词频加权：两线重合；右 语义向量：两条线 + 差值）"
  },
  "plot_data_csv": "data/plot_data/f14_mirror_pair_O10_O11.csv",
  "sources": [
@@ -12,7 +12,7 @@
   "data/models/ids.json",
   "data/corpus/segments.jsonl"
  ],
- "filters": "O10/O11 词袋相同、仅语序互换 → TF-IDF 686/686 逐点相等；SBERT 平均|Δ|≈0.005、最大≈0.018；标注步骤：#19814（大海|14，O10 兑现）、#20228/#20229（囚人|15，O11 引用=O10 改写）、#20339（囚人|15，O11 兑现，与引用同段不可分离）",
+ "filters": "O10/O11 词袋相同、仅语序互换 → 词频加权 686/686 逐点相等；语义向量 平均|Δ|≈0.005、最大≈0.018；标注步骤：#19814（大海|14，O10 兑现）、#20228/#20229（囚人|15，O11 引用=O10 改写）、#20339（囚人|15，O11 兑现，与引用同段不可分离）",
  "generator": "tools/export_plot_data.py",
  "run_command": "conda run -n nlpLesson python tools/export_plot_data.py --all",
  "data_sha256_16": "5e7b88e64bb2ba2e",

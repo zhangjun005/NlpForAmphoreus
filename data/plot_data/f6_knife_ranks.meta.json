@@ -1,0 +1,17 @@
+{
+ "figure": "f6_knife_ranks.png",
+ "title": "图6 刀子/高光场景在 A / B1 下的排名分布",
+ "axes": {
+  "x": "A 场景级最好名次（log，图 b）",
+  "y": "B1 场景级最好名次（log，图 b）"
+ },
+ "plot_data_csv": "data/plot_data/f6_knife_ranks.csv",
+ "sources": [
+  "data/config/knife-scene-scores.json"
+ ],
+ "filters": "35 个刀子场景（knife-scene-scores.json）；场景级最好名次=场景映射步骤的最小 rank",
+ "generator": "tools/knife_scene_eval.py",
+ "run_command": "conda run -n nlpLesson python tools/knife_scene_eval.py",
+ "data_sha256_16": "3af3a68fb0a2121a",
+ "created_at": "2026-10-24T19:22:50"
+}

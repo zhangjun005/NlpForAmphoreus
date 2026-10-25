@@ -13,5 +13,5 @@
  "generator": "tools/character_trajectory.py",
  "run_command": "conda run -n nlpLesson python tools/character_trajectory.py --all",
  "data_sha256_16": "a303710bc699d854",
- "created_at": "2026-10-24T23:51:57"
+ "created_at": "2026-10-25T22:08:24"
 }

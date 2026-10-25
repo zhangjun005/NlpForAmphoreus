@@ -1,0 +1,19 @@
+{
+ "figure": "f1_level_scores.png",
+ "title": "图1 A 与 B1 在人工等级 0/1/2/3 上的分数分布（箱线图）",
+ "axes": {
+  "x": "人工显著等级 0/1/2/3",
+  "y": "检测器分数（z 化）"
+ },
+ "plot_data_csv": "data/plot_data/f1_level_scores.csv",
+ "sources": [
+  "data/config/annotation-labels.json",
+  "data/config/baseline-a-scores.json",
+  "data/config/baseline-b-scores.json"
+ ],
+ "filters": "74 个人工标注样本；A/B1 记录级分数；箱线图按等级分组",
+ "generator": "tools/make_figures.py",
+ "run_command": "conda run -n nlpLesson python tools/make_figures.py",
+ "data_sha256_16": "f9590b8fd03310ec",
+ "created_at": "2026-10-24T16:45:55"
+}

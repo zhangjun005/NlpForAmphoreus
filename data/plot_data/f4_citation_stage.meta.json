@@ -1,0 +1,17 @@
+{
+ "figure": "f4_citation_stage.png",
+ "title": "图4 34 处神谕引用的 版本×阶段 堆叠分布",
+ "axes": {
+  "x": "版本",
+  "y": "引用次数（堆叠=阶段）"
+ },
+ "plot_data_csv": "data/plot_data/f4_citation_stage.csv",
+ "sources": [
+  "data/config/oracle-citation-coding.json"
+ ],
+ "filters": "34 处 occurrence；阶段取 oracle-citation-coding 的 stage 字段",
+ "generator": "tools/make_figures.py",
+ "run_command": "conda run -n nlpLesson python tools/make_figures.py",
+ "data_sha256_16": "f5b70bd8cc6affd2",
+ "created_at": "2026-10-24T22:11:09"
+}

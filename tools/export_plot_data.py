@@ -370,7 +370,7 @@ def data_f11():
     return dict(columns=["char", "group", "version", "n_steps", "tfidf_own_mean", "sbert_own_mean"],
                 rows=rows,
                 title="图11 14 角色 × 8 版本的「与神谕文本相似度」总览",
-                axes={"x": "版本", "y": "角色（格内=版本均值；左 TF-IDF / 右 SBERT）"},
+                axes={"x": "版本", "y": "角色（格内=版本均值；左 词频加权 / 右 语义向量）"},
                 sources=[P_CURVES],
                 filters="每格=该角色该版本各出场步骤 own-oracle 余弦的均值")
 
@@ -404,7 +404,7 @@ def _sim_char(char):
     own = "、".join(ch["own_oracles"]) if ch["own_oracles"] else "无自有（取 13 条最高）"
     return dict(columns=SIM_COLS, rows=rows,
                 title="神谕相似度全程曲线：%s（own oracle=%s）" % (char, own),
-                axes={"x": "order（3.0→3.7）；左轴 TF-IDF、右轴 SBERT",
+                axes={"x": "order（3.0→3.7）；左轴 词频加权、右轴 语义向量",
                       "y": "与神谕文本的相似度（余弦，不是含义强度）"},
                 sources=[P_CURVES, P_CITE, P_FILLED, P_KNIFE],
                 filters="步骤均值向量 vs own oracle；滚动均值窗口 5；标注=首现/吟诵/兑现/意义转折/关键事件/刀子")
@@ -414,7 +414,7 @@ def _sim_char(char):
 def data_f15():
     d = read_json(P_RET3)
     rows = []
-    # panel a：各方法 MRR（v1/v2 来自旧结果，v3_control/v3 为本次计算；v1/v2 无 SBERT）
+    # panel a：各方法 MRR（v1/v2 来自旧结果，v3_control/v3 为本次计算；v1/v2 无 语义向量）
     for variant, metrics, n_eval in (
             ("v1_old", d["v1_old"]["metrics"], d["v1_old"]["n_eval"]),
             ("v2_mask", d["v2_old"]["v2_mask_metrics"], d["v2_old"]["v2_mask_n_eval"]),
@@ -436,7 +436,7 @@ def data_f15():
                 axes={"x": "方法（a）/ Recall@k（b）", "y": "MRR / Recall"},
                 sources=[P_RET3],
                 filters="gold=event_segments（多段任一命中）；v3=排除吟诵步；v3_control=不排除；"
-                        "v1/v2 指标取自旧结果，v1/v2 无 SBERT")
+                        "v1/v2 指标取自旧结果，v1/v2 无 语义向量")
 
 
 # ---- 新增 3 张报告图 ----
@@ -512,18 +512,18 @@ def data_f13():
                          "tfidf_sim", "sbert_sim", "tfidf_roll25", "sbert_roll25"], rows=rows,
                 title="图13 K36 原文与 686 步的相似度（leave-one-out，横轴=全局步序）",
                 axes={"x": "全局步序（686 池内 1–686，已排除 3.7|魔女|21 自身）",
-                      "y": "与 K36 原文的余弦相似度（左 TF-IDF / 右 SBERT；细线原始、粗线滚动25）"},
+                      "y": "与 K36 原文的余弦相似度（左 词频加权 / 右 语义向量；细线原始、粗线滚动25）"},
                 sources=[P_CORPUS, P_SEGS, "data/models/vec_word.joblib", "data/models/X_word.npz",
                          "data/models/Z_sbert_seg.npy", "data/models/ids.json",
                          "data/models/sbert_model/"],
                 filters="参考文本=K36 原文 record #23885–#23913（29 条）拼接；leave-one-out：排除 "
                         "3.7|魔女的孤诣课题|21 自身步骤；x 轴=686 池内全局步序（唯一可排序）；"
-                        "TF-IDF 复用 vec_word/X_word，SBERT 用本地模型编码参考句")
+                        "词频加权 复用 vec_word/X_word，语义向量 用本地模型编码参考句")
 
 
 def data_f14():
-    """f14 v2（修正口径）：TF-IDF 两条曲线 686/686 完全相等（同词袋、只换语序）；
-    SBERT 仅微小差异；x 轴=全局步序；CSV 存两空间与差值。"""
+    """f14 v2（修正口径）：词频加权 两条曲线 686/686 完全相等（同词袋、只换语序）；
+    语义向量 仅微小差异；x 轴=全局步序；CSV 存两空间与差值。"""
     ids = read_json(P_IDS)
     segs = read_jsonl(P_SEGS)
     seg_by_id = {s["segment_id"]: s for s in segs}
@@ -546,13 +546,13 @@ def data_f14():
     return dict(columns=["step_index", "segment_id", "order", "version",
                          "tfidf_O10", "tfidf_O11", "tfidf_diff",
                          "sbert_O10", "sbert_O11", "sbert_diff"], rows=rows,
-                title="图14 O10/O11 镜像对：TF-IDF 完全重合（%d/686）、SBERT 仅微小差异" % n_eq,
+                title="图14 O10/O11 镜像对：词频加权 完全重合（%d/686）、语义向量 仅微小差异" % n_eq,
                 axes={"x": "全局步序（686 池内 1–686）",
-                      "y": "余弦相似度（左 TF-IDF：两线重合；右 SBERT：两条线 + 差值）"},
+                      "y": "余弦相似度（左 词频加权：两线重合；右 语义向量：两条线 + 差值）"},
                 sources=["data/models/S_oracle_seg.npy", "data/models/S_sbert_oracle_seg.npy",
                          "data/models/ids.json", P_SEGS],
-                filters="O10/O11 词袋相同、仅语序互换 → TF-IDF 686/686 逐点相等；"
-                        "SBERT 平均|Δ|≈0.005、最大≈0.018；标注步骤：#19814（大海|14，O10 兑现）、"
+                filters="O10/O11 词袋相同、仅语序互换 → 词频加权 686/686 逐点相等；"
+                        "语义向量 平均|Δ|≈0.005、最大≈0.018；标注步骤：#19814（大海|14，O10 兑现）、"
                         "#20228/#20229（囚人|15，O11 引用=O10 改写）、#20339（囚人|15，O11 兑现，与引用同段不可分离）")
 
 
@@ -656,11 +656,11 @@ def make_new_figures():
     fig, ax = plt.subplots(figsize=(11.2, 4.9))
     ax.plot(xs, [r["tfidf_sim"] for r in rows], color="#a9c0d8", lw=0.6, alpha=0.6)
     ax.plot(xs, [r["tfidf_roll25"] for r in rows], color="#1f4e79", lw=2.0,
-            label="TF-IDF（滚动25）")
+            label="词频加权（滚动25）")
     ax2 = ax.twinx()
     ax2.plot(xs, [r["sbert_sim"] for r in rows], color="#f0b27a", lw=0.6, alpha=0.6)
     ax2.plot(xs, [r["sbert_roll25"] for r in rows], color="#b9530f", lw=2.0,
-             label="SBERT（滚动25）")
+             label="语义向量（滚动25）")
     ax.axvspan(457, 541, color="#f1c40f", alpha=0.10)
     ax.text(458, ax.get_ylim()[1] * 0.94, "3.5 闪回区", fontsize=8, color="#8a6d00")
     ax.axvline(628, color="#7f8c8d", lw=1.2, ls="--")
@@ -672,8 +672,8 @@ def make_new_figures():
                 fontsize=8, color="#1f4e79",
                 arrowprops=dict(arrowstyle="->", color="#1f4e79", lw=0.8))
     ax.set_xlabel("全局步序（686 池内 1–686；已排除 3.7|魔女|21 自身）")
-    ax.set_ylabel("与 K36 原文相似度（TF-IDF）", color="#1f4e79")
-    ax2.set_ylabel("与 K36 原文相似度（SBERT）", color="#b9530f")
+    ax.set_ylabel("与 K36 原文相似度（词频加权）", color="#1f4e79")
+    ax2.set_ylabel("与 K36 原文相似度（语义向量）", color="#b9530f")
     ax.set_title("图13 K36 原文与 686 步的相似度（leave-one-out；横轴=全局步序）", fontsize=10)
     h1, l1 = ax.get_legend_handles_labels()
     h2, l2 = ax2.get_legend_handles_labels()
@@ -683,7 +683,7 @@ def make_new_figures():
     fig.savefig(os.path.join(FIG_DIR, "f13_crystal_flower_semantic.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)
 
-    # f14（修正口径：TF-IDF 单线=完全重合；SBERT 两线+编号标注；全局步序）
+    # f14（修正口径：词频加权 单线=完全重合；语义向量 两线+编号标注；全局步序）
     d = data_f14()
     rows = d["rows"]
     xs = [r["step_index"] for r in rows]
@@ -692,23 +692,23 @@ def make_new_figures():
     mean_abs = sum(abs(x) for x in sbert_diff) / len(sbert_diff)
     max_abs = max(abs(x) for x in sbert_diff)
     fig, axes = plt.subplots(1, 2, figsize=(13.6, 4.9), sharex=True)
-    # (a) TF-IDF：两线完全重合 → 画一条，标注 max|Δ| 与重合事实
+    # (a) 词频加权：两线完全重合 → 画一条，标注 max|Δ| 与重合事实
     ax = axes[0]
     ax.plot(xs, [r["tfidf_O10"] for r in rows], color="#c0392b", lw=1.4,
             label="O10 = O11（逐点重合）")
-    ax.set_title("(a) TF-IDF：两线完全重合（同词袋、仅语序互换）", fontsize=9)
+    ax.set_title("(a) 词频加权：两线完全重合（同词袋、仅语序互换）", fontsize=9)
     ax.set_xlabel("全局步序（1–686）")
-    ax.set_ylabel("TF-IDF 余弦相似度")
+    ax.set_ylabel("词频加权 余弦相似度")
     ax.text(0.02, 0.92, "686/686 行逐点相等；max|Δ| = %.1e" % max(abs(x) for x in tfidf_diff),
             transform=ax.transAxes, fontsize=8, color="#333")
     ax.legend(fontsize=8, frameon=False, loc="upper right")
-    # (b) SBERT：两条线 + 编号标注（不画 Δ 副轴，避免遮挡）
+    # (b) 语义向量：两条线 + 编号标注（不画 Δ 副轴，避免遮挡）
     ax = axes[1]
     ax.plot(xs, [r["sbert_O10"] for r in rows], color="#c0392b", lw=1.1, label="O10")
     ax.plot(xs, [r["sbert_O11"] for r in rows], color="#2e5c8a", lw=1.1, ls="--", label="O11")
-    ax.set_title("(b) SBERT：两线接近（均|Δ|=%.4f、最大|Δ|=%.4f）" % (mean_abs, max_abs), fontsize=9)
+    ax.set_title("(b) 语义向量：两线接近（均|Δ|=%.4f、最大|Δ|=%.4f）" % (mean_abs, max_abs), fontsize=9)
     ax.set_xlabel("全局步序（1–686）")
-    ax.set_ylabel("SBERT 余弦相似度")
+    ax.set_ylabel("语义向量 余弦相似度")
     ax.legend(fontsize=8, frameon=False, loc="upper right")
     marks = [(523, "①", "#1f4e79", 0.74), (531, "②", "#7f8c8d", 0.67), (541, "③", "#7d3c98", 0.60)]
     for xpos, num, col, ypos in marks:
@@ -723,7 +723,7 @@ def make_new_figures():
             bbox=dict(boxstyle="round,pad=0.25", fc="white", ec="#cccccc", alpha=0.85))
     ax.set_ylim(0.27, 0.78)
     axes[0].set_xlim(1, 686)
-    fig.suptitle("图14 O10/O11 镜像对：TF-IDF 完全重合、SBERT 仅微小差异（横轴=全局步序）", fontsize=11)
+    fig.suptitle("图14 O10/O11 镜像对：词频加权 完全重合、语义向量 仅微小差异（横轴=全局步序）", fontsize=11)
     fig.tight_layout(rect=(0, 0, 1, 0.93))
     fig.savefig(os.path.join(FIG_DIR, "f14_mirror_pair_O10_O11.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)

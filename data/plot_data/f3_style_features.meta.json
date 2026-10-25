@@ -1,0 +1,17 @@
+{
+ "figure": "f3_style_features.png",
+ "title": "图3 神谕 / 普通对白 / 角色引用的语体特征均值",
+ "axes": {
+  "x": "语体特征（比率类；长度/抽象/复沓类 ×100）",
+  "y": "均值"
+ },
+ "plot_data_csv": "data/plot_data/f3_style_features.csv",
+ "sources": [
+  "data/config/style-compare-results.json"
+ ],
+ "filters": "G1=神谕原文句、G2=普通对白句、G3=角色引用句；value_plotted=mean×scale，与图上柱高一致",
+ "generator": "tools/make_figures.py",
+ "run_command": "conda run -n nlpLesson python tools/make_figures.py",
+ "data_sha256_16": "edc45484a1ca4ee7",
+ "created_at": "2026-10-24T17:03:01"
+}

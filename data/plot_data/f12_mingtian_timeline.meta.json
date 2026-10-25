@@ -1,0 +1,17 @@
+{
+ "figure": "f12_mingtian_timeline.png",
+ "title": "图12「明天见」时间线：按版本×说话人的出现次数",
+ "axes": {
+  "x": "版本",
+  "y": "出现次数（堆叠=说话人 top8 + 其他）"
+ },
+ "plot_data_csv": "data/plot_data/f12_mingtian_timeline.csv",
+ "sources": [
+  "data/corpus/amphoreus.final.jsonl"
+ ],
+ "filters": "全语料 26332 条记录中 text 含「明天见」；说话人取 canonical_speaker（旁白=旁白）",
+ "generator": "tools/export_plot_data.py",
+ "run_command": "conda run -n nlpLesson python tools/export_plot_data.py --all",
+ "data_sha256_16": "73c4b9280046da15",
+ "created_at": "2026-10-24T22:52:49"
+}

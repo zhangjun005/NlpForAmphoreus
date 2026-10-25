@@ -1,0 +1,17 @@
+{
+ "figure": "f9_all_trajectories.png",
+ "title": "图9 14 个角色分版本台词量（A 组 11 + B 组 3）",
+ "axes": {
+  "x": "版本",
+  "y": "角色（格内=台词条数，颜色=log 值）"
+ },
+ "plot_data_csv": "data/plot_data/f9_all_trajectories.csv",
+ "sources": [
+  "data/config/character-trajectory-all.json"
+ ],
+ "filters": "A 组 11 黄金裔 + B 组 3 单列；荒笛/玻吕茜亚为注记，不入图",
+ "generator": "tools/character_trajectory.py",
+ "run_command": "conda run -n nlpLesson python tools/character_trajectory.py --all",
+ "data_sha256_16": "e75420c1ef1eacd6",
+ "created_at": "2026-10-24T21:01:17"
+}

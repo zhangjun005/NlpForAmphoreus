@@ -5,20 +5,20 @@ oracle_similarity_curves.py — 14 角色 × 神谕文本相似度的全程曲�
 
 问题背景：之前只给「峰值点」，用户要求给出整条曲线/整个「山峰」，并记录每个点怎么来的。
 本脚本复用已有向量资产（不重新训练）：
-  data/models/vec_rec.joblib   记录级 TF-IDF（analyzer=tokenize, ngram=(1,2), min_df=2, sublinear_tf）
+  data/models/vec_rec.joblib   记录级 词频加权（analyzer=tokenize, ngram=(1,2), min_df=2, sublinear_tf）
   data/models/ids.json         记录/神谕顺序（records 26332 / oracles 13）
   data/models/Z_sbert_rec.npy  记录级 bge-small-zh-v1.5 句向量（26332×512，已 L2 归一）
-  （可选交叉核对）data/models/S_oracle_rec.npy 13×26332 记录级 TF-IDF 相似度
+  （可选交叉核对）data/models/S_oracle_rec.npy 13×26332 记录级 词频加权 相似度
 
 方法链路（每个点可追溯）：
-  原始记录（text_clean） → vec_rec.transform → 记录级 TF-IDF 向量 / Z_sbert_rec 行 → 
+  原始记录（text_clean） → vec_rec.transform → 记录级 词频加权 向量 / Z_sbert_rec 行 → 
   按 (version, task, step_idx) 聚合该角色台词的**均值向量**（另存 max 与条数）→ 
-  与「自己神谕」向量（vec_rec 映射；SBERT 用同一模型 BAAI/bge-small-zh-v1.5 现场编码 13 条神谕）算余弦 → 
+  与「自己神谕」向量（vec_rec 映射；语义向量 用同一模型 BAAI/bge-small-zh-v1.5 现场编码 13 条神谕）算余弦 → 
   时间轴用 order（3.0→3.7），滚动均值窗口 5 步。
 
 产出：
   data/config/oracle-similarity-curves.json   完整时间序列 + 13 神谕矩阵 + 神谕向量（可复算）
-  data/config/oracle-similarity-curves.csv    长表（含 13 列 TF-IDF + 13 列 SBERT 相似度）
+  data/config/oracle-similarity-curves.csv    长表（含 13 列 词频加权 + 13 列 语义向量 相似度）
   docs/report/figures/oracle_sim/<角色>.png   14 张单人曲线
   docs/report/figures/f11_oracle_similarity_heatmap.png  总览热力图
   docs/report/oracle-similarity-curves.md     报告
@@ -67,7 +67,7 @@ P_KNIFE = os.path.join(ROOT, "data", "config", "knife-scenes.json")
 MODELS = os.path.join(ROOT, "data", "models")
 P_IDS = os.path.join(MODELS, "ids.json")
 P_VEC_REC = os.path.join(MODELS, "vec_rec.joblib")
-P_Z_SBERT = os.path.join(MODELS, "Z_sbert_rec.npy")
+P_Z_语义向量 = os.path.join(MODELS, "Z_sbert_rec.npy")
 P_S_ORACLE_REC = os.path.join(MODELS, "S_oracle_rec.npy")
 OUT_JSON = os.path.join(ROOT, "data", "config", "oracle-similarity-curves.json")
 OUT_CSV = os.path.join(ROOT, "data", "config", "oracle-similarity-curves.csv")
@@ -170,8 +170,8 @@ def load_all():
     assert [o["oracle_id"] for o in oracles] == ids["oracles"], "神谕顺序与 ids.json 不对齐"
     vec = joblib.load(P_VEC_REC)
     docs = [r.get("text_clean") or "" for r in recs_ordered]
-    X = vec.transform(docs)                      # 26332 × V（记录级 TF-IDF，复用已训练模型）
-    Z = np.load(P_Z_SBERT, mmap_mode="r")        # 26332 × 512（已归一）
+    X = vec.transform(docs)                      # 26332 × V（记录级 词频加权，复用已训练模型）
+    Z = np.load(P_Z_语义向量, mmap_mode="r")        # 26332 × 512（已归一）
     return ids, recs_ordered, seg_by_key, segs, oracles, vec, X, Z
 
 
@@ -301,7 +301,7 @@ def compute_curves(ids, recs_ordered, seg_by_key, oracles, X, Z, own_map, cite, 
             idx = [idx_by_id[r["id"]] for r in rs]
             order = int(min(r["order"] for r in rs))
             seg = seg_by_key.get(key) or {}
-            # 均值向量（TF-IDF：稀疏行取均值后再归一；SBERT：行均值后再归一）
+            # 均值向量（词频加权：稀疏行取均值后再归一；语义向量：行均值后再归一）
             xmean = np.asarray(X[idx].mean(axis=0)).ravel().astype(np.float32)
             xmean = xmean / (np.linalg.norm(xmean) + 1e-12)
             zmean = np.asarray(Z[idx].mean(axis=0)).astype(np.float32)
@@ -394,7 +394,7 @@ def write_outputs(steps_out, OT, OS, oids, own_map, vec, meta):
     with open(OUT_JSON, "w", encoding="utf-8", newline="\n") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
         f.write("\n")
-    # CSV：长表，13 列 TF-IDF + 13 列 SBERT
+    # CSV：长表，13 列 词频加权 + 13 列 语义向量
     cols = ["char", "own_oracles", "order", "version", "task", "step_idx", "step_title",
             "n_lines", "record_id_span", "tfidf_own", "sbert_own", "tfidf_own_max", "sbert_own_max",
             "tfidf_roll5", "sbert_roll5", "argmax_tfidf", "argmax_sbert",
@@ -430,14 +430,14 @@ def make_character_figure(char, ch, vbound, out):
     x = np.array([s["order"] for s in steps], dtype=float)
     fig, ax = plt.subplots(figsize=(12.8, 5.0))
     ax2 = ax.twinx()
-    # 左轴：TF-IDF（绝对尺度较小）
+    # 左轴：词频加权（绝对尺度较小）
     ax.plot(x, [s["tfidf_own"] for s in steps], color="#a9c0d8", lw=0.8, alpha=0.8)
     ax.plot(x, [s["tfidf_roll5"] for s in steps], color="#1f4e79", lw=2.0,
-            label=L("TF-IDF 滚动均值(5)（左轴）", "TF-IDF roll5 (left)"))
-    # 右轴：SBERT
+            label=L("词频加权 滚动均值(5)（左轴）", "词频加权 roll5 (left)"))
+    # 右轴：语义向量
     ax2.plot(x, [s["sbert_own"] for s in steps], color="#f0b27a", lw=0.8, alpha=0.8)
     ax2.plot(x, [s["sbert_roll5"] for s in steps], color="#b9530f", lw=2.0,
-             label=L("SBERT 滚动均值(5)（右轴）", "SBERT roll5 (right)"))
+             label=L("语义向量 滚动均值(5)（右轴）", "语义向量 roll5 (right)"))
     form_handles = []
     form_present = []
     if char == "三月七":
@@ -459,8 +459,8 @@ def make_character_figure(char, ch, vbound, out):
     spad = (smax - smin) * 0.15 + 0.01
     ax.set_ylim(tmin - tpad, tmax + tpad)
     ax2.set_ylim(smin - spad, smax + spad)
-    ax.set_ylabel(L("TF-IDF 与神谕文本的相似度（余弦）", "TF-IDF cosine"), color="#1f4e79")
-    ax2.set_ylabel(L("SBERT 与神谕文本的相似度（余弦）", "SBERT cosine"), color="#b9530f")
+    ax.set_ylabel(L("词频加权 与神谕文本的相似度（余弦）", "词频加权 cosine"), color="#1f4e79")
+    ax2.set_ylabel(L("语义向量 与神谕文本的相似度（余弦）", "语义向量 cosine"), color="#b9530f")
     ax.tick_params(axis="y", labelcolor="#1f4e79")
     ax2.tick_params(axis="y", labelcolor="#b9530f")
     for v in VERSIONS[1:]:
@@ -500,8 +500,8 @@ def make_character_figure(char, ch, vbound, out):
             char, gt)
         title_en = "%s: max similarity over 13 oracles" % char
     ax.set_title(L(title_cn, title_en), fontsize=10)
-    handles = [plt.Line2D([], [], color="#1f4e79", lw=2, label=L("TF-IDF 滚动(5)", "TF-IDF roll5")),
-               plt.Line2D([], [], color="#b9530f", lw=2, label=L("SBERT 滚动(5)", "SBERT roll5")),
+    handles = [plt.Line2D([], [], color="#1f4e79", lw=2, label=L("词频加权 滚动(5)", "词频加权 roll5")),
+               plt.Line2D([], [], color="#b9530f", lw=2, label=L("语义向量 滚动(5)", "语义向量 roll5")),
                plt.Line2D([], [], color="#8e44ad", lw=1, ls=":", label=L("吟诵步", "recitation")),
                plt.Line2D([], [], color="#2c3e50", lw=1.4, label=L("首现", "first appearance")),
                plt.Line2D([], [], marker="*", color="#c0392b", lw=0, ms=10, label=L("兑现", "fulfillment")),
@@ -528,7 +528,7 @@ def make_heatmap(steps_out, out):
                 mat_t[i, j] = np.mean([x["tfidf_own"] for x in ss])
                 mat_s[i, j] = np.mean([x["sbert_own"] for x in ss])
     fig, axes = plt.subplots(1, 2, figsize=(13.6, 7.4))
-    for ax, mat, title in ((axes[0], mat_t, "TF-IDF"), (axes[1], mat_s, "SBERT")):
+    for ax, mat, title in ((axes[0], mat_t, "词频加权"), (axes[1], mat_s, "语义向量")):
         vmin = float(np.nanmin(mat))
         vmax = float(np.nanmax(mat))
         im = ax.imshow(mat, aspect="auto", cmap="YlOrRd", vmin=vmin, vmax=vmax)
@@ -576,7 +576,7 @@ def render_report(data, mat_t, mat_s, vbound):
     chars = data["characters"]
     Lr = []
     A = Lr.append
-    A("# 14 角色 × 神谕文本相似度：全程曲线（TF-IDF + SBERT 双空间；荒笛/玻吕茜亚按 NPC 处理）")
+    A("# 14 角色 × 神谕文本相似度：全程曲线（词频加权 + 语义向量 双空间；荒笛/玻吕茜亚按 NPC 处理）")
     A("")
     A("> 生成脚本：`tools/oracle_similarity_curves.py` ｜ 重跑命令：`%s`" % RUN_CMD)
     A("> 明细数据：`data/config/oracle-similarity-curves.json`（含神谕向量，可逐点复算）、"
@@ -605,11 +605,11 @@ def render_report(data, mat_t, mat_s, vbound):
     A("")
     A("1. **记录**：`amphoreus.final.jsonl` 中 `canonical_speaker == 角色` 的记录（记录 id 与 `ids.json` 对齐，共 %d 条）。" % meta["n_records_total"])
     A("2. **向量**（复用 `data/models/`，未重新训练）：")
-    A("   - TF-IDF：`vec_rec.joblib`（analyzer=tokenize, ngram=(1,2), min_df=2, sublinear_tf）对 `text_clean` 做映射（%d 维）；" % meta["tfidf_dim"])
-    A("   - SBERT：`Z_sbert_rec.npy`（bge-small-zh-v1.5，512 维，已 L2 归一）按记录 id 取行。")
-    A("3. **步骤聚合**：按 `(version, task, step_idx)` 分组，取该角色台词的**均值向量**（TF-IDF 行均值后再归一；SBERT 行均值后再归一），"
+    A("   - 词频加权：`vec_rec.joblib`（analyzer=tokenize, ngram=(1,2), min_df=2, sublinear_tf）对 `text_clean` 做映射（%d 维）；" % meta["tfidf_dim"])
+    A("   - 语义向量：`Z_sbert_rec.npy`（bge-small-zh-v1.5，512 维，已 L2 归一）按记录 id 取行。")
+    A("3. **步骤聚合**：按 `(version, task, step_idx)` 分组，取该角色台词的**均值向量**（词频加权 行均值后再归一；语义向量 行均值后再归一），"
       "同时保存「记录级最大值」`*_own_max`、台词条数 `n_lines`、记录 id 列表 `record_ids`（可回查）。")
-    A("4. **神谕向量**：`vec_rec.transform(13 条神谕原文)`（TF-IDF）；SBERT 用同一模型现场编码 13 条神谕（`normalize_embeddings=True`），"
+    A("4. **神谕向量**：`vec_rec.transform(13 条神谕原文)`（词频加权）；语义向量 用同一模型现场编码 13 条神谕（`normalize_embeddings=True`），"
       "两条向量都保存在 JSON 的 `oracle_vectors` 里。")
     A("5. **余弦**：`cos(步骤均值向量, 自己神谕向量)`；同时保存与**全部 13 条神谕**的相似度向量。")
     A("6. **平滑**：原始值 + 居中滚动均值（窗口 %d 步，基于该角色自己的出场步骤序列）。" % ROLL_WIN)
@@ -619,7 +619,7 @@ def render_report(data, mat_t, mat_s, vbound):
       "丹恒承接大地火种 → own = O12（大地线）。" % "；".join(
           "%s→%s" % (c, "、".join(chars[c]["own_oracles"]) or "无") for c in CHARS))
     A("")
-    A("**数据一致性**：记录级 TF-IDF 相似度与已有 `S_oracle_rec.npy`（13×26332）最大绝对差 = **%s**；"
+    A("**数据一致性**：记录级 词频加权 相似度与已有 `S_oracle_rec.npy`（13×26332）最大绝对差 = **%s**；"
       "总记录 %d / 总步骤 %d。" % (
           meta["crosscheck_max_abs_diff"], meta["n_records_total"], meta["n_steps_total"]))
     A("")
@@ -654,10 +654,10 @@ def render_report(data, mat_t, mat_s, vbound):
         ps, pt = o["peak_sbert"], o["peak_tfidf"]
         A("### %s（%s，%d 条台词 / %d 步）" % (o["char"], o["own"], o["n_records"], o["n_steps"]))
         A("")
-        A("- SBERT 峰值（滚动 5 步）：**%.3f** @ order %d（%s「%s」）；TF-IDF 峰值：%.3f @ order %d（%s）。" % (
+        A("- 语义向量 峰值（滚动 5 步）：**%.3f** @ order %d（%s「%s」）；词频加权 峰值：%.3f @ order %d（%s）。" % (
             ps["value"], ps["order"], ps["version"], (ps["step_title"] or "")[:20],
             pt["value"], pt["order"], pt["version"]))
-        A("- 曲线范围：TF-IDF %.2f–%.2f，SBERT %.2f–%.2f；均值 %.3f / %.3f（TF-IDF / SBERT）。" % (
+        A("- 曲线范围：词频加权 %.2f–%.2f，语义向量 %.2f–%.2f；均值 %.3f / %.3f（词频加权 / 语义向量）。" % (
             o["range_tfidf"][0], o["range_tfidf"][1], o["range_sbert"][0], o["range_sbert"][1],
             o["mean_tfidf"], o["mean_sbert"]))
         A("- 峰值对齐：%s。" % o["align"])
@@ -677,8 +677,8 @@ def render_report(data, mat_t, mat_s, vbound):
 
     A("## 2. A 组：黄金裔 11 位（逐角色观察）")
     A("")
-    A("> **尺度提醒**：TF-IDF 的绝对相似度普遍很低（own 峰值约 0.02–0.19），因为神谕文本只有 10–20 字、"
-      "词表稀疏；请比较曲线形状与相对高低，不要把 TF-IDF 绝对值与 SBERT（约 0.5–0.7）直接横比。")
+    A("> **尺度提醒**：词频加权 的绝对相似度普遍很低（own 峰值约 0.02–0.19），因为神谕文本只有 10–20 字、"
+      "词表稀疏；请比较曲线形状与相对高低，不要把 词频加权 绝对值与 语义向量（约 0.5–0.7）直接横比。")
     A("")
     for o in obs:
         if o["group"] == "A":
@@ -697,9 +697,9 @@ def render_report(data, mat_t, mat_s, vbound):
         for s in chars[c]["steps"]:
             diffs.append((abs(s["tfidf_own"] - s["sbert_own"]), c, s))
     diffs.sort(key=lambda x: -x[0])
-    A("TF-IDF 与 SBERT 的 own-oracle 相似度差异最大的 3 个点（|Δ| 降序）：")
+    A("词频加权 与 语义向量 的 own-oracle 相似度差异最大的 3 个点（|Δ| 降序）：")
     A("")
-    A("| # | 角色 | 组 | order/版本 | 步骤 | TF-IDF | SBERT | Δ | 说明 |")
+    A("| # | 角色 | 组 | order/版本 | 步骤 | 词频加权 | 语义向量 | Δ | 说明 |")
     A("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
     for i, (d, c, s) in enumerate(diffs[:3], 1):
         A("| %d | %s | %s | %d / %s | %s | %.3f | %.3f | %+.3f | %s |" % (
@@ -710,13 +710,13 @@ def render_report(data, mat_t, mat_s, vbound):
     n_argmax_diff = sum(1 for c in CHARS for s in chars[c]["steps"]
                         if s["argmax_tfidf"] != s["argmax_sbert"])
     n_steps_total = sum(len(chars[c]["steps"]) for c in CHARS)
-    A("此外，**argmax 神谕不一致**（TF-IDF 与 SBERT 各自最相似的神谕不同）的步骤有 **%d/%d = %.1f%%**——"
+    A("此外，**argmax 神谕不一致**（词频加权 与 语义向量 各自最相似的神谕不同）的步骤有 **%d/%d = %.1f%%**——"
       "两个空间给出的「最像哪条神谕」并不总一致。" % (
           n_argmax_diff, n_steps_total, 100.0 * n_argmax_diff / n_steps_total))
     A("")
     A("## 5. 局限")
     A("")
-    A("1. **TF-IDF 是词面相似**：会因共享「汝将/涛声/火种」等词而高，不代表语义读懂；SBERT 是句子级语义，"
+    A("1. **词频加权 是词面相似**：会因共享「汝将/涛声/火种」等词而高，不代表语义读懂；语义向量 是句子级语义，"
       "但仍非「含义强度」，两者都不能直接当作「角色理解了神谕」的证据。")
     A("2. **3.5 嵌套闪回**：3.5 版本内有大量回放/嵌套叙事（如 O10/O11 的镜像段），order 是全局顺序，"
       "闪回内容会与当前时间线错位；曲线在 3.5 附近的峰可能只是「在复述过去」，不是「当下剧情」的峰。")
@@ -735,7 +735,7 @@ def render_report(data, mat_t, mat_s, vbound):
     A("```")
     A("")
     A("- 无随机：向量资产复用、模型推理 deterministic；`--verify` 从 JSON 抽查 5 个点重算 step 均值向量余弦。")
-    A("- JSON 保存每步的 `record_ids`、`record_id_span`、13 神谕相似度向量、神谕向量（TF-IDF 稀疏项 + SBERT 512 维），"
+    A("- JSON 保存每步的 `record_ids`、`record_id_span`、13 神谕相似度向量、神谕向量（词频加权 稀疏项 + 语义向量 512 维），"
       "任何点可按「记录 id → 向量 → 均值 → 余弦」复算。")
     A("")
     return "\n".join(Lr)
@@ -752,14 +752,14 @@ def build():
     keys = read_json(P_KEYS)
     knife = read_json(P_KNIFE)
     vbound = version_boundaries(segs)
-    print("计算 14 角色曲线（TF-IDF + SBERT）…")
+    print("计算 14 角色曲线（词频加权 + 语义向量）…")
     steps_out, OT, OS, oids, cross = compute_curves(
         ids, recs_ordered, seg_by_key, oracles, X, Z, own_map, cite, filled_v2, keys, knife)
     meta = {
         "script": "tools/oracle_similarity_curves.py",
         "run_command": RUN_CMD,
         "assets": {
-            "vec_rec": "data/models/vec_rec.joblib（记录级 TF-IDF，未重训）",
+            "vec_rec": "data/models/vec_rec.joblib（记录级 词频加权，未重训）",
             "ids": "data/models/ids.json（records 26332 / oracles 13）",
             "Z_sbert_rec": "data/models/Z_sbert_rec.npy（bge-small-zh-v1.5，26332×512，已归一）",
         },
@@ -772,7 +772,7 @@ def build():
                    "note": "荒笛、玻吕茜亚按 NPC 处理，只在相关角色条目内说明，不单列分析/曲线。",
                    "note": "按用户最终口径：黄金裔=11 位（岁月席位历史更替）；玻吕茜亚仅注记、不画曲线。"},
         "rolling_window": ROLL_WIN,
-        "method_chain": "text_clean → vec_rec.transform（TF-IDF）/ Z_sbert_rec 行（SBERT）→ 按 (version,task,step_idx) 取均值向量 → 归一 → 与神谕向量余弦 → 居中滚动均值(5)",
+        "method_chain": "text_clean → vec_rec.transform（词频加权）/ Z_sbert_rec 行（语义向量）→ 按 (version,task,step_idx) 取均值向量 → 归一 → 与神谕向量余弦 → 居中滚动均值(5)",
         "crosscheck_max_abs_diff": cross.get("max_abs_diff_vs_S_oracle_rec"),
         "version_boundaries": vbound,
         "note": "纵轴=与神谕文本的相似度（余弦），不是含义强度。归属修正：O05 holder=玻吕茜亚（不归遐蝶）；"
@@ -866,7 +866,7 @@ def verify(data=None, verbose=False):
         if kw not in md:
             problems.append("报告缺少章节/口径：%s" % kw)
     if verbose:
-        print("\n抽查 5 点（角色, order, 版本, ΔTF-IDF, ΔSBERT）：")
+        print("\n抽查 5 点（角色, order, 版本, Δ词频加权, Δ语义向量）：")
         for c in checks:
             print("  %-5s order=%4d %s | Δtfidf=%.2e Δsbert=%.2e" % c)
         print("14 角色 / %d 步；CSV 行数 %d" % (

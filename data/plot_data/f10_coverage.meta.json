@@ -1,0 +1,17 @@
+{
+ "figure": "f10_coverage.png",
+ "title": "图10 14 个角色：出场步骤 vs 精读覆盖",
+ "axes": {
+  "x": "步骤数",
+  "y": "角色"
+ },
+ "plot_data_csv": "data/plot_data/f10_coverage.csv",
+ "sources": [
+  "data/config/character-trajectory-all.json"
+ ],
+ "filters": "A11+B3；深读=K36 刀子 ∪ 30 关键事件；annotation=74 条标注",
+ "generator": "tools/character_trajectory.py",
+ "run_command": "conda run -n nlpLesson python tools/character_trajectory.py --all",
+ "data_sha256_16": "b1f23f8dd4e04f52",
+ "created_at": "2026-10-24T21:01:17"
+}

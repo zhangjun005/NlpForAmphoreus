@@ -2,7 +2,7 @@
  "figure": "oracle_sim/赛飞儿.png",
  "title": "神谕相似度全程曲线：赛飞儿（own oracle=O08）",
  "axes": {
-  "x": "order（3.0→3.7）；左轴 TF-IDF、右轴 SBERT",
+  "x": "order（3.0→3.7）；左轴 词频加权、右轴 语义向量",
   "y": "与神谕文本的相似度（余弦，不是含义强度）"
  },
  "plot_data_csv": "data/plot_data/oracle_sim__赛飞儿.csv",
@@ -16,5 +16,5 @@
  "generator": "tools/oracle_similarity_curves.py",
  "run_command": "conda run -n nlpLesson python tools/oracle_similarity_curves.py",
  "data_sha256_16": "02938a8862e5ed86",
- "created_at": "2026-10-25T12:15:48"
+ "created_at": "2026-10-25T22:07:44"
 }
