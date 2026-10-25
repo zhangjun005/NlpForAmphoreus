@@ -1,0 +1,7 @@
+# 前端工作区：只提交代码与设计文档；数据快照与构建产物不入库（含游戏原文，公开仓库合规）
+node_modules/
+dist/
+data/
+public/data/
+*.png
+.playwright/
