@@ -5,3 +5,4 @@ data/
 public/data/
 *.png
 .playwright/
+public/materials/
