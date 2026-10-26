@@ -1,3 +1,22 @@
+/**
+ * App.jsx — 报告页面的全部内容与组件
+ *
+ * 页面结构：CHAPTERS（章节目录）/ SYNOPSIS（故事梗概）/ CONTENT（每章正文 + 图卡文字）/
+ *   CHARACTER_FIGS（角色卡）/ CHAR_GROUPS（每章角色分组；2 人以上自动整行铺开）/
+ *   图组件（FigureCard、CharCard、CharNlp、RetrievalTimeline 等）。
+ *
+ * 资源约定（重要，改图/换数据前先看这里）：
+ * - 每张图 docs/report/figures/<name>.png 都有一份「画这张图用的数据」data/plot_data/<name>.csv，
+ *   以及 data/plot_data/<name>.meta.json（记录 axes / sources / filters / generator / sha256）；
+ *   全量索引见 docs/report/figures-index.md。图 ↔ CSV ↔ meta 三者必须同步更新。
+ * - 页面里的 /figures/*.png 不是源文件：构建前 frontend/scripts/sync-assets.mjs 会把
+ *   docs/report/figures/ 下用到的图拷进 frontend/public/figures/，public/ 里的文件不要手改。
+ * - 角色卡数据 /data/chars/<角色>.json 由 sync-assets.mjs 从
+ *   data/plot_data/chars/<角色>_mini.csv（逐出场步骤的相似度 + 事件标记）
+ *   和 data/plot_data/oracle_sim__<角色>.csv（task / step_title）合并生成，字段见 useCharacterData。
+ * - 角色向量 × 神谕向量的数字：frontend/src/oracleData.js（由 tools/character_oracle_similarity.py 生成）。
+ * - 素材图 /materials/*.png 是从官方 wiki 下载的立绘/主视觉，只做装饰；缺图时 onError 会隐藏，不报错。
+ */
 import { useEffect, useState } from 'react';
 import {
   Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceDot, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
@@ -31,6 +50,7 @@ const CONTENT = {
     ],
     figures: [
       {
+        // f1_level_scores.png：箱线图：检测器 A / B1 的分数分布 vs 人工显著等级 0–3（每箱=一个等级的分数分布）；数据 data/plot_data/f1_level_scores.csv（+ .meta.json）；生成 tools/make_figures.py
         src: '/figures/f1_level_scores.png',
         title: 'f1 等级-分数箱线',
         axes: '横轴是人工显著等级（0=可忽略、1=弱、2=中、3=最强），纵轴是检测器的标准化分数（z 分数；完整定义见本图下方）。',
@@ -39,6 +59,7 @@ const CONTENT = {
         extra: '标准化分数 = 把检测器的原始分减均值、再除以标准差得到的 z 分数：0 就是全库平均，这样 A 与 B1 两套打分才能放在同一把尺子上比较。箱线图里：箱子是中间 50% 的范围，箱内横线是中位数，点（离群值）是个别异常步骤；箱子随等级上移说明方向一致，但重叠区域说明它分不等级别。',
       },
       {
+        // f15a_retrieval_mrr.png：柱状图：检索实验各方法的 MRR（4 个 variant × 6 种方法）；数据 data/plot_data/f15a_retrieval_mrr.csv（+ .meta.json）；生成 tools/split_panel_figures.py（由 f15 拆分）
         src: '/figures/f15a_retrieval_mrr.png',
         title: '神谕检索：各方法的 MRR',
         axes: '横轴是检索方法（按 variant 分组），纵轴是 MRR（平均倒数排名；完整定义见本图下方）。',
@@ -47,6 +68,7 @@ const CONTENT = {
         extra: 'MRR 是 Mean Reciprocal Rank（平均倒数排名）：把正确答案在返回列表里的名次取倒数——第 1 名得 1、第 2 名得 1/2、第 k 名得 1/k——再对所有可评问题取平均；全部排第一是 1，普遍排在很后面就接近 0。可评问题的设定见正文（v3 只有 7 个，样本小，MRR 差别只能看方向）。',
       },
       {
+        // f15b_retrieval_recall.png：折线图：v3 六种检索方法的 Recall@k（k=1/5/10/20）；数据 data/plot_data/f15b_retrieval_recall.csv（+ .meta.json）；生成 tools/split_panel_figures.py（由 f15 拆分）
         src: '/figures/f15b_retrieval_recall.png',
         title: '神谕检索：Recall@k',
         axes: '横轴是 k（前 k 名），纵轴是 Recall@k（前 k 条里出现正确答案的比例；完整定义见本图下方）。每条线是一种检索方法。',
@@ -60,6 +82,7 @@ const CONTENT = {
     ],
     lateFigures: [
   {
+          // f14a_mirror_tfidf.png：两条曲线：O10 / O11 的「词频加权」与神谕相似度，686 步逐点重合；数据 data/plot_data/f14a_mirror_tfidf.csv（+ .meta.json）；生成 tools/split_panel_figures.py（由 f14 拆分）
           src: '/figures/f14a_mirror_tfidf.png',
           title: 'O10 / O11 的镜像曲线：词频加权',
           axes: '横轴是全局步序 1–686，纵轴是与神谕的余弦相似度；实线 O10（海瑟音），虚线 O11（刻律德菈）。',
@@ -67,6 +90,7 @@ const CONTENT = {
           conclusion: '686 个点逐点相等（最大差 0）→ 词频加权完全分不开这两条命定。',
         },
         {
+          // f14b_mirror_sbert.png：两条曲线：O10 / O11 的「语义向量」相似度，只差 0.018；数据 data/plot_data/f14b_mirror_sbert.csv（+ .meta.json）；生成 tools/split_panel_figures.py（由 f14 拆分）
           src: '/figures/f14b_mirror_sbert.png',
           title: 'O10 / O11 的镜像曲线：语义向量',
           axes: '横轴是全局步序 1–686，纵轴是与神谕的余弦相似度；实线 O10，虚线 O11。',
@@ -84,6 +108,7 @@ const CONTENT = {
     ],
     figures: [
       {
+        // f7a_bai_lines.png：白厄：每版本台词条数（柱）+ 出场步骤数（线）；数据 data/plot_data/f7a_bai_lines.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f7 拆分）
         src: '/figures/f7a_bai_lines.png',
         title: '白厄：台词量（柱）与出场步骤（线）',
         axes: '横轴是版本 3.0–3.7，柱子是台词条数，折线是出场步骤数。',
@@ -91,6 +116,7 @@ const CONTENT = {
         conclusion: '3.0 台词最多（634 条）且步骤最多（56 个），而 3.5 是 0 条 0 步——缺席本身就是信号：这一版白厄一句话都没有，戏份由别人转述。',
       },
       {
+        // f7b_bai_forms.png：白厄：每版本的语言形态构成（堆叠柱，本体/卡厄斯兰那/心中的英雄等）；数据 data/plot_data/f7b_bai_forms.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f7 拆分）
         src: '/figures/f7b_bai_forms.png',
         title: '白厄：语言形态构成（堆叠）',
         axes: '横轴是版本，纵轴是台词条数，按角色的语言形态（form 字段）堆叠。',
@@ -98,6 +124,7 @@ const CONTENT = {
         conclusion: '3.4 的 711 条被拆成白厄本体 425、卡厄斯兰那 224、心中的英雄 49、盗火行者 8、幼年 4——身份峰值在这一版，而不是 3.0 的台词峰值。',
       },
       {
+        // f7c_bai_address.png：白厄：称呼词在他自己台词里的命中次数（老师/开拓者/伙伴/英雄等）；数据 data/plot_data/f7c_bai_address.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f7 拆分）
         src: '/figures/f7c_bai_address.png',
         title: '白厄：称呼词命中（自己的台词）',
         axes: '横轴是版本，纵轴是称呼词在白厄自己台词里的命中次数。',
@@ -105,6 +132,7 @@ const CONTENT = {
         conclusion: '「老师」在 3.0 命中 40 次后回落，3.3–3.4 出现「伙伴 / 英雄」——称呼的变化点（3.3 起）比台词量的峰值更早。',
       },
       {
+        // f7d_bai_detector.png：白厄：所在步骤的检测器 A / B1 平均分 + B1 前 100 命中率；数据 data/plot_data/f7d_bai_detector.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f7 拆分）
         src: '/figures/f7d_bai_detector.png',
         title: '白厄：所在步骤的检测器分数',
         axes: '横轴是版本，纵轴是所在步骤的检测器平均分（A / B1；检测器是规则+特征打分，不是训练出来的模型），虚线是 B1 前 100 命中率。',
@@ -122,6 +150,7 @@ const CONTENT = {
     ],
     figures: [
       {
+        // f8a_xi_lines.png：昔涟：每版本台词条数（柱）+ 出场步骤数（线）；数据 data/plot_data/f8a_xi_lines.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f8 拆分）
         src: '/figures/f8a_xi_lines.png',
         title: '昔涟：台词量（柱）与出场步骤（线）',
         axes: '横轴是版本 3.0–3.7，柱子是台词条数，折线是出场步骤数。',
@@ -129,6 +158,7 @@ const CONTENT = {
         conclusion: '从 3.0 的 92 条 / 11 步涨到 3.4 之后的高位（3.4 起她开始承担讲述），数量与在场深度一起上升。',
       },
       {
+        // f8b_xi_forms.png：昔涟：每版本的语言形态构成（堆叠柱，迷迷/记忆形态/往昔的涟漪等）；数据 data/plot_data/f8b_xi_forms.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f8 拆分）
         src: '/figures/f8b_xi_forms.png',
         title: '昔涟：语言形态构成（堆叠）',
         axes: '横轴是版本，纵轴是台词条数，按语言形态堆叠。',
@@ -136,6 +166,7 @@ const CONTENT = {
         conclusion: '3.0–3.3 几乎全是「迷迷」，3.4 之后切到「记忆形态 / 往昔的涟漪」，3.7 再出现另一套形态——三个切换点都能在图上指出来。',
       },
       {
+        // f8c_xi_address.png：昔涟：称呼词在她自己台词里的命中次数；数据 data/plot_data/f8c_xi_address.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f8 拆分）
         src: '/figures/f8c_xi_address.png',
         title: '昔涟：称呼词命中（自己的台词）',
         axes: '横轴是版本，纵轴是称呼词在昔涟自己台词里的命中次数。',
@@ -143,6 +174,7 @@ const CONTENT = {
         conclusion: '「开拓者」类称呼在 3.4 之后抬升，与形态切换点同相位；词面统计和 TF-IDF 曲线是同一套视角。',
       },
       {
+        // f8d_xi_detector.png：昔涟：所在步骤的检测器 A / B1 平均分 + B1 前 100 命中率；数据 data/plot_data/f8d_xi_detector.csv（+ .meta.json）；生成 tools/split_trajectory_panels.py（由 f8 拆分）
         src: '/figures/f8d_xi_detector.png',
         title: '昔涟：所在步骤的检测器分数',
         axes: '横轴是版本，纵轴是所在步骤的检测器平均分（A / B1；检测器是规则+特征打分，不是训练出来的模型），虚线是 B1 前 100 命中率。',
@@ -150,6 +182,7 @@ const CONTENT = {
         conclusion: '3.4 之后分数与命中率抬升，与「迷迷 → 讲述者」的形态切换同相位——检测器与形态字段互相印证，而不是互相替代。',
       },
       {
+        // f13_crystal_flower_semantic.png：曲线：K36 水晶花原文 vs 686 个剧情步骤的余弦相似度（leave-one-out 后 685 行，词频/语义两条线）；数据 data/plot_data/f13_crystal_flower_semantic.csv（+ .meta.json）；生成 tools/export_plot_data.py
         src: '/figures/f13_crystal_flower_semantic.png',
         title: 'f13 水晶花曲线',
         axes: '横轴是全局步序 1–686，纵轴是与 K36 原文的余弦相似度，词频加权与语义向量各一条线。',
@@ -168,6 +201,7 @@ const CONTENT = {
     ],
     figures: [
       {
+        // f4_citation_stage.png：引用台账：13 条神谕在剧情里的引用阶段分布（原文出现/他人解释/本人引用/结局宣告/改写）；数据 data/plot_data/f4_citation_stage.csv（+ .meta.json）；生成 tools/make_figures.py
         src: '/figures/f4_citation_stage.png',
         title: 'f4 引用台账（对偶与长线）',
         axes: '横轴是剧情顺序，纵轴是引用阶段（原文出现、他人解释、本人引用、结局宣告、改写）。',
@@ -175,6 +209,7 @@ const CONTENT = {
         conclusion: '本人引用 19/34、结局宣告 8 条，末次引用时本人 8/13——方向对，但只是弱趋势。',
       },
       {
+        // f10_coverage.png：条形：每个角色的出场步骤数 vs 被 L3 精读覆盖的步骤数；数据 data/plot_data/f10_coverage.csv（+ .meta.json）；生成 tools/make_figures.py
         src: '/figures/f10_coverage.png',
         title: 'f10 覆盖率图',
         axes: '横轴是角色（A 组 11 + B 组 3），纵轴是出场步骤数与被「精读」覆盖的步骤数。精读指 L3 阶段人工逐条读该角色剧情并写笔记的步骤，不是检索命中，也不是相似度阈值。',
@@ -194,6 +229,7 @@ const CONTENT = {
     ],
     figures: [
       {
+        // f12_mingtian_timeline.png：柱状：每版本「明天见」出现次数（按说话人堆叠）；数据 data/plot_data/f12_mingtian_timeline.csv（+ .meta.json）；生成 tools/export_plot_data.py
         src: '/figures/f12_mingtian_timeline.png',
         title: 'f12 明天见时间线',
         axes: '横轴是版本 3.0–3.7，纵轴是出现次数。',
@@ -201,6 +237,7 @@ const CONTENT = {
         conclusion: '3.1 峰 9 次、3.7 5 次，中间零星——「起—收」两端高，符合「客套→预言→共同体誓言」的讲述。',
       },
       {
+        // f13_crystal_flower_semantic.png：曲线：K36 水晶花原文 vs 686 个剧情步骤的余弦相似度（leave-one-out 后 685 行，词频/语义两条线）；数据 data/plot_data/f13_crystal_flower_semantic.csv（+ .meta.json）；生成 tools/export_plot_data.py
         src: '/figures/f13_crystal_flower_semantic.png',
         title: 'f13 水晶花曲线',
         axes: '横轴是全局步序（全库统一的剧情步序 1–686，与角色卡的「出场序」、正文的剧情步骤号都不是同一把尺子），纵轴是与 K36 原文的余弦相似度。',
@@ -208,6 +245,7 @@ const CONTENT = {
         conclusion: '词频加权峰在 3.7 结尾，语义向量在 3.5 闪回区有假峰——两条线不同步，说明「相似」来源不同。',
       },
       {
+        // f15a_retrieval_mrr.png：柱状图：检索实验各方法的 MRR（4 个 variant × 6 种方法）；数据 data/plot_data/f15a_retrieval_mrr.csv（+ .meta.json）；生成 tools/split_panel_figures.py（由 f15 拆分）
         src: '/figures/f15a_retrieval_mrr.png',
         title: '检索失败是这份报告的边界之一（MRR）',
         axes: '横轴是检索方法，纵轴是 MRR（正确答案排名的倒数平均：排第 1 得 1、第 k 得 1/k；同组内越高越好，跨组不可比）。',
@@ -215,6 +253,7 @@ const CONTENT = {
         conclusion: 'v3 组最好 0.132，对照组 0.48——对照组「更好」但 gold 不同、池里有干扰，不能直接说词面方法更好。',
       },
       {
+        // f15b_retrieval_recall.png：折线图：v3 六种检索方法的 Recall@k（k=1/5/10/20）；数据 data/plot_data/f15b_retrieval_recall.csv（+ .meta.json）；生成 tools/split_panel_figures.py（由 f15 拆分）
         src: '/figures/f15b_retrieval_recall.png',
         title: '检索失败：Recall@k 视角',
         axes: '横轴是 k（前 k 名），纵轴是 Recall@k（前 k 条里出现正确答案的比例；完整定义见本图下方）。每条线是一种检索方法。',
@@ -253,6 +292,10 @@ function KeyNumbers({ data }) {
   );
 }
 
+// 角色立绘文件名映射：值 = frontend/public/materials/<slug>-portrait.png
+// 这些 PNG 是从官方 wiki 下载的角色立绘，只用于角色卡左侧小头像与梗概页立绘；
+// 目前只下载到 8 位角色（下面这些），其余角色（阿格莱雅/赛飞儿/开拓者/三月七/丹恒）没有素材，
+// 组件里用 onError 隐藏 <img>，不会出破图。
 const PORTRAITS = {
   白厄: 'bai-e', 万敌: 'wan-di', 那刻夏: 'na-ke-xia', 昔涟: 'xi-lian', 遐蝶: 'xia-die',
   缇宝: 'ti-bao', 海瑟音: 'hai-se-yin', 刻律德菈: 'ke-lv-de-la',
@@ -289,23 +332,37 @@ function FigureCard({ fig }) {
 
 const CHARACTER_FIGS = {
   ch02: [
+    // 白厄_mini.png：白厄的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/白厄_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '白厄', img: '/figures/chars/白厄_mini.png', note: '沉默：唯一一次引用就是完整背出 O09 并交出名字；3.4 是身份分裂峰值' },
+    // 万敌_mini.png：万敌的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/万敌_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '万敌', img: '/figures/chars/万敌_mini.png', note: '递刀：3.1 交出弱点，两次兑现各一次' },
+    // 那刻夏_mini.png：那刻夏的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/那刻夏_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '那刻夏', img: '/figures/chars/那刻夏_mini.png', note: '配置把兑现段标得比原句早 46 步（两字段矛盾，追认只是其中一种读法）' },
   ],
   ch03: [
+    // 昔涟_mini.png：昔涟的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/昔涟_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '昔涟', img: '/figures/chars/昔涟_mini.png', note: '讲述/写书：水晶花被改写两次，3.7 峰值' },
+    // 遐蝶_mini.png：遐蝶的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/遐蝶_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '遐蝶', img: '/figures/chars/遐蝶_mini.png', note: '读反：O04 从「永恒离别」改成「拥抱=爱」' },
+    // 缇宝_mini.png：缇宝的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/缇宝_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '缇宝', img: '/figures/chars/缇宝_mini.png', note: '提炼：O02 是她从雅努斯的散文里提炼的箴言' },
   ],
   ch04: [
+    // 海瑟音_mini.png：海瑟音的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/海瑟音_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '海瑟音', img: '/figures/chars/海瑟音_mini.png', note: '镜像对：代念 O11，自己放弃征服、长眠守墓' },
+    // 刻律德菈_mini.png：刻律德菈的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/刻律德菈_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '刻律德菈', img: '/figures/chars/刻律德菈_mini.png', note: '镜像对：0 次引用神谕，把「完成」换到律法上' },
+    // 阿格莱雅_mini.png：阿格莱雅的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/阿格莱雅_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '阿格莱雅', img: '/figures/chars/阿格莱雅_mini.png', note: '全链：汝→我→结局宣告，沐浴母题仅 7 次' },
+    // 赛飞儿_mini.png：赛飞儿的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/赛飞儿_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '赛飞儿', img: '/figures/chars/赛飞儿_mini.png', note: '道具链：千年永昼是短语删改，O08=硬币' },
+    // 开拓者_mini.png：开拓者的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/开拓者_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '开拓者', img: '/figures/chars/开拓者_mini.png', note: '旁观者：3,058 条里 79.5% 是选项' },
+    // 三月七_mini.png：三月七的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/三月七_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '三月七', img: '/figures/chars/三月七_mini.png', note: '旁观者：3.1/3.3 零台词（幽灵期）' },
+    // 丹恒_mini.png：丹恒的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/丹恒_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '丹恒', img: '/figures/chars/丹恒_mini.png', note: '旁观者：1,541 条含 89 条「丹枫」' },
+    // 风堇_mini.png：风堇的三联迷你图（台词量/步骤、自身神谕相似度+事件标记、称呼 Top5）；数据 data/plot_data/chars/风堇_mini.csv；生成 tools/make_character_mini_figures.py
     { name: '风堇', img: '/figures/chars/风堇_mini.png', note: '被见证：O07 留天空、降虹光，由丹恒宣告应验' },
   ],
 };
@@ -420,6 +477,12 @@ function EventCallouts({ marks }) {
   );
 }
 
+// 拉取 /data/chars/<角色>.json：该角色逐「出场步骤」的曲线数据。
+// 每行字段：step_index=该角色第 N 次出场；version=版本；task/step_title=这一步属于哪个任务/剧情步骤；
+//   tfidf_own=与自有神谕的「词频加权」余弦；sbert_own=「语义向量」余弦；
+//   in_oracle_first/in_recitation/in_fulfillment/in_key_event/in_knife=五类事件标记（0/1，按精确 segment_id 打）；
+//   version_n_records=该版本该角色台词条数。
+// 这些 JSON 是构建前由 frontend/scripts/sync-assets.mjs 生成的，源数据在 data/plot_data/chars/。
 function useCharacterData(name) {
   const [rows, setRows] = useState(null);
   useEffect(() => {
@@ -498,6 +561,7 @@ function CharCard({ x, compact }) {
     <figure className="char-card">
       <div className="char-head">
         {PORTRAITS[x.name] && (
+          // /materials/<slug>-portrait.png = 该角色官方立绘（圆形小头像）；?v=2 是缓存刷新用的查询串
           <img className="portrait" src={`/materials/${PORTRAITS[x.name]}-portrait.png?v=2`} alt={x.name}
             onError={(e) => { e.currentTarget.style.display = 'none'; }} />
         )}
@@ -845,9 +909,12 @@ function Synopsis() {
           {SYNOPSIS.map((p, i) => <p key={i}>{p}</p>)}
         </div>
         <div className="portraits">
-          <figure><img src="/materials/bai-e-portrait.png" alt="白厄" onError={(e) => { e.currentTarget.style.display = 'none'; }} /><figcaption>白厄：被选中的人</figcaption></figure>
-          <figure><img src="/materials/xi-lian-portrait.png" alt="昔涟" onError={(e) => { e.currentTarget.style.display = 'none'; }} /><figcaption>昔涟：讲述者与写书人</figcaption></figure>
-          <figure><img src="/materials/xia-die-portrait.png" alt="遐蝶" onError={(e) => { e.currentTarget.style.display = 'none'; }} /><figcaption>遐蝶：把预言读反的人</figcaption></figure>
+          {/* /materials/bai-e-portrait.png = 白厄官方立绘（梗概页装饰图，缺失时 onError 隐藏） */}
+        <figure><img src="/materials/bai-e-portrait.png" alt="白厄" onError={(e) => { e.currentTarget.style.display = 'none'; }} /><figcaption>白厄：被选中的人</figcaption></figure>
+          {/* /materials/xi-lian-portrait.png = 昔涟官方立绘（梗概页装饰图） */}
+        <figure><img src="/materials/xi-lian-portrait.png" alt="昔涟" onError={(e) => { e.currentTarget.style.display = 'none'; }} /><figcaption>昔涟：讲述者与写书人</figcaption></figure>
+          {/* /materials/xia-die-portrait.png = 遐蝶官方立绘（梗概页装饰图） */}
+        <figure><img src="/materials/xia-die-portrait.png" alt="遐蝶" onError={(e) => { e.currentTarget.style.display = 'none'; }} /><figcaption>遐蝶：把预言读反的人</figcaption></figure>
         </div>
       </div>
     </section>
@@ -858,6 +925,7 @@ export default function App() {
   const [screens, setScreens] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
+    // /data/screens.json：章节级基础数据快照（标题/摘要/计数），当前页面正文主要用 CONTENT 常量， 这个请求只保留兼容
     fetch('/data/screens.json')
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then(setScreens)

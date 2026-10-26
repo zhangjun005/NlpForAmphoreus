@@ -1,3 +1,6 @@
+/* styles.css — 报告页面全部样式（无 UI 框架）。
+   图的展示约定：.figure-card.split = 左图右文；.figure-card.wide = 整行大图；
+   资源路径 /figures/*、/materials/* 指向 frontend/public 下由构建脚本同步的产物。 */
 :root {
   --ink: #18212b;
   --muted: #65717d;
@@ -28,6 +31,8 @@ body {
   background: var(--dark);
   color: #fff;
 }
+/* 首屏背景：/materials/official-amphoreus-key-visual.png = 官方主视觉原画（3.1MB 大图，仅首屏用），
+   上面叠一层从左到右的深蓝渐变，保证白色标题可读。 */
 .hero-bg {
   position: absolute;
   inset: 0;

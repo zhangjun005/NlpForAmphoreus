@@ -1,3 +1,14 @@
+/**
+ * oracleData.js — 角色向量 × 神谕向量的派生数据（自动生成，勿手改）
+ * 生成脚本：tools/character_oracle_similarity.py
+ *   - ORACLES: 13 条神谕原文 { O01: { text, holder } }，来源 data/corpus/oracles.jsonl
+ *   - OWN_ORACLE: 每个角色的自有神谕编号（丹恒承接 O12；开拓者/三月七没有）
+ *   - CHAR_ORACLE_RANK: 每个角色「自有神谕」在 13 条里的排名与相似度（tfidf / sbert 两种表示）
+ *   - CHAR_ORACLE_MATRIX: 14 角色 × 13 神谕 × 2 种表示的完整余弦矩阵（8.5KB）
+ * 数据源：data/models/character_centroids.npz（角色质心）+ data/models/vec_rec.joblib +
+ *   data/models/sbert_model（语义向量）+ data/corpus/oracles.jsonl；配置快照在
+ *   data/config/character-oracle-similarity.json。
+ */
 // 由 tools/character_oracle_similarity.py 生成（角色向量 × 神谕向量），勿手改
 export const ORACLES = {
  "O01": {

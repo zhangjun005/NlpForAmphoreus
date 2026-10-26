@@ -10,6 +10,9 @@ const repo = join(frontend, '..');
 const figDir = join(frontend, 'public', 'figures');
 mkdirSync(figDir, { recursive: true });
 
+// 需要拷进 public/ 的报告图（源：docs/report/figures/<name>.png）。
+// 每张图在 data/plot_data/<name>.csv 有配对数据、在 <name>.meta.json 有 sha256；
+// 目录说明见 docs/report/figures-index.md，这里只列页面真正用到的图。
 const figures = [
   'f1_level_scores.png',
   'f4_citation_stage.png',
