@@ -17,6 +17,6 @@
 | L3 笔记 14 份 + 归档 14 份 | ✅ | runtime=14 archive=14 |
 | 上下文表 ≥14 个角色（含荒笛历史派生） | ✅ | files=15 |
 | 报告 7 章草稿 + 术语表 + 合并稿 | ✅ | drafts=8 merged=true |
-| git 工作区干净（派生数据除外） | ❌ |  M data/config/oracle-similarity-curves.json /  M docs/report/figures-index.md /  M "docs/report/figures/chars/\344\270\207\346\225\214_mini.png" /  M "docs/report/figures/chars/\344\270\211\346\234\210\344\270\203_mini.png" /  M "docs/report/figures/chars/\344\270\271\346\201\222_mini.png" |
+| git 工作区干净（派生数据除外） | ✅ | clean |
 
-**通过 13/14**
+**通过 14/14**
