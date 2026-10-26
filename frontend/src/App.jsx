@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import {
-  Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis,
+  Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ReferenceDot, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from 'recharts';
 
 const CHAPTERS = [
   { id: 'ch00', num: '0', title: '故事梗概：被循环困住的世界', kicker: '先看故事，再看数据' },
   { id: 'ch01', num: '1', title: '从剧情到数据：表示、模型与读图', kicker: '两种表示：词频加权与语义向量' },
-  { id: 'ch02', num: '2', title: '承受命定的人：沉默、递刀与追认', kicker: '白厄 / 万敌 / 那刻夏' },
+  { id: 'ch02', num: '2', title: '与命定交手的人：沉默、递刀与追认', kicker: '白厄 / 万敌 / 那刻夏' },
   { id: 'ch03', num: '3', title: '改写命定的人：讲述、读反与提炼', kicker: '昔涟 / 遐蝶 / 缇宝' },
   { id: 'ch04', num: '4', title: '对偶、长线与旁观者：交换、引用链与外来视角', kicker: '海瑟音×刻律德菈 / 阿格莱雅×赛飞儿 / 列车组' },
   { id: 'ch05', num: '5', title: '收束：13 条兑现、明天见、水晶花', kicker: '告别、明天与收梢' },
@@ -97,15 +97,15 @@ const CONTENT = {
     pieces: [
       '海瑟音与刻律德菈：O10 属海瑟音、O11 属刻律德菈，两条话用词相同、只换语序。但引用分布极不对称：刻律德菈本人 0 次引用神谕，O11 全篇唯一一次出现是海瑟音替她念的（#20228）。兑现也交换了：刻律德菈死于「天地境界之海，一汪浅浅的死水」（#20339–#20340），「完成征服」却落空（#20353）；海瑟音献出余生的清醒与自由（#19814）。半句交换的动作是刻律德菈亲手完成的：赠送「天地境界之海」（#20322）、交付「天外的大海」（#20354）。这一组要记住的结论是：归属由「谁引用、谁兑现、把命定交给谁」决定，而不是词语。',
       '阿格莱雅完成最完整的引用链：「汝将最后一次沐浴……」（#7458）→ 故人之音把「汝」换成「我」（#14241–#14242）→ 结局宣告「我将最后一次沐浴……现在，是时候将其兑现了」（#16615）；她的退场还接在 K06 遗书与白厄「更好的人」悼词（#12683–#12703、#12746–#12781）之后，不是只有金句。赛飞儿的「千年永昼」只是一次时间短语删改（#14400→#14570）；O08 的「分文」就是她的硬币（#10329–#10342），被夺走后她才失速而死（#14558→#14577–#14578）。',
-      '列车组：开拓者 3,058 条里 79.5% 是玩家选项，真实对白与短信只有 626 条；三月七 3.1/3.3 零台词（幽灵期）；丹恒 1,541 条含 89 条「丹枫」。所以列车组单列、不与黄金裔比较：他们的主线塑造在翁法罗斯之外。风堇则是 O07「在彩虹桥的尽头，天空之子将缝补晨昏」的持有者：她把「缝补晨昏」解释成医疗行为（#13042），在 3.3 留天空、降下虹光（#14642–#14643），并由丹恒宣告应验（#14656–#14657）——是「被他人见证的兑现」。',
+      '列车组：开拓者 3,058 条里 79.5% 是玩家选项，真实对白与短信只有 626 条；三月七 3.1/3.3 零台词（幽灵期）；丹恒 1,541 条含 89 条「丹枫」，3.6 承接大地火种（荒笛 → 丹恒）。所以列车组单列、不与黄金裔比较：他们的主线塑造在翁法罗斯之外。风堇则是 O07「在彩虹桥的尽头，天空之子将缝补晨昏」的持有者：她把「缝补晨昏」解释成医疗行为（#13042），在 3.3 留天空、降下虹光（#14642–#14643），并由丹恒宣告应验（#14656–#14657）——是「被他人见证的兑现」。',
     ],
     figures: [
       {
-        src: '/figures/f14_mirror_pair_O10_O11.png',
-        title: 'f14 镜像曲线（对偶组）',
-        axes: '横轴：全局步序；纵轴：与 O10/O11 的余弦相似度。',
-        judge: '两条线分离大 = 能区分两条镜像命定（好）；重合 = 分不开（坏）。',
-        conclusion: '词频加权逐点重合，语义向量平均差 0.005、最大 0.018 → 两种表示都分不开，归属只能靠引用与兑现判。',
+        src: '/figures/f4_citation_stage.png',
+        title: 'f4 引用台账（对偶与长线）',
+        axes: '横轴：剧情顺序；纵轴：引用阶段（原文出现/他人解释/本人引用/结局宣告/改写）。',
+        judge: '阶段从「原文出现/他人解释」移到「本人引用/结局宣告」= 接管完成（好）；停在他人/旁白 = 没接管。',
+        conclusion: '本人引用 19/34、结局宣告 8 条，末次引用时本人 8/13——方向对，但只是弱趋势。',
       },
       {
         src: '/figures/f10_coverage.png',
@@ -263,8 +263,24 @@ function CharCard({ x }) {
     .map((v) => ({ version: v, 台词量: byVersion[v] || 0 }));
   const curveData = (rows || []).map((r) => ({
     步序: r.step_index, 词频加权: r.tfidf_own, 语义向量: r.sbert_own,
+    version: r.version, task: r.task, title: r.step_title,
     events: EVENT_FLAGS.filter((f) => r[f.key]).map((f) => f.name),
   }));
+  // 版本边界（横轴按版本分段）
+  const boundaries = [];
+  let lastV = null;
+  for (const d of curveData) {
+    if (d.version !== lastV) { boundaries.push({ step: d.步序, version: d.version }); lastV = d.version; }
+  }
+  // 事件清单（去重、按步序，最多 8 条，展示剧情标题）
+  const evRows = [];
+  const seen = new Set();
+  for (const d of curveData) {
+    if (!d.events.length || seen.has(d.步序)) continue;
+    seen.add(d.步序);
+    evRows.push({ 步序: d.步序, version: d.version, 事件类型: d.events.join('/'), 标题: d.title, 任务: d.task });
+    if (evRows.length >= 8) break;
+  }
   return (
     <figure className="char-card">
       <div className="char-head">
@@ -273,10 +289,9 @@ function CharCard({ x }) {
             onError={(e) => { e.currentTarget.style.display = 'none'; }} />
         )}
         <strong>{x.name}</strong>
-        <span className="char-meta">{x.note}</span>
       </div>
       <div className="tiny-chart">
-        <ResponsiveContainer width="100%" height={110}>
+        <ResponsiveContainer width="100%" height={100}>
           <BarChart data={countData} margin={{ top: 6, right: 8, left: -18, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#dbe2e7" />
             <XAxis dataKey="version" tick={{ fontSize: 10 }} />
@@ -288,26 +303,47 @@ function CharCard({ x }) {
         <p className="chart-cap">每版本台词条数（横轴=版本；纵轴=条数）</p>
       </div>
       <div className="tiny-chart">
-        <ResponsiveContainer width="100%" height={170}>
-          <LineChart data={curveData} margin={{ top: 8, right: 10, left: -18, bottom: 0 }}>
+        <ResponsiveContainer width="100%" height={190}>
+          <LineChart data={curveData} margin={{ top: 18, right: 12, left: -18, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#dbe2e7" />
-            <XAxis dataKey="步序" tick={{ fontSize: 10 }} />
+            <XAxis dataKey="步序" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
             <YAxis tick={{ fontSize: 10 }} domain={[0, 'auto']} />
-            <Tooltip />
+            <Tooltip
+              labelFormatter={(v) => `该角色第 ${v} 次出场`}
+              formatter={(value, name, item) => {
+                const p = item && item.payload;
+                if (!p) return [value, name];
+                return [`${value}（${p.version}｜${p.title || p.task}）`, name];
+              }}
+            />
             <Legend wrapperStyle={{ fontSize: 10 }} />
-            <Line type="monotone" dataKey="词频加权" stroke="#8aa6bf" dot={false} strokeWidth={1.2} />
-            <Line type="monotone" dataKey="语义向量" stroke="#c0703a" dot={false} strokeWidth={1.4} />
+            <Line type="monotone" dataKey="词频加权" stroke="#8aa6bf" dot={false} strokeWidth={1.1} />
+            <Line type="monotone" dataKey="语义向量" stroke="#c0703a" dot={false} strokeWidth={1.3} />
+            {boundaries.map((b) => (
+              <ReferenceLine key={`v-${b.step}`} x={b.step} stroke="#9aa7b3" strokeDasharray="2 3"
+                label={{ value: b.version, position: 'insideTopRight', fontSize: 9, fill: '#65717d' }} />
+            ))}
             {EVENT_FLAGS.map((f) => curveData
               .filter((d) => d.events.includes(f.name))
-              .slice(0, 2)
               .map((d) => (
                 <ReferenceDot key={`${f.key}-${d.步序}`} x={d.步序} y={d.语义向量} r={3}
-                  fill={f.color} stroke="white" strokeWidth={0.5}
-                  label={{ value: f.name, position: 'top', fontSize: 9, fill: f.color }} />
+                  fill={f.color} stroke="white" strokeWidth={0.5} />
               )))}
           </LineChart>
         </ResponsiveContainer>
-        <p className="chart-cap">与自己神谕的相似度（横轴=该角色第 N 次出场；纵轴=余弦相似度；彩色点=事件，名称已标注）</p>
+        <p className="chart-cap">与自己神谕的相似度（横轴=该角色第 N 次出场，虚线=版本边界；彩色点=事件，标题见下表）</p>
+        {evRows.length > 0 && (
+          <table className="event-table">
+            <thead><tr><th>第 N 步</th><th>版本</th><th>事件</th><th>剧情标题</th></tr></thead>
+            <tbody>
+              {evRows.map((e) => (
+                <tr key={e.步序}>
+                  <td>{e.步序}</td><td>{e.version}</td><td>{e.事件类型}</td><td>{e.标题 || e.任务}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <figcaption><p>{x.note}</p></figcaption>
     </figure>

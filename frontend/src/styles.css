@@ -236,3 +236,7 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .char-meta { margin-left: auto; font-size: 11px; color: var(--muted); max-width: 55%; text-align: right; }
 .tiny-chart { padding: 4px 10px 0; }
 .chart-cap { margin: 2px 0 8px; font-size: 11px; color: var(--muted); }
+
+.event-table { width: 100%; border-collapse: collapse; margin: 4px 0 10px; font-size: 11px; }
+.event-table th, .event-table td { text-align: left; padding: 3px 6px; border-bottom: 1px solid var(--line); }
+.event-table th { color: var(--muted); font-weight: 500; }
