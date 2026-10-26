@@ -80,7 +80,7 @@ for ch in CHARS:
     a1.grid(axis="y", alpha=0.25)
 
     if curve:
-        xo = [r["order"] for r in curve]
+        xo = list(range(1, len(curve) + 1))  # 该角色第 N 次出场（order 会重复，不能当横轴）
         a2.plot(xo, [r["tfidf_own"] for r in curve], color="#8aa6bf", lw=0.9, label="词频加权")
         a2.plot(xo, [r["sbert_own"] for r in curve], color="#c0703a", lw=1.2, label="语义向量")
         labels = {"in_oracle_first": "首现", "in_recitation": "吟诵", "in_fulfillment": "兑现",
@@ -91,13 +91,13 @@ for ch in CHARS:
             pts = [r for r in curve if r.get(flag) in (1, "1")]
             if not pts:
                 continue
-            a2.scatter([r["order"] for r in pts], [r["sbert_own"] for r in pts], s=20, color=colors[flag],
+            a2.scatter([xo[curve.index(r)] for r in pts], [r["sbert_own"] for r in pts], s=20, color=colors[flag],
                        zorder=5, label=nm)
             for r in pts[:2]:
-                a2.annotate(nm, (r["order"], r["sbert_own"]), fontsize=6.5, color=colors[flag],
+                a2.annotate(nm, (xo[curve.index(r)], r["sbert_own"]), fontsize=6.5, color=colors[flag],
                             xytext=(0, 7), textcoords="offset points", ha="center")
         if own:
-            a2.set_title(f"与 {own}（自己的神谕）相似度；标注=关键时刻名称", fontsize=8.5)
+            a2.set_title(f"与 {own}（自己的神谕）相似度（横轴=该角色第 N 次出场）", fontsize=8.5)
         a2.tick_params(labelsize=7)
         a2.legend(fontsize=6, frameon=False, loc="upper left")
         a2.grid(alpha=0.2)

@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import {
+  Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ReferenceDot, ResponsiveContainer, Tooltip, XAxis, YAxis,
+} from 'recharts';
 
 const CHAPTERS = [
   { id: 'ch00', num: '0', title: '故事梗概：被循环困住的世界', kicker: '先看故事，再看数据' },
@@ -195,7 +198,7 @@ function FigureCard({ fig }) {
       <figcaption>
         <strong>{fig.title}</strong>
         <p><em>轴</em>：{fig.axes}</p>
-        <p><em>怎么判好坏</em>：{fig.judge}</p>
+        <p><em>怎么读</em>：{fig.judge}</p>
         <p><em>本图结论</em>：{fig.conclusion}</p>
       </figcaption>
     </figure>
@@ -230,7 +233,38 @@ const CHAR_GROUPS = {
   ch04: [[['海瑟音', '刻律德菈'], 0], [['阿格莱雅', '赛飞儿'], 1], [['开拓者', '三月七', '丹恒'], 2]],
 };
 
+const EVENT_FLAGS = [
+  { key: 'in_oracle_first', name: '神谕首现', color: '#2c3e50' },
+  { key: 'in_recitation', name: '吟诵', color: '#8e44ad' },
+  { key: 'in_fulfillment', name: '兑现', color: '#c0392b' },
+  { key: 'in_key_event', name: '关键事件', color: '#2e8b57' },
+  { key: 'in_knife', name: '刀子', color: '#d35400' },
+];
+
+function useCharacterData(name) {
+  const [rows, setRows] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    fetch(`/data/chars/${encodeURIComponent(name)}.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((d) => { if (alive) setRows(d); })
+      .catch(() => { if (alive) setRows([]); });
+    return () => { alive = false; };
+  }, [name]);
+  return rows;
+}
+
 function CharCard({ x }) {
+  const rows = useCharacterData(x.name);
+  // 每版本台词量（柱状）
+  const byVersion = {};
+  for (const r of rows || []) byVersion[r.version] = r.version_n_records;
+  const countData = ['3.0', '3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7']
+    .map((v) => ({ version: v, 台词量: byVersion[v] || 0 }));
+  const curveData = (rows || []).map((r) => ({
+    步序: r.step_index, 词频加权: r.tfidf_own, 语义向量: r.sbert_own,
+    events: EVENT_FLAGS.filter((f) => r[f.key]).map((f) => f.name),
+  }));
   return (
     <figure className="char-card">
       <div className="char-head">
@@ -239,8 +273,42 @@ function CharCard({ x }) {
             onError={(e) => { e.currentTarget.style.display = 'none'; }} />
         )}
         <strong>{x.name}</strong>
+        <span className="char-meta">{x.note}</span>
       </div>
-      <img className="mini" src={`${x.img}?v=2`} alt={`${x.name} 迷你图`} loading="lazy" />
+      <div className="tiny-chart">
+        <ResponsiveContainer width="100%" height={110}>
+          <BarChart data={countData} margin={{ top: 6, right: 8, left: -18, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#dbe2e7" />
+            <XAxis dataKey="version" tick={{ fontSize: 10 }} />
+            <YAxis tick={{ fontSize: 10 }} />
+            <Tooltip />
+            <Bar dataKey="台词量" fill="#5b7f9e" />
+          </BarChart>
+        </ResponsiveContainer>
+        <p className="chart-cap">每版本台词条数（横轴=版本；纵轴=条数）</p>
+      </div>
+      <div className="tiny-chart">
+        <ResponsiveContainer width="100%" height={170}>
+          <LineChart data={curveData} margin={{ top: 8, right: 10, left: -18, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#dbe2e7" />
+            <XAxis dataKey="步序" tick={{ fontSize: 10 }} />
+            <YAxis tick={{ fontSize: 10 }} domain={[0, 'auto']} />
+            <Tooltip />
+            <Legend wrapperStyle={{ fontSize: 10 }} />
+            <Line type="monotone" dataKey="词频加权" stroke="#8aa6bf" dot={false} strokeWidth={1.2} />
+            <Line type="monotone" dataKey="语义向量" stroke="#c0703a" dot={false} strokeWidth={1.4} />
+            {EVENT_FLAGS.map((f) => curveData
+              .filter((d) => d.events.includes(f.name))
+              .slice(0, 2)
+              .map((d) => (
+                <ReferenceDot key={`${f.key}-${d.步序}`} x={d.步序} y={d.语义向量} r={3}
+                  fill={f.color} stroke="white" strokeWidth={0.5}
+                  label={{ value: f.name, position: 'top', fontSize: 9, fill: f.color }} />
+              )))}
+          </LineChart>
+        </ResponsiveContainer>
+        <p className="chart-cap">与自己神谕的相似度（横轴=该角色第 N 次出场；纵轴=余弦相似度；彩色点=事件，名称已标注）</p>
+      </div>
       <figcaption><p>{x.note}</p></figcaption>
     </figure>
   );
@@ -276,7 +344,7 @@ function Section({ ch, data }) {
       ))}
       {(c.figures || []).length > 0 && (
         <div className="figure-block">
-          <h3 className="block-title">关键图（轴 / 怎么判好坏 / 本图结论）</h3>
+          <h3 className="block-title">关键图（轴 / 怎么读 / 本图结论）</h3>
           <div className="figure-grid">
             {(c.figures || []).map((f) => <FigureCard fig={f} key={f.src + f.title} />)}
           </div>

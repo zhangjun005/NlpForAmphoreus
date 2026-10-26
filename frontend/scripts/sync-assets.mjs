@@ -1,5 +1,5 @@
 // sync-assets.mjs — 把仓库里的图与章节数据复制进前端 public（构建前自动跑）
-import { copyFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { copyFileSync, mkdirSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -32,6 +32,29 @@ mkdirSync(charsOut, { recursive: true });
 if (existsSync(charsDir)) {
   for (const f of readdirSync(charsDir)) {
     if (f.endsWith('.png')) copyFileSync(join(charsDir, f), join(charsOut, f));
+  }
+}
+
+// 角色曲线 CSV → JSON（供前端 Recharts 组件使用）
+const charsJsonDir = join(frontend, 'public', 'data', 'chars');
+mkdirSync(charsJsonDir, { recursive: true });
+const charsCsvDir = join(repo, 'data', 'plot_data', 'chars');
+if (existsSync(charsCsvDir)) {
+  for (const f of readdirSync(charsCsvDir)) {
+    if (!f.endsWith('_mini.csv')) continue;
+    const raw = readFileSync(join(charsCsvDir, f), 'utf8').replace(/^\uFEFF/, '').trim().split(/\r?\n/);
+    const head = raw[0].split(',');
+    const rows = raw.slice(1).map((line) => {
+      const parts = line.split(',');
+      const o = {};
+      head.forEach((h, i) => {
+        const v = parts[i];
+        o[h] = ['order','n_lines','version_n_records','in_oracle_first','in_recitation','in_fulfillment','in_key_event','in_knife','step_index'].includes(h) ? Number(v) : (h === 'version' ? v : Number(v));
+      });
+      return o;
+    });
+    rows.forEach((r, i) => { r.step_index = i + 1; });
+    writeFileSync(join(charsJsonDir, f.replace('_mini.csv', '.json')), JSON.stringify(rows));
   }
 }
 

@@ -231,3 +231,8 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
   .char-row { grid-template-columns: 1fr; gap: 14px; }
   .char-left { grid-template-columns: 1fr; }
 }
+
+/* chart cards */
+.char-meta { margin-left: auto; font-size: 11px; color: var(--muted); max-width: 55%; text-align: right; }
+.tiny-chart { padding: 4px 10px 0; }
+.chart-cap { margin: 2px 0 8px; font-size: 11px; color: var(--muted); }
