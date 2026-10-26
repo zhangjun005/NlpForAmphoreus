@@ -10,6 +10,7 @@
 }
 
 * { box-sizing: border-box; }
+img, svg { max-width: 100%; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -51,6 +52,7 @@ body {
   margin: 16px 0 12px;
   font-size: clamp(40px, 6.4vw, 76px);
   line-height: 1.1;
+  text-wrap: balance;
 }
 .lede {
   max-width: 620px;
@@ -76,10 +78,12 @@ body {
   gap: 20px;
   padding: 12px max(24px, calc((100% - 1180px) / 2));
   overflow-x: auto;
+  scrollbar-width: none;
   background: #fffffff2;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
+.chapter-nav::-webkit-scrollbar { display: none; }
 .chapter-nav a {
   white-space: nowrap;
   color: var(--ink);
@@ -103,6 +107,7 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
   margin: 8px 0 4px;
   font-size: clamp(26px, 3.4vw, 40px);
   line-height: 1.25;
+  text-wrap: balance;
 }
 .kicker { margin: 0; color: var(--muted); font-size: 15px; }
 
@@ -124,6 +129,7 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
+  min-width: 0;
 }
 .figure-card img { display: block; width: 100%; height: auto; background: #fff; }
 .figure-card figcaption { padding: 14px 16px 16px; font-size: 13.5px; }
@@ -200,7 +206,7 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .prose p { margin: 0 0 16px; font-size: 15.5px; }
 .block-title { margin: 26px 0 12px; font-size: 15px; color: #39434d; }
 .char-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
-.char-card { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.char-card { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: visible; }
 .char-card img { display: block; width: 100%; height: auto; }
 .char-card figcaption { padding: 10px 12px 12px; font-size: 13px; }
 .char-card figcaption strong { display: block; margin-bottom: 4px; }
@@ -224,7 +230,8 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 
 /* ---------- character rows: left 6 : right 4 ---------- */
 .char-row { display: grid; grid-template-columns: 6fr 4fr; gap: 26px; align-items: start; margin: 26px 0 34px; }
-.char-left { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.char-left { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 14px; min-width: 0; }
+.char-right { min-width: 0; }
 .char-right .char-names { margin: 0 0 8px; font-size: 17px; }
 .char-right p { margin: 0; font-size: 15px; }
 @media (max-width: 900px) {
@@ -234,9 +241,94 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 
 /* chart cards */
 .char-meta { margin-left: auto; font-size: 11px; color: var(--muted); max-width: 55%; text-align: right; }
-.tiny-chart { padding: 4px 10px 0; }
+.tiny-chart { padding: 4px 10px 0; container-type: inline-size; }
 .chart-cap { margin: 2px 0 8px; font-size: 11px; color: var(--muted); }
+
+/* 窄卡片（第 4 章三列并排时）降级：尺子隔一个标一个，事件表隐藏版本列 */
+@container (max-width: 320px) {
+  .ver-ruler { font-size: 9px; }
+  .ver-ruler span:nth-child(odd) { visibility: hidden; }
+  .event-table th:nth-child(2), .event-table td:nth-child(2) { display: none; }
+  .event-table { font-size: 10.5px; }
+}
 
 .event-table { width: 100%; border-collapse: collapse; margin: 4px 0 10px; font-size: 11px; }
 .event-table th, .event-table td { text-align: left; padding: 3px 6px; border-bottom: 1px solid var(--line); }
 .event-table th { color: var(--muted); font-weight: 500; }
+.event-table th:nth-child(1), .event-table td:nth-child(1) { width: 30px; }
+.event-table th:nth-child(2), .event-table td:nth-child(2) { width: 40px; }
+.event-table td:last-child { overflow-wrap: anywhere; }
+.event-table tr.is-marked td { background: #fbf5e9; color: var(--ink); }
+
+/* 悬停读数：固定落在光标下方，窄而小，不再盖住图 */
+.char-tip {
+  max-width: 190px;
+  padding: 5px 8px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(21, 39, 63, .14);
+  font-size: 11px;
+  line-height: 1.5;
+  color: #39434d;
+}
+.char-tip-h { font-weight: 700; color: var(--ink); }
+.char-tip-b { color: var(--muted); }
+
+/* 手绘图例（Recharts 的 Legend 会挤占绘图区，且字号/配色不可控） */
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 2px 0 0;
+  font-size: 11px;
+  color: #46515b;
+}
+.chart-legend i {
+  display: inline-block;
+  width: 16px;
+  height: 3px;
+  border-radius: 2px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+/* 版本尺：图下方按出场次数比例分段，替代原先挤在轴内的 9px 标签 */
+.ver-ruler {
+  display: flex;
+  margin: 2px 10px 0;
+  padding-top: 3px;
+  border-top: 1px dashed var(--line);
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.ver-ruler span {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media (max-width: 1080px) {
+  .char-row { grid-template-columns: 1fr; gap: 14px; }
+  .char-right { order: -1; }
+  .char-left { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .hero-inner { padding: 82px 20px 48px; }
+  .hero h1 { max-width: 100%; font-size: clamp(36px, 11vw, 48px); line-height: 1.16; }
+  .lede { font-size: 16px; line-height: 1.8; }
+  .meta-chips { gap: 6px; }
+  .meta-chips span { padding: 4px 9px; font-size: 12px; }
+  .chapter-nav { gap: 18px; padding-inline: 18px; }
+  .chapter { padding: 58px 0 30px; }
+  .chapter-head h2 { font-size: clamp(25px, 8vw, 34px); }
+  .key-grid { grid-template-columns: 1fr; }
+  .char-left { grid-template-columns: 1fr; }
+  .figure-card figcaption { padding: 12px 13px 14px; font-size: 12.5px; }
+  .event-table { font-size: 10px; table-layout: fixed; }
+  .event-table td, .event-table th { padding: 4px; }
+  .event-table th:nth-child(3), .event-table td:nth-child(3) { width: 27%; }
+}

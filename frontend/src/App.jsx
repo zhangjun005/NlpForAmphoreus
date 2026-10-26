@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import {
-  Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ReferenceDot, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
+  Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceDot, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
+  usePlotArea, useXAxisScale, useYAxisScale,
 } from 'recharts';
 
 const CHAPTERS = [
@@ -241,6 +242,93 @@ const EVENT_FLAGS = [
   { key: 'in_knife', name: '刀子', color: '#d35400' },
 ];
 
+// 图上直接标注的关键事件（按优先级各取最早一次，最多 3 条）
+const ANNOT_FLAGS = [
+  { key: 'in_fulfillment', name: '兑现', color: '#c0392b' },
+  { key: 'in_knife', name: '刀子', color: '#b4551c' },
+  { key: 'in_oracle_first', name: '神谕首现', color: '#2f3e4e' },
+  { key: 'in_recitation', name: '吟诵', color: '#8e44ad' },
+];
+
+function clip(text, max = 16) {
+  const t = String(text || '');
+  return t.length > max ? `${t.slice(0, max)}…` : t;
+}
+
+// 悬停读数：固定出现在光标下方（allowEscapeViewBox.y），不再盖住图
+function CharTip({ active, payload, bar }) {
+  if (!active || !payload || !payload.length) return null;
+  const p = payload[0].payload || {};
+  if (bar) {
+    return (
+      <div className="char-tip">
+        <div className="char-tip-h">版本 {p.version}</div>
+        <div className="char-tip-b">台词 {p['台词量']} 条</div>
+      </div>
+    );
+  }
+  const pick = (k) => {
+    const item = payload.find((x) => x.dataKey === k);
+    return item && typeof item.value === 'number' ? item.value.toFixed(3) : '—';
+  };
+  return (
+    <div className="char-tip">
+      <div className="char-tip-h">{p.version}｜{clip(p.title || p.task)}</div>
+      <div className="char-tip-b">第 {p['步序']} 次出场　词频加权 {pick('词频加权')}　语义向量 {pick('语义向量')}</div>
+    </div>
+  );
+}
+
+// 用 recharts 3 的坐标 hook 把数据点换算成像素，画带箭头的标注
+function EventCallouts({ marks }) {
+  const xScale = useXAxisScale();
+  const yScale = useYAxisScale();
+  const plot = usePlotArea();
+  if (!marks.length || !xScale || !yScale || !plot) return null;
+  const left = plot.x;
+  const right = plot.x + plot.width;
+  const top = plot.y;
+  // 卡片很窄时只标最重要的一条，且不写版本号，避免箭头文字被裁掉
+  const narrow = plot.width < 320;
+  const shown = narrow ? marks.slice(0, 1) : marks;
+  const pad = narrow ? 28 : 36;
+  return (
+    <g className="callouts">
+      {shown.map((m, idx) => {
+        const cx = xScale(m.step);
+        const cy = yScale(m.y);
+        if (cx == null || cy == null || Number.isNaN(cx) || Number.isNaN(cy)) return null;
+        const above = cy - top > 54;
+        const labelY = above ? cy - 24 - (idx % 2) * 18 : cy + 30 + (idx % 2) * 16;
+        const lx = Math.min(Math.max(cx, left + pad), right - pad);
+        const dx = cx - lx;
+        const dy = cy - labelY;
+        const len = Math.hypot(dx, dy) || 1;
+        const ux = dx / len;
+        const uy = dy / len;
+        const tip = { x: cx - ux * 4, y: cy - uy * 4 };
+        const base = { x: tip.x - ux * 7, y: tip.y - uy * 7 };
+        const px = -uy * 3.2;
+        const py = ux * 3.2;
+        return (
+          <g key={`m-${m.step}`}>
+            <line x1={lx} y1={labelY + (above ? 5 : -10)} x2={base.x} y2={base.y}
+              stroke={m.color} strokeWidth={0.9} strokeDasharray="2 2" opacity={0.85} />
+            <polygon
+              points={`${tip.x},${tip.y} ${base.x + px},${base.y + py} ${base.x - px},${base.y - py}`}
+              fill={m.color} />
+            <circle cx={cx} cy={cy} r={3.4} fill="#fff" stroke={m.color} strokeWidth={1.6} />
+            <text x={lx} y={labelY} textAnchor="middle" fontSize={10.5} fontWeight={700} fill={m.color}
+              style={{ paintOrder: 'stroke', stroke: '#ffffff', strokeWidth: 3, strokeLinejoin: 'round' }}>
+              {narrow ? m.name : m.label}
+            </text>
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
 function useCharacterData(name) {
   const [rows, setRows] = useState(null);
   useEffect(() => {
@@ -266,20 +354,54 @@ function CharCard({ x }) {
     version: r.version, task: r.task, title: r.step_title,
     events: EVENT_FLAGS.filter((f) => r[f.key]).map((f) => f.name),
   }));
-  // 版本边界（横轴按版本分段）
+  // 版本边界（竖虚线）+ 版本尺（图下方按出场次数比例分段，替代原先挤在轴内的标签）
   const boundaries = [];
+  const verSegs = [];
   let lastV = null;
   for (const d of curveData) {
-    if (d.version !== lastV) { boundaries.push({ step: d.步序, version: d.version }); lastV = d.version; }
+    if (d.version !== lastV) {
+      boundaries.push({ step: d.步序, version: d.version });
+      verSegs.push({ version: d.version, n: 0 });
+      lastV = d.version;
+    }
+    verSegs[verSegs.length - 1].n += 1;
   }
-  // 事件清单（去重、按步序，最多 8 条，展示剧情标题）
-  const evRows = [];
+  // 图上直接标注：每类事件取最早一次，且彼此在横轴上留出间距（最多 3 条）
+  const marks = [];
+  const usedSteps = new Set();
+  const span = curveData.length > 1 ? curveData[curveData.length - 1].步序 - curveData[0].步序 : 0;
+  const minGap = Math.max(6, span * 0.07);
+  for (const f of ANNOT_FLAGS) {
+    const row = (rows || []).find((r) => r[f.key] && !usedSteps.has(r.step_index));
+    if (!row) continue;
+    if (marks.some((m) => Math.abs(m.step - row.step_index) < minGap)) continue;
+    usedSteps.add(row.step_index);
+    marks.push({
+      step: row.step_index, y: row.sbert_own, color: f.color,
+      name: f.name, version: row.version, label: `${f.name} ${row.version}`,
+    });
+    if (marks.length >= 3) break;
+  }
+  // 事件清单：图上标注的排在前面，其次是有具体类型（兑现/刀子/吟诵/神谕首现）的行，其余只有「关键事件」的不占版面
+  const allEv = [];
   const seen = new Set();
   for (const d of curveData) {
     if (!d.events.length || seen.has(d.步序)) continue;
     seen.add(d.步序);
-    evRows.push({ 步序: d.步序, version: d.version, 事件类型: d.events.join('/'), 标题: d.title, 任务: d.task });
-    if (evRows.length >= 8) break;
+    allEv.push({
+      步序: d.步序, version: d.version, marked: usedSteps.has(d.步序),
+      事件类型: d.events.filter((n) => n !== '关键事件').join('/'),
+      标题: d.title, 任务: d.task,
+    });
+  }
+  // 表格：先列图上已标注的行，再按「事件类型」各补一条代表行（避免整表都是同一种事件）
+  const evRows = allEv.filter((e) => e.marked);
+  const shownTypes = new Set(evRows.map((e) => e.事件类型));
+  for (const e of allEv) {
+    if (evRows.length >= 6) break;
+    if (e.marked || !e.事件类型 || shownTypes.has(e.事件类型)) continue;
+    shownTypes.add(e.事件类型);
+    evRows.push(e);
   }
   return (
     <figure className="char-card">
@@ -291,54 +413,59 @@ function CharCard({ x }) {
         <strong>{x.name}</strong>
       </div>
       <div className="tiny-chart">
-        <ResponsiveContainer width="100%" height={100}>
+        <ResponsiveContainer width="100%" height={104}>
           <BarChart data={countData} margin={{ top: 6, right: 8, left: -18, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#dbe2e7" />
-            <XAxis dataKey="version" tick={{ fontSize: 10 }} />
-            <YAxis tick={{ fontSize: 10 }} />
-            <Tooltip />
+            <XAxis dataKey="version" tick={{ fontSize: 11, fill: '#65717d' }} />
+            <YAxis tick={{ fontSize: 11, fill: '#65717d' }} />
+            <Tooltip content={<CharTip bar />} allowEscapeViewBox={{ x: false, y: true }}
+              offset={{ x: 10, y: 14 }} isAnimationActive={false} wrapperStyle={{ zIndex: 6, pointerEvents: 'none' }} />
             <Bar dataKey="台词量" fill="#5b7f9e" />
           </BarChart>
         </ResponsiveContainer>
         <p className="chart-cap">每版本台词条数（横轴=版本；纵轴=条数）</p>
       </div>
       <div className="tiny-chart">
-        <ResponsiveContainer width="100%" height={190}>
-          <LineChart data={curveData} margin={{ top: 18, right: 12, left: -18, bottom: 0 }}>
+        <ResponsiveContainer width="100%" height={214}>
+          <LineChart data={curveData} margin={{ top: 34, right: 14, left: -14, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#dbe2e7" />
-            <XAxis dataKey="步序" tick={{ fontSize: 10 }} interval="preserveStartEnd" />
-            <YAxis tick={{ fontSize: 10 }} domain={[0, 'auto']} />
-            <Tooltip
-              labelFormatter={(v) => `该角色第 ${v} 次出场`}
-              formatter={(value, name, item) => {
-                const p = item && item.payload;
-                if (!p) return [value, name];
-                return [`${value}（${p.version}｜${p.title || p.task}）`, name];
-              }}
-            />
-            <Legend wrapperStyle={{ fontSize: 10 }} />
-            <Line type="monotone" dataKey="词频加权" stroke="#8aa6bf" dot={false} strokeWidth={1.1} />
-            <Line type="monotone" dataKey="语义向量" stroke="#c0703a" dot={false} strokeWidth={1.3} />
+            <XAxis dataKey="步序" type="number" domain={['dataMin', 'dataMax']} allowDecimals={false}
+              tick={{ fontSize: 11, fill: '#65717d' }} tickCount={4} />
+            <YAxis tick={{ fontSize: 11, fill: '#65717d' }} domain={[0, 'auto']} tickCount={4} />
+            <Tooltip content={<CharTip />} allowEscapeViewBox={{ x: false, y: true }}
+              offset={{ x: 10, y: 16 }} isAnimationActive={false} wrapperStyle={{ zIndex: 6, pointerEvents: 'none' }} />
+            <Line type="monotone" dataKey="词频加权" stroke="#6f90b0" dot={false} strokeWidth={1.2} />
+            <Line type="monotone" dataKey="语义向量" stroke="#b4551c" dot={false} strokeWidth={1.4} />
             {boundaries.map((b) => (
-              <ReferenceLine key={`v-${b.step}`} x={b.step} stroke="#9aa7b3" strokeDasharray="2 3"
-                label={{ value: b.version, position: 'insideTopRight', fontSize: 9, fill: '#65717d' }} />
+              <ReferenceLine key={`v-${b.step}`} x={b.step} stroke="#c3cdd6" strokeDasharray="2 3" />
             ))}
             {EVENT_FLAGS.map((f) => curveData
               .filter((d) => d.events.includes(f.name))
               .map((d) => (
-                <ReferenceDot key={`${f.key}-${d.步序}`} x={d.步序} y={d.语义向量} r={3}
+                <ReferenceDot key={`${f.key}-${d.步序}`} x={d.步序} y={d.语义向量} r={2.4}
                   fill={f.color} stroke="white" strokeWidth={0.5} />
               )))}
+            <EventCallouts marks={marks} />
           </LineChart>
         </ResponsiveContainer>
-        <p className="chart-cap">与自己神谕的相似度（横轴=该角色第 N 次出场，虚线=版本边界；彩色点=事件，标题见下表）</p>
+        <div className="chart-legend">
+          <span><i style={{ background: '#6f90b0' }} />词频加权</span>
+          <span><i style={{ background: '#b4551c' }} />语义向量</span>
+        </div>
+        <div className="ver-ruler" aria-hidden="true">
+          {verSegs.map((s) => (
+            <span key={s.version} style={{ flexGrow: s.n }}>{s.version}</span>
+          ))}
+        </div>
+        <p className="chart-cap">与自己神谕的相似度（横轴=该角色第 N 次出场；竖虚线=版本分界，下方尺子标版本；彩点=事件；箭头=图上标出的关键事件，标题见下表）</p>
         {evRows.length > 0 && (
           <table className="event-table">
-            <thead><tr><th>第 N 步</th><th>版本</th><th>事件</th><th>剧情标题</th></tr></thead>
+            <thead><tr><th>步</th><th>版本</th><th>事件</th><th>剧情标题</th></tr></thead>
             <tbody>
               {evRows.map((e) => (
-                <tr key={e.步序}>
-                  <td>{e.步序}</td><td>{e.version}</td><td>{e.事件类型}</td><td>{e.标题 || e.任务}</td>
+                <tr key={e.步序} className={e.marked ? 'is-marked' : undefined}>
+                  <td>{e.步序}</td><td>{e.version}</td>
+                  <td>{e.marked ? '▶ ' : ''}{e.事件类型}</td><td>{e.标题 || e.任务}</td>
                 </tr>
               ))}
             </tbody>
@@ -457,3 +584,4 @@ export default function App() {
     </>
   );
 }
+
