@@ -302,7 +302,9 @@ function EventCallouts({ marks }) {
         if (cx == null || cy == null || Number.isNaN(cx) || Number.isNaN(cy)) return null;
         // 窄卡片只有 1 条标注：统一放到图顶并拉一条指引线，避免文字压在数据上
         const above = narrow ? true : cy - top > 54;
-        const labelY = narrow ? top + 11 : (above ? cy - 24 - (idx % 2) * 18 : cy + 30 + (idx % 2) * 16);
+        const rawY = narrow ? top + 11 : (above ? cy - 24 - (idx % 2) * 18 : cy + 30 + (idx % 2) * 16);
+        // 别让标签压到数据点：留出顶部 14px 的安全边
+        const labelY = Math.max(rawY, top + 14);
         const lx = Math.min(Math.max(cx, left + pad), right - pad);
         const dx = cx - lx;
         const dy = cy - labelY;
