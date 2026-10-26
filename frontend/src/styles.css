@@ -361,6 +361,32 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .os-findings li { margin-bottom: 4px; }
 .os-foot { margin: 12px 0 0; font-size: 13.5px; line-height: 1.75; color: #39434d; }
 
+/* 第 1 章：检索实验 v1→v2→v3 版本时间线 */
+.rt-wrap { margin: 24px 0 8px; }
+.rt-timeline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 12px; }
+.rt-card {
+  position: relative;
+  padding: 14px 16px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+}
+.rt-card:last-child { border-color: #d9c9a6; background: #fdfaf3; }
+.rt-head { display: flex; align-items: baseline; gap: 8px; }
+.rt-tag { font-size: 18px; font-weight: 800; color: #8a5e0f; letter-spacing: .02em; }
+.rt-name { font-size: 13px; color: var(--muted); }
+.rt-change { margin: 6px 0 8px; font-size: 12.5px; font-weight: 700; color: #39434d; }
+.rt-list { margin: 0; font-size: 12.5px; line-height: 1.7; }
+.rt-list dt { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+.rt-list dd { margin: 0; color: var(--ink); }
+.rt-note { margin: 10px 0 0; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 12px; color: #4b5560; }
+.rt-arrow { position: absolute; right: -14px; top: 42%; font-size: 18px; color: var(--muted); }
+.rt-foot { margin: 12px 0 0; font-size: 12px; line-height: 1.7; color: var(--muted); }
+@media (max-width: 900px) {
+  .rt-timeline { grid-template-columns: 1fr; }
+  .rt-arrow { display: none; }
+}
+
 /* 窄卡片（第 4 章三列并排时）降级：尺子隔一个标一个，事件表隐藏版本列 */
 @container (max-width: 320px) {
   .ver-ruler { font-size: 9px; }

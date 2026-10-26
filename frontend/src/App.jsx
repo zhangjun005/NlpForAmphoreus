@@ -27,7 +27,7 @@ const CONTENT = {
     pieces: [
       '全文只用两种方式表示文字。词频加权（TF-IDF）把一段话拆成词、按「这个词在本段出现得多不多、在整个语料里稀不稀有」给权重，整段变成一个稀疏向量；它的前提是「词袋」——只看词出现没有、不看词序。语义向量（句向量）用一个模型把整句话压成向量，意思越接近，向量方向越接近；这个模型属于 SBERT（Sentence-BERT，基于 BERT 的句子向量模型）这一类，本文用 bge-small-zh-v1.5（512 维）。两种向量之间用余弦相似度比较——余弦相似度就是两个向量夹角的余弦，越接近 1 说明方向越一致、越像；这是「怎么比」，不是第三种方法。',
       '在 26,332 条记录（台词/旁白/选项）上拟合的是：词表与词权重（11,737 维）、语义压缩模型（LSA/SVD，100 维：对词频矩阵做奇异值分解、保留前 100 个成分，得到压缩后的语义表示）、若干相似度矩阵。拿来用、没有训练的是预训练的语义向量模型（只推理、不微调）；角色向量是把某角色全部台词向量取平均得到的质心，是派生结果。检测器 A/B1/B2 是规则+特征打分，不是训练出来的模型；74 条标注只用于评测。',
-      '检索那一组图是我们自己的实验设计，读之前必须先知道 v1 / v2 / v3 指什么——它们是三代检索实验，不是三种模型。v1 的 gold 是「吟诵步」：13 条神谕里有 12 条的 gold 本身就是吟诵步、10 条直接含神谕原文，所以关键词、TF-IDF 这类字面方法必然占优，等于让它们抄答案。v2（v2_mask）是诊断版：把 query 里的神谕原句掩掉，只留关键词与弱提示，用来看「不靠原句还能不能找到」。v3 才是正式版：gold 改成配置里的兑现事件段，并把候选池里 25 个「含神谕原文的吟诵步」剔除（池 686→661），方法里加入语义向量 SBERT；v3_control 是同一套 gold、但不剔除吟诵步的对照，用来隔离「剔除」这一步的影响。代价是 v3 只剩 7 个可评问题（v1/v2 是 13 个），所以跨组的 MRR 数值不能直接横比。',
+      '检索那一组图是我们自己的实验设计，先把几个词说清楚。gold 就是「标准答案段」——人工标定、认为检索应该命中的那个剧情步骤。候选池是参与检索的 686 个剧情步骤，query 是拿一条神谕原文去查。所谓「吟诵步」，指剧情里角色把神谕原句念出来（或复述）的步骤；因为原句被念出来了，关键词检索等于开卷考试。v1 的问题就在这里：13 条神谕里 12 条的 gold 本身就是吟诵步、10 条直接含原句，所以关键词、TF-IDF 必然占优。v2（v2_mask）是诊断版：把 query 里的原句掩掉（mask）、只留关键词与弱提示，看「不靠原句还能不能找到」。v3 才是正式版：gold 换成「兑现事件段」——神谕真正应验、被兑现的那一步，而不是把原句念出来的那一步；同时把候选池里 25 个含原句的吟诵步剔除（池 686→661），方法里加上语义向量 SBERT。v3_control 是同一套 gold、但不剔除吟诵步的对照，用来隔离「剔除」这一步的影响。代价是 v3 只剩 7 个可评问题（v1/v2 是 13 个），所以跨组的 MRR 数值不能直接横比。',
     ],
     figures: [
       {
@@ -707,6 +707,66 @@ function CharNlpGroup({ names }) {
   );
 }
 
+const RETRIEVAL_VERSIONS = [
+  {
+    tag: 'v1', name: '第一版（旧结果）', change: '起点',
+    gold: '吟诵步：角色把神谕原句念出来的剧情步骤',
+    pool: '686 个剧情步骤',
+    methods: '5 个：关键词 / TF-IDF-char / TF-IDF-word / BM25 / LSA',
+    evals: '13 个可评问题',
+    best: '关键词 MRR 0.73',
+    note: '开卷考试：原句就在候选文档里，字面方法必然占优',
+  },
+  {
+    tag: 'v2', name: '诊断版 v2_mask', change: '去掉 query 里的原句',
+    gold: '同 v1（吟诵步）',
+    pool: '686 个剧情步骤',
+    methods: '5 个（同 v1）',
+    evals: '13 个可评问题',
+    best: '关键词 MRR 0.66',
+    note: 'mask：把 query 里的神谕原句抹掉，只留关键词与弱提示',
+  },
+  {
+    tag: 'v3', name: '正式版 v3', change: '换 gold + 剔除吟诵步 + 加语义向量',
+    gold: '兑现事件段：神谕真正应验、被兑现的那一步',
+    pool: '661 个（剔除 25 个含原句的吟诵步）',
+    methods: '6 个：上面 5 个 + SBERT 语义向量',
+    evals: '7 个可评问题',
+    best: '关键词 MRR 0.13',
+    note: '关卷考试：不能再靠原句，只能靠语义；结果 6 种方法全部失败',
+  },
+];
+
+// 第 1 章：检索实验 v1→v2→v3 的版本时间线（我们自己的工作，放在正文后）
+function RetrievalTimeline() {
+  return (
+    <div className="rt-wrap">
+      <h3 className="block-title">检索实验的三个版本（v1 → v2 → v3）</h3>
+      <div className="rt-timeline">
+        {RETRIEVAL_VERSIONS.map((v, i) => (
+          <div className="rt-card" key={v.tag}>
+            <div className="rt-head">
+              <span className="rt-tag">{v.tag}</span>
+              <span className="rt-name">{v.name}</span>
+            </div>
+            <p className="rt-change">{i === 0 ? '起点' : '改动：' + v.change}</p>
+            <dl className="rt-list">
+              <dt>gold（标准答案）</dt><dd>{v.gold}</dd>
+              <dt>候选池</dt><dd>{v.pool}</dd>
+              <dt>方法</dt><dd>{v.methods}</dd>
+              <dt>可评问题</dt><dd>{v.evals}</dd>
+              <dt>最好结果</dt><dd>{v.best}</dd>
+            </dl>
+            <p className="rt-note">{v.note}</p>
+            {i < RETRIEVAL_VERSIONS.length - 1 && <span className="rt-arrow">→</span>}
+          </div>
+        ))}
+      </div>
+      <p className="rt-foot">v3_control = 用 v3 的 gold、但不剔除吟诵步的对照（13 个可评、关键词 MRR 0.48）——用来隔离「剔除吟诵步」这一步的影响。v3 只剩 7 个可评问题，所以 v3 的 0.13 与 v1 的 0.73 不能直接横比。</p>
+    </div>
+  );
+}
+
 function Section({ ch, data }) {
   const c = CONTENT[ch.id] || {};
   const chars = CHARACTER_FIGS[ch.id] || [];
@@ -724,6 +784,7 @@ function Section({ ch, data }) {
           {c.pieces?.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
         </div>
       )}
+      {ch.id === 'ch01' && <RetrievalTimeline />}
       {groups.map(([names, idx], gi) => (
         <div className={`char-row${names.length > 1 ? ' multi' : ''}`} key={gi}>
           <div className="char-left">
