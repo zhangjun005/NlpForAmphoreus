@@ -102,6 +102,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 3,
   "sbert": 10,
+  "tfidf_cos": 0.032,
+  "sbert_cos": 0.6115,
   "top_tfidf": [
    [
     "O01",
@@ -137,6 +139,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 1,
   "sbert": 2,
+  "tfidf_cos": 0.059,
+  "sbert_cos": 0.672,
   "top_tfidf": [
    [
     "O03",
@@ -172,6 +176,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 8,
   "sbert": 3,
+  "tfidf_cos": 0.0136,
+  "sbert_cos": 0.6405,
   "top_tfidf": [
    [
     "O01",
@@ -207,6 +213,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 2,
   "sbert": 2,
+  "tfidf_cos": 0.0225,
+  "sbert_cos": 0.6359,
   "top_tfidf": [
    [
     "O01",
@@ -242,6 +250,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 1,
   "sbert": 4,
+  "tfidf_cos": 0.0671,
+  "sbert_cos": 0.6283,
   "top_tfidf": [
    [
     "O04",
@@ -277,6 +287,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 6,
   "sbert": 11,
+  "tfidf_cos": 0.0112,
+  "sbert_cos": 0.5865,
   "top_tfidf": [
    [
     "O01",
@@ -312,6 +324,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 2,
   "sbert": 3,
+  "tfidf_cos": 0.1018,
+  "sbert_cos": 0.6798,
   "top_tfidf": [
    [
     "O11",
@@ -347,6 +361,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 1,
   "sbert": 5,
+  "tfidf_cos": 0.0761,
+  "sbert_cos": 0.6564,
   "top_tfidf": [
    [
     "O11",
@@ -382,6 +398,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 1,
   "sbert": 5,
+  "tfidf_cos": 0.1398,
+  "sbert_cos": 0.6451,
   "top_tfidf": [
    [
     "O01",
@@ -417,6 +435,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 1,
   "sbert": 1,
+  "tfidf_cos": 0.0651,
+  "sbert_cos": 0.6594,
   "top_tfidf": [
    [
     "O08",
@@ -452,6 +472,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 1,
   "sbert": 12,
+  "tfidf_cos": 0.2156,
+  "sbert_cos": 0.605,
   "top_tfidf": [
    [
     "O07",
@@ -485,6 +507,8 @@ export const CHAR_ORACLE_RANK = {
   "own": [],
   "tfidf": null,
   "sbert": null,
+  "tfidf_cos": null,
+  "sbert_cos": null,
   "top_tfidf": [
    [
     "O01",
@@ -518,6 +542,8 @@ export const CHAR_ORACLE_RANK = {
   "own": [],
   "tfidf": null,
   "sbert": null,
+  "tfidf_cos": null,
+  "sbert_cos": null,
   "top_tfidf": [
    [
     "O01",
@@ -553,6 +579,8 @@ export const CHAR_ORACLE_RANK = {
   ],
   "tfidf": 11,
   "sbert": 8,
+  "tfidf_cos": 0.002,
+  "sbert_cos": 0.6138,
   "top_tfidf": [
    [
     "O01",

@@ -236,6 +236,35 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .char-right { min-width: 0; }
 .char-right .char-names { margin: 0 0 8px; font-size: 17px; }
 .char-right p { margin: 0; font-size: 15px; }
+
+/* 每个角色自己的「角色向量 × 神谕向量」读数 */
+.char-nlp {
+  margin-top: 14px;
+  padding: 10px 12px 11px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfaf7;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+.char-nlp-head { margin-bottom: 4px; font-size: 13px; font-weight: 700; color: #39434d; }
+.char-nlp-line { margin: 0 0 2px; color: var(--ink); }
+.char-nlp-note { margin: 6px 0 0; font-size: 11.5px; line-height: 1.65; color: var(--muted); }
+.char-nlp-table { width: 100%; border-collapse: collapse; margin: 2px 0 6px; font-size: 12px; }
+.char-nlp-table th, .char-nlp-table td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); }
+.char-nlp-table th { color: var(--muted); font-weight: 500; font-size: 11px; }
+
+/* 多角色组的组级说明（每张卡不再重复） */
+.group-note { margin: 10px 0 0; font-size: 11.5px; line-height: 1.7; color: var(--muted); }
+.group-legend { margin: 6px 0 0; }
+
+/* 2 个以上角色的组：卡片整行铺开（不再挤在 6fr 里），解释文字放到卡片下方 */
+.char-row.multi { display: block; }
+.char-row.multi .char-left { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.char-row.multi .char-right { margin-top: 16px; max-width: 78ch; }
+@media (max-width: 900px) {
+  .char-row.multi .char-left { grid-template-columns: 1fr; }
+}
 @media (max-width: 900px) {
   .char-row { grid-template-columns: 1fr; gap: 14px; }
   .char-left { grid-template-columns: 1fr; }
