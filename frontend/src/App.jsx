@@ -3,6 +3,7 @@ import {
   Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceDot, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
   usePlotArea, useXAxisScale, useYAxisScale,
 } from 'recharts';
+import { ORACLES, OWN_ORACLE, CHAR_ORACLE_RANK } from './oracleData.js';
 
 const CHAPTERS = [
   { id: 'ch00', num: '0', title: '故事梗概：被循环困住的世界', kicker: '先看故事，再看数据' },
@@ -28,6 +29,9 @@ const CONTENT = {
       '在 26,332 条记录（台词/旁白/选项）上拟合的是：词表与词权重（11,737 维）、语义压缩模型（LSA/SVD，100 维）、若干相似度矩阵。拿来用、没有训练的是预训练的语义向量模型（只推理、不微调）；角色向量是把某角色全部台词向量取平均得到的质心，是派生结果。检测器 A/B1/B2 是规则+特征打分，不是训练出来的模型；74 条标注只用于评测。',
       '两个表示要一起用，最干净的证据是两条镜像神谕：O10「汝将长眠于涛声中，于天地境界之海完成征服」（海瑟音）与 O11「汝将于天地境界之海完成征服，长眠于涛声中」（刻律德菈）。两句用词相同、只换语序，所以词频加权给出的两条曲线在 686 步上逐点相等（最大差 0），语义向量也只给微小差异（平均 0.005、最大 0.018）——只看词或只看语义，都分不开这两条命定。（O01–O13 是全篇 13 条神谕的编号，按报告内顺序排列，后文提到某条命定都用这个编号。）',
       '把两条线放在同一张图上，是为了让「词面」和「语义」互为对照。词频加权是词袋：只统计词出现与否，丢掉语序和同义改写，所以只要这一步没有真的说出神谕里的词，相似度就接近 0——它测的是「有没有复述」。语义向量会把同义改写、同一语域也压到相近位置，代价是分不清「真的在说这件事」和「只是聊到同一类事」——它测的是「像不像」。所以图上经常出现「语义线抬了、词频线没抬」：那不是标注错了，而是语义泛化。3.5 的闪回区就是典型——全在告别、回忆，语义上离「收梢」很近，但没有人复述那句神谕。',
+      '具体怎么算：词频加权先分词，再按 tf（本段词频）× idf（全库稀有度）加权，得到一个 11,737 维的稀疏向量（词表与分词器见 data/models/vec_rec.joblib）；向量先做 L2 归一化，余弦相似度就是归一化后的点积（取值 −1~1，实际多在 0~1）。语义向量由 bge-small-zh-v1.5 把整句编码成 512 维稠密向量（对 token 向量做平均池化再归一化），余弦同理。LSA/SVD 的 100 维是第三件事：把词频矩阵降维成压缩表示，用来说明「语义空间也能从词频里逼近」，它不是另一个模型。',
+      '还有一个容易误读的地方：两种表示的相似度绝对值不可比。词频向量稀疏，没有共同词时接近 0；句向量在高维空间里彼此夹角都不大，中文短句之间的余弦常有 0.5–0.7 的基线（各向异性/anisotropy），还会出现「hub 句」——某些句子天然靠近所有文本。所以第 1 章末尾那张 14×13 热图要读排名、不要读绝对值；也正因为 hub 句存在，「最相似的神谕」不能直接当成「这个人的命定」。',
+      '评测指标也要分清：κ=0.788 是两次人工标注之间的一致性（Cohen 的 kappa 系数），不是模型准确率；检测器 A/B1/B2 是规则+特征打分，74 条人工标注只用于看方向；检索用 MRR（正确答案排名的倒数平均）和 Recall@k（前 k 名里有没有正确段），它们评价的是「排序」，不是相似度本身。检索在事件级失败（7/13 可评、最好 MRR 0.132）有三个方法层原因：①查询是短神谕句、文档是长步骤，长度和粒度不对齐；②事件段被长任务稀释；③池里混入大量吟诵步做干扰项，而 gold 本身有歧义。',
     ],
     figures: [
       {
@@ -43,6 +47,14 @@ const CONTENT = {
         axes: '横轴：人工显著等级 0/1/2/3；纵轴：检测器标准化分数（0 = 平均）。',
         judge: '箱体随等级单调上移、0 级最低 3 级最高 = 检测器方向与人工一致（好）；各级重叠、没有趋势 = 不可靠（坏）。方法上：A/B1 是规则+特征打分，不是训练出来的模型；74 条标注只用于评测，所以只能看方向一致性，不能当准确率。',
         conclusion: 'B1 从 0 级 −0.68 升到 3 级 0.70，A 只从 −0.28 到 0.23 → B1 方向更清楚，但都只是趋势，不是准确率。',
+      },
+      {
+        src: '/figures/f16_char_oracle_similarity.png',
+        wide: true,
+        title: 'f16 角色向量 × 神谕向量',
+        axes: '横轴：13 条神谕（O01–O13）；纵轴：14 个角色；左右两联分别是 TF-IDF 与 SBERT；红框=该角色自有神谕。',
+        judge: '先看红框位置：红框越靠左、颜色越深 = 词面上越像自己的命定。再注意绝对值：TF-IDF 只有 0–0.22、SBERT 有 0.54–0.72——两个空间不可比、SBERT 全体偏高（各向异性），所以只能读排名。',
+        conclusion: '词频上 6/12 角色的自有神谕排第 1；语义上只有赛飞儿排第 1，其余 top1 几乎全是 O08（hub 句）——语义相似度不能用来判断归属。',
       },
       {
         src: '/figures/f15_retrieval_v3.png',
@@ -197,7 +209,7 @@ function renderRich(text) {
 function FigureCard({ fig }) {
   return (
     <figure className="figure-card">
-      <img src={fig.src} alt={fig.title} loading="lazy" />
+      <img className={fig.wide ? 'wide' : undefined} src={fig.src} alt={fig.title} loading="lazy" />
       <figcaption>
         <strong>{fig.title}</strong>
         <p><em>轴</em>：{fig.axes}</p>
@@ -252,6 +264,12 @@ const ANNOT_FLAGS = [
   { key: 'in_oracle_first', name: '神谕文本首现', color: '#2f3e4e' },
   { key: 'in_recitation', name: '吟诵', color: '#8e44ad' },
 ];
+
+function oracleLine(name) {
+  const ids = OWN_ORACLE[name] || [];
+  if (!ids.length) return '无自有神谕（外来视角，取与 13 条神谕的最高相似度）';
+  return ids.map((id) => `${id}「${ORACLES[id] ? ORACLES[id].text : ''}」`).join('　');
+}
 
 function clip(text, max = 16) {
   const t = String(text || '');
@@ -418,6 +436,7 @@ function CharCard({ x }) {
         )}
         <strong>{x.name}</strong>
       </div>
+      <p className="char-oracle">{oracleLine(x.name)}</p>
       <div className="tiny-chart">
         <ResponsiveContainer width="100%" height={104}>
           <BarChart data={countData} margin={{ top: 6, right: 8, left: -18, bottom: 0 }}>
@@ -517,6 +536,39 @@ function CurveReading() {
   );
 }
 
+const ORACLE_SIM_FINDINGS = [
+  '词频加权：12 个有自有神谕的角色里，6 个的自有神谕排第 1（万敌、遐蝶、刻律德菈、阿格莱雅、赛飞儿、风堇）；白厄第 3、那刻夏第 8、丹恒第 11。',
+  '语义向量：只有赛飞儿排第 1，其余角色的 top1 几乎全是 O08「用一个谎言维系奥赫玛的永昼」——它在向量空间里是「hub 句」，天然靠近所有角色，所以这个 top1 不能读成归属。',
+  '镜像对：海瑟音 / 刻律德菈 在 O10 / O11 上词频值完全相同（0.1018 / 0.0761），语义差 ≤0.004，而且海瑟音语义上更接近 O11（0.6838 vs 0.6798）——两种表示都分不开这对镜像，归属只能看引用与兑现的行为事实。',
+  '没有自有神谕的开拓者 / 三月七也有「最高相似度」（词频=O01、语义=O08），说明这个指标本身没有归属含义。',
+];
+
+// 第 1 章末尾：角色向量 × 神谕向量的结果与读法
+function OracleSimilarity() {
+  return (
+    <div className="oracle-sim">
+      <p className="os-lede">角色向量回答的是「这个人的整体语言习惯，离哪条命定最近」，和曲线回答的「这一场戏有没有复述神谕」是两个问题。做法：把该角色全部台词的向量取平均、再归一化，得到质心（centroid）；然后与 13 条神谕的向量逐个算余弦。</p>
+      <table className="os-table">
+        <thead><tr><th>角色</th><th>自有神谕</th><th>词频加权排名</th><th>语义向量排名</th></tr></thead>
+        <tbody>
+          {Object.entries(CHAR_ORACLE_RANK).map(([c, v]) => (
+            <tr key={c}>
+              <td>{c}</td>
+              <td>{v.own.length ? v.own.join('、') : '无（外来视角）'}</td>
+              <td className={v.tfidf === 1 ? 'rank-1' : ''}>{v.tfidf ? v.tfidf + '/13' : '—'}</td>
+              <td className={v.sbert === 1 ? 'rank-1' : ''}>{v.sbert ? v.sbert + '/13' : '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ul className="os-findings">
+        {ORACLE_SIM_FINDINGS.map((t) => <li key={t}>{t}</li>)}
+      </ul>
+      <p className="os-foot">结论：相似度矩阵能回答「语言上像不像」，回答不了「这条命定属于谁」——那要用引用编码（谁引用、谁兑现、把命定交给谁）。两种表示的 top1 不同也来自这里：一个由稀有词决定，一个被 hub 句吸走。</p>
+    </div>
+  );
+}
+
 function Section({ ch, data }) {
   const c = CONTENT[ch.id] || {};
   const chars = CHARACTER_FIGS[ch.id] || [];
@@ -535,6 +587,7 @@ function Section({ ch, data }) {
         </div>
       )}
       {ch.id === 'ch01' && <CurveReading />}
+      {ch.id === 'ch01' && <OracleSimilarity />}
       {groups.map(([names, idx], gi) => (
         <div className="char-row" key={gi}>
           <div className="char-left">

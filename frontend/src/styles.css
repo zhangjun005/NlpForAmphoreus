@@ -212,6 +212,8 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .char-card figcaption strong { display: block; margin-bottom: 4px; }
 .char-card figcaption p { margin: 0; color: #46515b; }
 .figure-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 18px; }
+.figure-grid .figure-card.wide { grid-column: 1 / -1; }
+.figure-card img.wide { max-height: none; }
 .figure-card img { max-height: 360px; object-fit: contain; }
 @media (max-width: 900px) {
   .figure-grid { grid-template-columns: 1fr; }
@@ -261,6 +263,34 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .cr-table td:first-child { width: 30%; font-weight: 700; color: #39434d; }
 .cr-table td:last-child { width: 18%; color: #8a5e0f; }
 .cr-foot { margin: 12px 0 0; font-size: 13.5px; line-height: 1.75; color: #46515b; }
+
+/* 角色卡上方的神谕原文行 */
+.char-oracle {
+  margin: 0;
+  padding: 6px 12px 2px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #8a5e0f;
+  border-bottom: 1px dashed var(--line);
+}
+
+/* 第 1 章：角色向量 × 神谕向量 */
+.oracle-sim {
+  margin: 22px 0 8px;
+  padding: 18px 20px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  max-width: 900px;
+}
+.os-lede { margin: 0 0 12px; font-size: 15px; }
+.os-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.os-table th, .os-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.os-table th { color: var(--muted); font-weight: 500; font-size: 12px; }
+.os-table td.rank-1 { color: #8a5e0f; font-weight: 700; }
+.os-findings { margin: 12px 0 0; padding-left: 20px; font-size: 13.5px; line-height: 1.8; color: #46515b; }
+.os-findings li { margin-bottom: 4px; }
+.os-foot { margin: 12px 0 0; font-size: 13.5px; line-height: 1.75; color: #39434d; }
 
 /* 窄卡片（第 4 章三列并排时）降级：尺子隔一个标一个，事件表隐藏版本列 */
 @container (max-width: 320px) {

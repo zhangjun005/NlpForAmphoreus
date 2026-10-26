@@ -20,6 +20,7 @@ const figures = [
   'f13_crystal_flower_semantic.png',
   'f14_mirror_pair_O10_O11.png',
   'f15_retrieval_v3.png',
+  'f16_char_oracle_similarity.png',
 ];
 for (const f of figures) {
   const src = join(repo, 'docs', 'report', 'figures', f);

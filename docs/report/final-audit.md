@@ -4,9 +4,9 @@
 
 | 检查项 | 结果 | 详情 |
 |---|---|---|
-| 图数 = 配对 CSV 数 = 配对 meta 数 | ✅ | png=43 csv=43 meta=43 |
-| meta 的 data_sha256_16 与 CSV 一致 | ✅ | ok=43 bad=0 |
-| figures-index 数据行数 = 图数 | ✅ | index=43 png=43 |
+| 图数 = 配对 CSV 数 = 配对 meta 数 | ✅ | png=44 csv=44 meta=44 |
+| meta 的 data_sha256_16 与 CSV 一致 | ✅ | ok=44 bad=0 |
+| figures-index 数据行数 = 图数 | ✅ | index=44 png=44 |
 | data/models/manifest.json 文件全部存在 | ✅ | 22/22 |
 | data/models/manifest_sbert.json 文件全部存在 | ✅ | 5/5 |
 | ids.records 长度 = 26332 | ✅ | records=26332 |
@@ -17,6 +17,6 @@
 | L3 笔记 14 份 + 归档 14 份 | ✅ | runtime=14 archive=14 |
 | 上下文表 ≥14 个角色（含荒笛历史派生） | ✅ | files=15 |
 | 报告 7 章草稿 + 术语表 + 合并稿 | ✅ | drafts=8 merged=true |
-| git 工作区干净（派生数据除外） | ✅ | clean |
+| git 工作区干净（派生数据除外） | ❌ |  M docs/report/figures-index.md /  M tools/export_plot_data.py / ?? data/config/character-oracle-similarity.json / ?? docs/report/figures/f16_char_oracle_similarity.png / ?? tools/character_oracle_similarity.py |
 
-**通过 14/14**
+**通过 13/14**

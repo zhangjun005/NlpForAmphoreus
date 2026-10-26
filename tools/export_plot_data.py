@@ -449,6 +449,42 @@ def data_f15():
                         "v1/v2 指标取自旧结果，v1/v2 无 语义向量")
 
 
+# ---- 角色向量 × 神谕向量（f16）----
+P_CHAR_ORACLE = os.path.join(ROOT, "data", "config", "character-oracle-similarity.json")
+
+
+def data_f16():
+    d = read_json(P_CHAR_ORACLE)
+    oracles = {o["oracle_id"]: o for o in d["oracles"]}
+    rows = []
+    for char, by_oracle in d["tfidf"].items():
+        for oid, v in by_oracle.items():
+            rank_tf = d["ranking"][char]["by"]["tfidf"]["top3"]
+            rows.append({
+                "char": char, "oracle_id": oid, "holder": oracles[oid].get("holder") or "",
+                "is_own": int(oid in d["own_oracle"].get(char, [])),
+                "tfidf_cos": v, "sbert_cos": d["sbert"][char][oid],
+            })
+    # 排名另算（按角色内降序）
+    from collections import defaultdict
+    by_char = defaultdict(list)
+    for r in rows:
+        by_char[r["char"]].append(r)
+    for char, rs in by_char.items():
+        for key in ("tfidf_cos", "sbert_cos"):
+            ordered = sorted(rs, key=lambda r: -r[key])
+            for i, r in enumerate(ordered, 1):
+                r[key.replace("_cos", "_rank")] = i
+    return dict(columns=["char", "oracle_id", "holder", "is_own", "tfidf_cos", "sbert_cos", "tfidf_rank", "sbert_rank"],
+                rows=rows,
+                title="图16 角色向量 × 神谕向量：14 角色（质心）× 13 条神谕的余弦相似度",
+                axes={"x": "13 条神谕（O01–O13）", "y": "角色（A 组 11 + B 组 3）；左 TF-IDF、右 SBERT"},
+                sources=["data/models/character_centroids.npz", "data/models/vec_rec.joblib",
+                         "data/models/sbert_model", "data/corpus/oracles.jsonl"],
+                filters="角色向量=该角色全部台词向量质心（L2 归一）；神谕向量=神谕原文同一表示的向量；同一表示内可比，跨表示不可比")
+
+
+
 # ---- 新增 3 张报告图 ----
 def data_f12():
     rows_all = []
@@ -586,6 +622,7 @@ def specs():
         "f12_mingtian_timeline.png": ("tools/export_plot_data.py", data_f12),
         "f13_crystal_flower_semantic.png": ("tools/export_plot_data.py", data_f13),
         "f14_mirror_pair_O10_O11.png": ("tools/export_plot_data.py", data_f14),
+        "f16_char_oracle_similarity.png": ("tools/character_oracle_similarity.py", data_f16),
     }
     for char in read_json(P_CURVES)["characters"]:
         sp["oracle_sim/%s.png" % char] = ("tools/oracle_similarity_curves.py",
