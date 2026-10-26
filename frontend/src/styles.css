@@ -206,6 +206,78 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .key-label { font-size: 11.5px; color: var(--muted); }
 .key-value { font-size: 12.8px; color: var(--ink); word-break: break-word; }
 
+/* ---------- 前言：AI 参与方式与数据来源（右侧配表情包） ---------- */
+.preface-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.8fr);
+  gap: 34px;
+  align-items: start;
+}
+.preface-lede {
+  margin: 0 0 18px;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: #2f3941;
+}
+.preface-list { display: grid; gap: 11px; margin: 0 0 16px; padding: 0; list-style: none; }
+.preface-list li {
+  padding: 11px 14px;
+  border-left: 3px solid #c9d3da;
+  border-radius: 0 8px 8px 0;
+  background: #f7f9fa;
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: #39434d;
+}
+.preface-list b {
+  display: block;
+  margin-bottom: 3px;
+  color: #2a333c;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+}
+.preface-list b::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin: 0 7px 2px 0;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.preface-note {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.preface-meme {
+  margin: 0;
+  max-width: 340px;
+  justify-self: end;
+  position: sticky;
+  top: 84px;
+}
+.preface-meme img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.preface-meme figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+@media (max-width: 900px) {
+  .preface-grid { grid-template-columns: 1fr; gap: 20px; }
+  .preface-meme { max-width: 260px; justify-self: start; position: static; }
+}
+
 /* ---------- synopsis ---------- */
 .synopsis-grid {
   display: grid;

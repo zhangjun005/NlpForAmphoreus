@@ -1531,6 +1531,43 @@ function Section({ ch, data, knifeScenes, fulfillment, citationCoding, keyEvents
   );
 }
 
+// 前言：在「第 0 章 故事梗概」之前，交代 AI 参与方式与数据来源。
+// 右侧配图 /assets/blue-fish-stress.jpg = 用户提供的表情包（「压力一只蓝色大肥鱼」），
+// 原文件是 frontend/dist 里的 压力一只大肥鱼.jpg，构建会清空 dist，所以拷进 public/assets 并改成 ASCII 文件名。
+function Preface() {
+  return (
+    <section id="preface" className="chapter preface">
+      <header className="chapter-head">
+        <span className="chapter-num">前言</span>
+        <h2>这份报告是怎么做出来的</h2>
+        <p className="kicker">AI 参与方式 · 数据来源与致谢</p>
+      </header>
+      <div className="preface-grid">
+        <div className="preface-text">
+          <p className="preface-lede">
+            这份报告的处理量——26,332 条记录、686 个剧情步骤、14 个角色全量精读、57 张图——超出单人手工阅读的规模，主要流程由 AI 参与完成。
+            下面把「哪一部分用了什么工具、哪些环节由人工把关」写清楚：哪些结论来自模型，哪些来自人工判断，读者可以据此决定信到什么程度。
+          </p>
+          <ul className="preface-list">
+            <li><b>全剧情精读与标注 · DeepSeek</b>多次通读 3.0–3.7 全剧情，完成 74 步显著性标注，并整理出 13 条神谕的兑现候选段；每条判断都保留 record_id，可以回到原文逐条核对。</li>
+            <li><b>主要分析与绘图代码 · DeepSeek</b>负责数据清洗、两种表示（词频加权 / 语义向量）、相似度曲线、检索实验与全部图表脚本；所有脚本与「图 ↔ 数据」配对都在仓库里，可以复跑。</li>
+            <li><b>重点问题的讨论与定调 · GPT 系列</b>参与重点问题的讨论、口径校准与改稿，比如「好 / 坏」按什么标准判、哪些结论不能写；它的产物不直接进页面，而是作为讨论稿被逐条核对后才采用。</li>
+            <li><b>数据来源与致谢</b>绝大部分原始语料来自 BWiki（CC BY-NC-SA 4.0）；游戏内容与素材版权归米哈游（miHoYo）所有。本页只做课程展示，不公开游戏原文。在此感谢语料整理者与版权方。</li>
+          </ul>
+          <p className="preface-note">
+            人工把关的环节：74 步标注与 13 条兑现由人工定义口径后逐条判读；页码里所有 record_id 都能回到语料；标注一致性 κ=0.788。AI 提供的是可核对的草稿，不是结论本身。
+          </p>
+        </div>
+        <figure className="preface-meme">
+          {/* /assets/blue-fish-stress.jpg = 表情包：压力一只蓝色大肥鱼（装饰图，缺失时 onError 隐藏） */}
+          <img src="/assets/blue-fish-stress.jpg" alt="压力一只蓝色大肥鱼" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+          <figcaption>压力给到一只蓝色大肥鱼：26,332 条记录、686 个剧情步骤、74 步标注、57 张图——精读和画图都是这么熬出来的。</figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
 function Synopsis() {
   return (
     <section id="ch00" className="chapter synopsis">
@@ -1637,12 +1674,14 @@ export default function App() {
       </header>
 
       <nav className="chapter-nav">
+        <a href="#preface">前言</a>
         {CHAPTERS.map((c) => (
           <a key={c.id} href={`#${c.id}`}>第 {c.num} 章</a>
         ))}
       </nav>
 
       <main>
+        <Preface />
         <Synopsis />
         {CHAPTERS.slice(1).map((ch) => (
           <Section key={ch.id} ch={ch} data={byId[ch.id]} knifeScenes={knifeScenes} fulfillment={fulfillment} citationCoding={citationCoding} keyEvents={keyEvents} coverage={coverage} farewell={farewell} peakEvidence={peakEvidence} baselineB2={baselineB2} styleCompare={styleCompare} rubySummary={rubySummary} openQuestions={openQuestions} />
