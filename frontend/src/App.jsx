@@ -224,9 +224,33 @@ const CHARACTER_FIGS = {
   ],
 };
 
+const CHAR_GROUPS = {
+  ch02: [[['白厄'], 0], [['万敌'], 1], [['那刻夏'], 2]],
+  ch03: [[['昔涟'], 0], [['遐蝶'], 1], [['缇宝'], 2]],
+  ch04: [[['海瑟音', '刻律德菈'], 0], [['阿格莱雅', '赛飞儿'], 1], [['开拓者', '三月七', '丹恒'], 2]],
+};
+
+function CharCard({ x }) {
+  return (
+    <figure className="char-card">
+      <div className="char-head">
+        {PORTRAITS[x.name] && (
+          <img className="portrait" src={`/materials/${PORTRAITS[x.name]}-portrait.png?v=2`} alt={x.name}
+            onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+        )}
+        <strong>{x.name}</strong>
+      </div>
+      <img className="mini" src={`${x.img}?v=2`} alt={`${x.name} 迷你图`} loading="lazy" />
+      <figcaption><p>{x.note}</p></figcaption>
+    </figure>
+  );
+}
+
 function Section({ ch, data }) {
   const c = CONTENT[ch.id] || {};
   const chars = CHARACTER_FIGS[ch.id] || [];
+  const byName = Object.fromEntries(chars.map((x) => [x.name, x]));
+  const groups = CHAR_GROUPS[ch.id] || [];
   return (
     <section id={ch.id} className="chapter">
       <header className="chapter-head">
@@ -234,29 +258,22 @@ function Section({ ch, data }) {
         <h2>{ch.title}</h2>
         <p className="kicker">{ch.kicker}</p>
       </header>
-      <div className="prose">
-        {c.pieces?.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
-      </div>
-      {chars.length > 0 && (
-        <div className="char-block">
-          <h3 className="block-title">角色数据卡（每人一张，轴与结论写在图下）</h3>
-          <div className="char-grid">
-            {chars.map((x) => (
-              <figure className="char-card" key={x.name}>
-                <div className="char-head">
-                  {PORTRAITS[x.name] && (
-                    <img className="portrait" src={`/materials/${PORTRAITS[x.name]}-portrait.png`} alt={x.name}
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                  )}
-                  <strong>{x.name}</strong>
-                </div>
-                <img className="mini" src={x.img} alt={`${x.name} 迷你图`} loading="lazy" />
-                <figcaption><p>{x.note}</p></figcaption>
-              </figure>
-            ))}
-          </div>
+      {groups.length === 0 && (
+        <div className="prose">
+          {c.pieces?.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
         </div>
       )}
+      {groups.map(([names, idx], gi) => (
+        <div className="char-row" key={gi}>
+          <div className="char-left">
+            {names.map((n) => byName[n] && <CharCard x={byName[n]} key={n} />)}
+          </div>
+          <div className="char-right">
+            <h3 className="char-names">{names.join(' × ')}</h3>
+            <p>{renderRich(c.pieces?.[idx] || '')}</p>
+          </div>
+        </div>
+      ))}
       {(c.figures || []).length > 0 && (
         <div className="figure-block">
           <h3 className="block-title">关键图（轴 / 怎么判好坏 / 本图结论）</h3>

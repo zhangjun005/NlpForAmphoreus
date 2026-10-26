@@ -221,3 +221,13 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .char-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px 0; }
 .char-head .portrait { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
 .char-card .mini { display: block; width: 100%; }
+
+/* ---------- character rows: left 6 : right 4 ---------- */
+.char-row { display: grid; grid-template-columns: 6fr 4fr; gap: 26px; align-items: start; margin: 26px 0 34px; }
+.char-left { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.char-right .char-names { margin: 0 0 8px; font-size: 17px; }
+.char-right p { margin: 0; font-size: 15px; }
+@media (max-width: 900px) {
+  .char-row { grid-template-columns: 1fr; gap: 14px; }
+  .char-left { grid-template-columns: 1fr; }
+}
