@@ -21,6 +21,18 @@ const figures = [
   'f14_mirror_pair_O10_O11.png',
   'f15_retrieval_v3.png',
   'f16_char_oracle_similarity.png',
+  'f7a_bai_lines.png',
+  'f7b_bai_forms.png',
+  'f7c_bai_address.png',
+  'f7d_bai_detector.png',
+  'f8a_xi_lines.png',
+  'f8b_xi_forms.png',
+  'f8c_xi_address.png',
+  'f8d_xi_detector.png',
+  'f14a_mirror_tfidf.png',
+  'f14b_mirror_sbert.png',
+  'f15a_retrieval_mrr.png',
+  'f15b_retrieval_recall.png',
 ];
 for (const f of figures) {
   const src = join(repo, 'docs', 'report', 'figures', f);

@@ -15,6 +15,7 @@ export_plot_data.py — 图-数据配对归档（task-26）
 """
 
 import argparse
+import csv
 import hashlib
 import json
 import os
@@ -614,6 +615,14 @@ def specs():
         "f5_oracle_vs_rest.png": ("tools/make_figures.py", data_f5),
         "f6_knife_ranks.png": ("tools/knife_scene_eval.py", data_f6),
         "f7_bai_trajectory.png": ("tools/character_trajectory.py", data_f7),
+        "f7a_bai_lines.png": ("tools/split_trajectory_panels.py", data_f7a),
+        "f7b_bai_forms.png": ("tools/split_trajectory_panels.py", data_f7b),
+        "f7c_bai_address.png": ("tools/split_trajectory_panels.py", data_f7c),
+        "f7d_bai_detector.png": ("tools/split_trajectory_panels.py", data_f7d),
+        "f8a_xi_lines.png": ("tools/split_trajectory_panels.py", data_f8a),
+        "f8b_xi_forms.png": ("tools/split_trajectory_panels.py", data_f8b),
+        "f8c_xi_address.png": ("tools/split_trajectory_panels.py", data_f8c),
+        "f8d_xi_detector.png": ("tools/split_trajectory_panels.py", data_f8d),
         "f8_xi_trajectory.png": ("tools/character_trajectory.py", data_f8),
         "f9_all_trajectories.png": ("tools/character_trajectory.py", data_f9),
         "f10_coverage.png": ("tools/character_trajectory.py", data_f10),
@@ -622,6 +631,10 @@ def specs():
         "f12_mingtian_timeline.png": ("tools/export_plot_data.py", data_f12),
         "f13_crystal_flower_semantic.png": ("tools/export_plot_data.py", data_f13),
         "f14_mirror_pair_O10_O11.png": ("tools/export_plot_data.py", data_f14),
+        "f14a_mirror_tfidf.png": ("tools/split_panel_figures.py", data_f14a),
+        "f14b_mirror_sbert.png": ("tools/split_panel_figures.py", data_f14b),
+        "f15a_retrieval_mrr.png": ("tools/split_panel_figures.py", data_f15a),
+        "f15b_retrieval_recall.png": ("tools/split_panel_figures.py", data_f15b),
         "f16_char_oracle_similarity.png": ("tools/character_oracle_similarity.py", data_f16),
     }
     for char in read_json(P_CURVES)["characters"]:
@@ -774,6 +787,170 @@ def make_new_figures():
     fig.tight_layout(rect=(0, 0, 1, 0.93))
     fig.savefig(os.path.join(FIG_DIR, "f14_mirror_pair_O10_O11.png"), dpi=200, bbox_inches="tight")
     plt.close(fig)
+
+
+# ---- f7/f8 四联图拆分后的 8 张单图（tools/split_trajectory_panels.py）----
+def _traj_rows(fn):
+    with open(os.path.join(ROOT, "data", "plot_data", fn), encoding="utf-8-sig", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def _traj_panel(fn, cols, title, ynote, filters):
+    rows = _traj_rows(fn)
+    import math
+    out = []
+    for r in rows:
+        row = {}
+        for c in cols:
+            v = r.get(c, "")
+            try:
+                fv = float(v)
+                row[c] = "" if math.isnan(fv) else fv
+            except (TypeError, ValueError):
+                row[c] = v
+        out.append(row)
+    return dict(columns=cols, rows=out, title=title,
+                axes={"x": "版本 3.0–3.7", "y": ynote},
+                sources=["data/plot_data/%s" % fn, "data/config/character-trajectory-all.json"],
+                filters=filters)
+
+
+def data_f7a():
+    return _traj_panel("f7_bai_trajectory.csv", ["version", "n_records", "n_steps"],
+                       "图7a 白厄：台词量（柱）与出场步骤（线）", "台词条数 / 出场步骤数",
+                       "按版本统计；3.5 无台词（缺席本身是信号）")
+
+
+def data_f7b():
+    rows = _csv_rows("f7_bai_trajectory.csv")
+    forms = {}
+    for r in rows:
+        for k, v in r.items():
+            if k.startswith("form_"):
+                try:
+                    forms[k] = forms.get(k, 0.0) + float(v or 0)
+                except ValueError:
+                    pass
+    others = sorted([k for k in forms if k != "form_base" and forms[k] > 0], key=lambda k: -forms[k])
+    top = others[:5]
+    cols = ["version"] + (["form_base"] if forms.get("form_base", 0) > 0 else []) + top
+    out = []
+    for r in rows:
+        row = {c: r.get(c, "") for c in cols}
+        rest = sum(float(r.get(k) or 0) for k in forms if k not in cols)
+        row["other_forms"] = round(rest, 3)
+        out.append(row)
+    return dict(columns=cols + ["other_forms"], rows=out, title="图7b 白厄：语言形态构成（堆叠）",
+                axes={"x": "版本", "y": "台词条数（按形态拆分）"},
+                sources=["data/plot_data/f7_bai_trajectory.csv", "data/config/character-trajectory-all.json"],
+                filters="形态=角色台词 form 字段；非本体条数高表示身份分裂")
+def data_f7c():
+    rows = _csv_rows("f7_bai_trajectory.csv")
+    addr_cols = [c for c in rows[0].keys() if c.startswith("addr_") and sum(float(r.get(c) or 0) for r in rows) > 0]
+    cols = ["version"] + addr_cols
+    return dict(columns=cols, rows=[{c: r.get(c, "") for c in cols} for r in rows],
+                title="图7c 白厄：称呼词命中（自己的台词）",
+                axes={"x": "版本", "y": "命中次数"},
+                sources=["data/plot_data/f7_bai_trajectory.csv", "data/config/character-trajectory-all.json"],
+                filters="只统计白厄本人台词中的称呼词；词面统计")
+def data_f7d():
+    return _traj_panel("f7_bai_trajectory.csv", ["version", "mean_score_a", "mean_score_b1", "top100_b1"],
+                       "图7d 白厄：所在步骤的检测器分数", "所在步骤平均分 / B1 前100命中率",
+                       "A/B1=规则+特征打分（非训练模型）；分数高只说明语言突变强")
+
+
+def data_f8a():
+    return _traj_panel("f8_xi_trajectory.csv", ["version", "n_records", "n_steps"],
+                       "图8a 昔涟：台词量（柱）与出场步骤（线）", "台词条数 / 出场步骤数",
+                       "按版本统计；反映从「迷迷」到讲述者的出场变化")
+
+
+def data_f8b():
+    rows = _csv_rows("f8_xi_trajectory.csv")
+    forms = {}
+    for r in rows:
+        for k, v in r.items():
+            if k.startswith("form_"):
+                try:
+                    forms[k] = forms.get(k, 0.0) + float(v or 0)
+                except ValueError:
+                    pass
+    others = sorted([k for k in forms if k != "form_base" and forms[k] > 0], key=lambda k: -forms[k])
+    top = others[:5]
+    cols = ["version"] + (["form_base"] if forms.get("form_base", 0) > 0 else []) + top
+    out = []
+    for r in rows:
+        row = {c: r.get(c, "") for c in cols}
+        rest = sum(float(r.get(k) or 0) for k in forms if k not in cols)
+        row["other_forms"] = round(rest, 3)
+        out.append(row)
+    return dict(columns=cols + ["other_forms"], rows=out, title="图8b 昔涟：语言形态构成（堆叠）",
+                axes={"x": "版本", "y": "台词条数（按形态拆分）"},
+                sources=["data/plot_data/f8_xi_trajectory.csv", "data/config/character-trajectory-all.json"],
+                filters="形态=角色台词 form 字段；三个切换点可直接指认")
+def data_f8c():
+    rows = _csv_rows("f8_xi_trajectory.csv")
+    addr_cols = [c for c in rows[0].keys() if c.startswith("addr_") and sum(float(r.get(c) or 0) for r in rows) > 0]
+    cols = ["version"] + addr_cols
+    return dict(columns=cols, rows=[{c: r.get(c, "") for c in cols} for r in rows],
+                title="图8c 昔涟：称呼词命中（自己的台词）",
+                axes={"x": "版本", "y": "命中次数"},
+                sources=["data/plot_data/f8_xi_trajectory.csv", "data/config/character-trajectory-all.json"],
+                filters="只统计昔涟本人台词中的称呼词；词面统计")
+def data_f8d():
+    return _traj_panel("f8_xi_trajectory.csv", ["version", "mean_score_a", "mean_score_b1", "top100_b1"],
+                       "图8d 昔涟：所在步骤的检测器分数", "所在步骤平均分 / B1 前100命中率",
+                       "A/B1=规则+特征打分（非训练模型）；分数高≠更感人")
+
+
+# ---- f14 / f15 两联图拆分（tools/split_panel_figures.py）----
+def _csv_rows(fn):
+    with open(os.path.join(ROOT, "data", "plot_data", fn), encoding="utf-8-sig", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def data_f14a():
+    rows = _csv_rows("f14_mirror_pair_O10_O11.csv")
+    out = [{"step_index": int(r["step_index"]), "tfidf_O10": float(r["tfidf_O10"]),
+            "tfidf_O11": float(r["tfidf_O11"])} for r in rows]
+    return dict(columns=["step_index", "tfidf_O10", "tfidf_O11"], rows=out,
+                title="图14a O10 / O11 的词频加权曲线（逐点相等）",
+                axes={"x": "全局步序 1–686", "y": "词频加权余弦相似度"},
+                sources=["data/models/vec_word.joblib", "data/models/X_word.npz", "data/corpus/oracles.jsonl"],
+                filters="词频加权=词袋，语序被丢弃；O10/O11 只换语序 → 两条线逐点相等（最大差 0）")
+
+
+def data_f14b():
+    rows = _csv_rows("f14_mirror_pair_O10_O11.csv")
+    out = [{"step_index": int(r["step_index"]), "sbert_O10": float(r["sbert_O10"]),
+            "sbert_O11": float(r["sbert_O11"])} for r in rows]
+    return dict(columns=["step_index", "sbert_O10", "sbert_O11"], rows=out,
+                title="图14b O10 / O11 的语义向量曲线（只差 0.018）",
+                axes={"x": "全局步序 1–686", "y": "语义向量余弦相似度"},
+                sources=["data/models/sbert_model", "data/models/Z_sbert_seg.npy", "data/corpus/oracles.jsonl"],
+                filters="句向量对语序略有感知，仅产生 0.018 的微差；仍不足以区分两条命定")
+
+
+def data_f15a():
+    rows = [r for r in _csv_rows("f15_retrieval_v3.csv") if r["panel"] == "mrr"]
+    out = [{"variant": r["variant"], "method": r["method"], "mrr": float(r["value"]),
+            "n_eval": int(r["n_eval"])} for r in rows if r["method"]]
+    return dict(columns=["variant", "method", "mrr", "n_eval"], rows=out,
+                title="图15a 神谕检索：各方法的 MRR",
+                axes={"x": "检索方法（按 variant 分组）", "y": "MRR"},
+                sources=["data/config/retrieval-v3-results.json"],
+                filters="MRR=正确答案排名的倒数平均；gold=event_segments（多段任一命中）；v3 排除吟诵步")
+
+
+def data_f15b():
+    rows = [r for r in _csv_rows("f15_retrieval_v3.csv") if r["panel"] == "recall"]
+    out = [{"method": r["method"], "k": int(float(r["k"])), "recall": float(r["value"])}
+           for r in rows if r["method"] and r["k"]]
+    return dict(columns=["method", "k", "recall"], rows=out,
+                title="图15b 神谕检索：Recall@k（v3 各方法）",
+                axes={"x": "k（前 k 名）", "y": "Recall@k"},
+                sources=["data/config/retrieval-v3-results.json"],
+                filters="Recall@k=正确答案是否出现在前 k 名；评价排序而不是相似度本身")
 
 
 # ===========================================================================
