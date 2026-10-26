@@ -211,3 +211,13 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
   .figure-grid { grid-template-columns: 1fr; }
   .figure-card img { max-height: 300px; }
 }
+
+/* ---------- key numbers as table (no cards) ---------- */
+.key-table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 13px; }
+.key-table th, .key-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.key-table th { color: var(--muted); font-weight: 500; width: 34%; }
+.key-table td { color: var(--ink); }
+.hl { color: #9a5b12; font-weight: 700; }
+.char-head { display: flex; align-items: center; gap: 8px; padding: 8px 12px 0; }
+.char-head .portrait { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
+.char-card .mini { display: block; width: 100%; }

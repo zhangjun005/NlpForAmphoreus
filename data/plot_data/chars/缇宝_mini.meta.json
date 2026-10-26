@@ -1,0 +1,19 @@
+{
+  "figure": "docs/report/figures/chars/缇宝_mini.png",
+  "title": "缇宝 迷你图：台词量/步骤、自身神谕相似度（标出首现/吟诵/兑现/关键事件/刀子）、称呼 Top5",
+  "axes": {
+    "left": "x=版本；y=台词条数/出场步骤",
+    "middle": "x=全局步序；y=余弦相似度（词频加权/语义向量）；标注=关键时刻名称",
+    "right": "x=命中次数；y=称呼"
+  },
+  "plot_data_csv": "data/plot_data/chars/缇宝_mini.csv",
+  "sources": [
+    "data/config/character-trajectory-all.json",
+    "data/plot_data/oracle_sim__缇宝.csv",
+    "data/corpus/oracles.jsonl"
+  ],
+  "filters": "A/B 组按报告口径；B 组无自身神谕，中图留空",
+  "generator": "tools/make_character_mini_figures.py",
+  "run_command": "conda run -n nlpLesson python tools/make_character_mini_figures.py",
+  "data_sha256_16": "cf1f8b1657b49f15"
+}

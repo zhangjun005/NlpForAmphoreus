@@ -161,15 +161,31 @@ function KeyNumbers({ data }) {
   if (!data) return null;
   const rows = flatten(data.key_numbers).slice(0, 10);
   return (
-    <div className="key-grid">
-      {rows.map(([k, v]) => (
-        <div className="key-item" key={k}>
-          <span className="key-label">{k}</span>
-          <span className="key-value">{v}</span>
-        </div>
-      ))}
-    </div>
+    <table className="key-table">
+      <tbody>
+        {rows.map(([k, v]) => (
+          <tr key={k}>
+            <th>{k}</th>
+            <td>{v}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
+}
+
+const PORTRAITS = {
+  白厄: 'bai-e', 万敌: 'wan-di', 那刻夏: 'na-ke-xia', 昔涟: 'xi-lian', 遐蝶: 'xia-die',
+  缇宝: 'ti-bao', 海瑟音: 'hai-se-yin', 刻律德菈: 'ke-lv-de-la',
+};
+
+const HL = ['水晶花寓言', '明天见', '明天', '镜像神谕', '收梢即起始', '如我所书', '十三位英雄', '千年永昼',
+  'O04', 'O06', 'O09', 'O13', '相拥之后', '拥抱就是爱', '三千万次轮回'];
+
+function renderRich(text) {
+  const pattern = new RegExp(`(${HL.join('|')})`, 'g');
+  const parts = text.split(pattern);
+  return parts.map((p, i) => (HL.includes(p) ? <strong className="hl" key={i}>{p}</strong> : <span key={i}>{p}</span>));
 }
 
 function FigureCard({ fig }) {
@@ -219,7 +235,7 @@ function Section({ ch, data }) {
         <p className="kicker">{ch.kicker}</p>
       </header>
       <div className="prose">
-        {c.pieces?.map((p, i) => <p key={i}>{p}</p>)}
+        {c.pieces?.map((p, i) => <p key={i}>{renderRich(p)}</p>)}
       </div>
       {chars.length > 0 && (
         <div className="char-block">
@@ -227,11 +243,15 @@ function Section({ ch, data }) {
           <div className="char-grid">
             {chars.map((x) => (
               <figure className="char-card" key={x.name}>
-                <img src={x.img} alt={`${x.name} 迷你图`} loading="lazy" />
-                <figcaption>
+                <div className="char-head">
+                  {PORTRAITS[x.name] && (
+                    <img className="portrait" src={`/materials/${PORTRAITS[x.name]}-portrait.png`} alt={x.name}
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                  )}
                   <strong>{x.name}</strong>
-                  <p>{x.note}</p>
-                </figcaption>
+                </div>
+                <img className="mini" src={x.img} alt={`${x.name} 迷你图`} loading="lazy" />
+                <figcaption><p>{x.note}</p></figcaption>
               </figure>
             ))}
           </div>
