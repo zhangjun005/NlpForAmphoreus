@@ -22,7 +22,7 @@ DATA_DIR = os.path.join(ROOT, "data", "plot_data", "chars")
 os.makedirs(FIG_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
 
-CHARS = ["白厄", "万敌", "那刻夏", "昔涟", "遐蝶", "缇宝", "海瑟音", "刻律德菈", "阿格莱雅", "赛飞儿", "开拓者", "三月七", "丹恒"]
+CHARS = ["白厄", "万敌", "那刻夏", "昔涟", "遐蝶", "缇宝", "海瑟音", "刻律德菈", "阿格莱雅", "赛飞儿", "风堇", "开拓者", "三月七", "丹恒"]
 VERSIONS = ["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]
 
 traj = json.load(io.open(os.path.join(ROOT, "data/config/character-trajectory-all.json"), encoding="utf-8"))["characters"]

@@ -1,4 +1,4 @@
-// sync-assets.mjs — 把仓库里的图与章节数据复制进前端 public（构建前自动跑）
+﻿// sync-assets.mjs — 把仓库里的图与章节数据复制进前端 public（构建前自动跑）
 import { copyFileSync, mkdirSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +12,7 @@ mkdirSync(figDir, { recursive: true });
 
 const figures = [
   'f1_level_scores.png',
+  'f4_citation_stage.png',
   'f7_bai_trajectory.png',
   'f8_xi_trajectory.png',
   'f10_coverage.png',
@@ -44,6 +45,19 @@ if (existsSync(charsCsvDir)) {
     if (!f.endsWith('_mini.csv')) continue;
     const raw = readFileSync(join(charsCsvDir, f), 'utf8').replace(/^\uFEFF/, '').trim().split(/\r?\n/);
     const head = raw[0].split(',');
+    // 同名 oracle_sim CSV 提供 task / step_title（事件点标题）
+    const curvePath = join(repo, 'data', 'plot_data', 'oracle_sim__' + f.replace('_mini.csv', '') + '.csv');
+    let titles = [];
+    if (existsSync(curvePath)) {
+      const cRaw = readFileSync(curvePath, 'utf8').replace(/^\uFEFF/, '').trim().split(/\r?\n/);
+      const cHead = cRaw[0].split(',');
+      const ti = cHead.indexOf('task');
+      const si = cHead.indexOf('step_title');
+      titles = cRaw.slice(1).map((line) => {
+        const parts = line.split(',');
+        return { task: parts[ti] || '', step_title: parts[si] || '' };
+      });
+    }
     const rows = raw.slice(1).map((line) => {
       const parts = line.split(',');
       const o = {};
@@ -53,7 +67,11 @@ if (existsSync(charsCsvDir)) {
       });
       return o;
     });
-    rows.forEach((r, i) => { r.step_index = i + 1; });
+    rows.forEach((r, i) => {
+      r.step_index = i + 1;
+      r.task = titles[i] ? titles[i].task : '';
+      r.step_title = titles[i] ? titles[i].step_title : '';
+    });
     writeFileSync(join(charsJsonDir, f.replace('_mini.csv', '.json')), JSON.stringify(rows));
   }
 }
