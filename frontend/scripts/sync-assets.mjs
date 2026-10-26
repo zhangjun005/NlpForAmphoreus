@@ -1,4 +1,4 @@
-﻿// sync-assets.mjs — 把仓库里的图与章节数据复制进前端 public（构建前自动跑）
+// sync-assets.mjs — 把仓库里的图与章节数据复制进前端 public（构建前自动跑）
 import { copyFileSync, mkdirSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -36,6 +36,9 @@ const figures = [
   'f14b_mirror_sbert.png',
   'f15a_retrieval_mrr.png',
   'f15b_retrieval_recall.png',
+  // f17_lyrics_similarity.png：三格横条（14 角色质心 / 昔涟 8 版本质心 / 13 条神谕）与 24 条歌词的相似度；
+  // 生成 tools/export_plot_data.py（make_new_figures），配对数据 data/plot_data/f17_lyrics_similarity.csv
+  'f17_lyrics_similarity.png',
 ];
 for (const f of figures) {
   const src = join(repo, 'docs', 'report', 'figures', f);
@@ -94,7 +97,60 @@ if (existsSync(charsCsvDir)) {
 
 const dataDir = join(frontend, 'public', 'data');
 mkdirSync(dataDir, { recursive: true });
+
+// 角色曲线最高点的原文证据索引：只把每个角色词频/语义最高步骤的少量记录
+// 写入前端，避免页面为了说明峰值而加载整份 segments.jsonl。
+const segmentsPath = join(repo, 'data', 'corpus', 'segments.jsonl');
+const peakEvidence = {};
+if (existsSync(segmentsPath)) {
+  const byKey = new Map();
+  const rawSegments = readFileSync(segmentsPath, 'utf8').split(/\r?\n/).filter(Boolean);
+  for (const line of rawSegments) {
+    const s = JSON.parse(line);
+    const key = [s.version, s.task, s.step_title].join('\u0001');
+    if (!byKey.has(key)) byKey.set(key, []);
+    byKey.get(key).push(s);
+  }
+  for (const file of readdirSync(charsJsonDir)) {
+    if (!file.endsWith('.json')) continue;
+    const name = file.replace(/\.json$/, '');
+    const rows = JSON.parse(readFileSync(join(charsJsonDir, file), 'utf8'));
+    const seen = new Map();
+    const enriched = rows.map((row) => {
+      const key = [row.version, row.task, row.step_title].join('\u0001');
+      const idx = seen.get(key) || 0;
+      seen.set(key, idx + 1);
+      const candidates = byKey.get(key) || [];
+      return { row, segment: candidates[idx] || null };
+    });
+    const makePeak = (field) => {
+      const item = enriched.reduce((best, current) => Number(current.row[field] || 0) > Number(best.row[field] || 0) ? current : best, enriched[0]);
+      const segment = item.segment;
+      const main = (segment?.main_records || []).filter((r) => !['option', 'sms_option'].includes(r.kind));
+      const own = main.filter((r) => r.speaker === name);
+      const records = (own.length ? own : main).slice(0, 4).map((r) => ({ id: r.id, speaker: r.speaker, kind: r.kind, text: r.text }));
+      return {
+        step_index: item.row.step_index,
+        score: item.row[field],
+        version: item.row.version,
+        task: item.row.task,
+        step_title: item.row.step_title,
+        events: Object.fromEntries(['in_oracle_first', 'in_recitation', 'in_fulfillment', 'in_key_event', 'in_knife'].map((k) => [k, item.row[k] || 0])),
+        segment_id: segment?.segment_id || null,
+        records,
+      };
+    };
+    if (enriched.length) peakEvidence[name] = { tfidf: makePeak('tfidf_own'), sbert: makePeak('sbert_own') };
+  }
+  writeFileSync(join(dataDir, 'character-peak-evidence.json'), JSON.stringify({
+    note: '由角色轨迹峰值与 segments.jsonl 对齐生成；仅展示每角色词频/语义最高步骤的连续记录，不替代原始语料。',
+    characters: peakEvidence,
+  }));
+}
+
 const screens = join(frontend, 'data', 'screens.json');
 if (existsSync(screens)) copyFileSync(screens, join(dataDir, 'screens.json'));
+const rubyPairs = join(repo, 'data', 'corpus', 'ruby-pairs.jsonl');
+if (existsSync(rubyPairs)) copyFileSync(rubyPairs, join(dataDir, 'ruby-pairs.jsonl'));
 
 console.log('[sync-assets] figures + chars + screens.json 已同步');

@@ -1,0 +1,19 @@
+{
+ "figure": "f17_lyrics_similarity.png",
+ "title": "图17 角色曲《昔涟》与 14 个角色、昔涟各版本、13 条神谕的相似度",
+ "axes": {
+  "x": "三格：14 个角色质心 / 昔涟 8 个版本 / 13 条神谕",
+  "y": "与 24 条歌词的余弦相似度（SBERT 语义向量；TF-IDF 词面同口径另列在 CSV）"
+ },
+ "plot_data_csv": "data/plot_data/f17_lyrics_similarity.csv",
+ "sources": [
+  "data/config/lyric-query-xi.json",
+  "data/config/song-lyrics-xi.txt",
+  "data/corpus/amphoreus.final.jsonl"
+ ],
+ "filters": "查询=24 条歌词记录（#26218–#26241）拼接；角色质心=该角色全部台词向量平均；已剔除歌词自身 24 条，避免自己命中自己；SBERT 与 TF-IDF 同口径各算一次，跨表示不可比",
+ "generator": "tools/export_plot_data.py",
+ "run_command": "conda run -n nlpLesson python tools/export_plot_data.py --all",
+ "data_sha256_16": "8acb1ab562e4de49",
+ "created_at": "2026-10-25T20:15:57"
+}

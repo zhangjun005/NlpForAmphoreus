@@ -486,6 +486,31 @@ def data_f16():
 
 
 
+def data_f17():
+    """f17 角色曲《昔涟》：歌词与 14 个角色质心 / 昔涟 8 个版本 / 13 条神谕的相似度。
+    查询文本 = 24 条歌词记录（#26218–#26241，3.7|落英啊，残芳纷飞留归躅|11 的唱词）拼接，
+    数值来自 data/config/lyric-query-xi.json（由 tools/lyric_query_report.py 计算）。"""
+    src = read_json(os.path.join(ROOT, "data", "config", "lyric-query-xi.json"))
+    rows = []
+    for i, c in enumerate(sorted(src["char_centroids"], key=lambda x: -x["sbert"]), 1):
+        rows.append({"panel": "角色质心", "label": c["char"], "sbert": c["sbert"],
+                     "tfidf": c["tfidf"], "rank": i})
+    for i, v in enumerate(sorted(src["xi_version_centroids"], key=lambda x: -x["sbert"]), 1):
+        rows.append({"panel": "昔涟版本质心", "label": v["version"], "sbert": v["sbert"],
+                     "tfidf": None, "rank": i})
+    for i, o in enumerate(sorted(src["oracle_similarity"], key=lambda x: -x["sbert"]), 1):
+        rows.append({"panel": "神谕", "label": o["oracle_id"], "sbert": o["sbert"],
+                     "tfidf": o["tfidf"], "rank": i})
+    return dict(columns=["panel", "label", "sbert", "tfidf", "rank"], rows=rows,
+                title="图17 角色曲《昔涟》与 14 个角色、昔涟各版本、13 条神谕的相似度",
+                axes={"x": "三格：14 个角色质心 / 昔涟 8 个版本 / 13 条神谕",
+                      "y": "与 24 条歌词的余弦相似度（SBERT 语义向量；TF-IDF 词面同口径另列在 CSV）"},
+                sources=["data/config/lyric-query-xi.json", "data/config/song-lyrics-xi.txt", P_CORPUS],
+                filters="查询=24 条歌词记录（#26218–#26241）拼接；角色质心=该角色全部台词向量平均；"
+                        "已剔除歌词自身 24 条，避免自己命中自己；SBERT 与 TF-IDF 同口径各算一次，"
+                        "跨表示不可比")
+
+
 # ---- 新增 3 张报告图 ----
 def data_f12():
     rows_all = []
@@ -557,13 +582,13 @@ def data_f13():
         r["sbert_roll25"] = round(x2, 6)
     return dict(columns=["step_index", "segment_id", "order", "version",
                          "tfidf_sim", "sbert_sim", "tfidf_roll25", "sbert_roll25"], rows=rows,
-                title="图13 K36 原文与 686 步的相似度（leave-one-out，横轴=全局步序）",
-                axes={"x": "全局步序（686 池内 1–686，已排除 3.7|魔女|21 自身）",
-                      "y": "与 K36 原文的余弦相似度（左 词频加权 / 右 语义向量；细线原始、粗线滚动25）"},
+                title="图13 原版水晶花寓言（#23885–#23913）与 685 步的相似度（留一法，横轴=全局步序）",
+                axes={"x": "全局步序（686 池内 1–686，已排除参考段自身 3.7|魔女|21）",
+                      "y": "与原版寓言的余弦相似度（上 词频加权 / 下 语义向量；细线原始、粗线滚动25）"},
                 sources=[P_CORPUS, P_SEGS, "data/models/vec_word.joblib", "data/models/X_word.npz",
                          "data/models/Z_sbert_seg.npy", "data/models/ids.json",
                          "data/models/sbert_model/"],
-                filters="参考文本=K36 原文 record #23885–#23913（29 条）拼接；leave-one-out：排除 "
+                filters="参考文本=原版寓言 record #23885–#23913（29 条）拼接；leave-one-out：排除 "
                         "3.7|魔女的孤诣课题|21 自身步骤；x 轴=686 池内全局步序（唯一可排序）；"
                         "词频加权 复用 vec_word/X_word，语义向量 用本地模型编码参考句")
 
@@ -636,6 +661,7 @@ def specs():
         "f15a_retrieval_mrr.png": ("tools/split_panel_figures.py", data_f15a),
         "f15b_retrieval_recall.png": ("tools/split_panel_figures.py", data_f15b),
         "f16_char_oracle_similarity.png": ("tools/character_oracle_similarity.py", data_f16),
+        "f17_lyrics_similarity.png": ("tools/export_plot_data.py", data_f17),
     }
     for char in read_json(P_CURVES)["characters"]:
         sp["oracle_sim/%s.png" % char] = ("tools/oracle_similarity_curves.py",
@@ -683,64 +709,159 @@ def make_new_figures():
     plt.rcParams["axes.unicode_minus"] = False
     os.makedirs(FIG_DIR, exist_ok=True)
 
-    # f12
+    # f12（重绘：按版本×说话人堆叠 + 关键剧情点直接标注 + 说话人熵）
     d = data_f12()
-    from collections import defaultdict
-    by_v = defaultdict(dict)
-    spk = []
+    from collections import Counter
+    import math
+    versions = ["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]
+    cnt = {v: Counter() for v in versions}
     for r in d["rows"]:
-        by_v[r["version"]][r["speaker"]] = r["count"]
-        if r["speaker"] not in spk:
-            spk.append(r["speaker"])
-    versions = sorted(by_v)
-    fig, ax = plt.subplots(figsize=(9.4, 4.6))
+        cnt[r["version"]][r["speaker"]] += r["count"]
+    totals = {v: sum(cnt[v].values()) for v in versions}
+
+    def _entropy(c):
+        n = sum(c.values())
+        if n <= 1:
+            return 0.0
+        return -sum((x / n) * math.log2(x / n) for x in c.values() if x > 0)
+
+    order = ["缇宝", "白厄", "遐蝶", "generic_npc", "莫忒丝", "旁白", "开拓者", "昔涟"]
+    cspk = {"缇宝": "#b4551c", "白厄": "#5d6d7e", "遐蝶": "#8e44ad", "generic_npc": "#bdc3c7",
+            "莫忒丝": "#c8a2a2", "旁白": "#95a5a6", "开拓者": "#2e8b57", "昔涟": "#c0392b"}
+    fig, ax = plt.subplots(figsize=(10.8, 4.8))
     bottom = np.zeros(len(versions))
-    cmap = plt.get_cmap("tab20")
-    for i, s in enumerate(spk):
-        vals = np.array([by_v[v].get(s, 0) for v in versions], dtype=float)
-        ax.bar(versions, vals, bottom=bottom, label=s, color=cmap(i % 20))
+    for s in order:
+        vals = np.array([cnt[v].get(s, 0) for v in versions], dtype=float)
+        ax.bar(versions, vals, bottom=bottom, label=s, color=cspk[s],
+               edgecolor="white", linewidth=0.8, width=0.62)
         bottom += vals
-    ax.set_xlabel("版本")
-    ax.set_ylabel("出现次数")
-    ax.set_title("图12「明天见」时间线（按版本×说话人；全语料文本含「明天见」）", fontsize=10)
-    ax.legend(fontsize=7, ncol=2, frameon=False)
+    for i, v in enumerate(versions):
+        ax.text(i, totals[v] + 0.22, "%d" % totals[v], ha="center", va="bottom",
+                fontsize=9, color="#333")
+    ax.annotate("起点 #4211 白厄「明天见」", xy=(0, 1.0), xytext=(0.04, 3.5),
+                fontsize=8, color="#2c3e50",
+                arrowprops=dict(arrowstyle="->", color="#2c3e50", lw=0.9))
+    ax.annotate("缇宝 6/9；#8077「…是世上最伟大的预言」\n说话人熵 1.45 bit（4 人）",
+                xy=(1, 9.0), xytext=(1.42, 10.3), fontsize=8, color="#8a3d0f",
+                arrowprops=dict(arrowstyle="->", color="#8a3d0f", lw=0.9))
+    ax.annotate("5 个说话人各 1 次；#25779「明天见，乘以一千」\n说话人熵 2.32 bit（全篇最高）",
+                xy=(7, 5.0), xytext=(4.15, 7.9), fontsize=8, color="#8a2f22", ha="left",
+                arrowprops=dict(arrowstyle="->", color="#8a2f22", lw=0.9))
+    ax.set_xlabel("版本", fontsize=10)
+    ax.set_ylabel("「明天见」出现次数", fontsize=10)
+    ax.set_ylim(0, 11.8)
+    ax.tick_params(labelsize=9)
     ax.grid(axis="y", alpha=0.25)
+    ax.set_axisbelow(True)
+    ax.legend(ncol=4, fontsize=7.5, frameon=False, loc="upper center", bbox_to_anchor=(0.70, 1.02))
     fig.tight_layout()
-    fig.savefig(os.path.join(FIG_DIR, "f12_mingtian_timeline.png"), dpi=200, bbox_inches="tight")
+    fig.savefig(os.path.join(FIG_DIR, "f12_mingtian_timeline.png"), dpi=100,
+                bbox_inches="tight", pad_inches=0.18)
     plt.close(fig)
 
-    # f13（修正口径：K36 原文参考 + leave-one-out + 全局步序）
+    # f13（重绘：上=词频加权、下=语义向量，共享步序；直接标出真峰与假峰）
     d = data_f13()
     rows = d["rows"]
     xs = [r["step_index"] for r in rows]
-    fig, ax = plt.subplots(figsize=(11.2, 4.9))
-    ax.plot(xs, [r["tfidf_sim"] for r in rows], color="#a9c0d8", lw=0.6, alpha=0.6)
-    ax.plot(xs, [r["tfidf_roll25"] for r in rows], color="#1f4e79", lw=2.0,
-            label="词频加权（滚动25）")
-    ax2 = ax.twinx()
-    ax2.plot(xs, [r["sbert_sim"] for r in rows], color="#f0b27a", lw=0.6, alpha=0.6)
-    ax2.plot(xs, [r["sbert_roll25"] for r in rows], color="#b9530f", lw=2.0,
-             label="语义向量（滚动25）")
-    ax.axvspan(457, 541, color="#f1c40f", alpha=0.10)
-    ax.text(458, ax.get_ylim()[1] * 0.94, "3.5 闪回区", fontsize=8, color="#8a6d00")
-    ax.axvline(628, color="#7f8c8d", lw=1.2, ls="--")
-    ax.text(629, ax.get_ylim()[1] * 0.80, "K36 步（已排除）", fontsize=8, color="#555")
-    # 滚动峰（3.7 结尾）
-    jmax = max(range(len(rows)), key=lambda i: rows[i]["sbert_roll25"])
-    ax.annotate("滚动峰（3.7 结尾）", xy=(rows[jmax]["step_index"], rows[jmax]["tfidf_roll25"]),
-                xytext=(rows[jmax]["step_index"] - 120, rows[jmax]["tfidf_roll25"] * 1.05),
-                fontsize=8, color="#1f4e79",
-                arrowprops=dict(arrowstyle="->", color="#1f4e79", lw=0.8))
-    ax.set_xlabel("全局步序（686 池内 1–686；已排除 3.7|魔女|21 自身）")
-    ax.set_ylabel("与 K36 原文相似度（词频加权）", color="#1f4e79")
-    ax2.set_ylabel("与 K36 原文相似度（语义向量）", color="#b9530f")
-    ax.set_title("图13 K36 原文与 686 步的相似度（leave-one-out；横轴=全局步序）", fontsize=10)
-    h1, l1 = ax.get_legend_handles_labels()
-    h2, l2 = ax2.get_legend_handles_labels()
-    ax.legend(h1 + h2, l1 + l2, fontsize=8, frameon=False, loc="upper left")
-    ax.grid(alpha=0.22)
+    fig, axes = plt.subplots(2, 1, figsize=(10.8, 5.6), sharex=True)
+    # 版本分界（按 686 池内的步数累计：3.0 139 / 3.1 91 / 3.2 82 / 3.3 92 / 3.4 52 / 3.5 85 / 3.6 60 / 3.7 84）
+    bounds = [(139, "3.1"), (230, "3.2"), (312, "3.3"), (404, "3.4"),
+              (456, "3.5"), (541, "3.6"), (601, "3.7")]
+    words = [(2, "3.0")] + bounds
+    ax = axes[0]
+    ax.plot(xs, [r["tfidf_sim"] for r in rows], color="#a9c0d8", lw=0.7, alpha=0.7)
+    ax.plot(xs, [r["tfidf_roll25"] for r in rows], color="#1f4e79", lw=1.8)
+    ax.plot([663], [0.252236], "o", color="#1f4e79", ms=5, zorder=5)
+    ax.set_ylabel("词频加权 余弦", fontsize=9.5, color="#1f4e79")
+    ax.set_ylim(0, 0.31)
+    ax2 = axes[1]
+    ax2.plot(xs, [r["sbert_sim"] for r in rows], color="#f0b27a", lw=0.7, alpha=0.7)
+    ax2.plot(xs, [r["sbert_roll25"] for r in rows], color="#b9530f", lw=1.8)
+    ax2.plot([663], [0.784853], "o", color="#b9530f", ms=5, zorder=5)
+    ax2.plot([594, 597], [0.662268, 0.653624], "o", color="#7d3c98", ms=4.5, zorder=5)
+    ax2.set_ylabel("语义向量 余弦", fontsize=9.5, color="#b9530f")
+    ax2.set_ylim(0.40, 0.90)
+    ax2.set_xlabel("全局步序（686 池内 1–686；已排除参考段自身 3.7|魔女|21）", fontsize=9.5)
+    ax2.set_xlim(1, 686)
+    for a_ in (ax, ax2):
+        for x, _ in bounds:
+            a_.axvline(x, color="#e6eaee", lw=0.9, zorder=0)
+        a_.axvline(628, color="#7f8c8d", lw=1.0, ls="--")
+        a_.grid(alpha=0.22)
+        a_.set_axisbelow(True)
+    for x, lab in words:
+        ax.text(x + 2, 0.302, lab, fontsize=7.5, color="#93a0ad", va="top")
+    ax2.axvspan(542, 601, color="#f1c40f", alpha=0.07, lw=0)
+    ax.text(624, 0.232, "参考段自身（已排除）", fontsize=7.5, color="#555", ha="right", va="center")
+    ax.annotate("步663 词频 0.252（全篇最高）", xy=(663, 0.252), xytext=(505, 0.272),
+                fontsize=8, color="#1f4e79", va="center",
+                arrowprops=dict(arrowstyle="->", color="#1f4e79", lw=0.9))
+    ax.annotate("步684 词频第2高 0.164（歌词段）", xy=(684, 0.164), xytext=(420, 0.205),
+                fontsize=7.5, color="#555",
+                arrowprops=dict(arrowstyle="->", color="#999", lw=0.8))
+    ax2.annotate("步594/597（3.6 大墓·重逢）：语义 0.66/0.65\n词频只有 0.07/0.06 → 假峰",
+                 xy=(597, 0.658), xytext=(290, 0.735), fontsize=8, color="#7d3c98",
+                 arrowprops=dict(arrowstyle="->", color="#7d3c98", lw=0.9))
+    ax2.annotate("步663 语义 0.785（两线同抬）", xy=(663, 0.785), xytext=(470, 0.862),
+                 fontsize=8, color="#b9530f",
+                 arrowprops=dict(arrowstyle="->", color="#b9530f", lw=0.9))
     fig.tight_layout()
-    fig.savefig(os.path.join(FIG_DIR, "f13_crystal_flower_semantic.png"), dpi=200, bbox_inches="tight")
+    fig.savefig(os.path.join(FIG_DIR, "f13_crystal_flower_semantic.png"), dpi=100,
+                bbox_inches="tight", pad_inches=0.18)
+    plt.close(fig)
+
+    # f17（新增：角色曲《昔涟》与 14 角色 / 昔涟各版本 / 13 条神谕）
+    d = data_f17()
+    ch = [r for r in d["rows"] if r["panel"] == "角色质心"]
+    vr = [r for r in d["rows"] if r["panel"] == "昔涟版本质心"]
+    oo = [r for r in d["rows"] if r["panel"] == "神谕"]
+    fig, axes = plt.subplots(1, 3, figsize=(11.2, 4.4))
+    # (a) 14 个角色质心
+    ax = axes[0]
+    labels = [r["label"] for r in ch][::-1]
+    vals = [r["sbert"] for r in ch][::-1]
+    ax.barh(labels, vals, color=["#b4551c" if l == "昔涟" else "#9fb3c8" for l in labels], height=0.62)
+    ax.set_xlim(0.50, 0.60)
+    for i, (l, v) in enumerate(zip(labels, vals)):
+        ax.text(v + 0.002, i, "%.3f" % v, va="center", fontsize=7, color="#333")
+    ax.set_title("(a) 14 个角色质心", fontsize=9.5)
+    ax.set_xlabel("与歌词的 SBERT 余弦", fontsize=8.5)
+    ax.tick_params(labelsize=8)
+    ax.grid(axis="x", alpha=0.22)
+    ax.set_axisbelow(True)
+    # (b) 昔涟 8 个版本
+    ax = axes[1]
+    vs = ["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]
+    vmap = {r["label"]: r["sbert"] for r in vr}
+    ax.bar(vs, [vmap[v] for v in vs], color=["#b4551c" if v == "3.7" else "#9fb3c8" for v in vs],
+           width=0.62)
+    ax.set_ylim(0.50, 0.63)
+    for i, v in enumerate(vs):
+        ax.text(i, vmap[v] + 0.002, "%.3f" % vmap[v], ha="center", fontsize=7, color="#333")
+    ax.set_title("(b) 昔涟各版本质心", fontsize=9.5)
+    ax.set_xlabel("版本", fontsize=8.5)
+    ax.tick_params(labelsize=8)
+    ax.grid(axis="y", alpha=0.22)
+    ax.set_axisbelow(True)
+    # (c) 13 条神谕
+    ax = axes[2]
+    labels = [r["label"] for r in oo][::-1]
+    vals = [r["sbert"] for r in oo][::-1]
+    cols = []
+    for l in labels:
+        cols.append("#b4551c" if l == "O04" else ("#c0392b" if l == "O13" else "#9fb3c8"))
+    ax.barh(labels, vals, color=cols, height=0.62)
+    ax.set_xlim(0.30, 0.52)
+    for i, (l, v) in enumerate(zip(labels, vals)):
+        ax.text(v + 0.002, i, "%.3f" % v, va="center", fontsize=7, color="#333")
+    ax.set_title("(c) 13 条神谕（O04 最高，她的 O13 第 5）", fontsize=9.5)
+    ax.set_xlabel("与歌词的 SBERT 余弦", fontsize=8.5)
+    ax.tick_params(labelsize=8)
+    ax.grid(axis="x", alpha=0.22)
+    ax.set_axisbelow(True)
+    fig.tight_layout()
+    fig.savefig(os.path.join(FIG_DIR, "f17_lyrics_similarity.png"), dpi=100,
+                bbox_inches="tight", pad_inches=0.18)
     plt.close(fig)
 
     # f14（修正口径：词频加权 单线=完全重合；语义向量 两线+编号标注；全局步序）
