@@ -132,6 +132,38 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
   min-width: 0;
 }
 .figure-card img { display: block; width: 100%; height: auto; background: #fff; }
+
+/* 图注改为「左图右文」：不再用「轴／怎么读／本图结论」标签，文字直接分段 */
+.figure-card.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  grid-column: 1 / -1;
+  padding: 14px;
+}
+.figure-card.split .figure-img { min-width: 0; }
+.figure-card.split img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+.figure-card.split figcaption { padding: 0; }
+.figure-card.split figcaption strong { display: block; margin-bottom: 10px; font-size: 16px; }
+.figure-card.split figcaption p { margin: 0 0 9px; font-size: 13.5px; line-height: 1.75; color: #39434d; }
+.figure-card.wide { grid-column: 1 / -1; }
+@media (max-width: 900px) {
+  .figure-card.split { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* 角色向量对比：13 条神谕的双表示小图 */
+.oracle-bars { margin: 8px 0 2px; }
+.oracle-bars-cap { margin: 2px 0 0; font-size: 10.5px; line-height: 1.5; color: var(--muted); }
+.char-nlp-oracle { margin: 0 0 8px; font-size: 12.5px; line-height: 1.65; color: #8a5e0f; white-space: pre-line; }
 .figure-card figcaption { padding: 14px 16px 16px; font-size: 13.5px; }
 .figure-card figcaption strong { display: block; margin-bottom: 6px; font-size: 14.5px; }
 .figure-card figcaption p { margin: 4px 0; color: #39434d; }

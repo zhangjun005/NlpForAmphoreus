@@ -3,7 +3,7 @@ import {
   Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceDot, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis,
   usePlotArea, useXAxisScale, useYAxisScale,
 } from 'recharts';
-import { ORACLES, OWN_ORACLE, CHAR_ORACLE_RANK } from './oracleData.js';
+import { ORACLES, OWN_ORACLE, CHAR_ORACLE_RANK, CHAR_ORACLE_MATRIX } from './oracleData.js';
 
 const CHAPTERS = [
   { id: 'ch00', num: '0', title: '故事梗概：被循环困住的世界', kicker: '先看故事，再看数据' },
@@ -38,14 +38,14 @@ const CONTENT = {
       {
         src: '/figures/f14_mirror_pair_O10_O11.png',
         title: 'f14 镜像曲线：词频加权完全重合',
-        axes: '横轴：全局步序 1–686；纵轴：与神谕的余弦相似度。',
+        axes: '横轴是全局步序 1–686，纵轴是与神谕的余弦相似度。',
         judge: '词频加权是词袋：把句子当词的集合，语序被完全丢弃，所以只换语序的两条命定曲线必然逐点相等；语义向量对语序略有感知，才有 0.018 的微差。重合对「区分 O10/O11」是坏，对「证明词面与语序无关」是好——这是表示的性质，不是剧情结论。',
         conclusion: '686 个点逐点相等（最大差 0）→ 词频加权完全分不开这两条命定。',
       },
       {
         src: '/figures/f1_level_scores.png',
         title: 'f1 等级-分数箱线',
-        axes: '横轴：人工显著等级 0/1/2/3；纵轴：检测器标准化分数（0 = 平均）。',
+        axes: '横轴是人工显著等级 0/1/2/3，纵轴是检测器的标准化分数（0 表示平均）。',
         judge: '箱体随等级单调上移、0 级最低 3 级最高 = 检测器方向与人工一致（好）；各级重叠、没有趋势 = 不可靠（坏）。方法上：A/B1 是规则+特征打分，不是训练出来的模型；74 条标注只用于评测，所以只能看方向一致性，不能当准确率。',
         conclusion: 'B1 从 0 级 −0.68 升到 3 级 0.70，A 只从 −0.28 到 0.23 → B1 方向更清楚，但都只是趋势，不是准确率。',
       },
@@ -53,14 +53,14 @@ const CONTENT = {
         src: '/figures/f16_char_oracle_similarity.png',
         wide: true,
         title: 'f16 角色向量 × 神谕向量',
-        axes: '横轴：13 条神谕（O01–O13）；纵轴：14 个角色；左右两联分别是 TF-IDF 与 SBERT；红框=该角色自有神谕。',
+        axes: '横轴是 13 条神谕（O01–O13），纵轴是 14 个角色，左右两联分别是 TF-IDF 与 SBERT，红框标出该角色自己的神谕。',
         judge: '先看红框位置：红框越靠左、颜色越深 = 词面上越像自己的命定。再注意绝对值：TF-IDF 只有 0–0.22、SBERT 有 0.54–0.72——两个空间不可比、SBERT 全体偏高（各向异性），所以只能读排名。',
         conclusion: '词频上 6/12 角色的自有神谕排第 1；语义上只有赛飞儿排第 1，其余 top1 几乎全是 O08（hub 句）——语义相似度不能用来判断归属。每个角色行里都给出了他/她自己的读数（见第 2–4 章）。',
       },
       {
         src: '/figures/f15_retrieval_v3.png',
         title: 'f15 检索对比',
-        axes: '横轴：检索方法；纵轴：MRR（0–1，同组内越高越好，跨组不可比）。',
+        axes: '横轴是检索方法，纵轴是 MRR（0–1，同组内越高越好，跨组不可比）。',
         judge: '同组里 MRR 越高越好；0.5 以上才算能把正确答案排进前几名，0.1 以下基本等于没找到。MRR 评价的是「排序」而不是「相似度本身」，所以 0.13 的含义是「正确答案常排在很后面」，不是「相似度算错了」。',
         conclusion: 'v3 组 6 种方法全部 ≤0.13（都失败）；对照组关键词 0.48、词频加权 0.39（相对好，但池里留着吟诵干扰项）。',
       },
@@ -77,7 +77,7 @@ const CONTENT = {
       {
         src: '/figures/f7_bai_trajectory.png',
         title: 'f7 白厄四联图',
-        axes: '横轴：版本 3.0–3.7；四个子图纵轴分别是台词条数/出场步骤、形态条数、称呼命中、所在步骤的检测器分数。',
+        axes: '横轴是版本 3.0–3.7，四个子图的纵轴分别是台词条数/出场步骤、形态条数、称呼命中，以及所在步骤的检测器分数。',
         judge: '台词高 = 这一版是主场；形态里「非本体」条数高 = 身份分裂强；称呼从「老师」转向「伙伴/英雄」= 关系变化；检测器分数高只说明语言突变强，不代表更感人。方法上：形态条数是按角色形态字段计数、检测器分数是规则+特征打分，都不是模型输出，也别和语义向量混读。',
         conclusion: '3.0 台词最多（634 条），但 3.4 才是身份峰值（卡厄斯兰那 224 + 心中的英雄 49），3.5 是 0 条（缺席）。',
       },
@@ -94,14 +94,14 @@ const CONTENT = {
       {
         src: '/figures/f8_xi_trajectory.png',
         title: 'f8 昔涟四联图',
-        axes: '横轴：版本；四个子图纵轴分别是台词量、形态构成、称呼命中、检测器分数。',
+        axes: '横轴是版本，四个子图的纵轴分别是台词量、形态构成、称呼命中，以及检测器分数。',
         judge: '形态条的「切换点」越清楚，越能说明语言阶段在变；句长/检测器分数上升 = 向「讲述者」过渡。方法上：形态=字段计数、检测器=规则打分，两者都不属于两种向量表示，只是旁证。',
         conclusion: '3.0–3.3 几乎全是「迷迷」，3.4 之后切到「记忆形态/往昔的涟漪」，3.7 出现「另一位作者」——三个切换点都能在图上指出来。',
       },
       {
         src: '/figures/f13_crystal_flower_semantic.png',
         title: 'f13 水晶花曲线',
-        axes: '横轴：全局步序 1–686；纵轴：与 K36 原文的余弦相似度（词频加权与语义向量两条线）。',
+        axes: '横轴是全局步序 1–686，纵轴是与 K36 原文的余弦相似度，词频加权与语义向量各一条线。',
         judge: '留一法（leave-one-out）=把 K36 自己那一步从 686 步池里剔除再算，否则它会和自身相似度=1 形成自匹配峰，因此图里只有 685 行。排除之后峰只能来自主题重叠：峰在 3.7 结尾 = 与「收梢」主题真实重叠（正常）；峰在 3.5 闪回区 = 可疑——判据是「语义线抬、词频线不抬」，说明只是语义泛化而不是主题重叠。',
         conclusion: '词频加权峰在步序 663（3.7 结尾），不在 K36 步；3.5 闪回区还有一批语义向量假峰。',
       },
@@ -119,14 +119,14 @@ const CONTENT = {
       {
         src: '/figures/f4_citation_stage.png',
         title: 'f4 引用台账（对偶与长线）',
-        axes: '横轴：剧情顺序；纵轴：引用阶段（原文出现/他人解释/本人引用/结局宣告/改写）。',
+        axes: '横轴是剧情顺序，纵轴是引用阶段（原文出现、他人解释、本人引用、结局宣告、改写）。',
         judge: '阶段从「原文出现/他人解释」移到「本人引用/结局宣告」= 接管完成（好）；停在他人/旁白 = 没接管。方法上：这些阶段是人工按引用编码表打的标签，不是模型输出；f4 与相似度曲线不是同一个指标，不能互相印证。',
         conclusion: '本人引用 19/34、结局宣告 8 条，末次引用时本人 8/13——方向对，但只是弱趋势。',
       },
       {
         src: '/figures/f10_coverage.png',
         title: 'f10 覆盖率图',
-        axes: '横轴：角色（A 组 11 + B 组 3）；纵轴：出场步骤数 / 被精读覆盖的步骤数。',
+        axes: '横轴是角色（A 组 11 + B 组 3），纵轴是出场步骤数与被精读覆盖的步骤数。',
         judge: '差额越大 = 数据多但没被细读（坏，提示补读）；覆盖率特别高 = 重点标注集中（好，但可能带系统性偏好）。方法上：「精读覆盖」是人工 L3 笔记覆盖的步骤数，不是检索命中率，也不是相似度阈值。',
         conclusion: '开拓者 387 步只有 25 步被精读（6.5%），白厄 22/202（10.9%），刻律德菈 32.3% 最高——这正是后来做 14 角色全量精读（L3）的原因。',
       },
@@ -143,21 +143,21 @@ const CONTENT = {
       {
         src: '/figures/f12_mingtian_timeline.png',
         title: 'f12 明天见时间线',
-        axes: '横轴：版本 3.0–3.7；纵轴：出现次数。',
+        axes: '横轴是版本 3.0–3.7，纵轴是出现次数。',
         judge: '母题从单版本扩散到多版本、且首尾都有 = 生命周期完整（好）；只集中在某一版本 = 局部用语。方法上：这是字符串计数，不是相似度——先按 record 匹配「明天见」，再人工剔除 2 条跨词误报（110→108）。',
         conclusion: '3.1 峰 9 次、3.7 5 次，中间零星——「起—收」两端高，符合「客套→预言→共同体誓言」的讲述。',
       },
       {
         src: '/figures/f13_crystal_flower_semantic.png',
         title: 'f13 水晶花曲线',
-        axes: '横轴：全局步序（全库统一的剧情步序 1–686，与角色卡的「出场序」、正文的剧情步骤号都不是同一把尺子）；纵轴：与 K36 原文的余弦相似度。',
+        axes: '横轴是全局步序（全库统一的剧情步序 1–686，与角色卡的「出场序」、正文的剧情步骤号都不是同一把尺子），纵轴是与 K36 原文的余弦相似度。',
         judge: '本图已用 leave-one-out 排除 K36 自己的步骤（685 行），所以不存在「峰落在 K36 步」；两条线同步在 3.7 结尾抬升 = 主题重叠可信，只有语义线抬、词频线不抬 = 语义泛化造成的假峰。',
         conclusion: '词频加权峰在 3.7 结尾，语义向量在 3.5 闪回区有假峰——两条线不同步，说明「相似」来源不同。',
       },
       {
         src: '/figures/f15_retrieval_v3.png',
         title: 'f15 检索对比（边界）',
-        axes: '横轴：检索方法；纵轴：MRR（同组内越高越好，跨组不可比）。',
+        axes: '横轴是检索方法，纵轴是 MRR（同组内越高越好，跨组不可比）。',
         judge: '同组 MRR 越高越好；v3 组全部 <0.15 = 方法失败（这是结论，不是排名）。方法上：MRR 是排序指标（正确答案被排到第几），和余弦相似度不是一回事——相似度负责打分，MRR 负责评价打分好不好。',
         conclusion: 'v3 组最好 0.132，对照组 0.48——对照组「更好」但 gold 不同、池里有干扰，不能直接说词面方法更好。',
       },
@@ -208,14 +208,17 @@ function renderRich(text) {
 }
 
 function FigureCard({ fig }) {
+  const cls = fig.wide ? 'figure-card wide' : 'figure-card split';
   return (
-    <figure className="figure-card">
-      <img className={fig.wide ? 'wide' : undefined} src={fig.src} alt={fig.title} loading="lazy" />
+    <figure className={cls}>
+      <div className="figure-img">
+        <img className={fig.wide ? 'wide' : undefined} src={fig.src} alt={fig.title} loading="lazy" />
+      </div>
       <figcaption>
         <strong>{fig.title}</strong>
-        <p><em>轴</em>：{fig.axes}</p>
-        <p><em>怎么读</em>：{fig.judge}</p>
-        <p><em>本图结论</em>：{fig.conclusion}</p>
+        <p>{fig.axes}</p>
+        <p>{fig.judge}</p>
+        <p>{fig.conclusion}</p>
       </figcaption>
     </figure>
   );
@@ -541,20 +544,93 @@ function CurveReading() {
 
 const NLP_NOTE = '词频=词面重合，语义=整体语感；两者绝对值不可比（TF-IDF 0–0.22 / SBERT 0.54–0.72），所以只看排名。语义 top1 常是 O08 —— 它是 hub 句，天然靠近所有文本，不能读成归属。';
 
+function OracleTip({ active, payload }) {
+  if (!active || !payload || !payload.length) return null;
+  const p = payload[0].payload || {};
+  return (
+    <div className="char-tip">
+      <div className="char-tip-h">{p.oid}</div>
+      <div className="char-tip-b">词频 {Number(p.tfidf_raw).toFixed(3)}　语义 {Number(p.sbert_raw).toFixed(3)}</div>
+    </div>
+  );
+}
+
+// 单个角色：13 条神谕的两种表示对比（各自除以本角色最大值，只比形状）
+function OracleBars({ name }) {
+  const m = CHAR_ORACLE_MATRIX[name];
+  if (!m) return null;
+  const oids = Object.keys(ORACLES);
+  const valsT = oids.map((o) => m.tfidf[o] || 0);
+  const valsS = oids.map((o) => m.sbert[o] || 0);
+  const minT = Math.min(...valsT), maxT = Math.max(...valsT, 1e-6);
+  const minS = Math.min(...valsS), maxS = Math.max(...valsS, 1e-6);
+  const norm = (v, lo, hi) => (hi - lo < 1e-9 ? 0.5 : (v - lo) / (hi - lo));
+  const own = OWN_ORACLE[name] || [];
+  const data = oids.map((oid) => ({
+    oid: own.includes(oid) ? '★' + oid : oid,
+    词频: +norm(m.tfidf[oid] || 0, minT, maxT).toFixed(3),
+    语义: +norm(m.sbert[oid] || 0, minS, maxS).toFixed(3),
+    tfidf_raw: m.tfidf[oid] || 0,
+    sbert_raw: m.sbert[oid] || 0,
+  }));
+  return (
+    <div className="oracle-bars">
+      <ResponsiveContainer width="100%" height={216}>
+        <BarChart data={data} layout="vertical" margin={{ top: 2, right: 6, left: 2, bottom: 0 }} barCategoryGap={1}>
+          <XAxis type="number" hide domain={[0, 1]} />
+          <YAxis type="category" dataKey="oid" width={44} tick={{ fontSize: 9, fill: '#39434d' }} interval={0} />
+          <Tooltip content={<OracleTip />} allowEscapeViewBox={{ x: false, y: true }}
+            offset={{ x: 8, y: 10 }} isAnimationActive={false} wrapperStyle={{ zIndex: 6, pointerEvents: 'none' }} />
+          <Bar dataKey="词频" fill="#6f90b0" barSize={4} />
+          <Bar dataKey="语义" fill="#b4551c" barSize={4} />
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="oracle-bars-cap">两种表示各自做 min–max 归一（★=自有神谕），只看两种表示内部谁高谁低；绝对值看上一行。</p>
+    </div>
+  );
+}
+
 function CharNlp({ name }) {
   const r = CHAR_ORACLE_RANK[name];
   if (!r) return null;
   const f = (v) => (v == null ? '—' : Number(v).toFixed(3));
-  const tops = (arr) => arr.map(([id, c]) => `${id} ${f(c)}`).join('、');
   return (
     <div className="char-nlp">
       <div className="char-nlp-head">角色向量 × 神谕向量</div>
-      <p className="char-nlp-line">
-        自有：{r.own.length ? r.own.join('、') : '无（外来视角）'}
-        {r.own.length ? `　词频 ${f(r.tfidf_cos)}（第 ${r.tfidf}/13）　语义 ${f(r.sbert_cos)}（第 ${r.sbert}/13）` : ''}
-      </p>
-      <p className="char-nlp-line">最像：词频 {tops(r.top_tfidf)}；语义 {tops(r.top_sbert)}。</p>
+      {r.own.length ? (
+        <p className="char-nlp-oracle">{r.own.map((id) => ORACLES[id] ? id + '「' + ORACLES[id].text + '」' : id).join('　')}</p>
+      ) : (
+        <p className="char-nlp-oracle">无自有神谕（外来视角：只算与 13 条神谕的最高相似度）</p>
+      )}
+      {r.own.length > 0 && (
+        <p className="char-nlp-line">词频 {f(r.tfidf_cos)}（第 {r.tfidf}/13）　语义 {f(r.sbert_cos)}（第 {r.sbert}/13）</p>
+      )}
+      <OracleBars name={name} />
       <p className="char-nlp-note">{NLP_NOTE}</p>
+    </div>
+  );
+}
+
+// 同一组 2+ 人：自有神谕在各自曲线上的排名对比（越低越好）
+function GroupBars({ names }) {
+  const rows = names
+    .map((nm) => ({ nm, r: CHAR_ORACLE_RANK[nm] }))
+    .filter((x) => x.r && x.r.own.length > 0);
+  if (rows.length < 2) return null;
+  const data = rows.map(({ nm, r }) => ({ 角色: nm, 词频排名: r.tfidf, 语义排名: r.sbert }));
+  return (
+    <div className="oracle-bars">
+      <ResponsiveContainer width="100%" height={170}>
+        <BarChart data={data} margin={{ top: 8, right: 8, left: -6, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#dbe2e7" />
+          <XAxis dataKey="角色" tick={{ fontSize: 11, fill: '#39434d' }} />
+          <YAxis domain={[0, 13]} tick={{ fontSize: 10, fill: '#65717d' }} tickCount={4} />
+          <Tooltip isAnimationActive={false} />
+          <Bar dataKey="词频排名" fill="#6f90b0" barSize={16} />
+          <Bar dataKey="语义排名" fill="#b4551c" barSize={16} />
+        </BarChart>
+      </ResponsiveContainer>
+      <p className="oracle-bars-cap">自有神谕在各自 13 条神谕里的排名（柱越短越好；横轴=同组成员）。</p>
     </div>
   );
 }
@@ -566,6 +642,11 @@ function CharNlpGroup({ names }) {
   return (
     <div className="char-nlp">
       <div className="char-nlp-head">角色向量 × 神谕向量（同组对比）</div>
+      <p className="char-nlp-oracle">
+        {rows.map(({ name: nm, r }) => r.own.length
+          ? nm + '：' + r.own.map((id) => ORACLES[id] ? id + '「' + ORACLES[id].text + '」' : id).join('　')
+          : nm + '：无自有神谕').join('\n')}
+      </p>
       <table className="char-nlp-table">
         <thead>
           <tr><th>角色</th><th>自有神谕</th><th>词频（相似度/排名）</th><th>语义（相似度/排名）</th><th>最像（词频 / 语义）</th></tr>
@@ -582,6 +663,7 @@ function CharNlpGroup({ names }) {
           ))}
         </tbody>
       </table>
+      <GroupBars names={names} />
       <p className="char-nlp-note">{NLP_NOTE}</p>
     </div>
   );
