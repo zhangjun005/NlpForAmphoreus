@@ -1,6 +1,6 @@
 {
   "figure": "docs/report/figures/chars/阿格莱雅_mini.png",
-  "title": "阿格莱雅 迷你图：台词量/步骤、自身神谕相似度（标出首现/吟诵/兑现/关键事件/刀子）、称呼 Top5",
+  "title": "阿格莱雅 迷你图：台词量/步骤、自身神谕相似度（标出文本首现/吟诵/兑现/关键事件/高光场景）、称呼 Top5",
   "axes": {
     "left": "x=版本；y=台词条数/出场步骤",
     "middle": "x=全局步序；y=余弦相似度（词频加权/语义向量）；标注=关键时刻名称",
@@ -15,5 +15,6 @@
   "filters": "A/B 组按报告口径；B 组无自身神谕，中图留空",
   "generator": "tools/make_character_mini_figures.py",
   "run_command": "conda run -n nlpLesson python tools/make_character_mini_figures.py",
-  "data_sha256_16": "332cc64644bc1f8c"
+  "data_sha256_16": "b97006518fb01d65",
+  "created_at": "2026-10-26T15:58:18"
 }

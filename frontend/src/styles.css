@@ -243,6 +243,7 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .char-meta { margin-left: auto; font-size: 11px; color: var(--muted); max-width: 55%; text-align: right; }
 .tiny-chart { padding: 4px 10px 0; container-type: inline-size; }
 .chart-cap { margin: 2px 0 8px; font-size: 11px; color: var(--muted); }
+.chart-note { margin: 0 0 8px; font-size: 10.5px; line-height: 1.6; color: #6b7683; }
 
 /* 窄卡片（第 4 章三列并排时）降级：尺子隔一个标一个，事件表隐藏版本列 */
 @container (max-width: 320px) {
@@ -255,10 +256,29 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .event-table { width: 100%; border-collapse: collapse; margin: 4px 0 10px; font-size: 11px; }
 .event-table th, .event-table td { text-align: left; padding: 3px 6px; border-bottom: 1px solid var(--line); }
 .event-table th { color: var(--muted); font-weight: 500; }
-.event-table th:nth-child(1), .event-table td:nth-child(1) { width: 30px; }
+.event-table th:nth-child(1), .event-table td:nth-child(1) { width: 52px; }
 .event-table th:nth-child(2), .event-table td:nth-child(2) { width: 40px; }
 .event-table td:last-child { overflow-wrap: anywhere; }
 .event-table tr.is-marked td { background: #fbf5e9; color: var(--ink); }
+
+/* 事件类型图例 + 表格口径说明 */
+.event-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin: 2px 10px 4px;
+  font-size: 10.5px;
+  color: #46515b;
+}
+.event-legend i {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.event-note { margin: 0 10px 6px; font-size: 10.5px; color: var(--muted); }
 
 /* 悬停读数：固定落在光标下方，窄而小，不再盖住图 */
 .char-tip {

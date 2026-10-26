@@ -244,7 +244,8 @@ def annotations(own_oracles, char, seg_by_key, cite, filled_v2, keys, knife):
             oo = seg_order(seg)
             if oo is not None:
                 key_orders.append({"order": oo, "event": e.get("event_name"),
-                                   "id": e.get("id"), "phase": e.get("phase")})
+                                   "id": e.get("id"), "phase": e.get("phase"),
+                                   "segment_id": seg})
     knife_orders = []
     for k in knife["scenes"]:
         role = k.get("role") or ""
@@ -256,8 +257,21 @@ def annotations(own_oracles, char, seg_by_key, cite, filled_v2, keys, knife):
         for seg in ids:
             oo = seg_order(seg)
             if oo is not None:
-                knife_orders.append({"order": oo, "scene": k["id"], "title": k.get("title")})
+                knife_orders.append({"order": oo, "scene": k["id"], "title": k.get("title"),
+                                     "segment_id": seg})
+    # 兑现用 current_filled_fulfillment（人工确认的兑现段）；event_segments 里的「兑现」
+    # 是候选/事件段，O01、O09 等与 confirmed 不一致，不能拿来当「兑现」打点。
+    filled = []
+    for f in filled_v2["oracles"]:
+        if f["oracle_id"] not in own:
+            continue
+        cff = f.get("current_filled_fulfillment")
+        if cff:
+            oo = seg_order(cff)
+            if oo is not None:
+                filled.append({"order": oo, "oracle": f["oracle_id"], "segment_id": cff})
     return {"oracle_first_orders": first, "recitations": recits, "events": events,
+            "filled": filled,
             "key_events": key_orders, "knife_scenes": knife_orders}
 
 
@@ -328,6 +342,9 @@ def compute_curves(ids, recs_ordered, seg_by_key, oracles, X, Z, own_map, cite, 
                 b_other_s = max(range(len(oids)), key=lambda i: sim_sbert[i])
             steps.append({
                 "order": order, "version": key[0], "task": key[1], "step_idx": int(key[2]),
+                # 精确 segment_id：事件打标必须按 segment 而不是按任务序号（order 在同一任务的
+                # 所有出场步上是相同的，按 order 打标会把整段任务都标成事件）
+                "segment_id": "%s|%s|%d" % (key[0], key[1], int(key[2])),
                 "step_title": seg.get("step_title"),
                 "n_lines": len(rs), "record_ids": [int(r["id"]) for r in rs],
             "dominant_form": (Counter([r.get("form") for r in rs if r.get("form")]).most_common(1)[0][0]

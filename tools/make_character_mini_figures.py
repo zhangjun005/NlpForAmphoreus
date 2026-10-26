@@ -6,6 +6,7 @@ import hashlib
 import io
 import json
 import os
+from datetime import datetime
 
 import matplotlib
 
@@ -24,6 +25,17 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 CHARS = ["白厄", "万敌", "那刻夏", "昔涟", "遐蝶", "缇宝", "海瑟音", "刻律德菈", "阿格莱雅", "赛飞儿", "风堇", "开拓者", "三月七", "丹恒"]
 VERSIONS = ["3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7"]
+
+
+def _created_at(sources):
+    """与 export_plot_data.created_at 同口径：取数据源里最新的 mtime。"""
+    mtimes = []
+    for s in sources:
+        p = os.path.join(ROOT, s) if not os.path.isabs(s) else s
+        if os.path.exists(p):
+            mtimes.append(os.path.getmtime(p))
+    ts = max(mtimes) if mtimes else os.path.getmtime(__file__)
+    return datetime.fromtimestamp(ts).isoformat(timespec="seconds")
 
 traj = json.load(io.open(os.path.join(ROOT, "data/config/character-trajectory-all.json"), encoding="utf-8"))["characters"]
 oracles = {}
@@ -83,8 +95,8 @@ for ch in CHARS:
         xo = list(range(1, len(curve) + 1))  # 该角色第 N 次出场（order 会重复，不能当横轴）
         a2.plot(xo, [r["tfidf_own"] for r in curve], color="#8aa6bf", lw=0.9, label="词频加权")
         a2.plot(xo, [r["sbert_own"] for r in curve], color="#c0703a", lw=1.2, label="语义向量")
-        labels = {"in_oracle_first": "首现", "in_recitation": "吟诵", "in_fulfillment": "兑现",
-                  "in_key_event": "关键事件", "in_knife": "刀子"}
+        labels = {"in_oracle_first": "文本首现", "in_recitation": "吟诵", "in_fulfillment": "兑现",
+                  "in_key_event": "关键事件", "in_knife": "高光场景"}
         colors = {"in_oracle_first": "#2c3e50", "in_recitation": "#8e44ad", "in_fulfillment": "#c0392b",
                   "in_key_event": "#2e8b57", "in_knife": "#d35400"}
         for flag, nm in labels.items():
@@ -140,7 +152,7 @@ for ch in CHARS:
     raw = io.open(csv_path, encoding="utf-8").read().encode("utf-8")
     meta = {
         "figure": f"docs/report/figures/chars/{ch}_mini.png",
-        "title": f"{ch} 迷你图：台词量/步骤、自身神谕相似度（标出首现/吟诵/兑现/关键事件/刀子）、称呼 Top5",
+        "title": f"{ch} 迷你图：台词量/步骤、自身神谕相似度（标出文本首现/吟诵/兑现/关键事件/高光场景）、称呼 Top5",
         "axes": {"left": "x=版本；y=台词条数/出场步骤", "middle": "x=全局步序；y=余弦相似度（词频加权/语义向量）；标注=关键时刻名称",
                  "right": "x=命中次数；y=称呼"},
         "plot_data_csv": f"data/plot_data/chars/{ch}_mini.csv",
@@ -149,6 +161,8 @@ for ch in CHARS:
         "generator": "tools/make_character_mini_figures.py",
         "run_command": "conda run -n nlpLesson python tools/make_character_mini_figures.py",
         "data_sha256_16": hashlib.sha256(raw).hexdigest()[:16],
+        "created_at": _created_at(["data/config/character-trajectory-all.json",
+                                   f"data/plot_data/oracle_sim__{ch}.csv"]),
     }
     json.dump(meta, io.open(os.path.join(DATA_DIR, f"{ch}_mini.meta.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     print("生成:", ch, "曲线点", len(curve), "刀景", k_names[:3])

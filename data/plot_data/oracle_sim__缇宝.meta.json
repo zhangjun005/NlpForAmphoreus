@@ -15,6 +15,6 @@
  "filters": "步骤均值向量 vs own oracle；滚动均值窗口 5；标注=首现/吟诵/兑现/意义转折/关键事件/刀子",
  "generator": "tools/oracle_similarity_curves.py",
  "run_command": "conda run -n nlpLesson python tools/oracle_similarity_curves.py",
- "data_sha256_16": "7938891a978ff4c2",
- "created_at": "2026-10-25T22:07:44"
+ "data_sha256_16": "7edbf1434df7d5be",
+ "created_at": "2026-10-26T15:56:17"
 }

@@ -20,19 +20,22 @@ function walk(dir, ext) {
   return out;
 }
 const pngs = walk(jp('docs/report/figures'), '.png');
-const csvs = fs.readdirSync(jp('data/plot_data')).filter((f) => f.endsWith('.csv'));
-const metas = fs.readdirSync(jp('data/plot_data')).filter((f) => f.endsWith('.meta.json'));
+// 角色 mini 图的 CSV/meta 在 data/plot_data/chars/ 下，必须递归统计，否则永远对不上 png 数
+const csvs = walk(jp('data/plot_data'), '.csv');
+const metas = walk(jp('data/plot_data'), '.meta.json');
 ok('图数 = 配对 CSV 数 = 配对 meta 数', pngs.length === csvs.length && csvs.length === metas.length, `png=${pngs.length} csv=${csvs.length} meta=${metas.length}`);
 
 // 2. sha256 校验
 let shaOk = 0, shaBad = [];
 for (const m of metas) {
-  const j = JSON.parse(fs.readFileSync(jp('data/plot_data/' + m), 'utf8'));
-  const csvName = String(j.plot_data_csv || '').split('/').pop();
-  const csvPath = jp('data/plot_data/' + csvName);
-  if (!fs.existsSync(csvPath)) { shaBad.push(m + ' (csv missing)'); continue; }
+  const j = JSON.parse(fs.readFileSync(m, 'utf8'));
+  const rel = String(j.plot_data_csv || '').split('/').pop();
+  const dir = path.dirname(m);
+  let csvPath = path.join(dir, rel);
+  if (!fs.existsSync(csvPath)) csvPath = jp('data/plot_data/' + rel);
+  if (!fs.existsSync(csvPath)) { shaBad.push(path.basename(m) + ' (csv missing)'); continue; }
   const h = crypto.createHash('sha256').update(fs.readFileSync(csvPath)).digest('hex').slice(0, 16);
-  if (h === j.data_sha256_16) shaOk++; else shaBad.push(m);
+  if (h === j.data_sha256_16) shaOk++; else shaBad.push(path.basename(m));
 }
 ok('meta 的 data_sha256_16 与 CSV 一致', shaBad.length === 0, `ok=${shaOk} bad=${shaBad.length}${shaBad.length ? ' ' + shaBad.slice(0, 3).join(',') : ''}`);
 

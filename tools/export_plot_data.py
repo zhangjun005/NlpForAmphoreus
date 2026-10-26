@@ -384,23 +384,33 @@ SIM_COLS = ["order", "version", "task", "step_idx", "step_title", "n_lines",
 def _sim_char(char):
     ch = read_json(P_CURVES)["characters"][char]
     ann = ch["annotations"]
-    first = set(ann["oracle_first_orders"])
-    recits = {a["order"] for a in ann["recitations"]}
-    ful = {a["order"] for a in ann["events"] if a.get("role") == "兑现"}
-    turns = {a["order"] for a in ann["events"] if a.get("role") != "兑现"}
-    keys = {a["order"] for a in ann["key_events"]}
-    knife = {a["order"] for a in ann["knife_scenes"]}
+
+    # 事件打标必须按精确 segment_id 匹配：order 是「任务序号」，同一任务的几十个出场步
+    # 共用同一个 order，按 order 打标会把整段任务的所有步都标成事件（箭头因此早 5–19 步）
+    def segs(items):
+        return {a["segment_id"] for a in items if a.get("segment_id")}
+
+    first = segs(ann["recitations"][:1])
+    recits = segs(ann["recitations"])
+    # 兑现= current_filled_fulfillment（人工确认段）；没有 confirmed 时退回 event_segments 的「兑现」
+    ful = segs(ann.get("filled") or [])
+    if not ful:
+        ful = segs([a for a in ann["events"] if a.get("role") == "兑现"])
+    turns = segs([a for a in ann["events"] if a.get("role") != "兑现"])
+    keys = segs(ann["key_events"])
+    knife = segs(ann["knife_scenes"])
     rows = []
     for s in ch["steps"]:
         o = s["order"]
+        sid = s.get("segment_id")
         rows.append({"order": o, "version": s["version"], "task": s["task"],
                      "step_idx": s["step_idx"], "step_title": s.get("step_title"),
                      "n_lines": s["n_lines"], "tfidf_own": s["tfidf_own"],
                      "sbert_own": s["sbert_own"], "tfidf_roll5": s["tfidf_roll5"],
                      "sbert_roll5": s["sbert_roll5"], "dominant_form": s.get("dominant_form"),
-                     "in_oracle_first": int(o in first), "in_recitation": int(o in recits),
-                     "in_fulfillment": int(o in ful), "in_meaning_turn": int(o in turns),
-                     "in_key_event": int(o in keys), "in_knife": int(o in knife)})
+                     "in_oracle_first": int(sid in first), "in_recitation": int(sid in recits),
+                     "in_fulfillment": int(sid in ful), "in_meaning_turn": int(sid in turns),
+                     "in_key_event": int(sid in keys), "in_knife": int(sid in knife)})
     own = "、".join(ch["own_oracles"]) if ch["own_oracles"] else "无自有（取 13 条最高）"
     return dict(columns=SIM_COLS, rows=rows,
                 title="神谕相似度全程曲线：%s（own oracle=%s）" % (char, own),
@@ -750,6 +760,20 @@ def write_index():
         src = "、".join(os.path.basename(x) for x in meta.get("sources", []))
         L.append("| %d | `docs/report/figures/%s` | `%s` | `%s` | `%s` | %s | %s |" % (
             i, fig, csv_rel, meta_rel, gen, src, meta.get("title", "")))
+    # 角色 mini 图（tools/make_character_mini_figures.py 产出）也纳入索引，保证「index 行数 = 图数」
+    chars_dir = os.path.join(FIG_DIR, "chars")
+    if os.path.isdir(chars_dir):
+        mini = sorted(fn for fn in os.listdir(chars_dir) if fn.lower().endswith(".png"))
+        n = len(files)
+        for j, fn in enumerate(mini, 1):
+            stem = "chars/%s" % os.path.splitext(fn)[0]
+            csv_rel = "data/plot_data/%s.csv" % stem
+            meta_rel = "data/plot_data/%s.meta.json" % stem
+            meta = read_json(os.path.join(ROOT, meta_rel)) if os.path.exists(os.path.join(ROOT, meta_rel)) else {}
+            src = "、".join(os.path.basename(x) for x in meta.get("sources", []))
+            L.append("| %d | `docs/report/figures/%s` | `%s` | `%s` | `%s` | %s | %s |" % (
+                n + j, stem + ".png", csv_rel, meta_rel,
+                "tools/make_character_mini_figures.py", src, meta.get("title", "")))
     L += ["", "## 换样式流程（改样式不改数据）", "",
           "1. 只改绘图脚本的样式（颜色/字号/布局），**不要改 `data/plot_data/<图名>.csv` 的数值**；",
           "2. 重新运行该图的生成脚本（脚本会自动调用 `export_for` 同步配对数据）；",
@@ -772,7 +796,8 @@ def verify():
     sp = specs()
     n_csv = n_meta = 0
     for fig in pngs:
-        stem = _stem(fig)
+        # 角色 mini 图由 tools/make_character_mini_figures.py 产出，路径就是 chars/<名>_mini.{csv,meta.json}
+        stem = os.path.splitext(fig)[0] if fig.startswith("chars/") else _stem(fig)
         csv_rel = "data/plot_data/%s.csv" % stem
         meta_rel = "data/plot_data/%s.meta.json" % stem
         if not os.path.exists(os.path.join(ROOT, csv_rel)):
@@ -792,7 +817,7 @@ def verify():
                   "generator", "run_command", "data_sha256_16", "created_at"):
             if k not in meta:
                 problems.append("meta 缺字段 %s：%s" % (k, fig))
-        if fig not in sp:
+        if fig not in sp and not fig.startswith("chars/"):
             problems.append("图未登记到 specs：%s" % fig)
     idx_rows = 0
     if not os.path.exists(INDEX_MD):
