@@ -293,12 +293,17 @@ function KeyNumbers({ data }) {
 }
 
 // 角色立绘文件名映射：值 = frontend/public/materials/<slug>-portrait.png
-// 这些 PNG 是从官方 wiki 下载的角色立绘，只用于角色卡左侧小头像与梗概页立绘；
-// 目前只下载到 8 位角色（下面这些），其余角色（阿格莱雅/赛飞儿/开拓者/三月七/丹恒）没有素材，
-// 组件里用 onError 隐藏 <img>，不会出破图。
+// 14 个角色都有图：160×188 头像裁切，白底。
+//   来源：StarRailRes（https://github.com/Mar-7th/StarRailRes）的 icon/character/<角色ID>.png
+//   新增 6 张来自 StarRailRes 的 icon/character/<角色ID>.png：阿格莱雅 1402 / 赛飞儿 1406 /
+//   风堇 1409 / 三月七 1001 / 丹恒 1002 / 开拓者 8007；由 tools/make_portraits.py 白底合成 →
+//   居中裁成 160:188 → resize；前 8 张为早期下载素材。
+// 组件里仍保留 onError 隐藏，避免素材缺失时出破图。
 const PORTRAITS = {
   白厄: 'bai-e', 万敌: 'wan-di', 那刻夏: 'na-ke-xia', 昔涟: 'xi-lian', 遐蝶: 'xia-die',
   缇宝: 'ti-bao', 海瑟音: 'hai-se-yin', 刻律德菈: 'ke-lv-de-la',
+  阿格莱雅: 'a-ge-lai-ya', 赛飞儿: 'sai-fei-er', 风堇: 'feng-jin',
+  开拓者: 'kai-tuo-zhe', 三月七: 'san-yue-qi', 丹恒: 'dan-heng',
 };
 
 const HL = ['水晶花寓言', '明天见', '明天', '镜像神谕', '收梢即起始', '如我所书', '十三位英雄', '千年永昼',
