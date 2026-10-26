@@ -155,6 +155,14 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .figure-card.split figcaption { padding: 0; }
 .figure-card.split figcaption strong { display: block; margin-bottom: 10px; font-size: 16px; }
 .figure-card.split figcaption p { margin: 0 0 9px; font-size: 13.5px; line-height: 1.75; color: #39434d; }
+.figure-card.split figcaption p.fig-extra {
+  margin-top: 10px;
+  padding: 9px 11px;
+  border-left: 2px solid var(--gold);
+  background: #fbf7ef;
+  font-size: 12.5px;
+  color: #4b5560;
+}
 .figure-card.wide { grid-column: 1 / -1; }
 @media (max-width: 900px) {
   .figure-card.split { grid-template-columns: 1fr; gap: 12px; }
