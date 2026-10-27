@@ -423,6 +423,29 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
 .coverage-table th, .coverage-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; }
 .coverage-table th { color: var(--muted); background: #f5f7f7; font-size: 11px; font-weight: 600; }
 .coverage-table td:last-child { color: #8a5e0f; font-weight: 700; }
+
+/* ---------- 第 2–4 章：角色分析后的「方法小结」 ----------
+   每个章节的角色卡之后出现，回答「这一章里词频和语义各自看出了什么」：
+   一张「角色 × 两种表示」的排名表 + 2–3 段解读 + 一句结论。 */
+.method-readout { border-top: 3px solid #4f8a70; margin: 34px 0 30px; }
+.method-readout .block-title { margin: 0 0 8px; color: #2f5d4a; }
+.mr-table { width: 100%; min-width: 820px; border-collapse: collapse; font-size: 12px; }
+.mr-table th, .mr-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.mr-table th { color: var(--muted); background: #f5f7f7; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.mr-table td:first-child { white-space: nowrap; color: #39434d; }
+.mr-points { margin: 13px 0 0; }
+.mr-points p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.85; color: #39434d; }
+.mr-takeaway {
+  margin: 13px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--gold);
+  background: #fdfaf3;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: #39434d;
+}
+.mr-takeaway b { margin-right: 9px; color: #8a5e0f; }
+
 .baseline-ledger { border-top: 3px solid #5b7f9e; }
 .baseline-table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 12px; }
 .baseline-table th, .baseline-table td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; }

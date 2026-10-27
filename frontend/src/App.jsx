@@ -104,7 +104,7 @@ const CONTENT = {
       {
         // f1_level_scores.png：箱线图：检测器 A / B1 的分数分布 vs 人工显著等级 0–3（每箱=一个等级的分数分布）；数据 data/plot_data/f1_level_scores.csv（+ .meta.json）；生成 tools/make_figures.py
         src: '/figures/f1_level_scores.png',
-        title: 'f1 等级-分数箱线',
+        title: '检测器等级-分数箱线图',
         axes: '横轴是人工显著等级（0=可忽略、1=弱、2=中、3=最强），纵轴是检测器的标准化分数（z 分数；完整定义见本图下方）。',
         judge: '箱体随等级单调上移、0 级最低 3 级最高 = 检测器方向与人工一致（好）；各级重叠、没有趋势 = 不可靠（坏）。A 主要看词面和局部情绪；B1 在 A 之上加入语义突变、身份/位置、母题回收和状态变化，所以带有结构变化的高等级步骤更容易被它抬高。两者都是规则+特征打分，不是训练出来的模型；74 条标注只用于评测方向，不能当准确率。',
         conclusion: 'B1 从 0 级 −0.68 升到 3 级 0.70，A 只从 −0.28 到 0.23 → B1 对“有结构变化的显著步骤”更敏感，但箱体重叠仍说明它只能提供方向，不能替代人工判断。',
@@ -241,8 +241,8 @@ const CONTENT = {
     figureIntro: {
       title: '这一组图怎样接上前面的角色分析',
       paragraphs: [
-        '前面的角色卡回答“某个人在自己的轨迹上哪里抬头”；这里把视线拉回全篇：f4 追踪神谕从首次出现、他人解释到本人引用和结局宣告的接管过程，f10 检查我们到底把多少角色步骤读到了可以核对的程度。',
-        '所以 f4 不是相似度图，不能用它证明某个峰值；f10 也不是检索准确率。两张图分别补上“谁在什么时候接管神谕”和“这份结论覆盖了多少原始剧情”这两个全局问题。',
+        '前面的角色卡回答“某个人在自己的轨迹上哪里抬头”；这里把视线拉回全篇：引用台账追踪神谕从首次出现、他人解释到本人引用和结局宣告的接管过程，覆盖率图检查我们到底把多少角色步骤读到了可以核对的程度。',
+        '所以引用台账不是相似度图，不能用它证明某个峰值；覆盖率图也不是检索准确率。两张图分别补上“谁在什么时候接管神谕”和“这份结论覆盖了多少原始剧情”这两个全局问题。',
       ],
     },
     pieces: [
@@ -255,15 +255,15 @@ const CONTENT = {
       {
         // f4_citation_stage.png：引用台账：13 条神谕在剧情里的引用阶段分布（原文出现/他人解释/本人引用/结局宣告/改写）；数据 data/plot_data/f4_citation_stage.csv（+ .meta.json）；生成 tools/make_figures.py
         src: '/figures/f4_citation_stage.png',
-        title: 'f4 引用台账（对偶与长线）',
+        title: '引用台账：13 条神谕分别被谁、在什么阶段引用',
         axes: '横轴是剧情顺序，纵轴是引用阶段（原文出现、他人解释、本人引用、结局宣告、改写）。',
-        judge: '阶段从「原文出现/他人解释」移到「本人引用/结局宣告」= 接管完成（好）；停在他人/旁白 = 没接管。方法上：这些阶段是人工按引用编码表打的标签，不是模型输出；f4 与相似度曲线不是同一个指标，不能互相印证。',
+        judge: '阶段从「原文出现/他人解释」移到「本人引用/结局宣告」= 接管完成（好）；停在他人/旁白 = 没接管。方法上：这些阶段是人工按引用编码表打的标签，不是模型输出；引用台账与相似度曲线不是同一个指标，不能互相印证。',
         conclusion: '本人引用 19/34、结局宣告 8 条，末次引用时本人 8/13——方向对，但只是弱趋势。',
       },
       {
         // f10_coverage.png：条形：每个角色的出场步骤数 vs 被 L3 精读覆盖的步骤数；数据 data/plot_data/f10_coverage.csv（+ .meta.json）；生成 tools/make_figures.py
         src: '/figures/f10_coverage.png',
-        title: 'f10 覆盖率图',
+        title: '精读覆盖率：出场步骤与被精读步骤',
         axes: '横轴是角色（A 组 11 + B 组 3），纵轴是出场步骤数与被「精读」覆盖的步骤数。精读指 L3 阶段人工逐条读该角色剧情并写笔记的步骤，不是检索命中，也不是相似度阈值。',
         judge: '差额越大 = 数据多但没被细读（坏，提示补读）；覆盖率特别高 = 重点标注集中（好，但可能带系统性偏好）。方法上：「精读覆盖」是人工 L3 笔记覆盖的步骤数，不是检索命中率，也不是相似度阈值。',
         conclusion: '开拓者 387 步只有 25 步被精读（6.5%），白厄 22/202（10.9%），刻律德菈 32.3% 最高——这正是后来做 14 角色全量精读（L3）的原因。',
@@ -521,6 +521,96 @@ function CodaTopics({ topics, farewell, openQuestions }) {
   );
 }
 
+// 第 2–4 章：角色分析结束后的「方法小结」。
+// 数据全部来自 oracleData.js：CHAR_ORACLE_RANK（角色质心 × 13 条神谕，词频 / 语义各自的排名与余弦）
+// 与 OWN_ORACLE（谁有自有神谕）。表格里的数字不手写，避免数据重算后文案漂移。
+// 结论口径：词频在「角色整体」这一层回答“有没有把命定的词说出口”；语义这一层会被 O08 这样的
+// 「通用句」吸走（hub 效应，14/14 角色 top1 都是 O08），只能用于单步轨迹的抬升判读，不能判归属。
+const METHOD_CHARS = {
+  ch02: ['白厄', '万敌', '那刻夏'],
+  ch03: ['昔涟', '遐蝶', '缇宝'],
+  ch04: ['海瑟音', '刻律德菈', '阿格莱雅', '赛飞儿', '开拓者', '三月七', '丹恒', '风堇'],
+};
+
+const METHOD_COPY = {
+  ch02: {
+    lead: '把三名角色的「角色质心 × 13 条神谕」并排看，两种表示的差别比逐个角色卡更清楚：词频能指出谁把命定的词说出口，语义在这一层几乎指不出谁。',
+    points: [
+      '词频看的是「有没有用命定的那批词」。万敌命中自有神谕 O03 第 1（0.059）——他真的把「背后负创」讲给了白厄；白厄 O09 只排第 3（0.032）、那刻夏 O06 排第 8（0.014），因为两人在剧里几乎不念这句话（白厄全篇「骄阳」只出现 3 次）。词频对沉默和转述是盲的。',
+      '语义 top1 三个人全是 O08（0.686–0.705）。O08「汝将与贪婪同行，亦将亡于分文」是 13 条里语义最「泛」的一句，和谁的平均台词都像——这是 hub 效应，不是「白厄像赛飞儿」。所以语义线在「角色整体」这一层不能判归属，只能在单步轨迹上读：白厄语义线在身份分裂、与故乡道别处抬高，说明语域变了，不说明他复述了命定。',
+      '词频低也不等于没承受命定：白厄交出名字（#16719）、万敌递刀（#7211）、那刻夏事后追认，这些动作都不在词面上，是人工读剧情加事件标记找到的。',
+    ],
+    takeaway: '词频擅长找「说出口」，语义擅长描述「语气和语境」，两者都不能单独判归属；沉默、递刀、追认这类承受方式要靠事件证据。',
+  },
+  ch03: {
+    lead: '这一章的角色都在做「语言加工」——讲述、读反、提炼——正好能看出两种表示各自漏掉了什么。',
+    points: [
+      '词频 top1 命中 1/3：遐蝶 O04 第 1（0.067），她确实在复述「相拥之后便是永恒的离别」，然后把它读反；昔涟 O13 排第 2（0.022），但 top1 是 O01（0.050）——她谈命定更像在转述别人的话；缇宝 O02 只到第 6（0.011），因为她的箴言是从雅努斯的散文里「提炼」出来的，字面和神谕不重合。',
+      '语义 top1 又全是 O08（0.663–0.680），缇宝的 O02 在语义里排到第 11（0.587）。「提炼」和「改写」这两种加工，两种表示都只能给弱信号——这正是改写不能靠单条命定的相似度排名来证明的原因：要看同一故事的多版本互比（第 5 章专题三：句向量 0.79–0.87、词频只有 0.28–0.47），而不是看「离自己那句命定多远」。',
+    ],
+    takeaway: '词频能发现「谁在复述」（遐蝶），发现不了「谁在改写」（昔涟、缇宝）；语义在角色质心层被 hub 句吞掉。改写要靠多版本互比与引用阶段，不靠单条命定排名。',
+  },
+  ch04: {
+    lead: '八名角色里既有引用链、道具链，也有外来旁观者，词频与语义的表现差别最大。',
+    points: [
+      '词频在这一章最有效（四章里命中率最高）：阿格莱雅 O01 第 1（0.140）、风堇 O07 第 1（0.216）、赛飞儿 O08 第 1（0.065）、刻律德菈 O11 第 1（0.076）——因为这一组角色都在「引用链 / 道具链 / 宣告」上反复使用同一批词。',
+      '词频的两个失效点也集中在这一章：镜像神谕 O10/O11 用词相同、只换语序，海瑟音的词频 top1 反而是 O11（0.102），两条曲线在 686 步上逐点相等（最大差 0）——词频分不开这对命定；丹恒 O12 只到第 11（0.002），因为他是「承接」大地，不是复述。',
+      '语义在 8 人里 top1 全是 O08（0.659–0.717）。赛飞儿自己的命定恰好就是 O08，但那是「通用句」本身，不能当「语义识别出了她的命定」。归属只能看行为：海瑟音代念 O11、刻律德菈把「完成」换到律法上、风堇由丹恒宣告应验。',
+    ],
+    takeaway: '词频强（引用、道具、宣告都会在词面留下痕迹），语义在角色质心层被 hub 句吞掉；镜像对两种表示都弱，只能靠引用与兑现的行为归属。',
+  },
+};
+
+function ChapterMethodReadout({ chId }) {
+  const chars = METHOD_CHARS[chId];
+  const copy = METHOD_COPY[chId];
+  if (!chars || !copy) return null;
+  const rows = chars.map((name) => {
+    const rank = CHAR_ORACLE_RANK[name] || {};
+    const own = (OWN_ORACLE[name] || [])[0] || '—';
+    const tf = rank.top_tfidf?.[0];
+    const sb = rank.top_sbert?.[0];
+    const ownTf = rank.tfidf ? `第 ${rank.tfidf}（${Number(rank.tfidf_cos).toFixed(3)}）` : '—';
+    const ownSb = rank.sbert ? `第 ${rank.sbert}（${Number(rank.sbert_cos).toFixed(3)}）` : '—';
+    return { name, own, tf, sb, ownTf, ownSb };
+  });
+  const ownChars = chars.filter((n) => (OWN_ORACLE[n] || []).length);
+  const tfHit = ownChars.filter((n) => (OWN_ORACLE[n] || []).includes(CHAR_ORACLE_RANK[n]?.top_tfidf?.[0]?.[0]));
+  const hub = chars.filter((n) => CHAR_ORACLE_RANK[n]?.top_sbert?.[0]?.[0] === 'O08').length;
+  return (
+    <section className="ledger-block method-readout">
+      <h3 className="block-title">本章方法小结：词频和语义各看出了什么</h3>
+      <p className="ledger-lede">
+        {copy.lead} 这一章的统计是：有自有神谕的 {ownChars.length} 名角色里，词频 top1 命中自己命定的有 {tfHit.length} 名；
+        语义 top1 落在 O08 的有 {hub}/{chars.length} 名。
+      </p>
+      <div className="table-scroll">
+        <table className="mr-table">
+          <thead>
+            <tr><th>角色</th><th>自有神谕</th><th>词频 top1（余弦）</th><th>词频里自有神谕排名</th><th>语义 top1（余弦）</th><th>语义里自有神谕排名</th></tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.name}>
+                <td><strong>{r.name}</strong></td>
+                <td>{r.own}</td>
+                <td>{r.tf ? `${r.tf[0]}（${Number(r.tf[1]).toFixed(3)}）` : '—'}</td>
+                <td>{r.ownTf}</td>
+                <td>{r.sb ? `${r.sb[0]}（${Number(r.sb[1]).toFixed(3)}）` : '—'}</td>
+                <td>{r.ownSb}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="mr-points">
+        {copy.points.map((p, i) => <p key={i}>{p}</p>)}
+      </div>
+      <p className="mr-takeaway"><b>一句话</b>{copy.takeaway}</p>
+    </section>
+  );
+}
+
 function FarewellEvidence({ data }) {
   const rows = (data?.queries || []).filter((q) => q.character !== '荒笛');
   if (!rows.length) return null;
@@ -611,7 +701,7 @@ function CoverageTable({ rows }) {
   if (!rows?.length) return null;
   return (
     <section className="ledger-block coverage-ledger">
-      <h3 className="block-title">精读覆盖台账：f10 的柱子具体代表什么</h3>
+      <h3 className="block-title">精读覆盖台账：覆盖率图的柱子具体代表什么</h3>
       <p className="ledger-lede">总步骤是该角色在全库中出现过的剧情步骤；精读步骤是 L3 阶段逐条读过并写笔记的步骤；标注条数是其中留下人工标注的数量。覆盖率低不等于角色不重要，只说明图下方的解释要更谨慎。</p>
       <div className="table-scroll">
         <table className="coverage-table">
@@ -634,7 +724,7 @@ function BaselineComparison({ data }) {
   return (
     <section className="ledger-block baseline-ledger">
       <h3 className="block-title">检测器版本对照：B2 改了什么</h3>
-      <p className="ledger-lede">f1 图展示 A 与 B1；B2 只修正短步骤的语义突变计算，长步骤的分数与 B1 完全一致。它不是第四种模型，而是一次口径敏感性检查。</p>
+      <p className="ledger-lede">检测器等级-分数箱线图展示 A 与 B1；B2 只修正短步骤的语义突变计算，长步骤的分数与 B1 完全一致。它不是第四种模型，而是一次口径敏感性检查。</p>
       <div className="table-scroll">
         <table className="baseline-table">
           <thead><tr><th>版本</th><th>评测样本</th><th>与人工等级 Spearman</th><th>显著样本进 Top100</th><th>等级 0 / 3 平均分</th></tr></thead>
@@ -1503,6 +1593,7 @@ function Section({ ch, data, knifeScenes, fulfillment, citationCoding, keyEvents
           </div>
         </div>
       ))}
+      {ch.id !== 'ch01' && ch.id !== 'ch05' && <ChapterMethodReadout chId={ch.id} />}
       {(c.figures || []).length > 0 && (
         <div className="figure-block">
           <FigureBlockIntro intro={c.figureIntro} />
