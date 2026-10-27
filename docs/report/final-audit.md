@@ -4,9 +4,9 @@
 
 | 检查项 | 结果 | 详情 |
 |---|---|---|
-| 图数 = 配对 CSV 数 = 配对 meta 数 | ✅ | png=57 csv=57 meta=57 |
-| meta 的 data_sha256_16 与 CSV 一致 | ✅ | ok=57 bad=0 |
-| figures-index 数据行数 = 图数 | ✅ | index=57 png=57 |
+| 图数 = 配对 CSV 数 = 配对 meta 数 | ✅ | png=58 csv=58 meta=58 |
+| meta 的 data_sha256_16 与 CSV 一致 | ✅ | ok=58 bad=0 |
+| figures-index 数据行数 = 图数 | ✅ | index=58 png=58 |
 | data/models/manifest.json 文件全部存在 | ✅ | 22/22 |
 | data/models/manifest_sbert.json 文件全部存在 | ✅ | 5/5 |
 | ids.records 长度 = 26332 | ✅ | records=26332 |
