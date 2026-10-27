@@ -25,7 +25,7 @@ import {
 import { ORACLES, OWN_ORACLE, CHAR_ORACLE_RANK, CHAR_ORACLE_MATRIX } from './oracleData.js';
 
 const CHAPTERS = [
-  { id: 'ch00', num: '0', title: '故事梗概：被循环困住的世界', kicker: '先看故事，再看数据' },
+  { id: 'ch00', num: '0', title: '故事梗概：被循环困住的世界(爱命运)', kicker: '先看故事，再看数据' },
   { id: 'ch01', num: '1', title: '从剧情到数据：表示、模型与读图', kicker: '两种表示：词频加权与语义向量' },
   { id: 'ch02', num: '2', title: '与命定交手的人：沉默、递刀与追认', kicker: '白厄 / 万敌 / 那刻夏' },
   { id: 'ch03', num: '3', title: '改写命定的人：讲述、读反与提炼', kicker: '昔涟 / 遐蝶 / 缇宝' },
