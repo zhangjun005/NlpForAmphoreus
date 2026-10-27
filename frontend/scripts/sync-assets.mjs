@@ -39,6 +39,9 @@ const figures = [
   // f17_lyrics_similarity.png：三格横条（14 角色质心 / 昔涟 8 版本质心 / 13 条神谕）与 24 条歌词的相似度；
   // 生成 tools/export_plot_data.py（make_new_figures），配对数据 data/plot_data/f17_lyrics_similarity.csv
   'f17_lyrics_similarity.png',
+  // f18_hub_effect.png：为什么 14 个角色语义 top1 全是 O08（神谕↔平均方向 / 质心↔平均方向 / 全库记录 top1 占比）；
+  // 生成 tools/export_plot_data.py（make_new_figures），配对数据 data/plot_data/f18_hub_effect.csv
+  'f18_hub_effect.png',
 ];
 for (const f of figures) {
   const src = join(repo, 'docs', 'report', 'figures', f);

@@ -1,0 +1,21 @@
+{
+ "figure": "f18_hub_effect.png",
+ "title": "图18 为什么 14 个角色语义 top1 全是 O08：句向量的共同方向与 hub 效应",
+ "axes": {
+  "x": "三格：13 条神谕离平均方向多远 / 14 个角色质心离平均方向多近 / 全库记录各自最像哪条神谕",
+  "y": "余弦（左两格越高越接近平均方向）；第三格是 26,332 条记录的 top1 占比"
+ },
+ "plot_data_csv": "data/plot_data/f18_hub_effect.csv",
+ "sources": [
+  "data/models/Z_sbert_rec.npy",
+  "data/models/character_centroids.npz",
+  "data/models/sbert_model",
+  "data/corpus/oracles.jsonl",
+  "data/corpus/amphoreus.final.jsonl"
+ ],
+ "filters": "平均方向 = 26,332 条记录句向量的平均（L2 单位化）；角色质心 = 该角色全部台词向量平均（L2 归一）；top1 = 每条记录在 13 条神谕里余弦最高的那一条；均匀分布时 top1 应各占 1/13≈7.7%",
+ "generator": "tools/export_plot_data.py",
+ "run_command": "conda run -n nlpLesson python tools/export_plot_data.py --all",
+ "data_sha256_16": "be05a5b1ecd6c053",
+ "created_at": "2026-10-24T23:16:37"
+}

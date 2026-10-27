@@ -445,6 +445,8 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 96px; }
   color: #39434d;
 }
 .mr-takeaway b { margin-right: 9px; color: #8a5e0f; }
+.mr-figure { margin-top: 16px; }
+.mr-figure .figure-card { margin-bottom: 0; }
 
 .baseline-ledger { border-top: 3px solid #5b7f9e; }
 .baseline-table { width: 100%; min-width: 650px; border-collapse: collapse; font-size: 12px; }

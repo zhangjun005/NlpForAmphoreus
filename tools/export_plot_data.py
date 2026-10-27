@@ -511,6 +511,56 @@ def data_f17():
                         "跨表示不可比")
 
 
+def data_f18():
+    """f18 为什么 14 个角色语义 top1 全是 O08：句向量的共同方向 + hub 效应。
+    三组数全部现算：
+      (a) 13 条神谕与「全库平均方向」（26,332 条记录句向量的平均，L2 单位化）的余弦；
+      (b) 14 个角色质心与平均方向的余弦（接近 1 说明质心几乎就是平均方向本身）；
+      (c) 26,332 条记录各自「最像哪条神谕」的 top1 占比（O08 是 hub）。
+    """
+    import torch
+    from sentence_transformers import SentenceTransformer
+    Z = np.load(os.path.join(MODELS, "Z_sbert_rec.npy"))            # 26,332 x 512，已 L2 归一
+    cent = np.load(os.path.join(MODELS, "character_centroids.npz"))
+    chars = [k[len("sbert_"):] for k in cent.files
+             if k.startswith("sbert_") and k.count("_") == 1]
+    C = np.stack([cent["sbert_" + c] for c in chars])
+    C = C / np.linalg.norm(C, axis=1, keepdims=True)
+    oracles = read_jsonl(os.path.join(ROOT, "data", "corpus", "oracles.jsonl"))
+    oids = [o["oracle_id"] for o in oracles]
+    os.environ.setdefault("HF_HUB_OFFLINE", "1")
+    os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+    torch.set_num_threads(1)
+    model = SentenceTransformer(os.path.join(MODELS, "sbert_model"), device="cpu")
+    O = model.encode([o["text"] for o in oracles], normalize_embeddings=True)
+    mu = Z.mean(axis=0)
+    mu_hat = mu / np.linalg.norm(mu)
+    a = O @ mu_hat                                                   # 神谕 ↔ 平均方向
+    b = C @ mu_hat                                                   # 角色质心 ↔ 平均方向
+    top1 = (Z @ O.T).argmax(axis=1)
+    shares = np.bincount(top1, minlength=len(oids)) / len(Z)
+    rows = []
+    for i in np.argsort(-a):
+        rows.append({"panel": "神谕与平均方向的余弦", "label": oids[i],
+                     "value": round(float(a[i]), 6), "rank": int(np.where(np.argsort(-a) == i)[0][0]) + 1})
+    for i in np.argsort(-b):
+        rows.append({"panel": "角色质心与平均方向的余弦", "label": chars[i],
+                     "value": round(float(b[i]), 6), "rank": int(np.where(np.argsort(-b) == i)[0][0]) + 1})
+    for i in np.argsort(-shares):
+        rows.append({"panel": "全库记录 top1 占比", "label": oids[i],
+                     "value": round(float(shares[i]), 6), "rank": int(np.where(np.argsort(-shares) == i)[0][0]) + 1})
+    return dict(columns=["panel", "label", "value", "rank"], rows=rows,
+                title="图18 为什么 14 个角色语义 top1 全是 O08：句向量的共同方向与 hub 效应",
+                axes={"x": "三格：13 条神谕离平均方向多远 / 14 个角色质心离平均方向多近 / 全库记录各自最像哪条神谕",
+                      "y": "余弦（左两格越高越接近平均方向）；第三格是 26,332 条记录的 top1 占比"},
+                sources=[os.path.join(MODELS, "Z_sbert_rec.npy"),
+                         os.path.join(MODELS, "character_centroids.npz"),
+                         os.path.join(MODELS, "sbert_model"),
+                         os.path.join(ROOT, "data", "corpus", "oracles.jsonl"), P_CORPUS],
+                filters="平均方向 = 26,332 条记录句向量的平均（L2 单位化）；角色质心 = 该角色全部台词向量平均"
+                        "（L2 归一）；top1 = 每条记录在 13 条神谕里余弦最高的那一条；均匀分布时 top1 应各占 1/13≈7.7%")
+
+
 # ---- 新增 3 张报告图 ----
 def data_f12():
     rows_all = []
@@ -662,6 +712,7 @@ def specs():
         "f15b_retrieval_recall.png": ("tools/split_panel_figures.py", data_f15b),
         "f16_char_oracle_similarity.png": ("tools/character_oracle_similarity.py", data_f16),
         "f17_lyrics_similarity.png": ("tools/export_plot_data.py", data_f17),
+        "f18_hub_effect.png": ("tools/export_plot_data.py", data_f18),
     }
     for char in read_json(P_CURVES)["characters"]:
         sp["oracle_sim/%s.png" % char] = ("tools/oracle_similarity_curves.py",
@@ -861,6 +912,61 @@ def make_new_figures():
     ax.set_axisbelow(True)
     fig.tight_layout()
     fig.savefig(os.path.join(FIG_DIR, "f17_lyrics_similarity.png"), dpi=100,
+                bbox_inches="tight", pad_inches=0.18)
+    plt.close(fig)
+
+    # f18（新增：为什么 14 个角色语义 top1 全是 O08——共同方向 + hub）
+    d = data_f18()
+    grp = {}
+    for r in d["rows"]:
+        grp.setdefault(r["panel"], []).append(r)
+    fig, axes = plt.subplots(1, 3, figsize=(11.4, 4.4))
+    # (a) 神谕 ↔ 平均方向
+    ax = axes[0]
+    rows_a = sorted(grp["神谕与平均方向的余弦"], key=lambda r: r["value"])
+    labels = [r["label"] for r in rows_a]
+    vals = [r["value"] for r in rows_a]
+    ax.barh(labels, vals, color=["#b4551c" if l == "O08" else "#9fb3c8" for l in labels], height=0.62)
+    ax.set_xlim(0.54, 0.73)
+    for i, v in enumerate(vals):
+        ax.text(v + 0.002, i, "%.3f" % v, va="center", fontsize=7, color="#333")
+    ax.set_title("(a) 13 条神谕离「全库平均方向」多远", fontsize=9)
+    ax.set_xlabel("余弦（越高 = 越接近所有人的平均台词）", fontsize=8)
+    ax.tick_params(labelsize=7.5)
+    ax.grid(axis="x", alpha=0.22)
+    ax.set_axisbelow(True)
+    # (b) 角色质心 ↔ 平均方向（几乎等于 1）
+    ax = axes[1]
+    rows_b = sorted(grp["角色质心与平均方向的余弦"], key=lambda r: -r["value"])
+    labels = [r["label"] for r in rows_b]
+    vals = [r["value"] for r in rows_b]
+    ax.barh(labels, vals, color=["#b4551c" if l == "白厄" else "#9fb3c8" for l in labels], height=0.62)
+    ax.set_xlim(0.96, 1.001)
+    for i, v in enumerate(vals):
+        ax.text(v - 0.0007, i, "%.3f" % v, va="center", ha="right", fontsize=7, color="#fff")
+    ax.set_title("(b) 14 个角色质心离平均方向多近（≈1）", fontsize=9)
+    ax.set_xlabel("余弦；1.0 = 质心完全等于平均方向", fontsize=8)
+    ax.tick_params(labelsize=7.5)
+    ax.grid(axis="x", alpha=0.22)
+    ax.set_axisbelow(True)
+    # (c) 全库记录 top1 占比
+    ax = axes[2]
+    rows_c = sorted(grp["全库记录 top1 占比"], key=lambda r: -r["value"])
+    labels = [r["label"] for r in rows_c]
+    vals = [100 * r["value"] for r in rows_c]
+    ax.barh(labels[::-1], vals[::-1], color=["#b4551c" if l == "O08" else "#9fb3c8" for l in labels[::-1]], height=0.62)
+    for i, v in enumerate(vals[::-1]):
+        ax.text(v + 0.4, i, "%.1f%%" % v, va="center", fontsize=7, color="#333")
+    ax.axvline(100.0 / len(labels), color="#7f8c8d", lw=1.0, ls="--")
+    ax.text(100.0 / len(labels) + 0.4, 0.2, "均匀应各 7.7%", fontsize=7, color="#555", va="bottom")
+    ax.set_xlim(0, 38)
+    ax.set_title("(c) 26,332 条记录各自「最像哪条神谕」", fontsize=9)
+    ax.set_xlabel("top1 占比（%）", fontsize=8)
+    ax.tick_params(labelsize=7.5)
+    ax.grid(axis="x", alpha=0.22)
+    ax.set_axisbelow(True)
+    fig.tight_layout()
+    fig.savefig(os.path.join(FIG_DIR, "f18_hub_effect.png"), dpi=100,
                 bbox_inches="tight", pad_inches=0.18)
     plt.close(fig)
 
